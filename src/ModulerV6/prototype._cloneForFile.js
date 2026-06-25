@@ -1,0 +1,14 @@
+/**
+ * @name ModulerV6.prototype._cloneForFile
+ * @type 
+ * @description 
+ */
+_cloneForFile(resource, moduler = false) {
+  this._traceIn("_cloneForFile", arguments);
+  this._assert(typeof resource === "string", "Parameter «resource» must be string on «ModulerV6.prototype._cloneForFile»");
+  this._assert(typeof this.basedir === "string", "Property «this.basedir» must be string on «ModulerV6.prototype._cloneForFile»");
+  const dirpath = require("path").dirname(this.fullpathOf(resource));
+  const clone = new this.constructor(dirpath, moduler || this);
+  this._traceOut("_cloneForFile", arguments);
+  return clone;
+}

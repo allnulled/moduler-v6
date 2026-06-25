@@ -1,0 +1,3 @@
+- Preparar los tests unitarios
+- Preparar el loop
+- Empezar

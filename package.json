@@ -1,0 +1,20 @@
+{
+  "name": "moduler-v6",
+  "version": "1.0.0",
+  "main": "moduler-v6.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "node dev/build.js",
+    "dev": "bash dev.sh",
+    "test": "node test/runner.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "terser": "^5.48.0"
+  }
+}
