@@ -990,18 +990,18 @@
  * @name ModulerV6.prototype._compileRecursively
  * @type private class method
  * @description 
- */        async _compileRecursively(compilationFile = {}, compilationProcess = {}) {
+ */        async _compileRecursively(fileParameters = {}, processParameters = {}) {
             this._traceIn("_compileRecursively", arguments);
-            this._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «ModulerV6.prototype._compileRecursively»");
-            this._assert(typeof compilationFile.resource === "string", "Parameter «compilationFile.resource» must be string on «ModulerV6.prototype._compileRecursively»");
-            this._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «ModulerV6.prototype._compileRecursively»");
-            const metadataForFile = this.constructor.CompilationFile.from(compilationFile, compilationProcess, this);
-            const metadataForProcess = this.constructor.CompilationProcess.from(compilationFile, compilationProcess, this);
-            const submoduler = this._cloneForFile(metadataForFile.resource, this);
-            await submoduler._fetchCompilable(metadataForFile, metadataForProcess);
-            submoduler._tokenizeText(metadataForFile, metadataForProcess);
-            await submoduler._compileTokens(metadataForFile, metadataForProcess);
-            const output = this._getPreferredOutput(metadataForFile, metadataForProcess);
+            this._assert(typeof fileParameters === "object", "Parameter «fileParameters» must be object on «ModulerV6.prototype._compileRecursively»");
+            this._assert(typeof fileParameters.resource === "string", "Parameter «fileParameters.resource» must be string on «ModulerV6.prototype._compileRecursively»");
+            this._assert(typeof processParameters === "object", "Parameter «processParameters» must be object on «ModulerV6.prototype._compileRecursively»");
+            const compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
+            const compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
+            const submoduler = this._cloneForFile(compilationFile.resource, this);
+            await submoduler._fetchCompilable(compilationFile, compilationProcess);
+            submoduler._tokenizeText(compilationFile, compilationProcess);
+            await submoduler._compileTokens(compilationFile, compilationProcess);
+            const output = this._getPreferredOutput(compilationFile, compilationProcess);
             this._traceOut("_compileRecursively", arguments);
             return output;
         }
@@ -1013,10 +1013,27 @@
             this._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «ModulerV6.prototype._fetchCompilable»");
             this._assert(typeof compilationFile.resource === "string", "Parameter «compilationFile.resource» must be string on «ModulerV6.prototype._fetchCompilable»");
             this._assert(/\.(js|css|md)$/g.test(compilationFile.resource), `Parameter «compilationFile.resource» must match with valid extension on «ModulerV6.prototype._fetchCompilable»`);
-            compilationFile.extension = compilationFile.resource.match(/\.(js|css|md)$/g)[0].substr(1);
+            Sacar_la_extension_del_fichero: {
+                compilationFile.extension = compilationFile.resource.match(/\.(js|css|md)$/g)[0].substr(1);
+            }
+            Propagar_la_extension_al_proceso_si_es_la_primera: {
+                if (typeof compilationProcess.extension === "undefined") {
+                    compilationProcess.extension = compilationFile.extension;
+                }
+            }
+            Bloquear_imports_segun_extension_de_compilable_original: {
+                if (compilationProcess.extension === "js") {
+                    // @OK, con js todo.
+                } else if (compilationProcess.extension === "css") {
+                    this._assert(compilationFile.extension !== "js", `From a «css» file «${compilationProcess.resource}» cannot inject «js» file «${compilationFile.resource}»`);
+                } else if (compilationProcess.extension === "md") {
+                    this._assert(compilationFile.extension !== "js", `From an «md» file «${compilationProcess.resource}» cannot inject «js» file «${compilationFile.resource}»`);
+                    this._assert(compilationFile.extension !== "css", `From an «md» file «${compilationProcess.resource}» cannot inject «css» file «${compilationFile.resource}»`);
+                }
+            }
             return this._readPath(compilationFile.resource).then(source => {
                 compilationFile.source = source;
-                return compilationFile.compilation.js = source;
+                return compilationFile.compilation[compilationFile.extension] = source;
             });
         }
         /**
@@ -1034,7 +1051,27 @@
                 resource: subpath,
                 isRoot: false
             }, compilationProcess);
-            compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], compilation.js);
+            const currentExtension = compilationFile.extension;
+            const nonEmptyFiles = Object.keys(compilation).filter(ext => compilation[ext].length);
+            if (currentExtension === "js") {
+                let replacement = "";
+                if (nonEmptyFiles.includes("js")) {
+                    replacement = compilation.js;
+                }
+                if (nonEmptyFiles.includes("css")) {
+                    compilationFile.compilation.css += "\n" + compilation.css;
+                }
+                if (nonEmptyFiles.includes("md")) {
+                    compilationFile.compilation.md += "\n\n" + compilation.md;
+                }
+                compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
+            } else if (currentExtension === "css") {
+                throw new Error("Syntax of «$v6.inject.source» should not be available on «css» files");
+            } else if (currentExtension === "md") {
+                throw new Error("Syntax of «$v6.inject.source» should not be available on «md» files");
+            } else {
+                throw new Error(`Syntax of «$v6.inject.source» should only be available on «js» files and not on «${currentExtension}»`);
+            }
             this._traceOut("_compileAsInjectSource", arguments);
         }
         /**

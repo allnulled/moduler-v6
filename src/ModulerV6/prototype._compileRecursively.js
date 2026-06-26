@@ -3,18 +3,18 @@
  * @type private class method
  * @description 
  */
-async _compileRecursively(compilationFile = {}, compilationProcess = {}) {
+async _compileRecursively(fileParameters = {}, processParameters = {}) {
   this._traceIn("_compileRecursively", arguments);
-  this._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «ModulerV6.prototype._compileRecursively»");
-  this._assert(typeof compilationFile.resource === "string", "Parameter «compilationFile.resource» must be string on «ModulerV6.prototype._compileRecursively»");
-  this._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «ModulerV6.prototype._compileRecursively»");
-  const metadataForFile = this.constructor.CompilationFile.from(compilationFile, compilationProcess, this);
-  const metadataForProcess = this.constructor.CompilationProcess.from(compilationFile, compilationProcess, this);
-  const submoduler = this._cloneForFile(metadataForFile.resource, this);
-  await submoduler._fetchCompilable(metadataForFile, metadataForProcess);
-  submoduler._tokenizeText(metadataForFile, metadataForProcess);
-  await submoduler._compileTokens(metadataForFile, metadataForProcess);
-  const output = this._getPreferredOutput(metadataForFile, metadataForProcess);
+  this._assert(typeof fileParameters === "object", "Parameter «fileParameters» must be object on «ModulerV6.prototype._compileRecursively»");
+  this._assert(typeof fileParameters.resource === "string", "Parameter «fileParameters.resource» must be string on «ModulerV6.prototype._compileRecursively»");
+  this._assert(typeof processParameters === "object", "Parameter «processParameters» must be object on «ModulerV6.prototype._compileRecursively»");
+  const compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
+  const compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
+  const submoduler = this._cloneForFile(compilationFile.resource, this);
+  await submoduler._fetchCompilable(compilationFile, compilationProcess);
+  submoduler._tokenizeText(compilationFile, compilationProcess);
+  await submoduler._compileTokens(compilationFile, compilationProcess);
+  const output = this._getPreferredOutput(compilationFile, compilationProcess);
   this._traceOut("_compileRecursively", arguments);
   return output;
 }

@@ -1,6 +1,6 @@
 module.exports = async function({ assert, utils, modulerV6 }) {
-  const output1 = await modulerV6.compile("test/assets/001/main.js", { to: "data" });
-  const output2 = await modulerV6.compile("test/assets/001/main.js", { to: "code" });
+  const output1 = await modulerV6.compile("test/assets/unit/001/main.js", { to: "data" });
+  const output2 = await modulerV6.compile("test/assets/unit/001/main.js", { to: "code" });
 
   To_data: {
     modulerV6._assert(typeof output1 === "object", "can compile (to data) and return an object (point 1)");
@@ -20,7 +20,5 @@ module.exports = async function({ assert, utils, modulerV6 }) {
     modulerV6._assert(output2.js.includes('console.log("Injection 1!")'), "can compile (to code) and return a string on .js.length not in 0 (point 27)");
     modulerV6._assert(output2.js.includes('console.log("Injection 2!")'), "can compile (to code) and return a string on .js.length not in 0 (point 28)");
   }
-
-  // @TODO: asegurar que puede dar árbol [BUENO] en to:"data" y dar código [BUENO] en to:"code"
 
 }
