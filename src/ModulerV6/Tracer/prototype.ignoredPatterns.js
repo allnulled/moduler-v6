@@ -5,5 +5,5 @@
  */
 this.ignoredPatterns = [
   "_assert",
-  "[ok]",
+  // "[ok]",
 ];

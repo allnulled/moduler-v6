@@ -10,6 +10,8 @@ module.exports = async function({ assert, utils, modulerV6 }) {
   modulerV6._assert(output1.md.length !== 0, "Can compile and produce a string on «output.md» with no empty content (1.2.3)");
   modulerV6._assert(!output1.js.includes("$v6.inject.source("), "Can compile and produce a string on «output.js» with no '$v6.inject.source(' strings in it (1.2.4)");
   modulerV6._assert(typeof output1.md === "string", "Can compile and produce a string on «output.md» (1.3)");
+  modulerV6._assert(output1.css.includes("html.global"), "Can compile and produce a string on «output.css» with the expected injection (1.4)");
+  modulerV6._assert(output1.md.includes("main.js y el main.css"), "Can compile and produce a string on «output.md» with the expected injection (1.5)");
   modulerV6._assert(typeof output2 === "object", "Can compile and produce an object (2)");
   modulerV6._assert(typeof output3 === "object", "Can compile and produce an object (3)");
 }

@@ -9,6 +9,6 @@ this.highlightedPatterns = [
   ["_compileRecursively", "cyan,underline"],
   ["_tokenizeText", "cyan,underline"],
   ["_compileTokens", "cyan,underline"],
-  [".constructor", "red"],
+  [".constructor", "blue"],
   ["_replaceTextRange", "yellow,bold"],
 ];

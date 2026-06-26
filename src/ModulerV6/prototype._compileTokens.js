@@ -25,8 +25,10 @@ async _compileTokens(compilationFile, compilationProcess) {
         await this._compileAsImportJs(compilationFile, compilationProcess, { token, indexToken });
       } else if(token.syntax === "Export Js") {
         await this._compileAsExportJs(compilationFile, compilationProcess, { token, indexToken });
-      } else if(token.syntax === "Requires") {
+      } else if(token.syntax === "@Requires") {
         await this._compileAsRequires(compilationFile, compilationProcess, { token, indexToken });
+      } else if(token.syntax === "@Injects") {
+        await this._compileAsInjects(compilationFile, compilationProcess, { token, indexToken });
       } else if(token.syntax === "Javadoc Comment") {
         await this._compileAsJavadocComment(compilationFile, compilationProcess, { token, indexToken });
       } else {

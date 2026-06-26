@@ -22,9 +22,11 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, index
       replacement = compilation.js;
     }
     if (nonEmptyFiles.includes("css")) {
+      throw new Error("Syntax of «$v6.inject.source» should not be used to import «css» files. Use commented @injects syntax instead.");
       compilationFile.compilation.css += "\n" + compilation.css;
     }
     if (nonEmptyFiles.includes("md")) {
+      throw new Error("Syntax of «$v6.inject.source» should not be used to import «md» files. Use commented @injects syntax instead.");
       compilationFile.compilation.md += "\n\n" + compilation.md;
     }
     compilationFile.compilation.js =

@@ -31,10 +31,10 @@ static _nativeGrammars = {
     return { syntax: "Multiline Comment Value Injection", ...token, };
   }],
   AtRequires: ["/*@requires:", "*/", function (token) {
-    return { syntax: "Requires", ...token, };
+    return { syntax: "@Requires", ...token, };
   }],
-  AtInjection: ["/*@injects:", "*/", function (token) {
-    return { syntax: "Injects", ...token, };
+  AtInjects: ["/*@injects:", "*/", function (token) {
+    return { syntax: "@Injects", ...token, };
   }],
   JavadocComment: ["/**", "*/", function (token) {
     return { syntax: "Javadoc Comment", ...token, };

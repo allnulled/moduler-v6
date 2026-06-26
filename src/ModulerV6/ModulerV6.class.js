@@ -15,6 +15,9 @@ class ModulerV6 {
   /*="./prototype._readUrl.js"*/
   /*="./prototype._readFile.js"*/
   /*="./prototype._assert.js"*/
+  /*="./prototype._assertThrows.js"*/
+  /*="./prototype._assertDoesNotThrow.js"*/
+  /*="./prototype._notifyAssertion.js"*/
   /*="./prototype._tracer.js"*/
   /*="./prototype._trace.js"*/
   /*="./prototype._traceIn.js"*/
@@ -33,6 +36,7 @@ class ModulerV6 {
   /*="./prototype._compileAsImportJs.js"*/
   /*="./prototype._compileAsExportJs.js"*/
   /*="./prototype._compileAsRequires.js"*/
+  /*="./prototype._compileAsInjects.js"*/
   /*="./prototype._compileAsJavadocComment.js"*/
   /*="./prototype._getPreferredOutput.js"*/
   /*="./prototype._hydrateParameters.js"*/

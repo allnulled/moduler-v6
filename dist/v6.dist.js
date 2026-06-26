@@ -208,13 +208,13 @@
             } ],
             AtRequires: [ "/*@requires:", "*/", function(token) {
                 return {
-                    syntax: "Requires",
+                    syntax: "@Requires",
                     ...token
                 };
             } ],
-            AtInjection: [ "/*@injects:", "*/", function(token) {
+            AtInjects: [ "/*@injects:", "*/", function(token) {
                 return {
-                    syntax: "Injects",
+                    syntax: "@Injects",
                     ...token
                 };
             } ],
@@ -235,9 +235,9 @@
  * @return ?
  */
         static _defaultGrammars={
-            forJs: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjection, this._nativeGrammars.JavadocComment ],
-            forCss: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjection, this._nativeGrammars.JavadocComment ],
-            forMd: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjection, this._nativeGrammars.JavadocComment ]
+            forJs: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
+            forCss: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
+            forMd: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ]
         };
         /**
  * @name ModulerV6.AssertionError
@@ -290,12 +290,12 @@
  * @description 
  */                this.highlightedPatterns = [ 
                 // Set patterns to highlight:
-                [ "_assert", "blackBright" ], [ "_compileRecursively", "cyan,underline" ], [ "_tokenizeText", "cyan,underline" ], [ "_compileTokens", "cyan,underline" ], [ ".constructor", "red" ], [ "_replaceTextRange", "yellow,bold" ] ];
+                [ "_assert", "blackBright" ], [ "_compileRecursively", "cyan,underline" ], [ "_tokenizeText", "cyan,underline" ], [ "_compileTokens", "cyan,underline" ], [ ".constructor", "blue" ], [ "_replaceTextRange", "yellow,bold" ] ];
                 /**
  * @name ModulerV6.Tracer.prototype.ignoredPatterns
  * @type 
  * @description 
- */                this.ignoredPatterns = [ "_assert", "[ok]" ];
+ */                this.ignoredPatterns = [ "_assert" ];
             }
             /**
  * @name ModulerV6.Tracer.prototype.addHighlighter
@@ -830,10 +830,51 @@
             if (!condition) {
                 throw new this.constructor.AssertionError(message);
             } else if (this._tracer.isTracing) {
-                const text = `[ok] ${message}`;
-                if (!this._tracer.matchesIgnorer(text)) {
-                    console.log(this._tracer.indentByLevel(this.constructor.ansi.colors.style("blackBright").text(text)));
+                this._notifyAssertion(message);
+            }
+        }
+        /**
+ * @name ModulerV6.prototype._assertThrows
+ * @type 
+ * @description 
+ */        async _assertThrows(callback, message, checker = () => true) {
+            const localError = new Error("Should have thrown: " + message);
+            try {
+                await callback();
+                throw localError;
+            } catch (err) {
+                if (err === localError) {
+                    throw new this.constructor.AssertionError(`Should have thrown: ${err.name}: ${err.message} | ${err.stack}`);
                 }
+                if (!checker(err)) {
+                    throw new this.constructor.AssertionError(`Should have thrown but not specific error: ${err.name}: ${err.message} | ${err.stack}`);
+                }
+                this._notifyAssertion(message);
+            }
+        }
+        /**
+ * @name ModulerV6.prototype._assertDoesNotThrow
+ * @type 
+ * @description 
+ */        async _assertDoesNotThrow(callback, message, checker = () => true) {
+            try {
+                await callback();
+                this._notifyAssertion(message);
+            } catch (err) {
+                if (!checker(err)) {
+                    throw new this.constructor.AssertionError(`Should not have thrown specific error: ${err.name}: ${err.message}`);
+                }
+                throw new this.constructor.AssertionError(`Should not have thrown: ${err.name}: ${err.message}`);
+            }
+        }
+        /**
+ * @name ModulerV6.prototype._notifyAssertion
+ * @type 
+ * @description 
+ */        _notifyAssertion(message) {
+            const text = `[ok] ${message}`;
+            if (!this._tracer.matchesIgnorer(text)) {
+                console.log(this._tracer.indentByLevel(this.constructor.ansi.colors.style("blackBright").text(text)));
             }
         }
         /**
@@ -968,8 +1009,13 @@
                             token: token,
                             indexToken: indexToken
                         });
-                    } else if (token.syntax === "Requires") {
+                    } else if (token.syntax === "@Requires") {
                         await this._compileAsRequires(compilationFile, compilationProcess, {
+                            token: token,
+                            indexToken: indexToken
+                        });
+                    } else if (token.syntax === "@Injects") {
+                        await this._compileAsInjects(compilationFile, compilationProcess, {
                             token: token,
                             indexToken: indexToken
                         });
@@ -1059,9 +1105,11 @@
                     replacement = compilation.js;
                 }
                 if (nonEmptyFiles.includes("css")) {
+                    throw new Error("Syntax of «$v6.inject.source» should not be used to import «css» files. Use commented @injects syntax instead.");
                     compilationFile.compilation.css += "\n" + compilation.css;
                 }
                 if (nonEmptyFiles.includes("md")) {
+                    throw new Error("Syntax of «$v6.inject.source» should not be used to import «md» files. Use commented @injects syntax instead.");
                     compilationFile.compilation.md += "\n\n" + compilation.md;
                 }
                 compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
@@ -1115,6 +1163,68 @@
  * @description 
  */        _compileAsRequires() {
             this._trace("_compileAsRequires", arguments);
+        }
+        /**
+ * @name ModulerV6.prototype._compileAsInjects
+ * @type 
+ * @description 
+ */        async _compileAsInjects(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            this._traceIn("_compileAsInjects", arguments);
+            const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot} = compilationFile;
+            const parameters = this._hydrateParameters(token.inner);
+            this._assert(Array.isArray(parameters), `Parameters of injection must be an array in «${token.inner}» on «ModulerV6.prototype._compileAsInjectSource»`);
+            this._assert(typeof parameters[0] === "string", `First parameter of injection must be string but «${typeof parameters[0]}» was found instead on «ModulerV6.prototype._compileAsInjectSource»`);
+            const subpath = this.fullpathOf(parameters[0]);
+            const compilation = await this._compileRecursively({
+                resource: subpath,
+                isRoot: false
+            }, compilationProcess);
+            const currentExtension = compilationFile.extension;
+            const nonEmptyFiles = Object.keys(compilation).filter(ext => compilation[ext].length);
+            if (currentExtension === "js") {
+                let replacement = "";
+                if (nonEmptyFiles.includes("js")) {
+                    throw new Error("Syntax of «@injects» can't be used to import «js» files from «js» files. Use another syntax instead.");
+                    replacement = compilation.js;
+                }
+                if (nonEmptyFiles.includes("css")) {
+                    compilationFile.compilation.css += "\n" + compilation.css;
+                }
+                if (nonEmptyFiles.includes("md")) {
+                    compilationFile.compilation.md += "\n\n" + compilation.md;
+                }
+                compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
+            } else if (currentExtension === "css") {
+                let replacement = "";
+                if (nonEmptyFiles.includes("js")) {
+                    throw new Error("Syntax of «@injects» can't be used to import «js» files from «css» files. Use another syntax instead.");
+                    replacement = compilation.js;
+                }
+                if (nonEmptyFiles.includes("css")) {
+                    compilationFile.compilation.css += "\n" + compilation.css;
+                }
+                if (nonEmptyFiles.includes("md")) {
+                    compilationFile.compilation.md += "\n\n" + compilation.md;
+                }
+                compilationFile.compilation.css = this._replaceTextRange(compilationFile.compilation.css, token.location[0], token.location[1], replacement);
+            } else if (currentExtension === "md") {
+                let replacement = "";
+                if (nonEmptyFiles.includes("js")) {
+                    throw new Error("Syntax of «@injects» can't be used to import «js» files from «md» files. Use another syntax instead.");
+                    replacement = compilation.js;
+                }
+                if (nonEmptyFiles.includes("css")) {
+                    throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
+                    compilationFile.compilation.css += "\n" + compilation.css;
+                }
+                if (nonEmptyFiles.includes("md")) {
+                    compilationFile.compilation.md += "\n\n" + compilation.md;
+                }
+                compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1], replacement);
+            } else {
+                throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${currentExtension}»`);
+            }
+            this._traceOut("_compileAsInjects", arguments);
         }
         /**
  * @name ModulerV6.prototype._compileAsJavadocComment

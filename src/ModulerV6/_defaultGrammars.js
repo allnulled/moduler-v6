@@ -15,7 +15,7 @@ static _defaultGrammars = {
     this._nativeGrammars.ExportCss,
     this._nativeGrammars.MultilineCommentValueInjection,
     this._nativeGrammars.AtRequires,
-    this._nativeGrammars.AtInjection,
+    this._nativeGrammars.AtInjects,
     this._nativeGrammars.JavadocComment,
   ],
   forCss: [
@@ -27,7 +27,7 @@ static _defaultGrammars = {
     this._nativeGrammars.ExportCss,
     this._nativeGrammars.MultilineCommentValueInjection,
     this._nativeGrammars.AtRequires,
-    this._nativeGrammars.AtInjection,
+    this._nativeGrammars.AtInjects,
     this._nativeGrammars.JavadocComment,
   ],
   forMd: [
@@ -39,7 +39,7 @@ static _defaultGrammars = {
     this._nativeGrammars.ExportCss,
     this._nativeGrammars.MultilineCommentValueInjection,
     this._nativeGrammars.AtRequires,
-    this._nativeGrammars.AtInjection,
+    this._nativeGrammars.AtInjects,
     this._nativeGrammars.JavadocComment,
   ],
 };
