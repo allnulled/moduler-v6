@@ -27,6 +27,8 @@ module.exports = async function ({ assert, utils, modulerV6 }) {
     }
   }
 
+  modulerV6._assert(output.report.tree["@/test/assets/unit/004/lib3/lib3.js"]["37-61"].referenceOf.rootpath === "@/test/assets/unit/004/lib3/lib3.md", "Can find lib3.md as reference of lib3.js");
+
   modulerV6._logger.log("Test 004 ok");
 
 };

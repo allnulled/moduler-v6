@@ -298,19 +298,19 @@
  */                this.ignoredPatterns = [ "_assert" ];
             }
             /**
- * @name ModulerV6.Tracer.prototype.turnOff
+ * @name ModulerV6.Tracer.prototype.activate
  * @type 
  * @description 
- */            turnOff() {
-                this.isTracing = false;
+ */            activate(really = true) {
+                this.isTracing = !!really;
                 return this;
             }
             /**
- * @name ModulerV6.Tracer.prototype.turnOn
+ * @name ModulerV6.Tracer.prototype.deactivate
  * @type 
  * @description 
- */            turnOn() {
-                this.isTracing = true;
+ */            deactivate(really = true) {
+                this.isTracing = !!!really;
                 return this;
             }
             /**
@@ -429,16 +429,40 @@
    * @type 
    * @description 
    */
+            /**
+ * @name ModulerV6.Logger.fromFile
+ * @type 
+ * @description 
+ */
             static fromFile(file) {
                 return new this({
                     file: file
                 });
             }
-            static Manager=class LoggerManager {
+            /**
+ * @name ModulerV6.Logger.Manager
+ * @type 
+ * @description 
+ */            static Manager=
+            /**
+ * @name ModulerV6.Logger.Manager
+ * @type 
+ * @description 
+ */
+            class LoggerManager {
+                /**
+ * @name ModulerV6.Logger.Manager.fromDirectory
+ * @type 
+ * @description 
+ */
                 static fromDirectory(basedir) {
                     return new this(basedir);
                 }
-                constructor(basedir) {
+                /**
+ * @name ModulerV6.Logger.Manager.constructor
+ * @type 
+ * @description 
+ */                constructor(basedir) {
                     this.basedir = basedir;
                     this.selected = "default";
                     this.subloggers = {
@@ -447,24 +471,44 @@
                         })
                     };
                 }
-                get current() {
+                /**
+ * @name ModulerV6.Logger.Manager.get.current
+ * @type 
+ * @description 
+ */                get current() {
                     return this.subloggers[this.selected];
                 }
-                addLogger(id) {
+                /**
+ * @name ModulerV6.Logger.Manager.prototype.addLogger
+ * @type 
+ * @description 
+ */                addLogger(id) {
                     this.subloggers[id] = new Logger({
                         file: require("path").resolve(this.basedir, id + ".txt")
                     });
                 }
-                has(id) {
+                /**
+ * @name ModulerV6.Logger.Manager.prototype.has
+ * @type 
+ * @description 
+ */                has(id) {
                     return id in this.subloggers;
                 }
-                into(id) {
+                /**
+ * @name ModulerV6.Logger.Manager.prototype.into
+ * @type 
+ * @description 
+ */                into(id) {
                     if (!this.has(id)) {
                         this.addLogger(id);
                     }
                     return this.subloggers[id];
                 }
-                select(id = false) {
+                /**
+ * @name ModulerV6.Logger.Manager.prototype.select
+ * @type 
+ * @description 
+ */                select(id = false) {
                     if (id === false) {
                         if (!this.has(this.selected)) {
                             this.addLogger(this.selected);
@@ -477,45 +521,83 @@
                     this.selected = id;
                     return this.select();
                 }
-                resetFile(...args) {
+                /**
+ * @name ModulerV6.Logger.Manager.prototype.resetFile
+ * @type 
+ * @description 
+ */                resetFile(...args) {
                     if (!this.has(this.selected)) {
                         this.addLogger(this.selected);
                     }
                     return this.subloggers[this.selected].resetFile(...args);
                 }
-                log(...args) {
+                /**
+ * @name ModulerV6.Logger.Manager.prototype.log
+ * @type 
+ * @description 
+ */                log(...args) {
                     if (!this.has(this.selected)) {
                         this.addLogger(this.selected);
                     }
                     return this.subloggers[this.selected].log(...args);
                 }
             };
+            /**
+ * @name ModulerV6.Logger.create
+ * @type 
+ * @description 
+ */
             static create(...args) {
                 return new this(...args);
             }
-            static defaultOptions={
+            /**
+ * @name ModulerV6.Logger.defaultOptions
+ * @type 
+ * @description 
+ */            static defaultOptions={
                 console: true
             };
+            /**
+ * @name ModulerV6.Logger.constructor
+ * @type 
+ * @description 
+ */
             constructor(options, moduler) {
                 this.options = Object.assign({}, this.constructor.defaultOptions, options);
                 this.moduler = moduler;
                 this.startedAt = new Date;
                 this.lastLogAt = new Date;
             }
-            resetFile(...args) {
+            /**
+ * @name ModulerV6.Logger.prototype.resetFile
+ * @type 
+ * @description 
+ */            resetFile(...args) {
                 return require("fs").promises.writeFile(this.options.file, "", "utf8").then(() => {
                     this.startedAt = new Date;
                     this.lastLogAt = new Date;
                     return this.log(...args);
                 });
             }
-            getTimeOffset() {
+            /**
+ * @name ModulerV6.Logger.prototype.getTimeOffset
+ * @type 
+ * @description 
+ */            getTimeOffset() {
                 return "+" + ((new Date).getTime() - this.startedAt.getTime());
             }
-            getLastLogOffset() {
+            /**
+ * @name ModulerV6.Logger.prototype.getLastLogOffset
+ * @type 
+ * @description 
+ */            getLastLogOffset() {
                 return "+" + ((new Date).getTime() - this.lastLogAt.getTime());
             }
-            log(...args) {
+            /**
+ * @name ModulerV6.Logger.prototype.log
+ * @type 
+ * @description 
+ */            log(...args) {
                 const line = this.stringifySafe({
                     "@": this.getMomentToString(),
                     "#": this.getTimeOffset(),
@@ -530,17 +612,29 @@
                     return require("fs").promises.appendFile(this.options.file, line, "utf8").catch(console.error);
                 }
             }
-            setOption(id, value) {
+            /**
+ * @name ModulerV6.Logger.prototype.setOption
+ * @type 
+ * @description 
+ */            setOption(id, value) {
                 this.options[id] = value;
                 return this;
             }
-            getMomentToString() {
+            /**
+ * @name ModulerV6.Logger.prototype.getMomentToString
+ * @type 
+ * @description 
+ */            getMomentToString() {
                 const d = new Date;
                 const pad = n => String(n).padStart(2, "0");
                 const pad3 = n => String(n).padStart(3, "0");
                 return `${d.getFullYear()}-` + `${pad(d.getMonth() + 1)}-` + `${pad(d.getDate())} ` + `${pad(d.getHours())}:` + `${pad(d.getMinutes())}:` + `${pad(d.getSeconds())}.` + `${pad3(d.getMilliseconds())}`;
             }
-            stringifySafe(value) {
+            /**
+ * @name ModulerV6.Logger.prototype.stringifySafe
+ * @type 
+ * @description 
+ */            stringifySafe(value) {
                 const seen = new WeakSet;
                 return JSON.stringify(value, (key, val) => {
                     if (typeof val === "bigint") {

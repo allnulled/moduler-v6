@@ -12,8 +12,8 @@ class Tracer {
     /*="./prototype.highlightedPatterns.js"*/
     /*="./prototype.ignoredPatterns.js"*/
   }
-  /*="./prototype.turnOff.js"*/
-  /*="./prototype.turnOn.js"*/
+  /*="./prototype.activate.js"*/
+  /*="./prototype.deactivate.js"*/
   /*="./prototype.addHighlighter.js"*/
   /*="./prototype.removeHighlighter.js"*/
   /*="./prototype.indentByLevel.js"*/

@@ -1,0 +1,128 @@
+.
+├── lib
+│   └── colors.js
+├── ModulerV6
+│   ├── ansi
+│   │   └── colors.js
+│   ├── ansi.js
+│   ├── AssertionError.js
+│   ├── CompilationFile
+│   │   ├── _assert.js
+│   │   ├── CompilationFile.js
+│   │   ├── constructor.js
+│   │   ├── _defaultFileData.js
+│   │   └── from.js
+│   ├── CompilationProcess
+│   │   ├── _assert.js
+│   │   ├── CompilationProcess.js
+│   │   ├── constructor.js
+│   │   ├── _defaultProcessData.js
+│   │   └── from.js
+│   ├── constructor.js
+│   ├── create.js
+│   ├── _defaultGrammars.js
+│   ├── findRootOf.js
+│   ├── fromDirectory.js
+│   ├── fromRootOf.js
+│   ├── Logger
+│   │   ├── constructor.js
+│   │   ├── create.js
+│   │   ├── defaultOptions.js
+│   │   ├── fromFile.js
+│   │   ├── Logger.class.js
+│   │   ├── Manager
+│   │   │   ├── constructor.js
+│   │   │   ├── fromDirectory.js
+│   │   │   ├── get.current.js
+│   │   │   ├── Manager.class.js
+│   │   │   ├── prototype.addLogger.js
+│   │   │   ├── prototype.has.js
+│   │   │   ├── prototype.into.js
+│   │   │   ├── prototype.log.js
+│   │   │   ├── prototype.resetFile.js
+│   │   │   └── prototype.select.js
+│   │   ├── Manager.js
+│   │   ├── prototype.getLastLogOffset.js
+│   │   ├── prototype.getMomentToString.js
+│   │   ├── prototype.getTimeOffset.js
+│   │   ├── prototype.log.js
+│   │   ├── prototype.resetFile.js
+│   │   ├── prototype.setOption.js
+│   │   └── prototype.stringifySafe.js
+│   ├── Logger.js
+│   ├── ModulerV6.class.js
+│   ├── _nativeGrammars.js
+│   ├── prototype._assertDoesNotThrow.js
+│   ├── prototype._assert.js
+│   ├── prototype._assertThrows.js
+│   ├── prototype.basedir.js
+│   ├── prototype._cloneForFile.js
+│   ├── prototype._cloneStructureAsJson.js
+│   ├── prototype._compileAsExportJs.js
+│   ├── prototype._compileAsImportJs.js
+│   ├── prototype._compileAsInjects.js
+│   ├── prototype._compileAsInjectSource.js
+│   ├── prototype._compileAsInjectString.js
+│   ├── prototype._compileAsJavadocComment.js
+│   ├── prototype._compileAsMultilineCommentCodeInjection.js
+│   ├── prototype._compileAsMultilineCommentValueInjection.js
+│   ├── prototype._compileAsRequires.js
+│   ├── prototype.compile.js
+│   ├── prototype._compileRecursively.js
+│   ├── prototype._compileTokens.js
+│   ├── prototype._debug.js
+│   ├── prototype._die.js
+│   ├── prototype._extendToken.js
+│   ├── prototype._fetchCompilable.js
+│   ├── prototype.fullpathOf.js
+│   ├── prototype._getPreferredOutput.js
+│   ├── prototype._grammars.js
+│   ├── prototype._hydrateParameters.js
+│   ├── prototype._initializeLogger.js
+│   ├── prototype.isBrowser.js
+│   ├── prototype._logger.js
+│   ├── prototype.log.js
+│   ├── prototype.normalizationOf.js
+│   ├── prototype._notifyAssertion.js
+│   ├── prototype.parentdir.js
+│   ├── prototype._parser.js
+│   ├── prototype._readFile.js
+│   ├── prototype._readPath.js
+│   ├── prototype._readUrl.js
+│   ├── prototype._replaceTextRange.js
+│   ├── prototype._reportFileToken.js
+│   ├── prototype.rootdir.js
+│   ├── prototype.rootpathOf.js
+│   ├── prototype._tokenizeText.js
+│   ├── prototype._traceIn.js
+│   ├── prototype._trace.js
+│   ├── prototype._traceOut.js
+│   ├── prototype._tracer.js
+│   ├── Tracer
+│   │   ├── prototype.activate.js
+│   │   ├── prototype.addHighlighter.js
+│   │   ├── prototype.deactivate.js
+│   │   ├── prototype.highlightedPatterns.js
+│   │   ├── prototype.highlightIfMatched.js
+│   │   ├── prototype.ignoredPatterns.js
+│   │   ├── prototype.indentByLevel.js
+│   │   ├── prototype.isBrowser.js
+│   │   ├── prototype.isTracing.js
+│   │   ├── prototype.matchesIgnorer.js
+│   │   ├── prototype.moduler.js
+│   │   ├── prototype.printStack.js
+│   │   ├── prototype.removeHighlighter.js
+│   │   ├── prototype.stack.js
+│   │   ├── prototype.traceIn.js
+│   │   ├── prototype.trace.js
+│   │   ├── prototype.traceOut.js
+│   │   ├── prototype.turnOff.js
+│   │   ├── prototype.turnOn.js
+│   │   └── Tracer.js
+│   └── Tracer.js
+├── moduler-v6.js
+├── text-parser-v1.js
+├── tree.txt
+└── v6.entry.js
+
+8 directories, 117 files

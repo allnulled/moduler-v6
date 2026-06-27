@@ -3,7 +3,7 @@ module.exports = async function({ assert, utils, injection }) {
   injection.modulerV6 = ModulerV6.create(`${__dirname}/../..`);
   Configuraciones_iniciales: {
     // Tracer off
-    injection.modulerV6._tracer.turnOff();
+    injection.modulerV6._tracer.deactivate();
     // Restart logger
     injection.modulerV6._initializeLogger(`${__dirname}/logs/`);
     // Logger by console off

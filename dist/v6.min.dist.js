@@ -232,12 +232,12 @@
                 this.highlightedPatterns = [ [ "_assert", "blackBright" ], [ "_compileRecursively", "cyan,underline" ], [ "_tokenizeText", "cyan,underline" ], [ "_compileTokens", "cyan,underline" ], [ ".constructor", "blue" ], [ "_replaceTextRange", "yellow,bold" ] ];
                 this.ignoredPatterns = [ "_assert" ];
             }
-            turnOff() {
-                this.isTracing = false;
+            activate(really = true) {
+                this.isTracing = !!really;
                 return this;
             }
-            turnOn() {
-                this.isTracing = true;
+            deactivate(really = true) {
+                this.isTracing = !!!really;
                 return this;
             }
             addHighlighter(text) {
