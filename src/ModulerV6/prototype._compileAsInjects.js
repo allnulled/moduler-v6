@@ -15,67 +15,75 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
     isRoot: false,
   }, compilationProcess);
   const currentExtension = compilationFile.extension;
-  const nonEmptyFiles = Object.keys(compilation).filter(ext => compilation[ext].length);
-  if (currentExtension === "js") {
-    let replacement = "";
-    if (nonEmptyFiles.includes("js")) {
-      throw new Error("Syntax of «@injects» can't be used to import «js» files from «js» files. Use another syntax instead.");
-      replacement = compilation.js;
+  Inject_in_compilation_text: {
+    if (currentExtension === "js") {
+      let replacement = "";
+      if (subpath.endsWith("js")) {
+        throw new Error("Syntax of «@injects» should not be used to import «js» files from «js» files. Use another syntax instead, like «$v6.injects.source» or «commented template injection».");
+        replacement = compilation.js;
+      } else if (subpath.endsWith("css")) {
+        compilationFile.compilation.css += "\n" + compilation.css;
+      } else if (subpath.endsWith("md")) {
+        compilationFile.compilation.md += "\n\n" + compilation.md;
+      } else {
+        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`)
+      }
+      compilationFile.compilation.js =
+        this._replaceTextRange(
+          compilationFile.compilation.js,
+          token.location[0],
+          token.location[1],
+          replacement
+        );
+    } else if (currentExtension === "css") {
+      let replacement = "";
+      if (subpath.endsWith("js")) {
+        throw new Error("Syntax of «@injects» can't be used to import «js» files from «css» files. Use another syntax instead.");
+        replacement = compilation.js;
+      } else if (subpath.endsWith("css")) {
+        compilationFile.compilation.css += "\n" + compilation.css;
+      } else if (subpath.endsWith("md")) {
+        compilationFile.compilation.md += "\n\n" + compilation.md;
+      } else {
+        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`)
+      }
+      compilationFile.compilation.css =
+        this._replaceTextRange(
+          compilationFile.compilation.css,
+          token.location[0],
+          token.location[1],
+          replacement
+        );
+    } else if (currentExtension === "md") {
+      let replacement = "";
+      if (subpath.endsWith("js")) {
+        throw new Error("Syntax of «@injects» can't be used to import «js» files from «md» files. Use another syntax instead.");
+        replacement = compilation.js;
+      } else if (subpath.endsWith("css")) {
+        throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
+        compilationFile.compilation.css += "\n" + compilation.css;
+      } else if (subpath.endsWith("md")) {
+        compilationFile.compilation.md += "\n\n" + compilation.md;
+      } else {
+        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`)
+      }
+      compilationFile.compilation.md =
+        this._replaceTextRange(
+          compilationFile.compilation.md,
+          token.location[0],
+          token.location[1],
+          replacement
+        );
+    } else {
+      throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${currentExtension}»`);
     }
-    if (nonEmptyFiles.includes("css")) {
-      compilationFile.compilation.css += "\n" + compilation.css;
+  }
+  Inject_in_report_object: {
+    if(compilationProcess.to !== "data") {
+      break Inject_in_report_object;
     }
-    if (nonEmptyFiles.includes("md")) {
-      compilationFile.compilation.md += "\n\n" + compilation.md;
-    }
-    compilationFile.compilation.js =
-      this._replaceTextRange(
-        compilationFile.compilation.js,
-        token.location[0],
-        token.location[1],
-        replacement
-      );
-  } else if (currentExtension === "css") {
-    let replacement = "";
-    if (nonEmptyFiles.includes("js")) {
-      throw new Error("Syntax of «@injects» can't be used to import «js» files from «css» files. Use another syntax instead.");
-      replacement = compilation.js;
-    }
-    if (nonEmptyFiles.includes("css")) {
-      compilationFile.compilation.css += "\n" + compilation.css;
-    }
-    if (nonEmptyFiles.includes("md")) {
-      compilationFile.compilation.md += "\n\n" + compilation.md;
-    }
-    compilationFile.compilation.css =
-      this._replaceTextRange(
-        compilationFile.compilation.css,
-        token.location[0],
-        token.location[1],
-        replacement
-      );
-  } else if (currentExtension === "md") {
-    let replacement = "";
-    if (nonEmptyFiles.includes("js")) {
-      throw new Error("Syntax of «@injects» can't be used to import «js» files from «md» files. Use another syntax instead.");
-      replacement = compilation.js;
-    }
-    if (nonEmptyFiles.includes("css")) {
-      throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
-      compilationFile.compilation.css += "\n" + compilation.css;
-    }
-    if (nonEmptyFiles.includes("md")) {
-      compilationFile.compilation.md += "\n\n" + compilation.md;
-    }
-    compilationFile.compilation.md =
-      this._replaceTextRange(
-        compilationFile.compilation.md,
-        token.location[0],
-        token.location[1],
-        replacement
-      );
-  } else {
-    throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${currentExtension}»`);
+    this._reportFileToken(compilationFile, subpath, token);
+    Object.assign(compilationFile.report.tree, compilation.report.tree);
   }
   this._traceOut("_compileAsInjects", arguments);
 }

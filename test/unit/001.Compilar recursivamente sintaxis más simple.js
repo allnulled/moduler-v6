@@ -4,10 +4,8 @@ module.exports = async function({ assert, utils, modulerV6 }) {
 
   To_data: {
     modulerV6._assert(typeof output1 === "object", "can compile (to data) and return an object (point 1)");
-    modulerV6._assert(typeof output1.js === "object", "can compile (to data) and return an object on .js (point 2)");
-    modulerV6._assert(typeof output1.css === "object", "can compile (to data) and return an object on .css (point 3)");
-    modulerV6._assert(typeof output1.md === "object", "can compile (to data) and return an object on .md (point 4)");
-    modulerV6._assert(typeof output1.file === "string", "can compile (to data) and return a string on .js and return .file as string (point 5)");
+    modulerV6._assert(typeof output1.report.tree === "object", "can compile (to data) and return an object on .report.tree (point 2)");
+    modulerV6._assert(typeof output1.file === "string", "can compile (to data) and return a string on .file as string (point 5)");
   }
   
   To_code: {
@@ -20,5 +18,7 @@ module.exports = async function({ assert, utils, modulerV6 }) {
     modulerV6._assert(output2.js.includes('console.log("Injection 1!")'), "can compile (to code) and return a string on .js.length not in 0 (point 27)");
     modulerV6._assert(output2.js.includes('console.log("Injection 2!")'), "can compile (to code) and return a string on .js.length not in 0 (point 28)");
   }
+  
+  modulerV6._logger.log("Test 001 ok");
 
 }

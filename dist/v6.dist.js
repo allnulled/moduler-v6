@@ -298,6 +298,22 @@
  */                this.ignoredPatterns = [ "_assert" ];
             }
             /**
+ * @name ModulerV6.Tracer.prototype.turnOff
+ * @type 
+ * @description 
+ */            turnOff() {
+                this.isTracing = false;
+                return this;
+            }
+            /**
+ * @name ModulerV6.Tracer.prototype.turnOn
+ * @type 
+ * @description 
+ */            turnOn() {
+                this.isTracing = true;
+                return this;
+            }
+            /**
  * @name ModulerV6.Tracer.prototype.addHighlighter
  * @type 
  * @description 
@@ -403,6 +419,154 @@
             }
         };
         /**
+ * @name ModulerV6.Logger
+ * @type 
+ * @description 
+ */
+        static Logger=class Logger {
+            /**
+   * @name ModulerV6.Logger.Logger.class
+   * @type 
+   * @description 
+   */
+            static fromFile(file) {
+                return new this({
+                    file: file
+                });
+            }
+            static Manager=class LoggerManager {
+                static fromDirectory(basedir) {
+                    return new this(basedir);
+                }
+                constructor(basedir) {
+                    this.basedir = basedir;
+                    this.selected = "default";
+                    this.subloggers = {
+                        default: new Logger({
+                            file: require("path").resolve(basedir, "default.txt")
+                        })
+                    };
+                }
+                get current() {
+                    return this.subloggers[this.selected];
+                }
+                addLogger(id) {
+                    this.subloggers[id] = new Logger({
+                        file: require("path").resolve(this.basedir, id + ".txt")
+                    });
+                }
+                has(id) {
+                    return id in this.subloggers;
+                }
+                into(id) {
+                    if (!this.has(id)) {
+                        this.addLogger(id);
+                    }
+                    return this.subloggers[id];
+                }
+                select(id = false) {
+                    if (id === false) {
+                        if (!this.has(this.selected)) {
+                            this.addLogger(this.selected);
+                        }
+                        return this.subloggers[this.selected];
+                    }
+                    if (!this.has(id)) {
+                        this.addLogger(this.selected);
+                    }
+                    this.selected = id;
+                    return this.select();
+                }
+                resetFile(...args) {
+                    if (!this.has(this.selected)) {
+                        this.addLogger(this.selected);
+                    }
+                    return this.subloggers[this.selected].resetFile(...args);
+                }
+                log(...args) {
+                    if (!this.has(this.selected)) {
+                        this.addLogger(this.selected);
+                    }
+                    return this.subloggers[this.selected].log(...args);
+                }
+            };
+            static create(...args) {
+                return new this(...args);
+            }
+            static defaultOptions={
+                console: true
+            };
+            constructor(options, moduler) {
+                this.options = Object.assign({}, this.constructor.defaultOptions, options);
+                this.moduler = moduler;
+                this.startedAt = new Date;
+                this.lastLogAt = new Date;
+            }
+            resetFile(...args) {
+                return require("fs").promises.writeFile(this.options.file, "", "utf8").then(() => {
+                    this.startedAt = new Date;
+                    this.lastLogAt = new Date;
+                    return this.log(...args);
+                });
+            }
+            getTimeOffset() {
+                return "+" + ((new Date).getTime() - this.startedAt.getTime());
+            }
+            getLastLogOffset() {
+                return "+" + ((new Date).getTime() - this.lastLogAt.getTime());
+            }
+            log(...args) {
+                const line = this.stringifySafe({
+                    "@": this.getMomentToString(),
+                    "#": this.getTimeOffset(),
+                    "##": this.getLastLogOffset(),
+                    "*": args
+                }) + "\n";
+                if (this.options.console) {
+                    console.log(line);
+                }
+                this.lastLogAt = new Date;
+                if (this.options.file) {
+                    return require("fs").promises.appendFile(this.options.file, line, "utf8").catch(console.error);
+                }
+            }
+            setOption(id, value) {
+                this.options[id] = value;
+                return this;
+            }
+            getMomentToString() {
+                const d = new Date;
+                const pad = n => String(n).padStart(2, "0");
+                const pad3 = n => String(n).padStart(3, "0");
+                return `${d.getFullYear()}-` + `${pad(d.getMonth() + 1)}-` + `${pad(d.getDate())} ` + `${pad(d.getHours())}:` + `${pad(d.getMinutes())}:` + `${pad(d.getSeconds())}.` + `${pad3(d.getMilliseconds())}`;
+            }
+            stringifySafe(value) {
+                const seen = new WeakSet;
+                return JSON.stringify(value, (key, val) => {
+                    if (typeof val === "bigint") {
+                        return `${val}n`;
+                    }
+                    if (typeof val === "function") {
+                        return `[Function ${val.name || "anonymous"}]`;
+                    }
+                    if (val instanceof Error) {
+                        return {
+                            name: val.name,
+                            message: val.message,
+                            stack: val.stack
+                        };
+                    }
+                    if (typeof val === "object" && val !== null) {
+                        if (seen.has(val)) {
+                            return "[Circular]";
+                        }
+                        seen.add(val);
+                    }
+                    return val;
+                }, 0);
+            }
+        };
+        /**
  * @name ModulerV6.CompilationProcess
  * @type 
  * @description 
@@ -421,9 +585,7 @@
  * @type 
  * @description 
  */            static get _defaultProcessData() {
-                return {
-                    injectedFiles: []
-                };
+                return {};
             }
             /**
  * @name ModulerV6.CompilationProcess.constructor
@@ -490,9 +652,7 @@
                         md: ""
                     },
                     report: {
-                        js: {},
-                        css: {},
-                        md: {}
+                        tree: {}
                     }
                 };
             }
@@ -873,15 +1033,21 @@
  * @description 
  */        _notifyAssertion(message) {
             const text = `[ok] ${message}`;
-            if (!this._tracer.matchesIgnorer(text)) {
+            if (this._tracer.isTracing && !this._tracer.matchesIgnorer(text)) {
                 console.log(this._tracer.indentByLevel(this.constructor.ansi.colors.style("blackBright").text(text)));
             }
         }
         /**
+ * @name ModulerV6.prototype._logger
+ * @type 
+ * @description 
+ */        _logger=null;
+        /**
  * @name ModulerV6.prototype._tracer
  * @type 
  * @description 
- */        _tracer=new this.constructor.Tracer(this);
+ */
+        _tracer=new this.constructor.Tracer(this);
         /**
  * @name ModulerV6.prototype._trace
  * @type 
@@ -911,7 +1077,14 @@
  */        _debug(...list) {
             for (let index = 0; index < list.length; index++) {
                 const item = list[index];
-                console.log(this.constructor.ansi.colors.style("yellow,bold,underline").text(`[debug] parameter ${index}:`), item);
+                let output = item;
+                try {
+                    output = JSON.stringify(item, null, 2);
+                } catch (error) {
+                    // @OK
+                    console.warn(error);
+                }
+                console.log(this.constructor.ansi.colors.style("yellow,bold,underline").text(`[debug] parameter ${index}:`), output);
             }
         }
         /**
@@ -1030,7 +1203,7 @@
                 }
             }
             this._traceOut("_compileTokens", arguments);
-            return compilationFile.output = compilationFile.compilation;
+            return compilationFile.compilation;
         }
         /**
  * @name ModulerV6.prototype._compileRecursively
@@ -1043,6 +1216,10 @@
             this._assert(typeof processParameters === "object", "Parameter «processParameters» must be object on «ModulerV6.prototype._compileRecursively»");
             const compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
             const compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
+            Entry_in_tree: {
+                const id = this.rootpathOf(compilationFile.resource);
+                compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
+            }
             const submoduler = this._cloneForFile(compilationFile.resource, this);
             await submoduler._fetchCompilable(compilationFile, compilationProcess);
             submoduler._tokenizeText(compilationFile, compilationProcess);
@@ -1098,27 +1275,49 @@
                 isRoot: false
             }, compilationProcess);
             const currentExtension = compilationFile.extension;
-            const nonEmptyFiles = Object.keys(compilation).filter(ext => compilation[ext].length);
-            if (currentExtension === "js") {
-                let replacement = "";
-                if (nonEmptyFiles.includes("js")) {
-                    replacement = compilation.js;
+            Inject_in_compilation_text: {
+                // Aquí estás diciendo que:
+                //   - en cada token 'Inject Source'
+                //     - compilas el fichero referido
+                //   - y después compruebas que no haya generado nada de css ni md
+                //   - PERO esto no es correcto:
+                //     - un fichero importado con inject.source SÍ PUEDE generar css y md paralelamente
+                //   - Lo que sí que hay que bloquear es que:
+                //     - el token injects.source intente introducir un fichero .css directamente
+                //       - pero los js tienen que poder importar js, css y md
+                //       - y los js tienen que poder importar css y md
+                //       - y los md tienen que poder importar md
+                //       - simplemente que INJECT.SOURCE no está para eso
+                //         - y ESTO es lo que tienes que comprobar aquí
+                //         - que el subpath sea js solamente
+                if (currentExtension === "js") {
+                    let replacement = "";
+                    if (subpath.endsWith(".js")) {
+                        replacement = compilation.js;
+                    } else if (subpath.endsWith(".css")) {
+                        throw new Error(`Syntax of «$v6.inject.source» on file «${subpath}» should not be used to import «css» files. Use commented @injects syntax instead.`);
+                        compilationFile.compilation.css += "\n" + compilation.css;
+                    } else if (subpath.endsWith(".md")) {
+                        throw new Error(`Syntax of «$v6.inject.source» on file «${subpath}» should not be used to import «md» files. Use commented @injects syntax instead.`);
+                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                    } else {
+                        throw new Error(`Syntax of «$v6.inject.source» on file «${subpath}» is trying to import foraneous extension`);
+                    }
+                    compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
+                } else if (currentExtension === "css") {
+                    throw new Error("Syntax of «$v6.inject.source» should not be available on «css» files");
+                } else if (currentExtension === "md") {
+                    throw new Error("Syntax of «$v6.inject.source» should not be available on «md» files");
+                } else {
+                    throw new Error(`Syntax of «$v6.inject.source» should only be available on «js» files and not on «${currentExtension}»`);
                 }
-                if (nonEmptyFiles.includes("css")) {
-                    throw new Error("Syntax of «$v6.inject.source» should not be used to import «css» files. Use commented @injects syntax instead.");
-                    compilationFile.compilation.css += "\n" + compilation.css;
+            }
+            Inject_in_report_object: {
+                if (compilationProcess.to !== "data") {
+                    break Inject_in_report_object;
                 }
-                if (nonEmptyFiles.includes("md")) {
-                    throw new Error("Syntax of «$v6.inject.source» should not be used to import «md» files. Use commented @injects syntax instead.");
-                    compilationFile.compilation.md += "\n\n" + compilation.md;
-                }
-                compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
-            } else if (currentExtension === "css") {
-                throw new Error("Syntax of «$v6.inject.source» should not be available on «css» files");
-            } else if (currentExtension === "md") {
-                throw new Error("Syntax of «$v6.inject.source» should not be available on «md» files");
-            } else {
-                throw new Error(`Syntax of «$v6.inject.source» should only be available on «js» files and not on «${currentExtension}»`);
+                this._reportFileToken(compilationFile, subpath, token);
+                Object.assign(compilationFile.report.tree, compilation.report.tree);
             }
             this._traceOut("_compileAsInjectSource", arguments);
         }
@@ -1180,49 +1379,57 @@
                 isRoot: false
             }, compilationProcess);
             const currentExtension = compilationFile.extension;
-            const nonEmptyFiles = Object.keys(compilation).filter(ext => compilation[ext].length);
-            if (currentExtension === "js") {
-                let replacement = "";
-                if (nonEmptyFiles.includes("js")) {
-                    throw new Error("Syntax of «@injects» can't be used to import «js» files from «js» files. Use another syntax instead.");
-                    replacement = compilation.js;
+            Inject_in_compilation_text: {
+                if (currentExtension === "js") {
+                    let replacement = "";
+                    if (subpath.endsWith("js")) {
+                        throw new Error("Syntax of «@injects» should not be used to import «js» files from «js» files. Use another syntax instead, like «$v6.injects.source» or «commented template injection».");
+                        replacement = compilation.js;
+                    } else if (subpath.endsWith("css")) {
+                        compilationFile.compilation.css += "\n" + compilation.css;
+                    } else if (subpath.endsWith("md")) {
+                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                    } else {
+                        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`);
+                    }
+                    compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
+                } else if (currentExtension === "css") {
+                    let replacement = "";
+                    if (subpath.endsWith("js")) {
+                        throw new Error("Syntax of «@injects» can't be used to import «js» files from «css» files. Use another syntax instead.");
+                        replacement = compilation.js;
+                    } else if (subpath.endsWith("css")) {
+                        compilationFile.compilation.css += "\n" + compilation.css;
+                    } else if (subpath.endsWith("md")) {
+                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                    } else {
+                        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`);
+                    }
+                    compilationFile.compilation.css = this._replaceTextRange(compilationFile.compilation.css, token.location[0], token.location[1], replacement);
+                } else if (currentExtension === "md") {
+                    let replacement = "";
+                    if (subpath.endsWith("js")) {
+                        throw new Error("Syntax of «@injects» can't be used to import «js» files from «md» files. Use another syntax instead.");
+                        replacement = compilation.js;
+                    } else if (subpath.endsWith("css")) {
+                        throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
+                        compilationFile.compilation.css += "\n" + compilation.css;
+                    } else if (subpath.endsWith("md")) {
+                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                    } else {
+                        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`);
+                    }
+                    compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1], replacement);
+                } else {
+                    throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${currentExtension}»`);
                 }
-                if (nonEmptyFiles.includes("css")) {
-                    compilationFile.compilation.css += "\n" + compilation.css;
+            }
+            Inject_in_report_object: {
+                if (compilationProcess.to !== "data") {
+                    break Inject_in_report_object;
                 }
-                if (nonEmptyFiles.includes("md")) {
-                    compilationFile.compilation.md += "\n\n" + compilation.md;
-                }
-                compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
-            } else if (currentExtension === "css") {
-                let replacement = "";
-                if (nonEmptyFiles.includes("js")) {
-                    throw new Error("Syntax of «@injects» can't be used to import «js» files from «css» files. Use another syntax instead.");
-                    replacement = compilation.js;
-                }
-                if (nonEmptyFiles.includes("css")) {
-                    compilationFile.compilation.css += "\n" + compilation.css;
-                }
-                if (nonEmptyFiles.includes("md")) {
-                    compilationFile.compilation.md += "\n\n" + compilation.md;
-                }
-                compilationFile.compilation.css = this._replaceTextRange(compilationFile.compilation.css, token.location[0], token.location[1], replacement);
-            } else if (currentExtension === "md") {
-                let replacement = "";
-                if (nonEmptyFiles.includes("js")) {
-                    throw new Error("Syntax of «@injects» can't be used to import «js» files from «md» files. Use another syntax instead.");
-                    replacement = compilation.js;
-                }
-                if (nonEmptyFiles.includes("css")) {
-                    throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
-                    compilationFile.compilation.css += "\n" + compilation.css;
-                }
-                if (nonEmptyFiles.includes("md")) {
-                    compilationFile.compilation.md += "\n\n" + compilation.md;
-                }
-                compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1], replacement);
-            } else {
-                throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${currentExtension}»`);
+                this._reportFileToken(compilationFile, subpath, token);
+                Object.assign(compilationFile.report.tree, compilation.report.tree);
             }
             this._traceOut("_compileAsInjects", arguments);
         }
@@ -1234,21 +1441,41 @@
             this._trace("_compileAsJavadocComment", arguments);
         }
         /**
+ * @name ModulerV6.prototype._initializeLogger
+ * @type 
+ * @description 
+ */        _initializeLogger(directory) {
+            this._trace("_initializeLogger", arguments);
+            return this._logger = this.constructor.Logger.Manager.fromDirectory(directory, this);
+        }
+        /**
+ * @name ModulerV6.prototype._reportFileToken
+ * @type 
+ * @description 
+ */        _reportFileToken(compilationFile, targetBrute, token) {
+            this._traceIn("_reportFileToken", arguments);
+            const owner = this.rootpathOf(compilationFile.resource);
+            const target = this.rootpathOf(targetBrute);
+            if (!(owner in compilationFile.report.tree)) {
+                compilationFile.report.tree[owner] = {};
+            }
+            const reportedToken = this._cloneStructureAsJson(token);
+            delete reportedToken.location;
+            this._extendToken(reportedToken, [ "referenceOf" ]);
+            compilationFile.report.tree[owner][token.location.join("-")] = reportedToken;
+            this._traceOut("_reportFileToken", arguments);
+        }
+        /**
  * @name ModulerV6.prototype._getPreferredOutput
  * @type 
  * @description 
  */        _getPreferredOutput(compilationFile, compilationProcess) {
             this._trace("_getPreferredOutput", arguments);
-            let output = undefined;
-            if (compilationFile.to === "data") {
-                output = compilationFile.report;
-            } else {
-                output = compilationFile.compilation;
-            }
-            Object.assign(output, {
-                file: compilationFile.resource
-            });
-            return output;
+            return {
+                file: compilationFile.resource,
+                report: compilationProcess.to === "data" ? compilationFile.report : false,
+                ...compilationFile.compilation
+            };
         }
         /**
  * @name ModulerV6.prototype._hydrateParameters
@@ -1272,6 +1499,33 @@
             return clone;
         }
         /**
+ * @name ModulerV6.prototype._cloneStructureAsJson
+ * @type 
+ * @description 
+ */        _cloneStructureAsJson(data) {
+            return JSON.parse(JSON.stringify(data));
+        }
+        /**
+ * @name ModulerV6.prototype._extendToken
+ * @type 
+ * @description 
+ */        _extendToken(token, fields = []) {
+            this._trace("_extendToken", arguments);
+            return Object.assign(token, !fields.includes("referenceOf") ? {} : {
+                referenceOf: (() => {
+                    const entry = this._hydrateParameters(token.inner)[0];
+                    const fullpath = this.fullpathOf(entry);
+                    const rootpath = this.rootpathOf(fullpath);
+                    return {
+                        type: "file",
+                        entry: entry,
+                        fullpath: fullpath,
+                        rootpath: rootpath
+                    };
+                })()
+            });
+        }
+        /**
  * @name ModulerV6.prototype.normalizationOf
  * @type 
  * @description 
@@ -1282,6 +1536,15 @@
                 this._debug("called normalizationOf from: " + origin + " (" + output + ")");
             }
             return output;
+        }
+        /**
+ * @name ModulerV6.prototype.rootpathOf
+ * @type 
+ * @description 
+ */        rootpathOf(fullpath) {
+            this._trace("rootpathOf", arguments);
+            const normalization = this.normalizationOf(fullpath);
+            return normalization.startsWith(this.rootdir + "/") ? normalization.replace(this.rootdir + "/", "@/") : normalization;
         }
         /**
  * @name ModulerV6.prototype.fullpathOf
@@ -1298,9 +1561,22 @@
  */        async compile(resource, options = {}) {
             return this._compileRecursively({
                 resource: resource,
-                ...options,
                 isRoot: true
+            }, {
+                ...options
             });
+        }
+        /**
+ * @name ModulerV6.prototype.log
+ * @type 
+ * @description 
+ */        log(...args) {
+            if (!this._logger) {
+                this._logger = new this.constructor.Logger({
+                    file: __dirname + "/dev/logs/default.txt"
+                }, this);
+            }
+            this._logger.log(...args);
         }
     };
     return ModulerV6;

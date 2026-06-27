@@ -3,6 +3,7 @@ class ModulerV6 {
   /*="./_defaultGrammars.js"*/
   /*="./AssertionError.js"*/
   /*="./Tracer.js"*/
+  /*="./Logger.js"*/
   /*="./CompilationProcess/CompilationProcess.js"*/
   /*="./CompilationFile/CompilationFile.js"*/
   /*="./create.js"*/
@@ -18,6 +19,7 @@ class ModulerV6 {
   /*="./prototype._assertThrows.js"*/
   /*="./prototype._assertDoesNotThrow.js"*/
   /*="./prototype._notifyAssertion.js"*/
+  /*="./prototype._logger.js"*/
   /*="./prototype._tracer.js"*/
   /*="./prototype._trace.js"*/
   /*="./prototype._traceIn.js"*/
@@ -38,10 +40,16 @@ class ModulerV6 {
   /*="./prototype._compileAsRequires.js"*/
   /*="./prototype._compileAsInjects.js"*/
   /*="./prototype._compileAsJavadocComment.js"*/
+  /*="./prototype._initializeLogger.js"*/
+  /*="./prototype._reportFileToken.js"*/
   /*="./prototype._getPreferredOutput.js"*/
   /*="./prototype._hydrateParameters.js"*/
   /*="./prototype._cloneForFile.js"*/
+  /*="./prototype._cloneStructureAsJson.js"*/
+  /*="./prototype._extendToken.js"*/
   /*="./prototype.normalizationOf.js"*/
+  /*="./prototype.rootpathOf.js"*/
   /*="./prototype.fullpathOf.js"*/
   /*="./prototype.compile.js"*/
+  /*="./prototype.log.js"*/
 }

@@ -11,9 +11,7 @@ static get _defaultFileData() {
       md: "",
     },
     report: {
-      js: {},
-      css: {},
-      md: {},
+      tree: {}
     },
   }
 };

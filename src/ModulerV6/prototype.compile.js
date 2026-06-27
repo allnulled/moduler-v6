@@ -6,7 +6,8 @@
 async compile(resource, options = {}) {
   return this._compileRecursively({
     resource,
-    ...options,
     isRoot: true,
+  }, {
+    ...options,
   });
 }

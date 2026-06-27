@@ -37,5 +37,5 @@ async _compileTokens(compilationFile, compilationProcess) {
     }
   }
   this._traceOut("_compileTokens", arguments);
-  return compilationFile.output = compilationFile.compilation;
+  return compilationFile.compilation;
 }

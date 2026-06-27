@@ -5,14 +5,9 @@
  */
 _getPreferredOutput(compilationFile, compilationProcess) {
   this._trace("_getPreferredOutput", arguments);
-  let output = undefined;
-  if(compilationFile.to === "data") {
-    output = compilationFile.report;
-  } else {
-    output = compilationFile.compilation;
-  }
-  Object.assign(output, {
+  return {
     file: compilationFile.resource,
-  });
-  return output;
+    report: compilationProcess.to === "data" ? compilationFile.report : false,
+    ...compilationFile.compilation,
+  };
 }

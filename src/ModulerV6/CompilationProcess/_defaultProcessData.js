@@ -5,6 +5,6 @@
  */
 static get _defaultProcessData() {
   return {
-    injectedFiles: [],
+    
   }
 };

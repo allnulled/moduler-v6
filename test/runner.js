@@ -54,7 +54,7 @@ const main = async function () {
       } catch (error) {
         console.log(`\x1b[31m❌ · FAILED test ${filename}: ${index + 1}/${filenames.length} \x1b[0m`);
         console.log(error);
-        errors.push(error);
+        errors.push({file:path.basename(filepath), error});
       }
     }
   }

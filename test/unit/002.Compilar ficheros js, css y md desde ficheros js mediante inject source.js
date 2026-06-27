@@ -14,4 +14,5 @@ module.exports = async function({ assert, utils, modulerV6 }) {
   modulerV6._assert(output1.md.includes("main.js y el main.css"), "Can compile and produce a string on «output.md» with the expected injection (1.5)");
   modulerV6._assert(typeof output2 === "object", "Can compile and produce an object (2)");
   modulerV6._assert(typeof output3 === "object", "Can compile and produce an object (3)");
+  modulerV6._logger.log("Test 002 ok");
 }
