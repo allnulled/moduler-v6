@@ -4,7 +4,7 @@ V6_API: {
 
   $inject.source("./compiler-v6.js")
 
-  $inject.source("./moduler-v6.js")
+  $inject.source("./compiler-v6.js")
 
   V6_injection: {
     let V6 = undefined;
@@ -15,15 +15,15 @@ V6_API: {
         }
         constructor(basedir) {
           this.compiler = typeof CompilerV6 === "function" ? CompilerV6.create(basedir) : null;
-          this.moduler = ModulerV6.create(basedir);
+          this.compiler = CompilerV6.create(basedir);
         }
         compile = {
           js: (...args) => this.compiler.compileJs(...args),
           css: (...args) => this.compiler.compileCss(...args),
         }
         define = {
-          js: (...args) => this.moduler.importJs(...args),
-          css: (...args) => this.moduler.importCss(...args),
+          js: (...args) => this.compiler.importJs(...args),
+          css: (...args) => this.compiler.importCss(...args),
         }
       }
     }

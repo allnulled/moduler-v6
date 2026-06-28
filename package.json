@@ -1,7 +1,7 @@
 {
-  "name": "moduler-v6",
+  "name": "compiler-v6",
   "version": "1.0.0",
-  "main": "moduler-v6.js",
+  "main": "compiler-v6.js",
   "directories": {
     "test": "test"
   },

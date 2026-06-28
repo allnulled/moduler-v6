@@ -1,8 +1,0 @@
-/**
- * @name ModulerV6.Logger.fromFile
- * @type 
- * @description 
- */
-static fromFile(file) {
-  return new this({ file });
-}

@@ -1,0 +1,63 @@
+/**
+ * @name CompilerV6.CompilerV6.class
+ * @type 
+ * @description 
+ */
+class CompilerV6 {
+  /*="./_nativeGrammars.js"*/
+  /*="./_defaultGrammars.js"*/
+  /*="./AssertionError.js"*/
+  /*="./Tracer.js"*/
+  /*="./Logger.js"*/
+  /*="./CompilationProcess/CompilationProcess.js"*/
+  /*="./CompilationFile/CompilationFile.js"*/
+  /*="./create.js"*/
+  /*="./fromDirectory.js"*/
+  /*="./fromRootOf.js"*/
+  /*="./findRootOf.js"*/
+  /*="./ansi.js"*/
+  /*="./constructor.js"*/
+  /*="./prototype._readPath.js"*/
+  /*="./prototype._readUrl.js"*/
+  /*="./prototype._readFile.js"*/
+  /*="./prototype._assert.js"*/
+  /*="./prototype._assertThrows.js"*/
+  /*="./prototype._assertDoesNotThrow.js"*/
+  /*="./prototype._notifyAssertion.js"*/
+  /*="./prototype._logger.js"*/
+  /*="./prototype._tracer.js"*/
+  /*="./prototype._trace.js"*/
+  /*="./prototype._traceIn.js"*/
+  /*="./prototype._traceOut.js"*/
+  /*="./prototype._debug.js"*/
+  /*="./prototype._die.js"*/
+  /*="./prototype._tokenizeText.js"*/
+  /*="./prototype._replaceTextRange.js"*/
+  /*="./prototype._compileTokens.js"*/
+  /*="./prototype._compileRecursively.js"*/
+  /*="./prototype._fetchCompilable.js"*/
+  /*="./prototype._compileAsInjectSource.js"*/
+  /*="./prototype._compileAsInjectString.js"*/
+  /*="./prototype._compileAsMultilineCommentCodeInjection.js"*/
+  /*="./prototype._compileAsMultilineCommentValueInjection.js"*/
+  /*="./prototype._compileAsModulerImport.js"*/
+  /*="./prototype._compileAsModulerExport.js"*/
+  /*="./prototype._compileAsRequires.js"*/
+  /*="./prototype._compileAsInjects.js"*/
+  /*="./prototype._compileAsJavadocComment.js"*/
+  /*="./prototype._initializeLogger.js"*/
+  /*="./prototype._reportFileToken.js"*/
+  /*="./prototype._getPreferredOutput.js"*/
+  /*="./prototype._hydrateParameters.js"*/
+  /*="./prototype._cloneForFile.js"*/
+  /*="./prototype._cloneStructureAsJson.js"*/
+  /*="./prototype._extendToken.js"*/
+  /*="./prototype._getDataForTokenCompilation.js"*/
+  /*="./prototype._getParametersFromModulerExportSignature.js"*/
+  /*="./prototype._getParametersFromModulerImportSignature.js"*/
+  /*="./prototype.normalizationOf.js"*/
+  /*="./prototype.rootpathOf.js"*/
+  /*="./prototype.fullpathOf.js"*/
+  /*="./prototype.compile.js"*/
+  /*="./prototype.log.js"*/
+}

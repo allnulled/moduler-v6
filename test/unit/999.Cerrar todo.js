@@ -1,3 +1,3 @@
-module.exports = function({ modulerV6 }) {
-  modulerV6.log("Test terminado");
+module.exports = function({ compilerV6 }) {
+  compilerV6.log("Test terminado");
 };

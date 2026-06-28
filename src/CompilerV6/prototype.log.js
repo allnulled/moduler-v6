@@ -1,0 +1,11 @@
+/**
+ * @name CompilerV6.prototype.log
+ * @type 
+ * @description 
+ */
+log(...args) {
+  if (!this._logger) {
+    this._logger = new this.constructor.Logger({ file: false }, this);
+  }
+  this._logger.log(...args);
+}

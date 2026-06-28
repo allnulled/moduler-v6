@@ -44,14 +44,14 @@
     _processTokens(text, tokens) {
       const formattedOutput = { size: text.length, text, tokens, formatted: [] };
       Iterating_tokens:
-      for (let indexToken = 0; indexToken < tokens.length; indexToken++) {
-        const token = tokens[indexToken];
+      for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+        const token = tokens[tokenIndex];
         Iterating_grammars:
         for (let indexGrammar = 0; indexGrammar < this.grammars.length; indexGrammar++) {
           const grammar = this.grammars[indexGrammar];
           const [ starter, ender, formatter, options ] = grammar;
           if (starter === token.starter) {
-            const formattedToken = formatter.call(this, token, formattedOutput, indexToken, grammar, indexGrammar, text);
+            const formattedToken = formatter.call(this, token, formattedOutput, tokenIndex, grammar, indexGrammar, text);
             formattedOutput.formatted.push(formattedToken);
             break Iterating_grammars;
           }

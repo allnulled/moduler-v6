@@ -1,6 +1,11 @@
+/**
+ * @name compiler-v6
+ * @type library entrypoint
+ * @description ...
+ */
 (function(mod) {
-    if (typeof window !== "undefined") window["ModulerV6"] = mod;
-    if (typeof global !== "undefined") global["ModulerV6"] = mod;
+    if (typeof window !== "undefined") window["CompilerV6"] = mod;
+    if (typeof global !== "undefined") global["CompilerV6"] = mod;
     if (typeof module !== "undefined") module.exports = mod;
 })(function() {
     (function(mod) {
@@ -53,13 +58,13 @@
                     tokens: tokens,
                     formatted: []
                 };
-                Iterating_tokens: for (let indexToken = 0; indexToken < tokens.length; indexToken++) {
-                    const token = tokens[indexToken];
+                Iterating_tokens: for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+                    const token = tokens[tokenIndex];
                     Iterating_grammars: for (let indexGrammar = 0; indexGrammar < this.grammars.length; indexGrammar++) {
                         const grammar = this.grammars[indexGrammar];
                         const [starter, ender, formatter, options] = grammar;
                         if (starter === token.starter) {
-                            const formattedToken = formatter.call(this, token, formattedOutput, indexToken, grammar, indexGrammar, text);
+                            const formattedToken = formatter.call(this, token, formattedOutput, tokenIndex, grammar, indexGrammar, text);
                             formattedOutput.formatted.push(formattedToken);
                             break Iterating_grammars;
                         }
@@ -142,56 +147,46 @@
         };
         return TextParserV1;
     }.call());
-    const ModulerV6 = class ModulerV6 {
+    const CompilerV6 = 
+    /**
+ * @name CompilerV6.CompilerV6.class
+ * @type 
+ * @description 
+ */
+    class CompilerV6 {
         /**
- * @name ModulerV6._nativeGrammars
+ * @name CompilerV6._nativeGrammars
  * @type ?
  * @description ?
  * @parameter ?
  * @return ?
  */
         static _nativeGrammars={
-            InjectSource: [ "$v6.inject.source(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
+            InjectSource: [ "$compiler.inject.source(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Inject Source",
                     inner: token.inner,
                     location: token.location
                 };
             } ],
-            InjectString: [ "$v6.inject.string(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
+            InjectString: [ "$compiler.inject.string(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Inject String",
                     inner: token.inner,
                     location: token.location
                 };
             } ],
-            ImportJs: [ "$v6.import.js(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
+            ImportJs: [ "$compiler.import(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
-                    syntax: "Import Js",
+                    syntax: "Compiler Import",
                     ...token
                 };
             }, {
                 allowInside: true
             } ],
-            ImportCss: [ "$v6.import.css(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
+            ExportJs: [ "$compiler.export(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
-                    syntax: "Import Css",
-                    ...token
-                };
-            }, {
-                allowInside: true
-            } ],
-            ExportJs: [ "$v6.export.js(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
-                return {
-                    syntax: "Export Js",
-                    ...token
-                };
-            }, {
-                allowInside: true
-            } ],
-            ExportCss: [ "$v6.export.css(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
-                return {
-                    syntax: "Export Css",
+                    syntax: "Compiler Export",
                     ...token
                 };
             }, {
@@ -228,19 +223,19 @@
             } ]
         };
         /**
- * @name ModulerV6._defaultGrammars
+ * @name CompilerV6._defaultGrammars
  * @type ?
  * @description ?
  * @parameter ?
  * @return ?
  */
         static _defaultGrammars={
-            forJs: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
-            forCss: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
-            forMd: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ImportCss, this._nativeGrammars.ExportJs, this._nativeGrammars.ExportCss, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ]
+            forJs: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ExportJs, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
+            forCss: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ExportJs, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
+            forMd: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ExportJs, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ]
         };
         /**
- * @name ModulerV6.AssertionError
+ * @name CompilerV6.AssertionError
  * @type 
  * @description 
  */
@@ -251,54 +246,59 @@
             }
         }
         /**
- * @name ModulerV6.Tracer
+ * @name CompilerV6.Tracer
  * @type 
  * @description 
  */;
         static Tracer=
         /**
- * @name ModulerV6.Tracer.Tracer
+ * @name CompilerV6.Tracer.Tracer
  * @type 
  * @description 
  */
         class Tracer {
-            constructor(moduler) {
+            constructor(compiler) {
                 /**
- * @name ModulerV6.Tracer.prototype.moduler
+ * @name CompilerV6.Tracer.prototype.compiler
  * @type 
  * @description 
  */
-                this.moduler = moduler;
+                this.compiler = compiler;
                 /**
- * @name ModulerV6.Tracer.prototype.isBrowser
+ * @name CompilerV6.Tracer.prototype.isBrowser
  * @type 
  * @description 
- */                this.isBrowser = moduler.isBrowser;
+ */                this.isBrowser = compiler.isBrowser;
                 /**
- * @name ModulerV6.Tracer.prototype.isTracing
+ * @name CompilerV6.Tracer.prototype.isTracing
  * @type 
  * @description 
  */                this.isTracing = true;
                 /**
- * @name ModulerV6.Tracer.prototype.stack
+ * @name CompilerV6.Tracer.prototype.isLogging
+ * @type 
+ * @description 
+ */                this.isLogging = true;
+                /**
+ * @name CompilerV6.Tracer.prototype.stack
  * @type 
  * @description 
  */                this.stack = [];
                 /**
- * @name ModulerV6.Tracer.prototype.highlightedPatterns
+ * @name CompilerV6.Tracer.prototype.highlightedPatterns
  * @type 
  * @description 
  */                this.highlightedPatterns = [ 
                 // Set patterns to highlight:
                 [ "_assert", "blackBright" ], [ "_compileRecursively", "cyan,underline" ], [ "_tokenizeText", "cyan,underline" ], [ "_compileTokens", "cyan,underline" ], [ ".constructor", "blue" ], [ "_replaceTextRange", "yellow,bold" ] ];
                 /**
- * @name ModulerV6.Tracer.prototype.ignoredPatterns
+ * @name CompilerV6.Tracer.prototype.ignoredPatterns
  * @type 
  * @description 
  */                this.ignoredPatterns = [ "_assert" ];
             }
             /**
- * @name ModulerV6.Tracer.prototype.activate
+ * @name CompilerV6.Tracer.prototype.activate
  * @type 
  * @description 
  */            activate(really = true) {
@@ -306,7 +306,7 @@
                 return this;
             }
             /**
- * @name ModulerV6.Tracer.prototype.deactivate
+ * @name CompilerV6.Tracer.prototype.deactivate
  * @type 
  * @description 
  */            deactivate(really = true) {
@@ -314,7 +314,7 @@
                 return this;
             }
             /**
- * @name ModulerV6.Tracer.prototype.addHighlighter
+ * @name CompilerV6.Tracer.prototype.addHighlighter
  * @type 
  * @description 
  */            addHighlighter(text) {
@@ -323,7 +323,7 @@
                 }
             }
             /**
- * @name ModulerV6.Tracer.prototype.removeHighlighter
+ * @name CompilerV6.Tracer.prototype.removeHighlighter
  * @type 
  * @description 
  */            removeHighlighter(text) {
@@ -333,14 +333,14 @@
                 }
             }
             /**
- * @name ModulerV6.Tracer.prototype.indentByLevel
+ * @name CompilerV6.Tracer.prototype.indentByLevel
  * @type 
  * @description 
  */            indentByLevel(input) {
                 return " ".repeat(this.stack.length) + input;
             }
             /**
- * @name ModulerV6.Tracer.prototype.matchesIgnorer
+ * @name CompilerV6.Tracer.prototype.matchesIgnorer
  * @type 
  * @description 
  */            matchesIgnorer(text) {
@@ -353,7 +353,7 @@
                 return false;
             }
             /**
- * @name ModulerV6.Tracer.prototype.highlightIfMatched
+ * @name CompilerV6.Tracer.prototype.highlightIfMatched
  * @type 
  * @description 
  */            highlightIfMatched(output) {
@@ -372,17 +372,17 @@
                 if (styling === false) {
                     return output;
                 }
-                return this.moduler.constructor.ansi.colors.style(styling).text(output);
+                return this.compiler.constructor.ansi.colors.style(styling).text(output);
             }
             /**
- * @name ModulerV6.Tracer.prototype.trace
+ * @name CompilerV6.Tracer.prototype.trace
  * @type 
  * @description 
  */            trace(message, args, spaceDiff = 0) {
                 if (this.isTracing) {
                     let output = ``;
                     output += `[${this.stack.length}${spaceDiff === 1 ? "++" : spaceDiff === -1 ? "--" : ""}] `;
-                    output += this.moduler.name ? `[${this.moduler.name}] ` : `[mv6] `;
+                    output += this.compiler.name ? `[${this.compiler.name}] ` : `[mv6] `;
                     output += `[${message}] `;
                     output += `arguments: ${args.length}`;
                     output = this.highlightIfMatched(output);
@@ -390,10 +390,13 @@
                     if (!this.matchesIgnorer(output)) {
                         console.log(output);
                     }
+                    if (this.isLogging) {
+                        this.compiler.log(CompilerV6.ansi.colors.stripAnsi(output));
+                    }
                 }
             }
             /**
- * @name ModulerV6.Tracer.prototype.traceIn
+ * @name CompilerV6.Tracer.prototype.traceIn
  * @type 
  * @description 
  */            traceIn(msg, args) {
@@ -401,36 +404,36 @@
                 this.stack.push(msg);
             }
             /**
- * @name ModulerV6.Tracer.prototype.traceOut
+ * @name CompilerV6.Tracer.prototype.traceOut
  * @type 
  * @description 
  */            traceOut(msg, args) {
                 const lastInStack = this.stack[this.stack.length - 1];
-                this.moduler._assert(lastInStack === msg, `Method «Tracer.prototype.traceOut» closing different method from stack: it should close «${lastInStack}» but it is trying to close «${msg}» `);
-                this.stack.pop();
+                // this.compiler._assert(lastInStack === msg, `Method «Tracer.prototype.traceOut» closing different method from stack: it should close «${lastInStack}» but it is trying to close «${msg}» `);
+                                this.stack.pop();
                 this.trace(msg, args, -1);
             }
             /**
- * @name ModulerV6.Tracer.prototype.printStack
+ * @name CompilerV6.Tracer.prototype.printStack
  * @type 
  * @description 
  */            printStack() {
-                console.log(`Tracer «${this.moduler.name || "mv6"}» with:`, this.stack);
+                console.log(`Tracer «${this.compiler.name || "mv6"}» with:`, this.stack);
             }
         };
         /**
- * @name ModulerV6.Logger
+ * @name CompilerV6.Logger
  * @type 
  * @description 
  */
         static Logger=class Logger {
             /**
-   * @name ModulerV6.Logger.Logger.class
+   * @name CompilerV6.Logger.Logger.class
    * @type 
    * @description 
    */
             /**
- * @name ModulerV6.Logger.fromFile
+ * @name CompilerV6.Logger.fromFile
  * @type 
  * @description 
  */
@@ -440,18 +443,18 @@
                 });
             }
             /**
- * @name ModulerV6.Logger.Manager
+ * @name CompilerV6.Logger.Manager
  * @type 
  * @description 
  */            static Manager=
             /**
- * @name ModulerV6.Logger.Manager
+ * @name CompilerV6.Logger.Manager
  * @type 
  * @description 
  */
             class LoggerManager {
                 /**
- * @name ModulerV6.Logger.Manager.fromDirectory
+ * @name CompilerV6.Logger.Manager.fromDirectory
  * @type 
  * @description 
  */
@@ -459,7 +462,7 @@
                     return new this(basedir);
                 }
                 /**
- * @name ModulerV6.Logger.Manager.constructor
+ * @name CompilerV6.Logger.Manager.constructor
  * @type 
  * @description 
  */                constructor(basedir) {
@@ -472,14 +475,14 @@
                     };
                 }
                 /**
- * @name ModulerV6.Logger.Manager.get.current
+ * @name CompilerV6.Logger.Manager.get.current
  * @type 
  * @description 
  */                get current() {
                     return this.subloggers[this.selected];
                 }
                 /**
- * @name ModulerV6.Logger.Manager.prototype.addLogger
+ * @name CompilerV6.Logger.Manager.prototype.addLogger
  * @type 
  * @description 
  */                addLogger(id) {
@@ -488,14 +491,14 @@
                     });
                 }
                 /**
- * @name ModulerV6.Logger.Manager.prototype.has
+ * @name CompilerV6.Logger.Manager.prototype.has
  * @type 
  * @description 
  */                has(id) {
                     return id in this.subloggers;
                 }
                 /**
- * @name ModulerV6.Logger.Manager.prototype.into
+ * @name CompilerV6.Logger.Manager.prototype.into
  * @type 
  * @description 
  */                into(id) {
@@ -505,7 +508,7 @@
                     return this.subloggers[id];
                 }
                 /**
- * @name ModulerV6.Logger.Manager.prototype.select
+ * @name CompilerV6.Logger.Manager.prototype.select
  * @type 
  * @description 
  */                select(id = false) {
@@ -522,7 +525,7 @@
                     return this.select();
                 }
                 /**
- * @name ModulerV6.Logger.Manager.prototype.resetFile
+ * @name CompilerV6.Logger.Manager.prototype.resetFile
  * @type 
  * @description 
  */                resetFile(...args) {
@@ -532,7 +535,7 @@
                     return this.subloggers[this.selected].resetFile(...args);
                 }
                 /**
- * @name ModulerV6.Logger.Manager.prototype.log
+ * @name CompilerV6.Logger.Manager.prototype.log
  * @type 
  * @description 
  */                log(...args) {
@@ -543,7 +546,7 @@
                 }
             };
             /**
- * @name ModulerV6.Logger.create
+ * @name CompilerV6.Logger.create
  * @type 
  * @description 
  */
@@ -551,25 +554,25 @@
                 return new this(...args);
             }
             /**
- * @name ModulerV6.Logger.defaultOptions
+ * @name CompilerV6.Logger.defaultOptions
  * @type 
  * @description 
  */            static defaultOptions={
                 console: true
             };
             /**
- * @name ModulerV6.Logger.constructor
+ * @name CompilerV6.Logger.constructor
  * @type 
  * @description 
  */
-            constructor(options, moduler) {
+            constructor(options, compiler) {
                 this.options = Object.assign({}, this.constructor.defaultOptions, options);
-                this.moduler = moduler;
+                this.compiler = compiler;
                 this.startedAt = new Date;
                 this.lastLogAt = new Date;
             }
             /**
- * @name ModulerV6.Logger.prototype.resetFile
+ * @name CompilerV6.Logger.prototype.resetFile
  * @type 
  * @description 
  */            resetFile(...args) {
@@ -580,21 +583,21 @@
                 });
             }
             /**
- * @name ModulerV6.Logger.prototype.getTimeOffset
+ * @name CompilerV6.Logger.prototype.getTimeOffset
  * @type 
  * @description 
  */            getTimeOffset() {
                 return "+" + ((new Date).getTime() - this.startedAt.getTime());
             }
             /**
- * @name ModulerV6.Logger.prototype.getLastLogOffset
+ * @name CompilerV6.Logger.prototype.getLastLogOffset
  * @type 
  * @description 
  */            getLastLogOffset() {
                 return "+" + ((new Date).getTime() - this.lastLogAt.getTime());
             }
             /**
- * @name ModulerV6.Logger.prototype.log
+ * @name CompilerV6.Logger.prototype.log
  * @type 
  * @description 
  */            log(...args) {
@@ -603,17 +606,17 @@
                     "#": this.getTimeOffset(),
                     "##": this.getLastLogOffset(),
                     "*": args
-                }) + "\n";
+                });
                 if (this.options.console) {
-                    console.log(line);
+                    console.log(`~[LOG] ${line}`);
                 }
                 this.lastLogAt = new Date;
                 if (this.options.file) {
-                    return require("fs").promises.appendFile(this.options.file, line, "utf8").catch(console.error);
+                    return require("fs").promises.appendFile(this.options.file, line + "\n", "utf8").catch(console.error);
                 }
             }
             /**
- * @name ModulerV6.Logger.prototype.setOption
+ * @name CompilerV6.Logger.prototype.setOption
  * @type 
  * @description 
  */            setOption(id, value) {
@@ -621,7 +624,7 @@
                 return this;
             }
             /**
- * @name ModulerV6.Logger.prototype.getMomentToString
+ * @name CompilerV6.Logger.prototype.getMomentToString
  * @type 
  * @description 
  */            getMomentToString() {
@@ -631,7 +634,7 @@
                 return `${d.getFullYear()}-` + `${pad(d.getMonth() + 1)}-` + `${pad(d.getDate())} ` + `${pad(d.getHours())}:` + `${pad(d.getMinutes())}:` + `${pad(d.getSeconds())}.` + `${pad3(d.getMilliseconds())}`;
             }
             /**
- * @name ModulerV6.Logger.prototype.stringifySafe
+ * @name CompilerV6.Logger.prototype.stringifySafe
  * @type 
  * @description 
  */            stringifySafe(value) {
@@ -661,13 +664,13 @@
             }
         };
         /**
- * @name ModulerV6.CompilationProcess
+ * @name CompilerV6.CompilationProcess
  * @type 
  * @description 
  */
         static CompilationProcess=class CompilationProcess {
             /**
- * @name ModulerV6.CompilationProcess._assert
+ * @name CompilerV6.CompilationProcess._assert
  * @type 
  * @description 
  */
@@ -675,42 +678,42 @@
                 if (!condition) throw new Error(message);
             }
             /**
- * @name ModulerV6.CompilationProcess._defaultProcessData
+ * @name CompilerV6.CompilationProcess._defaultProcessData
  * @type 
  * @description 
  */            static get _defaultProcessData() {
                 return {};
             }
             /**
- * @name ModulerV6.CompilationProcess.constructor
+ * @name CompilerV6.CompilationProcess.constructor
  * @type 
  * @description 
  */
-            constructor(compilationFile, compilationProcess, moduler) {
-                this.constructor._assert(typeof moduler === "object", "Parameter «moduler» must be object on «ModulerV6.CompilationProcess.constructor»");
-                this.constructor._assert(moduler instanceof ModulerV6, "Parameter «moduler» must be instance of «ModulerV6» on «ModulerV6.CompilationProcess.constructor»");
-                this.moduler = moduler;
-                this.moduler._traceIn("CompilationProcess.constructor", arguments);
+            constructor(compilationFile, compilationProcess, compiler) {
+                this.constructor._assert(typeof compiler === "object", "Parameter «compiler» must be object on «CompilerV6.CompilationProcess.constructor»");
+                this.constructor._assert(compiler instanceof CompilerV6, "Parameter «compiler» must be instance of «CompilerV6» on «CompilerV6.CompilationProcess.constructor»");
+                this.compiler = compiler;
+                this.compiler._traceIn("CompilationProcess.constructor", arguments);
                 if (compilationProcess instanceof this.constructor) {
-                    this.moduler._traceOut("CompilationProcess.constructor", arguments);
+                    this.compiler._traceOut("CompilationProcess.constructor", arguments);
                     return Object.assign(this, compilationProcess);
                 }
-                this.moduler._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «ModulerV6.CompilationProcess.constructor»");
-                this.moduler._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «ModulerV6.CompilationProcess.constructor»");
-                Object.assign(this, JSON.parse(JSON.stringify(this.constructor._defaultProcessData)), compilationProcess);
+                this.compiler._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.CompilationProcess.constructor»");
+                this.compiler._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «CompilerV6.CompilationProcess.constructor»");
+                Object.assign(this, this.constructor._defaultProcessData, compilationProcess);
                 if (typeof this.resource === "undefined") {
-                    this.moduler._assert(typeof compilationFile.resource === "string", "Parameter «compilationProcess.resource» or «compilationFile.resource» must be string on «ModulerV6.CompilationProcess.constructor»");
+                    this.compiler._assert(typeof compilationFile.resource === "string", "Parameter «compilationProcess.resource» or «compilationFile.resource» must be string on «CompilerV6.CompilationProcess.constructor»");
                     this.resource = compilationFile.resource;
                 }
                 if (typeof this.isRoot === "undefined") {
                     this.isRoot = compilationFile.isRoot;
                 }
-                this.moduler._assert(typeof this.resource === "string", "Parameter «compilationProcess.resource» must be string on «ModulerV6.CompilationProcess.constructor»");
-                this.moduler._assert(typeof this.isRoot === "boolean", "Parameter «compilationProcess.isRoot» must be boolean on «ModulerV6.CompilationProcess.constructor»");
-                this.moduler._traceOut("CompilationProcess.constructor", arguments);
+                this.compiler._assert(typeof this.resource === "string", "Parameter «compilationProcess.resource» must be string on «CompilerV6.CompilationProcess.constructor»");
+                this.compiler._assert(typeof this.isRoot === "boolean", "Parameter «compilationProcess.isRoot» must be boolean on «CompilerV6.CompilationProcess.constructor»");
+                this.compiler._traceOut("CompilationProcess.constructor", arguments);
             }
             /**
- * @name ModulerV6.CompilationProcess.from
+ * @name CompilerV6.CompilationProcess.from
  * @type 
  * @description 
  */            static from(...args) {
@@ -721,13 +724,13 @@
             }
         }
         /**
- * @name ModulerV6.CompilationFile
+ * @name CompilerV6.CompilationFile
  * @type 
  * @description 
  */;
         static CompilationFile=class CompilationFile {
             /**
- * @name ModulerV6.CompilationFile._assert
+ * @name CompilerV6.CompilationFile._assert
  * @type 
  * @description 
  */
@@ -735,7 +738,7 @@
                 if (!condition) throw new Error(message);
             }
             /**
- * @name ModulerV6.CompilationFile._defaultFileData
+ * @name CompilerV6.CompilationFile._defaultFileData
  * @type 
  * @description 
  */            static get _defaultFileData() {
@@ -751,24 +754,24 @@
                 };
             }
             /**
- * @name ModulerV6.CompilationFile.constructor
+ * @name CompilerV6.CompilationFile.constructor
  * @type 
  * @description 
  */
-            constructor(compilationFile, compilationProcess, moduler) {
-                this.constructor._assert(typeof moduler === "object", "Parameter «moduler» must be object on «ModulerV6.CompilationFile.constructor»");
-                this.constructor._assert(moduler instanceof ModulerV6, "Parameter «moduler» must be instance of «ModulerV6» on «ModulerV6.CompilationFile.constructor»");
-                this.moduler = moduler;
-                this.moduler._traceIn("CompilationFile.constructor", arguments);
-                this.moduler._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «ModulerV6.CompilationFile.constructor»");
-                this.moduler._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «ModulerV6.CompilationFile.constructor»");
+            constructor(compilationFile, compilationProcess, compiler) {
+                this.constructor._assert(typeof compiler === "object", "Parameter «compiler» must be object on «CompilerV6.CompilationFile.constructor»");
+                this.constructor._assert(compiler instanceof CompilerV6, "Parameter «compiler» must be instance of «CompilerV6» on «CompilerV6.CompilationFile.constructor»");
+                this.compiler = compiler;
+                this.compiler._traceIn("CompilationFile.constructor", arguments);
+                this.compiler._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.CompilationFile.constructor»");
+                this.compiler._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «CompilerV6.CompilationFile.constructor»");
                 Object.assign(this, JSON.parse(JSON.stringify(this.constructor._defaultFileData)), compilationFile);
-                this.moduler._assert(typeof this.resource === "string", "Parameter «compilationFile.resource» must be string on «ModulerV6.CompilationFile.constructor»");
-                this.moduler._assert(typeof this.isRoot === "boolean", "Parameter «compilationFile.isRoot» must be boolean on «ModulerV6.CompilationFile.constructor»");
-                this.moduler._traceOut("CompilationFile.constructor", arguments);
+                this.compiler._assert(typeof this.resource === "string", "Parameter «compilationFile.resource» must be string on «CompilerV6.CompilationFile.constructor»");
+                this.compiler._assert(typeof this.isRoot === "boolean", "Parameter «compilationFile.isRoot» must be boolean on «CompilerV6.CompilationFile.constructor»");
+                this.compiler._traceOut("CompilationFile.constructor", arguments);
             }
             /**
- * @name ModulerV6.CompilationFile.from
+ * @name CompilerV6.CompilationFile.from
  * @type 
  * @description 
  */            static from(...args) {
@@ -776,7 +779,7 @@
             }
         }
         /**
- * @name ModulerV6.create
+ * @name CompilerV6.create
  * @type 
  * @description 
  */;
@@ -784,14 +787,14 @@
             return new this(...args);
         }
         /**
- * @name ModulerV6.fromDirectory
+ * @name CompilerV6.fromDirectory
  * @type 
  * @description 
  */        static fromDirectory(dir) {
             return new this(dir);
         }
         /**
- * @name ModulerV6.fromRootOf
+ * @name CompilerV6.fromRootOf
  * @type 
  * @description 
  */        static async fromRootOf(file) {
@@ -799,7 +802,7 @@
             return new this(root);
         }
         /**
- * @name ModulerV6.findRootOf
+ * @name CompilerV6.findRootOf
  * @type 
  * @description 
  */        static async findRootOf(file, whenContains = "package.json") {
@@ -819,13 +822,13 @@
             }
         }
         /**
- * @name ModulerV6.colors
+ * @name CompilerV6.colors
  * @type 
  * @description 
  */        static ansi={
             colors: 
             /**
- * @name ModulerV6.colors
+ * @name CompilerV6.colors
  * @type 
  * @description 
  */
@@ -991,19 +994,19 @@
             })
         }
         /**
- * @name ModulerV6.constructor  
+ * @name CompilerV6.constructor  
  * @type 
  * @description 
  */;
         constructor(basedirInput, parent = null, grammars = this.constructor._defaultGrammars) {
             if (!(typeof basedirInput === "string")) {
-                throw new this.constructor.AssertionError("Parameter «basedir» must be string on «ModulerV6.constructor»");
+                throw new this.constructor.AssertionError("Parameter «basedir» must be string on «CompilerV6.constructor»");
             }
             if (!(typeof parent === "object")) {
-                throw new this.constructor.AssertionError("Parameter «parent» must be object on «ModulerV6.constructor»");
+                throw new this.constructor.AssertionError("Parameter «parent» must be object on «CompilerV6.constructor»");
             }
             if (!(typeof grammars === "object")) {
-                throw new this.constructor.AssertionError("Parameter «grammars» must be object on «ModulerV6.constructor»");
+                throw new this.constructor.AssertionError("Parameter «grammars» must be object on «CompilerV6.constructor»");
             }
             if (parent) {
                 this._tracer = parent._tracer;
@@ -1011,27 +1014,27 @@
             this._trace("constructor", arguments);
             const basedir = this.normalizationOf(basedirInput);
             /**
- * @name ModulerV6.prototype.basedir
+ * @name CompilerV6.prototype.basedir
  * @type 
  * @description 
  */            this.basedir = basedir;
             /**
- * @name ModulerV6.prototype.isBrowser
+ * @name CompilerV6.prototype.isBrowser
  * @type 
  * @description 
  */            this.isBrowser = typeof window !== "undefined";
             /**
- * @name ModulerV6.prototype.parentdir
+ * @name CompilerV6.prototype.previousdir
  * @type 
  * @description 
- */            this.parentdir = parent ? parent.basedir : basedir;
+ */            this.previousdir = parent ? parent.basedir : basedir;
             /**
- * @name ModulerV6.prototype.rootdir
+ * @name CompilerV6.prototype.rootdir
  * @type 
  * @description 
  */            this.rootdir = parent ? parent.rootdir : basedir;
             /**
- * @name ModulerV6.prototype._grammars
+ * @name CompilerV6.prototype._grammars
  * @type 
  * @description 
  */            this._grammars = {
@@ -1040,7 +1043,7 @@
                 forMd: this.constructor._defaultGrammars.forMd
             };
             /**
- * @name ModulerV6.prototype._parser
+ * @name CompilerV6.prototype._parser
  * @type 
  * @description 
  */            this._parser = {
@@ -1050,7 +1053,7 @@
             };
         }
         /**
- * @name ModulerV6.prototype._readPath
+ * @name CompilerV6.prototype._readPath
  * @type 
  * @description 
  */        _readPath(url) {
@@ -1058,7 +1061,7 @@
             return this._isBrowser ? this._readUrl(url) : this._readFile(url);
         }
         /**
- * @name ModulerV6.prototype._readUrl
+ * @name CompilerV6.prototype._readUrl
  * @type 
  * @description 
  */        _readUrl(url) {
@@ -1068,7 +1071,7 @@
             }).then(response => response.text());
         }
         /**
- * @name ModulerV6.prototype._readFile
+ * @name CompilerV6.prototype._readFile
  * @type 
  * @description 
  */        _readFile(file) {
@@ -1076,7 +1079,7 @@
             return require("fs").promises.readFile(this.normalizationOf(file), "utf8");
         }
         /**
- * @name ModulerV6.prototype._assert
+ * @name CompilerV6.prototype._assert
  * @type 
  * @description 
  */        _assert(condition, message) {
@@ -1088,7 +1091,7 @@
             }
         }
         /**
- * @name ModulerV6.prototype._assertThrows
+ * @name CompilerV6.prototype._assertThrows
  * @type 
  * @description 
  */        async _assertThrows(callback, message, checker = () => true) {
@@ -1107,7 +1110,7 @@
             }
         }
         /**
- * @name ModulerV6.prototype._assertDoesNotThrow
+ * @name CompilerV6.prototype._assertDoesNotThrow
  * @type 
  * @description 
  */        async _assertDoesNotThrow(callback, message, checker = () => true) {
@@ -1122,7 +1125,7 @@
             }
         }
         /**
- * @name ModulerV6.prototype._notifyAssertion
+ * @name CompilerV6.prototype._notifyAssertion
  * @type 
  * @description 
  */        _notifyAssertion(message) {
@@ -1132,18 +1135,18 @@
             }
         }
         /**
- * @name ModulerV6.prototype._logger
+ * @name CompilerV6.prototype._logger
  * @type 
  * @description 
  */        _logger=null;
         /**
- * @name ModulerV6.prototype._tracer
+ * @name CompilerV6.prototype._tracer
  * @type 
  * @description 
  */
         _tracer=new this.constructor.Tracer(this);
         /**
- * @name ModulerV6.prototype._trace
+ * @name CompilerV6.prototype._trace
  * @type 
  * @description 
  */
@@ -1151,21 +1154,21 @@
             return this._tracer.trace(method, args);
         }
         /**
- * @name ModulerV6.prototype._traceIn
+ * @name CompilerV6.prototype._traceIn
  * @type 
  * @description 
  */        _traceIn(method, args = []) {
             return this._tracer.traceIn(method, args);
         }
         /**
- * @name ModulerV6.prototype._traceOut
+ * @name CompilerV6.prototype._traceOut
  * @type 
  * @description 
  */        _traceOut(method, args = []) {
             return this._tracer.traceOut(method, args);
         }
         /**
- * @name ModulerV6.prototype._debug
+ * @name CompilerV6.prototype._debug
  * @type 
  * @description 
  */        _debug(...list) {
@@ -1182,24 +1185,25 @@
             }
         }
         /**
- * @name ModulerV6.prototype._die
+ * @name CompilerV6.prototype._die
  * @type 
  * @description 
  */        _die(...args) {
+            this._trace("die", arguments);
             console.log("[DIE]", ...args);
             process.exit(0);
         }
         /**
- * @name ModulerV6.prototype._tokenizeText
+ * @name CompilerV6.prototype._tokenizeText
  * @type 
  * @description 
  */        _tokenizeText(compilationFile, compilationProcess) {
             this._traceIn("_tokenizeText", arguments);
-            this._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «ModulerV6.prototype._tokenizeText»");
-            this._assert(typeof compilationProcess.resource === "string", "Parameter «compilationProcess.resource» must be string on «ModulerV6.prototype._tokenizeText»");
-            this._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «ModulerV6.prototype._tokenizeText»");
-            this._assert(typeof compilationFile.source === "string", "Parameter «compilationFile.source» must be string on «ModulerV6.prototype._tokenizeText»");
-            this._assert(typeof compilationFile.extension === "string", "Parameter «compilationFile.extension» must be string on «ModulerV6.prototype._tokenizeText»");
+            this._assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «CompilerV6.prototype._tokenizeText»");
+            this._assert(typeof compilationProcess.resource === "string", "Parameter «compilationProcess.resource» must be string on «CompilerV6.prototype._tokenizeText»");
+            this._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.prototype._tokenizeText»");
+            this._assert(typeof compilationFile.source === "string", "Parameter «compilationFile.source» must be string on «CompilerV6.prototype._tokenizeText»");
+            this._assert(typeof compilationFile.extension === "string", "Parameter «compilationFile.extension» must be string on «CompilerV6.prototype._tokenizeText»");
             let out = undefined;
             if (compilationFile.extension === "js") {
                 out = this._parser.forJs.parse(compilationFile.source);
@@ -1217,7 +1221,7 @@
             return out;
         }
         /**
- * @name ModulerV6.prototype._replaceTextRange
+ * @name CompilerV6.prototype._replaceTextRange
  * @type 
  * @description 
  */        _replaceTextRange(text, start, end, replacement) {
@@ -1234,102 +1238,70 @@
             return output;
         }
         /**
- * @name ModulerV6.prototype._compileTokens
+ * @name CompilerV6.prototype._compileTokens
  * @type 
  * @description 
  */        async _compileTokens(compilationFile, compilationProcess) {
             this._traceIn("_compileTokens", arguments);
             const {resource: resource, source: source, tokenization: {formatted: tokens}} = compilationFile;
-            
-                        Iterating_tokens: for (let indexToken = tokens.length - 1; indexToken >= 0; indexToken--) {
-                const token = tokens[indexToken];
+            const _tokenCompilationSwitcher = {
+                "Inject Source": this._compileAsInjectSource,
+                "Inject String": this._compileAsInjectString,
+                "Multiline Comment Code Injection": this._compileAsMultilineCommentCodeInjection,
+                "Multiline Comment Value Injection": this._compileAsMultilineCommentValueInjection,
+                "Compiler Import": this._compileAsModulerImport,
+                "Compiler Export": this._compileAsModulerExport,
+                "@Requires": this._compileAsRequires,
+                "@Injects": this._compileAsInjects,
+                "Javadoc Comment": this._compileAsJavadocComment
+            };
+            Iterating_tokens: for (let tokenIndex = tokens.length - 1; tokenIndex >= 0; tokenIndex--) {
+                const token = tokens[tokenIndex];
                 Extraer_las_rutas_dependencia: {
-                    if (false) {
-                        // @NEVER
-                    } else if (token.syntax === "Inject Source") {
-                        await this._compileAsInjectSource(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "Inject String") {
-                        await this._compileAsInjectString(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "Multiline Comment Code Injection") {
-                        await this._compileAsMultilineCommentCodeInjection(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "Multiline Comment Value Injection") {
-                        await this._compileAsMultilineCommentValueInjection(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "Import Js") {
-                        await this._compileAsImportJs(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "Export Js") {
-                        await this._compileAsExportJs(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "@Requires") {
-                        await this._compileAsRequires(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "@Injects") {
-                        await this._compileAsInjects(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else if (token.syntax === "Javadoc Comment") {
-                        await this._compileAsJavadocComment(compilationFile, compilationProcess, {
-                            token: token,
-                            indexToken: indexToken
-                        });
-                    } else {
-                        throw new Error(`Syntax not identified «${token.syntax}»`);
-                    }
+                    this._assert(token.syntax in _tokenCompilationSwitcher, `Syntax not identified «${token.syntax}»`);
+                    const methodCallback = _tokenCompilationSwitcher[token.syntax];
+                    await methodCallback.call(this, compilationFile, compilationProcess, {
+                        token: token,
+                        tokenIndex: tokenIndex
+                    });
                 }
             }
             this._traceOut("_compileTokens", arguments);
             return compilationFile.compilation;
         }
         /**
- * @name ModulerV6.prototype._compileRecursively
+ * @name CompilerV6.prototype._compileRecursively
  * @type private class method
  * @description 
  */        async _compileRecursively(fileParameters = {}, processParameters = {}) {
             this._traceIn("_compileRecursively", arguments);
-            this._assert(typeof fileParameters === "object", "Parameter «fileParameters» must be object on «ModulerV6.prototype._compileRecursively»");
-            this._assert(typeof fileParameters.resource === "string", "Parameter «fileParameters.resource» must be string on «ModulerV6.prototype._compileRecursively»");
-            this._assert(typeof processParameters === "object", "Parameter «processParameters» must be object on «ModulerV6.prototype._compileRecursively»");
+            this._assert(typeof fileParameters === "object", "Parameter «fileParameters» must be object on «CompilerV6.prototype._compileRecursively»");
+            this._assert(typeof fileParameters.resource === "string", "Parameter «fileParameters.resource» must be string on «CompilerV6.prototype._compileRecursively»");
+            this._assert(typeof processParameters === "object", "Parameter «processParameters» must be object on «CompilerV6.prototype._compileRecursively»");
             const compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
             const compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
             Entry_in_tree: {
                 const id = this.rootpathOf(compilationFile.resource);
                 compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
             }
-            const submoduler = this._cloneForFile(compilationFile.resource, this);
-            await submoduler._fetchCompilable(compilationFile, compilationProcess);
-            submoduler._tokenizeText(compilationFile, compilationProcess);
-            await submoduler._compileTokens(compilationFile, compilationProcess);
-            const output = this._getPreferredOutput(compilationFile, compilationProcess);
+            const subcompiler = this._cloneForFile(compilationFile.resource, this);
+            compilationFile.subcompiler = subcompiler;
+            await subcompiler._fetchCompilable(compilationFile, compilationProcess);
+            subcompiler._tokenizeText(compilationFile, compilationProcess);
+            await subcompiler._compileTokens(compilationFile, compilationProcess);
+            const output = subcompiler._getPreferredOutput(compilationFile, compilationProcess);
             this._traceOut("_compileRecursively", arguments);
             return output;
         }
         /**
- * @name ModulerV6.prototype._fetchCompilable
+ * @name CompilerV6.prototype._fetchCompilable
  * @type 
  * @description 
  */        _fetchCompilable(compilationFile, compilationProcess) {
-            this._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «ModulerV6.prototype._fetchCompilable»");
-            this._assert(typeof compilationFile.resource === "string", "Parameter «compilationFile.resource» must be string on «ModulerV6.prototype._fetchCompilable»");
-            this._assert(/\.(js|css|md)$/g.test(compilationFile.resource), `Parameter «compilationFile.resource» must match with valid extension on «ModulerV6.prototype._fetchCompilable»`);
+            this._assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.prototype._fetchCompilable»");
+            this._assert(typeof compilationFile.resource === "string", "Parameter «compilationFile.resource» must be string on «CompilerV6.prototype._fetchCompilable»");
+            // console.log(compilationFile.resource);
+                        this._assert(/\.(js|css|md)$/g.test(compilationFile.resource), `Parameter «compilationFile.resource» now «${compilationFile.resource}» must match with valid extension on «CompilerV6.prototype._fetchCompilable»`);
             Sacar_la_extension_del_fichero: {
                 compilationFile.extension = compilationFile.resource.match(/\.(js|css|md)$/g)[0].substr(1);
             }
@@ -1354,188 +1326,322 @@
             });
         }
         /**
- * @name ModulerV6.prototype._compileAsInjectSource
+ * @name CompilerV6.prototype._compileAsInjectSource
  * @type 
  * @description 
- */        async _compileAsInjectSource(compilationFile, compilationProcess, {token: token, indexToken: indexToken}) {
+ */        async _compileAsInjectSource(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
             this._traceIn("_compileAsInjectSource", arguments);
+            let parameters, targetPath, targetCompilation;
             const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot} = compilationFile;
-            const parameters = this._hydrateParameters(token.inner);
-            this._assert(Array.isArray(parameters), `Parameters of injection must be an array in «${token.inner}» on «ModulerV6.prototype._compileAsInjectSource»`);
-            this._assert(typeof parameters[0] === "string", `First parameter of injection must be string but «${typeof parameters[0]}» was found instead on «ModulerV6.prototype._compileAsInjectSource»`);
-            const subpath = this.fullpathOf(parameters[0]);
-            const compilation = await this._compileRecursively({
-                resource: subpath,
-                isRoot: false
-            }, compilationProcess);
-            const currentExtension = compilationFile.extension;
+            Evaluate_parameters: {
+                parameters = await this._getDataForTokenCompilation({
+                    compilationFile: compilationFile,
+                    compilationProcess: compilationProcess,
+                    token: token,
+                    tokenIndex: tokenIndex
+                });
+            }
+            Extend_token: {
+                this._extendToken(token, [ "referenceOf" ]);
+            }
+            Extract_target_path: {
+                this._assert(token.referenceOf.fullpath === this.fullpathOf(parameters[0]), "DesignError: The first parameter and the token.referenceOf.fullpath should be the same on «CompilerV6.prototype._compileAsInjectSource»");
+                targetPath = token.referenceOf.fullpath;
+            }
+            Compile_target: {
+                targetCompilation = await this._compileRecursively({
+                    resource: targetPath,
+                    isRoot: false
+                }, compilationProcess);
+            }
             Inject_in_compilation_text: {
-                // Aquí estás diciendo que:
-                //   - en cada token 'Inject Source'
-                //     - compilas el fichero referido
-                //   - y después compruebas que no haya generado nada de css ni md
-                //   - PERO esto no es correcto:
-                //     - un fichero importado con inject.source SÍ PUEDE generar css y md paralelamente
-                //   - Lo que sí que hay que bloquear es que:
-                //     - el token injects.source intente introducir un fichero .css directamente
-                //       - pero los js tienen que poder importar js, css y md
-                //       - y los js tienen que poder importar css y md
-                //       - y los md tienen que poder importar md
-                //       - simplemente que INJECT.SOURCE no está para eso
-                //         - y ESTO es lo que tienes que comprobar aquí
-                //         - que el subpath sea js solamente
-                if (currentExtension === "js") {
+                if (compilationFile.extension === "js") {
+                    // Cuando desde un JS se hace $compiler.injects...
                     let replacement = "";
-                    if (subpath.endsWith(".js")) {
-                        replacement = compilation.js;
-                    } else if (subpath.endsWith(".css")) {
-                        throw new Error(`Syntax of «$v6.inject.source» on file «${subpath}» should not be used to import «css» files. Use commented @injects syntax instead.`);
-                        compilationFile.compilation.css += "\n" + compilation.css;
-                    } else if (subpath.endsWith(".md")) {
-                        throw new Error(`Syntax of «$v6.inject.source» on file «${subpath}» should not be used to import «md» files. Use commented @injects syntax instead.`);
-                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                    if (targetPath.endsWith(".js")) {
+                        // ...a un JS
+                        replacement = targetCompilation.js;
+                    } else if (targetPath.endsWith(".css")) {
+                        // ...a un CSS
+                        throw new Error(`Syntax of «$compiler.inject.source» on file «${targetPath}» should not be used to import «css» files. Use commented @injects syntax instead.`);
+                        compilationFile.compilation.css += "\n" + targetCompilation.css;
+                    } else if (targetPath.endsWith(".md")) {
+                        // ...a un MD
+                        throw new Error(`Syntax of «$compiler.inject.source» on file «${targetPath}» should not be used to import «md» files. Use commented @injects syntax instead.`);
+                        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
                     } else {
-                        throw new Error(`Syntax of «$v6.inject.source» on file «${subpath}» is trying to import foraneous extension`);
+                        throw new Error(`Syntax of «$compiler.inject.source» on file «${targetPath}» is trying to import foraneous extension`);
                     }
                     compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
-                } else if (currentExtension === "css") {
-                    throw new Error("Syntax of «$v6.inject.source» should not be available on «css» files");
-                } else if (currentExtension === "md") {
-                    throw new Error("Syntax of «$v6.inject.source» should not be available on «md» files");
+                } else if (compilationFile.extension === "css") {
+                    // Cuando desde un CSS se hace $compiler.injects...
+                    throw new Error("Syntax of «$compiler.inject.source» should not be available on «css» files");
+                } else if (compilationFile.extension === "md") {
+                    // Cuando desde un MD se hace $compiler.injects...
+                    throw new Error("Syntax of «$compiler.inject.source» should not be available on «md» files");
                 } else {
-                    throw new Error(`Syntax of «$v6.inject.source» should only be available on «js» files and not on «${currentExtension}»`);
+                    // Cuando desde otro formato se hace $compiler.injects...
+                    throw new Error(`Syntax of «$compiler.inject.source» should only be available on «js» files and not on «${compilationFile.extension}»`);
                 }
             }
             Inject_in_report_object: {
                 if (compilationProcess.to !== "data") {
                     break Inject_in_report_object;
                 }
-                this._reportFileToken(compilationFile, subpath, token);
-                Object.assign(compilationFile.report.tree, compilation.report.tree);
+                this._reportFileToken(compilationFile, targetPath, token);
+                Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
             }
             this._traceOut("_compileAsInjectSource", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsInjectString
+ * @name CompilerV6.prototype._compileAsInjectString
  * @type 
  * @description 
  */        _compileAsInjectString() {
             this._trace("_compileAsInjectString", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsMultilineCommentCodeInjection
+ * @name CompilerV6.prototype._compileAsMultilineCommentCodeInjection
  * @type 
  * @description 
  */        _compileAsMultilineCommentCodeInjection() {
             this._trace("_compileAsMultilineCommentCodeInjection", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsMultilineCommentValueInjection
+ * @name CompilerV6.prototype._compileAsMultilineCommentValueInjection
  * @type 
  * @description 
  */        _compileAsMultilineCommentValueInjection() {
             this._trace("_compileAsMultilineCommentValueInjection", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsImportJs
+ * @name CompilerV6.prototype._compileAsModulerImport
  * @type 
  * @description 
- */        _compileAsImportJs() {
-            this._trace("_compileAsImportJs", arguments);
+ */        async _compileAsModulerImport(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerImport", arguments);
+                return false;
+            }
+            this._traceIn("_compileAsModulerImport", arguments);
+            let parameters, namedParameters = {}, targetPaths = [];
+            const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot, subcompiler: subcompiler} = compilationFile;
+            Evaluate_parameters: {
+                parameters = await this._getDataForTokenCompilation({
+                    compilationFile: compilationFile,
+                    compilationProcess: compilationProcess,
+                    token: token,
+                    tokenIndex: tokenIndex
+                }, {
+                    onError(error) {
+                        return error;
+                    }
+                });
+            }
+            if (parameters instanceof Error) {
+                Handle_errors_evaluating_parameters: {
+                    // @OK: no compilation or path guessing if parameters can not be evaluated
+                    console.error(`The load of inner parameters of token type «$moduler.import» on file «${compilationFile.resource}» could not be retrieved maybe because of runtime code that cannot be solved on compilation-time on «ModulerV6.prototype._compileAsModulerImport»`);
+                    console.error(parameters);
+                }
+            } else {
+                Extract_targets_path: {
+                    namedParameters = this._getParametersFromModulerImportSignature(parameters, compilationFile.resource);
+                    targetPaths = namedParameters.dependencies;
+                }
+                Extend_token: {
+                    token.dependenciesOf = targetPaths;
+                }
+                Compile_all_targets: {
+                    for (let indexTarget = 0; indexTarget < targetPaths.length; indexTarget++) {
+                        const targetPath = targetPaths[indexTarget];
+                        const targetCompilation = await subcompiler._compileRecursively({
+                            resource: subcompiler.fullpathOf(targetPath),
+                            isRoot: false
+                        }, compilationProcess);
+                        Inject_in_compilation_text: {
+                            // @OK: no code injection on moduler.export
+                        }
+                        Inject_in_report_object: {
+                            this._reportFileToken(compilationFile, targetPath, token);
+                            Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
+                        }
+                    }
+                }
+            }
+            this._traceOut("_compileAsModulerImport", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsExportJs
+ * @name CompilerV6.prototype._compileAsModulerExport
  * @type 
  * @description 
- */        _compileAsExportJs(input, token, indexToken) {
-            this._trace("_compileAsExportJs", arguments);
+ */        async _compileAsModulerExport(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerExport", arguments);
+                return false;
+            }
+            this._traceIn("_compileAsModulerExport", arguments);
+            let parameters, namedParameters = {}, targetPaths = [];
+            const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot, subcompiler: subcompiler} = compilationFile;
+            Evaluate_parameters: {
+                parameters = await this._getDataForTokenCompilation({
+                    compilationFile: compilationFile,
+                    compilationProcess: compilationProcess,
+                    token: token,
+                    tokenIndex: tokenIndex
+                }, {
+                    onError(error) {
+                        return error;
+                    }
+                });
+            }
+            if (parameters instanceof Error) {
+                Handle_errors_evaluating_parameters: {
+                    // @OK: no compilation or path guessing if parameters can not be evaluated
+                    console.error(`The load of inner parameters of token type «$moduler.export» on file «${compilationFile.resource}» could not be retrieved maybe because of runtime code that cannot be solved on compilation-time on «ModulerV6.prototype._compileAsModulerExport»`);
+                    console.error(parameters);
+                }
+            } else {
+                Extract_targets_path: {
+                    namedParameters = this._getParametersFromModulerExportSignature(parameters, compilationFile.resource);
+                    targetPaths = namedParameters.dependencies;
+                }
+                Extend_token: {
+                    token.dependenciesOf = targetPaths;
+                }
+                Compile_all_targets: {
+                    for (let indexTarget = 0; indexTarget < targetPaths.length; indexTarget++) {
+                        const targetPath = targetPaths[indexTarget];
+                        const targetCompilation = await subcompiler._compileRecursively({
+                            resource: subcompiler.fullpathOf(targetPath),
+                            isRoot: false
+                        }, compilationProcess);
+                        Inject_in_compilation_text: {
+                            // @OK: no code injection on moduler.export
+                        }
+                        Inject_in_report_object: {
+                            this._reportFileToken(compilationFile, targetPath, token);
+                            Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
+                        }
+                    }
+                }
+            }
+            this._traceOut("_compileAsModulerExport", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsRequires
+ * @name CompilerV6.prototype._compileAsRequires
  * @type 
  * @description 
  */        _compileAsRequires() {
             this._trace("_compileAsRequires", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsInjects
+ * @name CompilerV6.prototype._compileAsInjects
  * @type 
  * @description 
  */        async _compileAsInjects(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
             this._traceIn("_compileAsInjects", arguments);
+            let parameters, targetPath, targetCompilation;
             const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot} = compilationFile;
-            const parameters = this._hydrateParameters(token.inner);
-            this._assert(Array.isArray(parameters), `Parameters of injection must be an array in «${token.inner}» on «ModulerV6.prototype._compileAsInjectSource»`);
-            this._assert(typeof parameters[0] === "string", `First parameter of injection must be string but «${typeof parameters[0]}» was found instead on «ModulerV6.prototype._compileAsInjectSource»`);
-            const subpath = this.fullpathOf(parameters[0]);
-            const compilation = await this._compileRecursively({
-                resource: subpath,
-                isRoot: false
-            }, compilationProcess);
-            const currentExtension = compilationFile.extension;
+            Evaluate_parameters: {
+                parameters = await this._getDataForTokenCompilation({
+                    compilationFile: compilationFile,
+                    compilationProcess: compilationProcess,
+                    token: token,
+                    tokenIndex: tokenIndex
+                });
+            }
+            Extend_token: {
+                this._extendToken(token, [ "referenceOf" ]);
+            }
+            Extract_target_path: {
+                this._assert(token.referenceOf.fullpath === this.fullpathOf(parameters[0]), "DesignError: The first parameter and the token.referenceOf.fullpath should be the same on «CompilerV6.prototype._compileAsInjects»");
+                targetPath = token.referenceOf.fullpath;
+            }
+            Compile_target: {
+                targetCompilation = await this._compileRecursively({
+                    resource: targetPath,
+                    isRoot: false
+                }, compilationProcess);
+            }
             Inject_in_compilation_text: {
-                if (currentExtension === "js") {
+                if (compilationFile.resource.endsWith(".js")) {
+                    // Cuando desde un JS se hace @injects...
                     let replacement = "";
-                    if (subpath.endsWith("js")) {
-                        throw new Error("Syntax of «@injects» should not be used to import «js» files from «js» files. Use another syntax instead, like «$v6.injects.source» or «commented template injection».");
-                        replacement = compilation.js;
-                    } else if (subpath.endsWith("css")) {
-                        compilationFile.compilation.css += "\n" + compilation.css;
-                    } else if (subpath.endsWith("md")) {
-                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                    if (targetPath.endsWith("js")) {
+                        // ...a un .js
+                        throw new Error("Syntax of «@injects» should not be used to import «js» files from «js» files. Use another syntax instead, like «$v6.injects.source» or «commented template injection» on «CompilerV6.prototype._compileAsInjects»");
+                        replacement = targetCompilation.js;
+                    } else if (targetPath.endsWith("css")) {
+                        // ...a un .css
+                        compilationFile.compilation.css += "\n" + targetCompilation.css;
+                    } else if (targetPath.endsWith("md")) {
+                        // ...a un .md
+                        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
                     } else {
-                        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`);
+                        // ...a otro formato
+                        throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`);
                     }
                     compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
-                } else if (currentExtension === "css") {
+                } else if (compilationFile.resource.endsWith(".css")) {
                     let replacement = "";
-                    if (subpath.endsWith("js")) {
+                    // Cuando desde un CSS se hace @injects...
+                                        if (targetPath.endsWith("js")) {
+                        // ...a un .js
                         throw new Error("Syntax of «@injects» can't be used to import «js» files from «css» files. Use another syntax instead.");
-                        replacement = compilation.js;
-                    } else if (subpath.endsWith("css")) {
-                        compilationFile.compilation.css += "\n" + compilation.css;
-                    } else if (subpath.endsWith("md")) {
-                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                        replacement = targetCompilation.js;
+                    } else if (targetPath.endsWith("css")) {
+                        // ...a un .css
+                        compilationFile.compilation.css += "\n" + targetCompilation.css;
+                    } else if (targetPath.endsWith("md")) {
+                        // ...a un .md
+                        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
                     } else {
-                        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`);
+                        // ...a otro formato
+                        throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`);
                     }
                     compilationFile.compilation.css = this._replaceTextRange(compilationFile.compilation.css, token.location[0], token.location[1], replacement);
-                } else if (currentExtension === "md") {
+                } else if (compilationFile.resource.endsWith(".md")) {
+                    // Cuando desde un MD se hace @injects...
                     let replacement = "";
-                    if (subpath.endsWith("js")) {
+                    if (targetPath.endsWith("js")) {
+                        // ...a un .js
                         throw new Error("Syntax of «@injects» can't be used to import «js» files from «md» files. Use another syntax instead.");
-                        replacement = compilation.js;
-                    } else if (subpath.endsWith("css")) {
+                        replacement = targetCompilation.js;
+                    } else if (targetPath.endsWith("css")) {
+                        // ...a un .css
                         throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
-                        compilationFile.compilation.css += "\n" + compilation.css;
-                    } else if (subpath.endsWith("md")) {
-                        compilationFile.compilation.md += "\n\n" + compilation.md;
+                        compilationFile.compilation.css += "\n" + targetCompilation.css;
+                    } else if (targetPath.endsWith("md")) {
+                        // ...a un .md
+                        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
                     } else {
-                        throw new Error(`Syntax of «@injects» on «${subpath}» is trying to import foraneous file extension.`);
+                        // ...a otro formato
+                        throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`);
                     }
                     compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1], replacement);
                 } else {
-                    throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${currentExtension}»`);
+                    throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${compilationFile.extension}»`);
                 }
             }
             Inject_in_report_object: {
                 if (compilationProcess.to !== "data") {
                     break Inject_in_report_object;
                 }
-                this._reportFileToken(compilationFile, subpath, token);
-                Object.assign(compilationFile.report.tree, compilation.report.tree);
+                this._reportFileToken(compilationFile, targetPath, token);
+                Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
             }
             this._traceOut("_compileAsInjects", arguments);
         }
         /**
- * @name ModulerV6.prototype._compileAsJavadocComment
+ * @name CompilerV6.prototype._compileAsJavadocComment
  * @type 
  * @description 
  */        _compileAsJavadocComment() {
             this._trace("_compileAsJavadocComment", arguments);
         }
         /**
- * @name ModulerV6.prototype._initializeLogger
+ * @name CompilerV6.prototype._initializeLogger
  * @type 
  * @description 
  */        _initializeLogger(directory) {
@@ -1543,7 +1649,7 @@
             return this._logger = this.constructor.Logger.Manager.fromDirectory(directory, this);
         }
         /**
- * @name ModulerV6.prototype._reportFileToken
+ * @name CompilerV6.prototype._reportFileToken
  * @type 
  * @description 
  */        _reportFileToken(compilationFile, targetBrute, token) {
@@ -1555,12 +1661,11 @@
             }
             const reportedToken = this._cloneStructureAsJson(token);
             delete reportedToken.location;
-            this._extendToken(reportedToken, [ "referenceOf" ]);
             compilationFile.report.tree[owner][token.location.join("-")] = reportedToken;
             this._traceOut("_reportFileToken", arguments);
         }
         /**
- * @name ModulerV6.prototype._getPreferredOutput
+ * @name CompilerV6.prototype._getPreferredOutput
  * @type 
  * @description 
  */        _getPreferredOutput(compilationFile, compilationProcess) {
@@ -1572,7 +1677,7 @@
             };
         }
         /**
- * @name ModulerV6.prototype._hydrateParameters
+ * @name CompilerV6.prototype._hydrateParameters
  * @type 
  * @description 
  */        _hydrateParameters(parametersSource) {
@@ -1580,30 +1685,30 @@
             return new Function(`return [${parametersSource}]`).call();
         }
         /**
- * @name ModulerV6.prototype._cloneForFile
+ * @name CompilerV6.prototype._cloneForFile
  * @type 
  * @description 
- */        _cloneForFile(resource, moduler = false) {
+ */        _cloneForFile(resource, compiler = false) {
             this._traceIn("_cloneForFile", arguments);
-            this._assert(typeof resource === "string", "Parameter «resource» must be string on «ModulerV6.prototype._cloneForFile»");
-            this._assert(typeof this.basedir === "string", "Property «this.basedir» must be string on «ModulerV6.prototype._cloneForFile»");
+            this._assert(typeof resource === "string", "Parameter «resource» must be string on «CompilerV6.prototype._cloneForFile»");
+            this._assert(typeof this.basedir === "string", "Property «this.basedir» must be string on «CompilerV6.prototype._cloneForFile»");
             const dirpath = require("path").dirname(this.fullpathOf(resource));
-            const clone = new this.constructor(dirpath, moduler || this);
+            const clone = new this.constructor(dirpath, compiler || this);
             this._traceOut("_cloneForFile", arguments);
             return clone;
         }
         /**
- * @name ModulerV6.prototype._cloneStructureAsJson
+ * @name CompilerV6.prototype._cloneStructureAsJson
  * @type 
  * @description 
  */        _cloneStructureAsJson(data) {
             return JSON.parse(JSON.stringify(data));
         }
         /**
- * @name ModulerV6.prototype._extendToken
+ * @name CompilerV6.prototype._extendToken
  * @type 
  * @description 
- */        _extendToken(token, fields = []) {
+ */        _extendToken(token, fields = [], submoduler = false) {
             this._trace("_extendToken", arguments);
             return Object.assign(token, !fields.includes("referenceOf") ? {} : {
                 referenceOf: (() => {
@@ -1620,7 +1725,168 @@
             });
         }
         /**
- * @name ModulerV6.prototype.normalizationOf
+ * @name CompilerV6.prototype._getDataForTokenCompilation
+ * @type 
+ * @description 
+ */        async _getDataForTokenCompilation(input, options = {}) {
+            this._traceIn("_getDataForTokenCompilation", arguments);
+            this._assert(typeof input === "object", "Parameter «input» must be object on «CompilerV6.prototype._getDataForTokenCompilation»");
+            // this._assert(typeof input.compilationFile === "object", "Parameter «input.compilationFile» must be object on «CompilerV6.prototype._getDataForTokenCompilation»");
+            // this._assert(typeof input.compilationFile.resource === "string", "Parameter «input.compilationFile.resource» must be string on «CompilerV6.prototype._getDataForTokenCompilation»");
+            // this._assert(typeof input.compilationProcess === "object", "Parameter «input.compilationProcess» must be object on «CompilerV6.prototype._getDataForTokenCompilation»");
+                        this._assert(typeof input.token === "object", "Parameter «input.token» must be object on «CompilerV6.prototype._getDataForTokenCompilation»");
+            this._assert(typeof input.token.inner === "string", "Parameter «input.token.inner» must be string on «CompilerV6.prototype._getDataForTokenCompilation»");
+            // this._assert(typeof input.tokenIndex === "number", "Parameter «input.tokenIndex» must be number on «CompilerV6.prototype._getDataForTokenCompilation»");
+                        let output, parameters = undefined;
+            if (typeof options.onError === "function") {
+                try {
+                    parameters = this._hydrateParameters(input.token.inner);
+                    Checks: {
+                        this._assert(Array.isArray(parameters), `Parameters of injection must be an array in «${input.token.inner}» extracting parameters from resource «${input.resource}» on «CompilerV6.prototype._getDataForTokenCompilation»`);
+                    }
+                    output = parameters;
+                } catch (error) {
+                    output = options.onError(error, parameters);
+                }
+            } else {
+                parameters = this._hydrateParameters(input.token.inner);
+                Checks: {
+                    this._assert(Array.isArray(parameters), `Parameters of injection must be an array in «${input.token.inner}» on «CompilerV6.prototype._getDataForTokenCompilation»`);
+                }
+                output = parameters;
+            }
+            this._traceOut("_getDataForTokenCompilation", arguments);
+            return output;
+        }
+        /**
+ * @name CompilerV6.prototype._getParametersFromModulerExportSignature
+ * @type 
+ * @description 
+ */        _getParametersFromModulerExportSignature(parameters, resource = null) {
+            this._trace("_getParametersFromModulerExportSignature", arguments);
+            this._assert(Array.isArray(parameters), "Parameter «parameters» must be array on «CompilerV6.prototype._getParametersFromModulerExportSignature»");
+            const formatted = {};
+            if (parameters.length === 1) {
+                throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (1)`);
+            } else if (parameters.length === 2) {
+                if (typeof parameters[0] === "string" && typeof parameters[1] === "string") {
+                    Object.assign(formatted, {
+                        id: parameters[0],
+                        dependencies: [ parameters[1] ],
+                        factory: null
+                    });
+                } else if (typeof parameters[0] === "string" && typeof parameters[1] === "function") {
+                    Object.assign(formatted, {
+                        id: parameters[0],
+                        dependencies: [],
+                        factory: parameters[1]
+                    });
+                } else if (typeof parameters[0] === "string" && typeof parameters[1] === "object") {
+                    Object.assign(formatted, {
+                        id: parameters[0],
+                        dependencies: parameters[1],
+                        factory: null
+                    });
+                } else {
+                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (2)`);
+                }
+            } else if (parameters.length === 3) {
+                if (typeof parameters[0] === "string" && typeof parameters[1] === "object" && typeof parameters[2] === "function") {
+                    Object.assign(formatted, {
+                        id: parameters[0],
+                        dependencies: parameters[1],
+                        factory: parameters[2]
+                    });
+                } else {
+                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (3)`);
+                }
+            } else {
+                throw new Error(`Signature with «${parameters.length}» parameters is not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (5)`);
+            }
+            return formatted;
+        }
+        /**
+ * @name CompilerV6.prototype._getParametersFromModulerImportSignature
+ * @type 
+ * @description 
+ *  - `file:String` if endsWith(".js")
+ *  - `id:String` otherwise
+ *  - `files:Array<String>`
+ *  - `factory:Function`
+ *  - `files:Array<String>,factory:Function`
+ */        _getParametersFromModulerImportSignature(parameters, resource = null) {
+            this._trace("_getParametersFromModulerImportSignature", arguments);
+            this._assert(Array.isArray(parameters), `Parameter «parameters» must be array on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature»`);
+            const formatted = {};
+            if (parameters.length === 1) {
+                if (typeof parameters[0] === "string") {
+                    if (parameters[0].endsWith(".js")) {
+                        Object.assign(formatted, {
+                            id: null,
+                            dependencies: [ parameters[0] ],
+                            factory: null
+                        });
+                    } else if (parameters[0].endsWith(".css")) {
+                        Object.assign(formatted, {
+                            id: null,
+                            dependencies: [ parameters[0] ],
+                            factory: null
+                        });
+                    } else if (parameters[0].endsWith(".md")) {
+                        Object.assign(formatted, {
+                            id: null,
+                            dependencies: [ parameters[0] ],
+                            factory: null
+                        });
+                    } else {
+                        Object.assign(formatted, {
+                            id: parameters[0],
+                            dependencies: [],
+                            factory: null
+                        });
+                    }
+                } else if (Array.isArray(parameters[0])) {
+                    Object.assign(formatted, {
+                        id: null,
+                        dependencies: [],
+                        factory: parameters[0]
+                    });
+                } else if (typeof parameters[0] === "function") {
+                    Object.assign(formatted, {
+                        id: null,
+                        dependencies: [],
+                        factory: parameters[0]
+                    });
+                } else {
+                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (1)`);
+                }
+            } else if (parameters.length === 2) {
+                if (Array.isArray(parameters[0]) && typeof parameters[1] === "function") {
+                    Object.assign(formatted, {
+                        id: null,
+                        dependencies: parameters[0],
+                        factory: parameters[1]
+                    });
+                } else {
+                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (2)`);
+                }
+            } else if (parameters.length === 3) {
+                if (typeof parameters[0] === "string" && Array.isArray(parameters[1]) && typeof parameters[2] === "function") {
+                    Object.assign(formatted, {
+                        id: parameters[0],
+                        dependencies: parameters[1],
+                        factory: parameters[2]
+                    });
+                } else {
+                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (3)`);
+                }
+            } else {
+                throw new Error(`Signature with «${parameters.length}» parameters is not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (5)`);
+            }
+            return formatted;
+        }
+        /**
+ * @name CompilerV6.prototype.normalizationOf
  * @type 
  * @description 
  */        normalizationOf(nodepath, origin = false) {
@@ -1632,7 +1898,7 @@
             return output;
         }
         /**
- * @name ModulerV6.prototype.rootpathOf
+ * @name CompilerV6.prototype.rootpathOf
  * @type 
  * @description 
  */        rootpathOf(fullpath) {
@@ -1641,7 +1907,7 @@
             return normalization.startsWith(this.rootdir + "/") ? normalization.replace(this.rootdir + "/", "@/") : normalization;
         }
         /**
- * @name ModulerV6.prototype.fullpathOf
+ * @name CompilerV6.prototype.fullpathOf
  * @type 
  * @description 
  */        fullpathOf(nodepath) {
@@ -1649,7 +1915,7 @@
             return require("path").resolve(this.basedir, nodepath);
         }
         /**
- * @name ModulerV6.prototype.compile
+ * @name CompilerV6.prototype.compile
  * @type 
  * @description 
  */        async compile(resource, options = {}) {
@@ -1661,17 +1927,17 @@
             });
         }
         /**
- * @name ModulerV6.prototype.log
+ * @name CompilerV6.prototype.log
  * @type 
  * @description 
  */        log(...args) {
             if (!this._logger) {
                 this._logger = new this.constructor.Logger({
-                    file: __dirname + "/dev/logs/default.txt"
+                    file: false
                 }, this);
             }
             this._logger.log(...args);
         }
     };
-    return ModulerV6;
+    return CompilerV6;
 }.call());

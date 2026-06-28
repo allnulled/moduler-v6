@@ -49,7 +49,7 @@ const reduceTemplate = function(file, dir) {
 };
 
 const main = async function() {
-  const sourceV6 = reduceTemplate("src/moduler-v6.js", rootdir);
+  const sourceV6 = reduceTemplate("src/compiler-v6.js", rootdir);
   const beautifiedDistV6 = await minify(sourceV6, {
     compress: false,
     mangle: false,
