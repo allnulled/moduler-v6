@@ -1,9 +1,9 @@
 /**
- * @name CompilerV6.prototype._assertDoesNotThrow
+ * @name CompilerV6.prototype.assertDoesNotThrow
  * @type 
  * @description 
  */
-async _assertDoesNotThrow(callback, message, checker = () => true) {
+async assertDoesNotThrow(callback, message, checker = () => true) {
   try {
     await callback();
     this._notifyAssertion(message);

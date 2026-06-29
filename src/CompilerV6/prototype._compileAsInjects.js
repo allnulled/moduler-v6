@@ -24,7 +24,7 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
     this._extendToken(token, ["referenceOf"]);
   }
   Extract_target_path: {
-    this._assert(token.referenceOf.fullpath === this.fullpathOf(parameters[0]), "DesignError: The first parameter and the token.referenceOf.fullpath should be the same on «CompilerV6.prototype._compileAsInjects»");
+    this.assert(token.referenceOf.fullpath === this.fullpathOf(parameters[0]), "DesignError: The first parameter and the token.referenceOf.fullpath should be the same on «CompilerV6.prototype._compileAsInjects»");
     targetPath = token.referenceOf.fullpath;
   }
   Compile_target: {

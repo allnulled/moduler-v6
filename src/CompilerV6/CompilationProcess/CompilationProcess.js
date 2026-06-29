@@ -4,7 +4,7 @@
  * @description 
  */
 static CompilationProcess = class CompilationProcess {
-  /*="./_assert.js"*/
+  /*="./assert.js"*/
   /*="./_defaultProcessData.js"*/
   /*="./constructor.js"*/
   /*="./from.js"*/

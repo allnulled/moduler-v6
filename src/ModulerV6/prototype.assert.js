@@ -4,5 +4,5 @@
  * @description 
  */
 assert(condition, message) {
-  if (!condition) throw new this.constructor.AssertionError(message);
+  return this.util.assert(condition, message);
 }

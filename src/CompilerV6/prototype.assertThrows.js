@@ -1,9 +1,9 @@
 /**
- * @name CompilerV6.prototype._assertThrows
+ * @name CompilerV6.prototype.assertThrows
  * @type 
  * @description 
  */
-async _assertThrows(callback, message, checker = () => true) {
+async assertThrows(callback, message, checker = () => true) {
   const localError = new Error("Should have thrown: " + message);
   try {
     await callback();

@@ -1,4 +1,5 @@
-OK: sintaxis de @requires se reporta en el árbol de dependencias
-OK: sintaxis de inject.string se transforma en string partido por líneas
-OK: empezado el moduler-v6
-OK: firmas de métodos import y export testeadas
+FALTA: css manager
+FALTA: su puente con el browser
+FALTA: lógica del import
+FALTA: lógica del export
+FALTA: tests de todo esto que falta

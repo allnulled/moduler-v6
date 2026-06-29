@@ -5,7 +5,7 @@
  */
 this.highlightedPatterns = [
   // Set patterns to highlight:
-  ["_assert", "blackBright"],
+  ["assert", "blackBright"],
   ["_compileRecursively", "cyan,underline"],
   ["_tokenizeText", "cyan,underline"],
   ["_compileTokens", "cyan,underline"],

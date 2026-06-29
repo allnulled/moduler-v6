@@ -5,7 +5,7 @@
  */
 _getParametersFromModulerExportSignature(parameters, resource = null) {
   this._trace("_getParametersFromModulerExportSignature", arguments);
-  this._assert(Array.isArray(parameters), "Parameter «parameters» must be array on «CompilerV6.prototype._getParametersFromModulerExportSignature»");
+  this.assert(Array.isArray(parameters), "Parameter «parameters» must be array on «CompilerV6.prototype._getParametersFromModulerExportSignature»");
   const formatted = {};
   if(parameters.length === 1) {
     throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (1)`);

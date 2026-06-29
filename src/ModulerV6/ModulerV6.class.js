@@ -4,12 +4,15 @@ class ModulerV6 {
    * @type class
    * @description ...
    */
-  /*="./AssertionError.js"*/
+  /*="./Util.js"*/
   /*="./assert.js"*/
   /*="./constructor.js"*/
+  /*="./prototype.util.js"*/
   /*="./prototype.assert.js"*/
+  /*="./prototype.normalizationOf.js"*/
+  /*="./prototype.basedirOf.js"*/
+  /*="./prototype.rootdirOf.js"*/
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
-  /*="./prototype._formatImportParameters.js"*/
-  /*="./prototype._formatExportParameters.js"*/
+  /*="./prototype.cloneForFile.js"*/
 }

@@ -4,6 +4,6 @@
  * @description 
  */
 this.ignoredPatterns = [
-  "_assert",
+  "assert",
   // "[ok]",
 ];

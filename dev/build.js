@@ -55,17 +55,17 @@ const compileFile = async function({ src, dist, distMin }) {
     mangle: false,
     toplevel: true,
     format: {
-      comments: true,
+      comments: false, // Esta es la única cambiada
       beautify: true
     }
   });
   const compressedDistV6 = await minify(sourceV6, {
-    compress: false,
-    mangle: false,
+    compress: true,
+    mangle: true,
     toplevel: true,
     format: {
       comments: false,
-      beautify: true
+      beautify: false,
     }
   });
   await Promise.all([
@@ -75,16 +75,18 @@ const compileFile = async function({ src, dist, distMin }) {
 };
 
 const main = async function() {
-  await compileFile({
-    src: "src/compiler-v6.js",
-    dist: "dist/compiler-v6.dist.js",
-    distMin: "dist/compiler-v6.min.dist.js",
-  });
-  await compileFile({
-    src: "src/moduler-v6.js",
-    dist: "dist/moduler-v6.dist.js",
-    distMin: "dist/moduler-v6.min.dist.js",
-  });
+  await Promise.all([
+    compileFile({
+      src: "src/compiler-v6.js",
+      dist: "dist/compiler-v6.dist.js",
+      distMin: "dist/compiler-v6.min.dist.js",
+    }),
+    compileFile({
+      src: "src/moduler-v6.js",
+      dist: "dist/moduler-v6.dist.js",
+      distMin: "dist/moduler-v6.min.dist.js",
+    }),
+  ]);
 };
 
 module.exports = main();

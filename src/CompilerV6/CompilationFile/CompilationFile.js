@@ -4,7 +4,7 @@
  * @description 
  */
 static CompilationFile = class CompilationFile {
-  /*="./_assert.js"*/
+  /*="./assert.js"*/
   /*="./_defaultFileData.js"*/
   /*="./constructor.js"*/
   /*="./from.js"*/

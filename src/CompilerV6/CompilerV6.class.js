@@ -20,9 +20,9 @@ class CompilerV6 {
   /*="./prototype._readPath.js"*/
   /*="./prototype._readUrl.js"*/
   /*="./prototype._readFile.js"*/
-  /*="./prototype._assert.js"*/
-  /*="./prototype._assertThrows.js"*/
-  /*="./prototype._assertDoesNotThrow.js"*/
+  /*="./prototype.assert.js"*/
+  /*="./prototype.assertThrows.js"*/
+  /*="./prototype.assertDoesNotThrow.js"*/
   /*="./prototype._notifyAssertion.js"*/
   /*="./prototype._logger.js"*/
   /*="./prototype._tracer.js"*/

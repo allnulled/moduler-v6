@@ -3,7 +3,8 @@
  * @type 
  * @description 
  */
-constructor(basedir) {
+constructor(basedir, cloneOf = null) {
   /*="./prototype.basedir.js"*/
+  /*="./prototype.rootdir.js"*/
   /*="./prototype.modules.js"*/
 }

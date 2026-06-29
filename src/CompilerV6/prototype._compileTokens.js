@@ -21,7 +21,7 @@ async _compileTokens(compilationFile, compilationProcess) {
   for (let tokenIndex = tokens.length - 1; tokenIndex >= 0; tokenIndex--) {
     const token = tokens[tokenIndex];
     Extraer_las_rutas_dependencia: {
-      this._assert(token.syntax in _tokenCompilationSwitcher, `Syntax not identified «${token.syntax}»`);
+      this.assert(token.syntax in _tokenCompilationSwitcher, `Syntax not identified «${token.syntax}»`);
       const methodCallback = _tokenCompilationSwitcher[token.syntax];
       await methodCallback.call(this, compilationFile, compilationProcess, { token, tokenIndex, });
     }

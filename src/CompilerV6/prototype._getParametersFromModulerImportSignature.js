@@ -10,7 +10,7 @@
  */
 _getParametersFromModulerImportSignature(parameters, resource = null) {
   this._trace("_getParametersFromModulerImportSignature", arguments);
-  this._assert(Array.isArray(parameters), `Parameter «parameters» must be array on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature»`);
+  this.assert(Array.isArray(parameters), `Parameter «parameters» must be array on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature»`);
   const formatted = {};
   if(parameters.length === 1) {
     if(typeof parameters[0] === "string") {

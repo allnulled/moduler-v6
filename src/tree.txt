@@ -7,13 +7,13 @@
 │   ├── ansi.js
 │   ├── AssertionError.js
 │   ├── CompilationFile
-│   │   ├── _assert.js
+│   │   ├── assert.js
 │   │   ├── CompilationFile.js
 │   │   ├── constructor.js
 │   │   ├── _defaultFileData.js
 │   │   └── from.js
 │   ├── CompilationProcess
-│   │   ├── _assert.js
+│   │   ├── assert.js
 │   │   ├── CompilationProcess.js
 │   │   ├── constructor.js
 │   │   ├── _defaultProcessData.js
@@ -52,9 +52,9 @@
 │   ├── Logger.js
 │   ├── CompilerV6.class.js
 │   ├── _nativeGrammars.js
-│   ├── prototype._assertDoesNotThrow.js
-│   ├── prototype._assert.js
-│   ├── prototype._assertThrows.js
+│   ├── prototype.assertDoesNotThrow.js
+│   ├── prototype.assert.js
+│   ├── prototype.assertThrows.js
 │   ├── prototype.basedir.js
 │   ├── prototype._cloneForFile.js
 │   ├── prototype._cloneStructureAsJson.js
