@@ -55,6 +55,7 @@ class CompilerV6 {
   /*="./prototype._getDataForTokenCompilation.js"*/
   /*="./prototype._getParametersFromModulerExportSignature.js"*/
   /*="./prototype._getParametersFromModulerImportSignature.js"*/
+  /*="./prototype._getStringForDevelopment.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootpathOf.js"*/
   /*="./prototype.fullpathOf.js"*/

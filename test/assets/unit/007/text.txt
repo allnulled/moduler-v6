@@ -1,0 +1,4 @@
+Este texto es para demostrar que se puede
+inyectar texto multilinea
+como un string de js
+con la sintaxis de inject

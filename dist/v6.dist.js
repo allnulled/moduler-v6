@@ -1397,8 +1397,42 @@
  * @name CompilerV6.prototype._compileAsInjectString
  * @type 
  * @description 
- */        _compileAsInjectString() {
-            this._trace("_compileAsInjectString", arguments);
+ */        async _compileAsInjectString(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            this._traceIn("_compileAsInjectString", arguments);
+            let parameters, targetPath, fileContent;
+            const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot} = compilationFile;
+            Evaluate_parameters: {
+                parameters = await this._getDataForTokenCompilation({
+                    compilationFile: compilationFile,
+                    compilationProcess: compilationProcess,
+                    token: token,
+                    tokenIndex: tokenIndex
+                });
+            }
+            Extend_token: {
+                this._extendToken(token, [ "referenceOf" ]);
+            }
+            Extract_target_path: {
+                this._assert(token.referenceOf.fullpath === this.fullpathOf(parameters[0]), "DesignError: The first parameter and the token.referenceOf.fullpath should be the same on «CompilerV6.prototype._compileAsInjectString»");
+                targetPath = token.referenceOf.fullpath;
+            }
+            Compile_target: {
+                fileContent = await this._readPath(targetPath);
+            }
+            Inject_in_compilation_text: {
+                if (compilationFile.extension !== "js") {
+                    break Inject_in_compilation_text;
+                }
+                compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], this._getStringForDevelopment(fileContent));
+            }
+            Inject_in_report_object: {
+                if (compilationProcess.to !== "data") {
+                    break Inject_in_report_object;
+                }
+                this._reportFileToken(compilationFile, targetPath, token);
+                Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
+            }
+            this._traceOut("_compileAsInjectString", arguments);
         }
         /**
  * @name CompilerV6.prototype._compileAsMultilineCommentCodeInjection
@@ -1532,8 +1566,46 @@
  * @name CompilerV6.prototype._compileAsRequires
  * @type 
  * @description 
- */        _compileAsRequires() {
-            this._trace("_compileAsRequires", arguments);
+ */        async _compileAsRequires(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsRequires", arguments);
+                return false;
+            }
+            this._traceIn("_compileAsRequires", arguments);
+            let parameters, targetPath, targetCompilation;
+            const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot} = compilationFile;
+            Evaluate_parameters: {
+                parameters = await this._getDataForTokenCompilation({
+                    compilationFile: compilationFile,
+                    compilationProcess: compilationProcess,
+                    token: token,
+                    tokenIndex: tokenIndex
+                });
+            }
+            Extend_token: {
+                this._extendToken(token, [ "referenceOf" ]);
+            }
+            Extract_target_path: {
+                this._assert(token.referenceOf.fullpath === this.fullpathOf(parameters[0]), "DesignError: The first parameter and the token.referenceOf.fullpath should be the same on «CompilerV6.prototype._compileAsRequires»");
+                targetPath = token.referenceOf.fullpath;
+            }
+            Compile_target: {
+                targetCompilation = await this._compileRecursively({
+                    resource: targetPath,
+                    isRoot: false
+                }, compilationProcess);
+            }
+            Inject_in_compilation_text: {
+                // @OK: nothing to add to the main sources, by @requires
+            }
+            Inject_in_report_object: {
+                if (compilationProcess.to !== "data") {
+                    break Inject_in_report_object;
+                }
+                this._reportFileToken(compilationFile, targetPath, token);
+                Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
+            }
+            this._traceOut("_compileAsRequires", arguments);
         }
         /**
  * @name CompilerV6.prototype._compileAsInjects
@@ -1884,6 +1956,14 @@
                 throw new Error(`Signature with «${parameters.length}» parameters is not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (5)`);
             }
             return formatted;
+        }
+        /**
+ * @name CompilerV6.prototype._getStringForDevelopment
+ * @type 
+ * @description 
+ */        _getStringForDevelopment(text, tab = 0) {
+            this._trace("_getStringForDevelopment", arguments);
+            return text.split("\n").map(line => JSON.stringify(line)).join("\n + ");
         }
         /**
  * @name CompilerV6.prototype.normalizationOf

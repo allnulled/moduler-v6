@@ -21,6 +21,9 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     compilerV6._assert("@/test/assets/unit/005/framework-3.md" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (109)");
     compilerV6._assert(output.report.tree["@/test/assets/unit/005/app.js"]["426-457"].dependenciesOf.length > 0, `Can compile with {to:'data'} and return dependenciesOf (7)`);
   }
+  No_captura_exports_con_primer_string_sin_extension_pq_son_ids_no_files: {
+    compilerV6._assert(!("@/test/assets/unit/005/app" in output.report.tree), `Can compile with {to:'data'} and return dependenciesOf (8)`);
+  }
   
   compilerV6._logger.log("Test 005 ok");
 
