@@ -7,4 +7,6 @@ constructor(basedir, cloneOf = null) {
   /*="./prototype.basedir.js"*/
   /*="./prototype.rootdir.js"*/
   /*="./prototype.modules.js"*/
+  /*="./prototype.grammars.js"*/
+  /*="./prototype.parser.js"*/
 }

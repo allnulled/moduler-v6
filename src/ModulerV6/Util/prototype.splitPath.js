@@ -5,15 +5,15 @@
  */
 splitPath(path) {
   const out = [""];
-  let i = 0;
-  while (i < path.length) {
-    const c = path[i];
-    if (c === "/" || c === "\\") {
+  let index = 0;
+  while (index < path.length) {
+    const ch = path[index];
+    if (ch === "/" || ch === "\\") {
       out.push("");
     } else {
-      out[out.length - 1] += c;
+      out[out.length - 1] += ch;
     }
-    i++;
+    index++;
   }
   return out;
 }

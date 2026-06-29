@@ -5,7 +5,10 @@ class ModulerV6 {
    * @description ...
    */
   /*="./Util.js"*/
+  /*="./Parser.js"*/
   /*="./assert.js"*/
+  /*="./nativeGrammars.js"*/
+  /*="./defaultGrammars.js"*/
   /*="./constructor.js"*/
   /*="./prototype.util.js"*/
   /*="./prototype.assert.js"*/

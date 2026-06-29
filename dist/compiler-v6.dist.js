@@ -4,140 +4,6 @@
     if (typeof global !== "undefined") global["CompilerV6"] = mod;
     if (typeof module !== "undefined") module.exports = mod;
 })(function() {
-    (function(mod) {
-        if (typeof window !== "undefined") window["TextParserV1"] = mod;
-        if (typeof global !== "undefined") global["TextParserV1"] = mod;
-        return mod;
-    })(function() {
-        const TextParserV1 = class TextParserV1 {
-            static default=this;
-            static symbols={
-                PARENTHESYS_BALANCE: {}
-            };
-            static create(grammars) {
-                return new this(grammars);
-            }
-            debug(...args) {
-                console.log("[DEBUG]", ...args);
-            }
-            assert(condition, message) {
-                if (!condition) throw new Error(message);
-            }
-            constructor(grammars = []) {
-                for (let index = 0; index < grammars.length; index++) {
-                    const grammar = grammars[index];
-                    if (typeof grammar[2] === "undefined" || grammar[2] === null) {
-                        grammar[2] = it => it;
-                    }
-                    if (typeof grammar[3] === "undefined" || grammar[3] === null) {
-                        grammar[3] = {};
-                    }
-                    this.assert(typeof grammar === "object", `Grammar «${index}» must be object`);
-                    this.assert(typeof grammar[0] === "string", `Item «0» in grammar «${index}» must be string`);
-                    this.assert(typeof grammar[1] === "string" || typeof grammar[1] === "object", `Item «1» in grammar «${index}» must be string or object`);
-                    this.assert(typeof grammar[2] === "function", `Item «2» in grammar «${index}» must be function`);
-                    this.assert(typeof grammar[3] === "object", `Item «3» in grammar «${index}» must be object`);
-                }
-                this.grammars = grammars;
-            }
-            parse(text) {
-                const tokens = this._extractTokens(text);
-                const output = this._processTokens(text, tokens);
-                return output;
-            }
-            _processTokens(text, tokens) {
-                const formattedOutput = {
-                    size: text.length,
-                    text: text,
-                    tokens: tokens,
-                    formatted: []
-                };
-                Iterating_tokens: for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
-                    const token = tokens[tokenIndex];
-                    Iterating_grammars: for (let indexGrammar = 0; indexGrammar < this.grammars.length; indexGrammar++) {
-                        const grammar = this.grammars[indexGrammar];
-                        const [starter, ender, formatter, options] = grammar;
-                        if (starter === token.starter) {
-                            const formattedToken = formatter.call(this, token, formattedOutput, tokenIndex, grammar, indexGrammar, text);
-                            formattedOutput.formatted.push(formattedToken);
-                            break Iterating_grammars;
-                        }
-                    }
-                }
-                return formattedOutput;
-            }
-            _extractTokens(text) {
-                const state = {
-                    position: 0,
-                    output: []
-                };
-                Iterating_text: while (state.position < text.length) {
-                    Iterating_grammars: for (let index = 0; index < this.grammars.length; index++) {
-                        const grammar = this.grammars[index];
-                        const [starter, ender, formatter, options] = grammar;
-                        const isMatchingStarter = text.startsWith(starter, state.position);
-                        On_not_matched: if (!isMatchingStarter) {
-                            continue Iterating_grammars;
-                        }
-                        const countingFrom = state.position + starter.length;
-                        let offset = 0;
-                        let wasEnded = false;
-                        Processing_match: if (typeof ender === "string") {
-                            while (countingFrom + offset < text.length) {
-                                const currentPosition = countingFrom + offset;
-                                const isMatchingEnder = text.startsWith(ender, currentPosition);
-                                if (isMatchingEnder) {
-                                    wasEnded = true;
-                                    state.output.push({
-                                        starter: starter,
-                                        location: [ state.position, currentPosition + ender.length ],
-                                        inner: text.substring(countingFrom, currentPosition),
-                                        outer: text.substring(state.position, currentPosition + ender.length)
-                                    });
-                                    break Processing_match;
-                                }
-                                offset++;
-                            }
-                            if (!wasEnded) throw new Error(`Unclosed starter of grammar «${starter}» reached end of text but «${ender}» was not found on grammar index «${index}»`);
-                        } else if (ender === this.constructor.symbols.PARENTHESYS_BALANCE) {
-                            let openedParenthesys = 1;
-                            let wasEnded = false;
-                            while (countingFrom + offset < text.length) {
-                                const currentPosition = countingFrom + offset;
-                                if (text[currentPosition] === "(") {
-                                    openedParenthesys++;
-                                } else if (text[currentPosition] === ")") {
-                                    openedParenthesys--;
-                                    if (openedParenthesys === 0) {
-                                        wasEnded = true;
-                                        state.output.push({
-                                            starter: starter,
-                                            location: [ state.position, currentPosition ],
-                                            inner: text.substring(countingFrom, currentPosition),
-                                            outer: text.substring(state.position, currentPosition + 1)
-                                        });
-                                        break Processing_match;
-                                    }
-                                }
-                                offset++;
-                            }
-                            if (!wasEnded) throw new Error(`Unclosed starter of grammar «${starter}» reached end of text but the first parenthesys was not closed on grammar index «${index}»`);
-                        } else {
-                            throw new Error(`Ender (2nd argument) of grammar «${starter}» at grammar index «${index}» has not valid starter: «${typeof ender}»`);
-                        }
-                        if (options.allowInside) {
-                            state.position += starter.length;
-                        } else {
-                            state.position += offset;
-                        }
-                    }
-                    state.position++;
-                }
-                return state.output;
-            }
-        };
-        return TextParserV1;
-    }.call());
     const ModulerV6 = class ModulerV6 {
         static Util=class ModulerV6Util {
             static AssertionError=class AssertionError extends Error {
@@ -295,15 +161,15 @@
             }
             splitPath(path) {
                 const out = [ "" ];
-                let i = 0;
-                while (i < path.length) {
-                    const c = path[i];
-                    if (c === "/" || c === "\\") {
+                let index = 0;
+                while (index < path.length) {
+                    const ch = path[index];
+                    if (ch === "/" || ch === "\\") {
                         out.push("");
                     } else {
-                        out[out.length - 1] += c;
+                        out[out.length - 1] += ch;
                     }
-                    i++;
+                    index++;
                 }
                 return out;
             }
@@ -311,14 +177,221 @@
                 return subpath.replace(this.constructor.symbols.REGEX_FOR_SLASH_AT_THE_END, "") + "/";
             }
         };
+        static Parser=function(mod) {
+            if (typeof window !== "undefined") window["TextParserV1"] = mod;
+            if (typeof global !== "undefined") global["TextParserV1"] = mod;
+            return mod;
+        }(function() {
+            const TextParserV1 = class TextParserV1 {
+                static default=this;
+                static symbols={
+                    PARENTHESYS_BALANCE: {}
+                };
+                static create(grammars) {
+                    return new this(grammars);
+                }
+                debug(...args) {
+                    console.log("[DEBUG]", ...args);
+                }
+                assert(condition, message) {
+                    if (!condition) throw new Error(message);
+                }
+                constructor(grammars = []) {
+                    for (let index = 0; index < grammars.length; index++) {
+                        const grammar = grammars[index];
+                        if (typeof grammar[2] === "undefined" || grammar[2] === null) {
+                            grammar[2] = it => it;
+                        }
+                        if (typeof grammar[3] === "undefined" || grammar[3] === null) {
+                            grammar[3] = {};
+                        }
+                        this.assert(typeof grammar === "object", `Grammar «${index}» must be object`);
+                        this.assert(typeof grammar[0] === "string", `Item «0» in grammar «${index}» must be string`);
+                        this.assert(typeof grammar[1] === "string" || typeof grammar[1] === "object", `Item «1» in grammar «${index}» must be string or object`);
+                        this.assert(typeof grammar[2] === "function", `Item «2» in grammar «${index}» must be function`);
+                        this.assert(typeof grammar[3] === "object", `Item «3» in grammar «${index}» must be object`);
+                    }
+                    this.grammars = grammars;
+                }
+                parse(text) {
+                    const tokens = this._extractTokens(text);
+                    const output = this._processTokens(text, tokens);
+                    return output;
+                }
+                _processTokens(text, tokens) {
+                    const formattedOutput = {
+                        size: text.length,
+                        text: text,
+                        tokens: tokens,
+                        formatted: []
+                    };
+                    Iterating_tokens: for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+                        const token = tokens[tokenIndex];
+                        Iterating_grammars: for (let indexGrammar = 0; indexGrammar < this.grammars.length; indexGrammar++) {
+                            const grammar = this.grammars[indexGrammar];
+                            const [starter, ender, formatter, options] = grammar;
+                            if (starter === token.starter) {
+                                const formattedToken = formatter.call(this, token, formattedOutput, tokenIndex, grammar, indexGrammar, text);
+                                formattedOutput.formatted.push(formattedToken);
+                                break Iterating_grammars;
+                            }
+                        }
+                    }
+                    return formattedOutput;
+                }
+                _extractTokens(text) {
+                    const state = {
+                        position: 0,
+                        output: []
+                    };
+                    Iterating_text: while (state.position < text.length) {
+                        Iterating_grammars: for (let index = 0; index < this.grammars.length; index++) {
+                            const grammar = this.grammars[index];
+                            const [starter, ender, formatter, options] = grammar;
+                            const isMatchingStarter = text.startsWith(starter, state.position);
+                            On_not_matched: if (!isMatchingStarter) {
+                                continue Iterating_grammars;
+                            }
+                            const countingFrom = state.position + starter.length;
+                            let offset = 0;
+                            let wasEnded = false;
+                            Processing_match: if (typeof ender === "string") {
+                                while (countingFrom + offset < text.length) {
+                                    const currentPosition = countingFrom + offset;
+                                    const isMatchingEnder = text.startsWith(ender, currentPosition);
+                                    if (isMatchingEnder) {
+                                        wasEnded = true;
+                                        state.output.push({
+                                            starter: starter,
+                                            location: [ state.position, currentPosition + ender.length ],
+                                            inner: text.substring(countingFrom, currentPosition),
+                                            outer: text.substring(state.position, currentPosition + ender.length)
+                                        });
+                                        break Processing_match;
+                                    }
+                                    offset++;
+                                }
+                                if (!wasEnded) throw new Error(`Unclosed starter of grammar «${starter}» reached end of text but «${ender}» was not found on grammar index «${index}»`);
+                            } else if (ender === this.constructor.symbols.PARENTHESYS_BALANCE) {
+                                let openedParenthesys = 1;
+                                let wasEnded = false;
+                                while (countingFrom + offset < text.length) {
+                                    const currentPosition = countingFrom + offset;
+                                    if (text[currentPosition] === "(") {
+                                        openedParenthesys++;
+                                    } else if (text[currentPosition] === ")") {
+                                        openedParenthesys--;
+                                        if (openedParenthesys === 0) {
+                                            wasEnded = true;
+                                            state.output.push({
+                                                starter: starter,
+                                                location: [ state.position, currentPosition ],
+                                                inner: text.substring(countingFrom, currentPosition),
+                                                outer: text.substring(state.position, currentPosition + 1)
+                                            });
+                                            break Processing_match;
+                                        }
+                                    }
+                                    offset++;
+                                }
+                                if (!wasEnded) throw new Error(`Unclosed starter of grammar «${starter}» reached end of text but the first parenthesys was not closed on grammar index «${index}»`);
+                            } else {
+                                throw new Error(`Ender (2nd argument) of grammar «${starter}» at grammar index «${index}» has not valid starter: «${typeof ender}»`);
+                            }
+                            if (options.allowInside) {
+                                state.position += starter.length;
+                            } else {
+                                state.position += offset;
+                            }
+                        }
+                        state.position++;
+                    }
+                    return state.output;
+                }
+            };
+            return TextParserV1;
+        }.call());
         static assert(condition, message) {
             if (!condition) throw new this.Util.AssertionError(message);
         }
+        static nativeGrammars={
+            InjectSource: [ "$compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Inject Source",
+                    inner: token.inner,
+                    location: token.location
+                };
+            } ],
+            InjectString: [ "$compiler.inject.string(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Inject String",
+                    inner: token.inner,
+                    location: token.location
+                };
+            } ],
+            ImportJs: [ "$compiler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Compiler Import",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            ExportJs: [ "$compiler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Compiler Export",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            MultilineCommentValueInjection: [ "/*%=", "%*/", function(token) {
+                return {
+                    syntax: "Multiline Comment Value Injection",
+                    ...token
+                };
+            } ],
+            AtRequires: [ "/*@requires:", "*/", function(token) {
+                return {
+                    syntax: "@Requires",
+                    ...token
+                };
+            } ],
+            AtInjects: [ "/*@injects:", "*/", function(token) {
+                return {
+                    syntax: "@Injects",
+                    ...token
+                };
+            } ],
+            JavadocComment: [ "/**", "*/", function(token) {
+                return {
+                    syntax: "Javadoc Comment",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ]
+        };
+        static defaultGrammars={
+            forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+            forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+            forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ]
+        };
         constructor(basedir, cloneOf = null) {
             this.assert(typeof basedir === "string", `Parameter «basedir» must be string on «Moduler.constructor»`);
             this.basedir = basedir;
             this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
             this.modules = {};
+            this.grammars = {
+                forJs: this.constructor.defaultGrammars.forJs,
+                forCss: this.constructor.defaultGrammars.forCss,
+                forMd: this.constructor.defaultGrammars.forMd
+            };
+            this.parser = {
+                forJs: this.constructor.Parser.create(this.grammars.forJs),
+                forCss: this.constructor.Parser.create(this.grammars.forCss),
+                forMd: this.constructor.Parser.create(this.grammars.forMd)
+            };
         }
         util=new this.constructor.Util(this);
         assert(condition, message) {
@@ -356,75 +429,7 @@
         }
     };
     const CompilerV6 = class CompilerV6 {
-        static _nativeGrammars={
-            InjectSource: [ "$compiler.inject.source(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
-                return {
-                    syntax: "Inject Source",
-                    inner: token.inner,
-                    location: token.location
-                };
-            } ],
-            InjectString: [ "$compiler.inject.string(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
-                return {
-                    syntax: "Inject String",
-                    inner: token.inner,
-                    location: token.location
-                };
-            } ],
-            ImportJs: [ "$compiler.import(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
-                return {
-                    syntax: "Compiler Import",
-                    ...token
-                };
-            }, {
-                allowInside: true
-            } ],
-            ExportJs: [ "$compiler.export(", TextParserV1.symbols.PARENTHESYS_BALANCE, function(token) {
-                return {
-                    syntax: "Compiler Export",
-                    ...token
-                };
-            }, {
-                allowInside: true
-            } ],
-            MultilineCommentValueInjection: [ "/*%=", "%*/", function(token) {
-                return {
-                    syntax: "Multiline Comment Value Injection",
-                    ...token
-                };
-            } ],
-            AtRequires: [ "/*@requires:", "*/", function(token) {
-                return {
-                    syntax: "@Requires",
-                    ...token
-                };
-            } ],
-            AtInjects: [ "/*@injects:", "*/", function(token) {
-                return {
-                    syntax: "@Injects",
-                    ...token
-                };
-            } ],
-            JavadocComment: [ "/**", "*/", function(token) {
-                return {
-                    syntax: "Javadoc Comment",
-                    ...token
-                };
-            }, {
-                allowInside: true
-            } ]
-        };
-        static _defaultGrammars={
-            forJs: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ExportJs, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
-            forCss: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ExportJs, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ],
-            forMd: [ this._nativeGrammars.InjectSource, this._nativeGrammars.InjectString, this._nativeGrammars.ImportJs, this._nativeGrammars.ExportJs, this._nativeGrammars.MultilineCommentValueInjection, this._nativeGrammars.AtRequires, this._nativeGrammars.AtInjects, this._nativeGrammars.JavadocComment ]
-        };
-        static AssertionError=class AssertionError extends Error {
-            constructor(message) {
-                super(message);
-                this.name = "AssertionError";
-            }
-        };
+        static Parser=ModulerV6.Parser;
         static Tracer=class Tracer {
             constructor(compiler) {
                 this.compiler = compiler;
@@ -512,6 +517,12 @@
             }
             printStack() {
                 console.log(`Tracer «${this.compiler.name || "mv6"}» with:`, this.stack);
+            }
+        };
+        static AssertionError=class AssertionError extends Error {
+            constructor(message) {
+                super(message);
+                this.name = "AssertionError";
             }
         };
         static Logger=class Logger {
@@ -652,6 +663,7 @@
                 }, 0);
             }
         };
+        static Moduler=ModulerV6;
         static CompilationProcess=class CompilationProcess {
             static assert(condition, message) {
                 if (!condition) throw new Error(message);
@@ -721,6 +733,8 @@
                 return new this(...args);
             }
         };
+        static _nativeGrammars=ModulerV6.nativeGrammars;
+        static _defaultGrammars=ModulerV6.defaultGrammars;
         static create(...args) {
             return new this(...args);
         }
@@ -930,9 +944,9 @@
                 forMd: this.constructor._defaultGrammars.forMd
             };
             this._parser = {
-                forJs: TextParserV1.create(this._grammars.forJs),
-                forCss: TextParserV1.create(this._grammars.forCss),
-                forMd: TextParserV1.create(this._grammars.forMd)
+                forJs: this.constructor.Parser.create(this._grammars.forJs),
+                forCss: this.constructor.Parser.create(this._grammars.forCss),
+                forMd: this.constructor.Parser.create(this._grammars.forMd)
             };
             this.moduler = parent ? parent.moduler : new ModulerV6(this.basedir);
         }

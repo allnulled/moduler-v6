@@ -9,7 +9,6 @@
   if (typeof global !== 'undefined') global['CompilerV6'] = mod;
   if (typeof module !== 'undefined') module.exports = mod;
 })(function () {
-  $inject.source("./text-parser-v1.js")
   const ModulerV6 = $inject.source("./ModulerV6/ModulerV6.class.js");
   const CompilerV6 = $inject.source("./CompilerV6/CompilerV6.class.js");
   return CompilerV6;

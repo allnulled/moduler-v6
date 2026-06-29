@@ -4,13 +4,15 @@ class CompilerV6 {
    * @type 
    * @description 
    */
-  /*="./_nativeGrammars.js"*/
-  /*="./_defaultGrammars.js"*/
-  /*="./AssertionError.js"*/
+  /*="./Parser.js"*/
   /*="./Tracer.js"*/
+  /*="./AssertionError.js"*/
   /*="./Logger.js"*/
+  /*="./Moduler.js"*/
   /*="./CompilationProcess/CompilationProcess.js"*/
   /*="./CompilationFile/CompilationFile.js"*/
+  /*="./_nativeGrammars.js"*/
+  /*="./_defaultGrammars.js"*/
   /*="./create.js"*/
   /*="./fromDirectory.js"*/
   /*="./fromRootOf.js"*/
