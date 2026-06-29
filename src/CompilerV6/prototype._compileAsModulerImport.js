@@ -51,7 +51,7 @@ async _compileAsModulerImport(compilationFile, compilationProcess, { token, toke
           isRoot: false,
         }, compilationProcess);
         Inject_in_compilation_text: {
-          // @OK: no code injection on moduler.export
+          // @OK: no code injection on moduler.import
         }
         Inject_in_report_object: {
           this._reportFileToken(compilationFile, targetPath, token);

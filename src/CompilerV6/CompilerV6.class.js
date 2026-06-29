@@ -1,9 +1,9 @@
-/**
- * @name CompilerV6.CompilerV6.class
- * @type 
- * @description 
- */
 class CompilerV6 {
+  /**
+   * @name CompilerV6.CompilerV6.class
+   * @type 
+   * @description 
+   */
   /*="./_nativeGrammars.js"*/
   /*="./_defaultGrammars.js"*/
   /*="./AssertionError.js"*/

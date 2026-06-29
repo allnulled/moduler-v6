@@ -48,8 +48,8 @@ const reduceTemplate = function(file, dir) {
   return source;
 };
 
-const main = async function() {
-  const sourceV6 = reduceTemplate("src/compiler-v6.js", rootdir);
+const compileFile = async function({ src, dist, distMin }) {
+  const sourceV6 = reduceTemplate(src, rootdir);
   const beautifiedDistV6 = await minify(sourceV6, {
     compress: false,
     mangle: false,
@@ -69,9 +69,22 @@ const main = async function() {
     }
   });
   await Promise.all([
-    fs.promises.writeFile(rootrel("dist/v6.dist.js"), beautifiedDistV6.code, "utf8"),
-    fs.promises.writeFile(rootrel("dist/v6.min.dist.js"), compressedDistV6.code, "utf8"),
+    fs.promises.writeFile(rootrel(dist), beautifiedDistV6.code, "utf8"),
+    fs.promises.writeFile(rootrel(distMin), compressedDistV6.code, "utf8"),
   ]);
+};
+
+const main = async function() {
+  await compileFile({
+    src: "src/compiler-v6.js",
+    dist: "dist/compiler-v6.dist.js",
+    distMin: "dist/compiler-v6.min.dist.js",
+  });
+  await compileFile({
+    src: "src/moduler-v6.js",
+    dist: "dist/moduler-v6.dist.js",
+    distMin: "dist/moduler-v6.min.dist.js",
+  });
 };
 
 module.exports = main();

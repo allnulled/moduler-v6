@@ -1,0 +1,5 @@
+- Introducido ModulerV6 en la API
+- Testeados métodos
+   - ModulerV6.prototype._formatImportParameters y
+   - ModulerV6.prototype._formatExportParameters
+- Añadido script de up.sh para git pushear

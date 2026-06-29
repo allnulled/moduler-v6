@@ -8,6 +8,6 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     compilerV6._assert(output.js.includes("con la sintaxis de inject"), "Can compile files as strings using inject.string and to:source (3)");
   }
 
-  compilerV6._logger.log("Test 006 ok");
+  compilerV6._logger.log("Test 007 ok");
 
 };

@@ -1,5 +1,5 @@
 module.exports = async function({ assert, utils, injection }) {
-  injection.CompilerV6 = require(`${__dirname}/../../dist/v6.dist.js`);
+  injection.CompilerV6 = require(`${__dirname}/../../dist/compiler-v6.dist.js`);
   injection.compilerV6 = CompilerV6.create(`${__dirname}/../..`);
   const settingsProfile = "clean";
   const profiles = {

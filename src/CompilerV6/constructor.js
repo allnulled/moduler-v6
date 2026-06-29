@@ -18,4 +18,5 @@ constructor(basedirInput, parent = null, grammars = this.constructor._defaultGra
   /*="./prototype.rootdir.js"*/
   /*="./prototype._grammars.js"*/
   /*="./prototype._parser.js"*/
+  /*="./prototype.moduler.js"*/
 }
