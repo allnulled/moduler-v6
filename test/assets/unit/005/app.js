@@ -1,4 +1,4 @@
-local$compiler.export("app", [
+local$moduler.export("app", [
   "./framework-1.js",
   "./framework-2.js",
   "./framework-3.js",
@@ -9,8 +9,8 @@ local$compiler.export("app", [
   return { fw1, fw2, fw3, };
 });
 
-local$compiler.import("app");
-local$compiler.import([
+local$moduler.import("app");
+local$moduler.import([
   "./imported-1.js",
   "./imported-1.css",
   "./imported-1.md",
@@ -18,4 +18,4 @@ local$compiler.import([
   return { fw1, fw2, fw3, };
 });
 
-local$compiler.import("./payload.js");
+local$moduler.import("./payload.js");

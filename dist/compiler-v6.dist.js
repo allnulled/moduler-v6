@@ -164,17 +164,17 @@
                     location: token.location
                 };
             } ],
-            ImportJs: [ "$compiler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            ImportJs: [ "$moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
-                    syntax: "Compiler Import",
+                    syntax: "Moduler Import",
                     ...token
                 };
             }, {
                 allowInside: true
             } ],
-            ExportJs: [ "$compiler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            ExportJs: [ "$moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
-                    syntax: "Compiler Export",
+                    syntax: "Moduler Export",
                     ...token
                 };
             }, {
@@ -1077,8 +1077,8 @@
                 "Inject String": this._compileAsInjectString,
                 "Multiline Comment Code Injection": this._compileAsMultilineCommentCodeInjection,
                 "Multiline Comment Value Injection": this._compileAsMultilineCommentValueInjection,
-                "Compiler Import": this._compileAsModulerImport,
-                "Compiler Export": this._compileAsModulerExport,
+                "Moduler Import": this._compileAsModulerImport,
+                "Moduler Export": this._compileAsModulerExport,
                 "@Requires": this._compileAsRequires,
                 "@Injects": this._compileAsInjects,
                 "Javadoc Comment": this._compileAsJavadocComment

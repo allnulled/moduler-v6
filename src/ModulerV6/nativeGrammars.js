@@ -12,11 +12,11 @@ static nativeGrammars = {
   InjectString: ["$compiler.inject.string(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Inject String", inner: token.inner, location: token.location };
   }],
-  ImportJs: ["$compiler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
-    return { syntax: "Compiler Import", ...token, };
+  ImportJs: ["$moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Import", ...token, };
   }, {allowInside:true}],
-  ExportJs: ["$compiler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
-    return { syntax: "Compiler Export", ...token, };
+  ExportJs: ["$moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Export", ...token, };
   }, {allowInside:true}],
   // ["/*%", "%*/", function (token) {
   //   return { syntax: "Multiline Comment Code Injection", ...token, };

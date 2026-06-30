@@ -163,17 +163,17 @@
                     location: token.location
                 };
             } ],
-            ImportJs: [ "$compiler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            ImportJs: [ "$moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
-                    syntax: "Compiler Import",
+                    syntax: "Moduler Import",
                     ...token
                 };
             }, {
                 allowInside: true
             } ],
-            ExportJs: [ "$compiler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            ExportJs: [ "$moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
-                    syntax: "Compiler Export",
+                    syntax: "Moduler Export",
                     ...token
                 };
             }, {
