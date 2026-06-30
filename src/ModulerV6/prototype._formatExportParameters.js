@@ -1,10 +1,10 @@
 /**
- * @name ModulerV6.Util.prototype.formatExportParameters
+ * @name ModulerV6.prototype._formatExportParameters
  * @type 
  * @description 
  */
-formatExportParameters(signature) {
-  this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.prototype.formatExportParameters»");
+_formatExportParameters(signature) {
+  this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.prototype._formatExportParameters»");
   this.assert(signature.length !== 0, "ModulerV6.prototype.export cannot have 0 arguments");
   this.assert(signature.length !== 1, "ModulerV6.prototype.export cannot have 1 argument only");
   if(signature.length === 2) {

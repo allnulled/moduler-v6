@@ -4,5 +4,5 @@
  * @description 
  */
 static assert(condition, message) {
-  if (!condition) throw new this.Util.AssertionError(message);
+  if (!condition) throw new this.AssertionError(message);
 }

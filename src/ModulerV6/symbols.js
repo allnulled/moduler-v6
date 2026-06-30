@@ -1,5 +1,5 @@
 /**
- * @name ModulerV6.Util.symbols
+ * @name ModulerV6.symbols
  * @type 
  * @description 
  */

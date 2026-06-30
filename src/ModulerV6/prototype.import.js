@@ -4,6 +4,6 @@
  * @description 
  */
 import(...signature) {
-  const parameters = this.util.formatImportParameters(signature);
+  const parameters = this._formatImportParameters(signature);
   // @TODO: algoritmo del import
 }

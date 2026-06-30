@@ -4,6 +4,6 @@
  * @description 
  */
 cloneForFile(filepath) {
-  const dirpath = this.util.joinPaths([filepath, ".."]);
+  const dirpath = this._joinPaths([filepath, ".."]);
   return new ModulerV6(dirpath, this);
 }

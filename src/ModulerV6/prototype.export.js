@@ -4,6 +4,6 @@
  * @description 
  */
 export(...signature) {
-  const parameters = this.util.formatExportParameters(signature);
+  const parameters = this._formatExportParameters(signature);
   // @TODO: algoritmo del export
 }

@@ -4,8 +4,8 @@
  * @description 
  */
 rootdirOf(subpath) {
-  const normalized = this.util.joinPaths([subpath], "rootdirOf");
-  const rootdirSeparated = this.util.appendPathSeparator(this.rootdir);
+  const normalized = this._joinPaths([subpath], "rootdirOf");
+  const rootdirSeparated = this._appendPathSeparator(this.rootdir);
   if(normalized.startsWith(rootdirSeparated)) {
     return normalized.replace(rootdirSeparated, "@/");
   }

@@ -1,10 +1,10 @@
 /**
- * @name ModulerV6.Util.prototype.formatImportParameters
+ * @name ModulerV6.prototype._formatImportParameters
  * @type 
  * @description 
  */
-formatImportParameters(signature) {
-  this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.Util.prototype.formatImportParameters»");
+_formatImportParameters(signature) {
+  this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.prototype._formatImportParameters»");
   this.assert(signature.length !== 0, "ModulerV6.prototype.import cannot have 0 arguments");
   if(signature.length === 1) {
     if(typeof signature[0] === "string") {

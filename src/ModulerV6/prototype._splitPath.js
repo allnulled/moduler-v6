@@ -1,5 +1,5 @@
 /**
- * @name ModulerV6.Util.prototype.splitPath
+ * @name ModulerV6.prototype.splitPath
  * @type 
  * @description 
  */

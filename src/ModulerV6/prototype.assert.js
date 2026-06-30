@@ -4,5 +4,5 @@
  * @description 
  */
 assert(condition, message) {
-  return this.util.assert(condition, message);
+  return this.constructor.assert(condition, message);
 }

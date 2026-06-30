@@ -4,8 +4,8 @@
  * @description 
  */
 basedirOf(subpath) {
-  const normalized = this.util.joinPaths([subpath], "basedirOf");
-  const basedirSeparated = this.util.appendPathSeparator(this.basedir);
+  const normalized = this._joinPaths([subpath], "basedirOf");
+  const basedirSeparated = this._appendPathSeparator(this.basedir);
   if(normalized.startsWith(basedirSeparated)) {
     return normalized.replace(basedirSeparated, "./");
   }

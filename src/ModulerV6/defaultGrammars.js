@@ -1,5 +1,5 @@
 /**
- * @name CompilerV6.defaultGrammars
+ * @name ModulerV6.defaultGrammars
  * @type ?
  * @description ?
  * @parameter ?

@@ -1,3 +1,1 @@
-reestructuracion de apis grandes + reutilizacion de gramáticas
-- textparserv1 integrado en modulerv6 y este en compilerv6
-- gramaticas empiezan en modulerv6 y compilerv6 las reaprovecha
+refactorizado para tener todos los métodos utilitarios en la clase moduler directamente + nominacion de metodos privados con _ en moduler tambien

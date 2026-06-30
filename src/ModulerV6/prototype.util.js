@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-util = new this.constructor.Util(this);
+util = new this.constructor(this);
