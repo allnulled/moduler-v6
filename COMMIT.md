@@ -1,1 +1,1 @@
-refactorizado para tener todos los métodos utilitarios en la clase moduler directamente + nominacion de metodos privados con _ en moduler tambien
+documentacion

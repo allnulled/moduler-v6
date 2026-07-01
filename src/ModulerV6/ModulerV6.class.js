@@ -4,12 +4,15 @@ class ModulerV6 {
    * @type class
    * @description ...
    */
-  /*="./Parser.js"*/
+  /*="./AssertionError.js"*/
   /*="./CssManager.js"*/
+  /*="./Parser.js"*/
   /*="./assert.js"*/
+  /*="./isBrowser.js"*/
   /*="./nativeGrammars.js"*/
   /*="./defaultGrammars.js"*/
   /*="./symbols.js"*/
+  /*="./getEnvironmentDirectory.js"*/
   /*="./constructor.js"*/
   /*="./prototype._formatImportParameters.js"*/
   /*="./prototype._formatExportParameters.js"*/
@@ -26,4 +29,5 @@ class ModulerV6 {
   /*="./prototype.cloneForFile.js"*/
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
+  /*="./globalInstance.js"*/
 }

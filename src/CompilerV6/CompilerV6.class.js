@@ -13,6 +13,10 @@ class CompilerV6 {
   /*="./CompilationFile/CompilationFile.js"*/
   /*="./_nativeGrammars.js"*/
   /*="./_defaultGrammars.js"*/
+  /*="./beautifyJs.js"*/
+  /*="./softMinifyJs.js"*/
+  /*="./hardMinifyJs.js"*/
+  /*="./getStringSize.js"*/
   /*="./create.js"*/
   /*="./fromDirectory.js"*/
   /*="./fromRootOf.js"*/

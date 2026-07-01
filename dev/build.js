@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const rootdir = path.resolve(`${__dirname}/..`);
 const rootrel = (subpath) => path.resolve(rootdir, subpath);
-const beautifier = require(`${__dirname}/lib/beautify-js.js`);
 const { minify } = require("terser");
 const settings = {
   fulfillTemplate: options => `/**

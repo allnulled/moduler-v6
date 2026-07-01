@@ -1,9 +1,28 @@
 (function(mod) {
-    if (typeof ModulerV6 !== "undefined") return ModulerV6;
-    if (typeof window !== "undefined") window["ModulerV6"] = mod;
-    if (typeof global !== "undefined") global["ModulerV6"] = mod;
+    if (typeof $moduler === "undefined") {
+        if (typeof window !== "undefined") window["$moduler"] = mod.globalInstance;
+        if (typeof global !== "undefined") global["$moduler"] = mod.globalInstance;
+    }
+    if (typeof ModulerV6 === "undefined") {
+        if (typeof window !== "undefined") window["ModulerV6"] = mod;
+        if (typeof global !== "undefined") global["ModulerV6"] = mod;
+    }
+    return ModulerV6;
 })(function() {
     return class ModulerV6 {
+        static AssertionError=class AssertionError extends Error {
+            constructor(message) {
+                super(message);
+                this.name = "AssertionError";
+            }
+        };
+        static CssManager=class CssManager {
+            constructor() {
+                this.sheets = [];
+            }
+            addSheet(id, cssContent) {}
+            removeSheet(id) {}
+        };
         static Parser=function(mod) {
             if (typeof window !== "undefined") window["TextParserV1"] = mod;
             if (typeof global !== "undefined") global["TextParserV1"] = mod;
@@ -138,16 +157,10 @@
             };
             return TextParserV1;
         }.call());
-        static CssManager=class CssManager {
-            constructor() {
-                this.sheets = [];
-            }
-            addSheet(id, cssContent) {}
-            removeSheet(id) {}
-        };
         static assert(condition, message) {
             if (!condition) throw new this.AssertionError(message);
         }
+        static isBrowser=typeof window !== "undefined";
         static nativeGrammars={
             InjectSource: [ "$compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
@@ -216,7 +229,17 @@
             REGEX_FOR_PROTOCOL_BASED_PATH: /^([A-Za-z0-9\-\_\$]*)\:\/\//g,
             REGEX_FOR_ABSOLUTE_WINDOWS_PATH: /^(([A-Za-z]:(\\|\/))|((\\|\/){2}))/g
         };
-        constructor(basedir, cloneOf = null) {
+        static getEnvironmentDirectory() {
+            if (this.isBrowser) {
+                return window.location.origin;
+            } else {
+                return process.cwd();
+            }
+        }
+        constructor(basedirArg = null, cloneOf = null) {
+            const basedir = basedirArg === null ? this.constructor.getEnvironmentDirectory() : basedirArg;
+            this.assert(typeof basedir === "string", `Parameter «basedir» must be string and not «${typeof basedir}» on «ModulerV6.constructor»`);
+            this.assert(typeof cloneOf === "object", "Parameter «cloneOf» must be object on «ModulerV6.constructor»");
             this.assert(typeof basedir === "string", `Parameter «basedir» must be string on «Moduler.constructor»`);
             this.basedir = basedir;
             this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
@@ -428,5 +451,6 @@
         export(...signature) {
             const parameters = this._formatExportParameters(signature);
         }
+        static globalInstance=new this;
     };
 }.call());

@@ -1,0 +1,1 @@
+$moduler.export("export-string-string", "./file1.js")

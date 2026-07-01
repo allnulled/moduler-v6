@@ -5,6 +5,19 @@
     if (typeof module !== "undefined") module.exports = mod;
 })(function() {
     const ModulerV6 = class ModulerV6 {
+        static AssertionError=class AssertionError extends Error {
+            constructor(message) {
+                super(message);
+                this.name = "AssertionError";
+            }
+        };
+        static CssManager=class CssManager {
+            constructor() {
+                this.sheets = [];
+            }
+            addSheet(id, cssContent) {}
+            removeSheet(id) {}
+        };
         static Parser=function(mod) {
             if (typeof window !== "undefined") window["TextParserV1"] = mod;
             if (typeof global !== "undefined") global["TextParserV1"] = mod;
@@ -139,16 +152,10 @@
             };
             return TextParserV1;
         }.call());
-        static CssManager=class CssManager {
-            constructor() {
-                this.sheets = [];
-            }
-            addSheet(id, cssContent) {}
-            removeSheet(id) {}
-        };
         static assert(condition, message) {
             if (!condition) throw new this.AssertionError(message);
         }
+        static isBrowser=typeof window !== "undefined";
         static nativeGrammars={
             InjectSource: [ "$compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
@@ -217,7 +224,17 @@
             REGEX_FOR_PROTOCOL_BASED_PATH: /^([A-Za-z0-9\-\_\$]*)\:\/\//g,
             REGEX_FOR_ABSOLUTE_WINDOWS_PATH: /^(([A-Za-z]:(\\|\/))|((\\|\/){2}))/g
         };
-        constructor(basedir, cloneOf = null) {
+        static getEnvironmentDirectory() {
+            if (this.isBrowser) {
+                return window.location.origin;
+            } else {
+                return process.cwd();
+            }
+        }
+        constructor(basedirArg = null, cloneOf = null) {
+            const basedir = basedirArg === null ? this.constructor.getEnvironmentDirectory() : basedirArg;
+            this.assert(typeof basedir === "string", `Parameter «basedir» must be string and not «${typeof basedir}» on «ModulerV6.constructor»`);
+            this.assert(typeof cloneOf === "object", "Parameter «cloneOf» must be object on «ModulerV6.constructor»");
             this.assert(typeof basedir === "string", `Parameter «basedir» must be string on «Moduler.constructor»`);
             this.basedir = basedir;
             this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
@@ -429,6 +446,7 @@
         export(...signature) {
             const parameters = this._formatExportParameters(signature);
         }
+        static globalInstance=new this;
     };
     const CompilerV6 = class CompilerV6 {
         static Parser=ModulerV6.Parser;
@@ -737,6 +755,52 @@
         };
         static _nativeGrammars=ModulerV6.nativeGrammars;
         static _defaultGrammars=ModulerV6.defaultGrammars;
+        static beautifyJs(code) {
+            return require("prettier").format(code, {
+                parser: "babel"
+            });
+        }
+        static softMinifyJs(code) {
+            return require("terser").minify(code, {
+                compress: {
+                    sequences: true
+                },
+                mangle: false,
+                toplevel: true,
+                format: {
+                    comments: false,
+                    beautify: true,
+                    indent_level: 2,
+                    max_line_len: true
+                }
+            });
+        }
+        static hardMinifyJs(code) {
+            return require("terser").minify(code, {
+                compress: {
+                    defaults: true,
+                    passes: 5,
+                    unsafe: true,
+                    toplevel: true
+                },
+                mangle: {
+                    toplevel: true
+                }
+            });
+        }
+        static getStringSize(text) {
+            let bytes = undefined;
+            if (this.isBrowser) {
+                bytes = (new TextEncoder).encode(text).length;
+            } else {
+                bytes = Buffer.byteLength(text, "utf8");
+            }
+            if (bytes < 1024 * 1024) {
+                return `${(bytes / 1024).toFixed(2)}KB`;
+            } else {
+                return `${(bytes / 1024 / 1024).toFixed(2)}MB`;
+            }
+        }
         static create(...args) {
             return new this(...args);
         }
@@ -1102,18 +1166,52 @@
             this.assert(typeof fileParameters === "object", "Parameter «fileParameters» must be object on «CompilerV6.prototype._compileRecursively»");
             this.assert(typeof fileParameters.resource === "string", "Parameter «fileParameters.resource» must be string on «CompilerV6.prototype._compileRecursively»");
             this.assert(typeof processParameters === "object", "Parameter «processParameters» must be object on «CompilerV6.prototype._compileRecursively»");
-            const compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
-            const compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
-            Entry_in_tree: {
+            let compilationFile, compilationProcess, subcompiler, output;
+            Initialize_parameters: {
+                compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
+                compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
+            }
+            Add_entry_in_tree: {
                 const id = this.rootpathOf(compilationFile.resource);
                 compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
             }
-            const subcompiler = this._cloneForFile(compilationFile.resource, this);
-            compilationFile.subcompiler = subcompiler;
-            await subcompiler._fetchCompilable(compilationFile, compilationProcess);
-            subcompiler._tokenizeText(compilationFile, compilationProcess);
-            await subcompiler._compileTokens(compilationFile, compilationProcess);
-            const output = subcompiler._getPreferredOutput(compilationFile, compilationProcess);
+            Compile_inner_files_recursively_with_subcompiler: {
+                subcompiler = this._cloneForFile(compilationFile.resource, this);
+                compilationFile.subcompiler = subcompiler;
+                await subcompiler._fetchCompilable(compilationFile, compilationProcess);
+                subcompiler._tokenizeText(compilationFile, compilationProcess);
+                await subcompiler._compileTokens(compilationFile, compilationProcess);
+                output = subcompiler._getPreferredOutput(compilationFile, compilationProcess);
+            }
+            Beautify_and_minify: {
+                if (fileParameters.isRoot && (processParameters.beautify || processParameters.minify) && !this.isBrowser && typeof output.js === "string") {
+                    const originalSize = this.constructor.getStringSize(output.js);
+                    if (processParameters.beautify) {
+                        const startedAt = new Date;
+                        const beautifiedCode = await this.constructor.beautifyJs(output.js);
+                        output.beautifiedJs = {
+                            code: beautifiedCode,
+                            chars: beautifiedCode.length,
+                            originalSize: originalSize,
+                            size: this.constructor.getStringSize(beautifiedCode),
+                            sizeRelationOf: (beautifiedCode.length / output.js.length * 100).toFixed(2) + "%",
+                            time: ((new Date - startedAt) / 1e3).toFixed(3) + "s"
+                        };
+                    }
+                    if (processParameters.minify) {
+                        const startedAt = new Date;
+                        const minifiedCode = (await this.constructor.hardMinifyJs(output.js)).code;
+                        output.minifiedJs = {
+                            code: minifiedCode,
+                            chars: minifiedCode.length,
+                            originalSize: originalSize,
+                            size: this.constructor.getStringSize(minifiedCode),
+                            sizeRelationOf: (minifiedCode.length / output.js.length * 100).toFixed(2) + "%",
+                            time: ((new Date - startedAt) / 1e3).toFixed(3) + "s"
+                        };
+                    }
+                }
+            }
             this._traceOut("_compileRecursively", arguments);
             return output;
         }
