@@ -1,6 +1,7 @@
-module.exports = async function ({ assert, utils, compilerV6 }) {
+module.exports = async function ({ assert:assertLoudly, utils, compilerV6 }) {
 
   const { moduler: modulerV6 } = compilerV6;
+  const assert = modulerV6.createAssertFunction() || assertLoudly;
 
   Test_from_assets: {
     const submoduler = modulerV6.cloneForFile(`${__dirname}/../assets/unit/103/main.js`);
@@ -15,8 +16,21 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
       const persistenceDist = await compilation.toFile("./main.dist.js", {mode:"beautified"});
       const persistenceDistMin = await compilation.toFile("./main.dist.min.js", {mode:"minified"});
     }
+    Test_of_first_level_file_evaluation: {
+      const middletest1 = await submoduler.import("./middletests/exports.any.js");
+      const middletest2 = await submoduler.import("./middletests/module.exports.js");
+      const middletest3 = await submoduler.import("./middletests/return.js");
+      const middletest4 = await submoduler.import("./middletests/return-string.js");
+      const middletest5 = await submoduler.import("./middletests/export-id-file.js");
+      assert(typeof middletest1 === "object", "is not returning expectations about «ModulerV6.prototype.import» (31)");
+      assert(middletest1.default === 701, "is not returning expectations about «ModulerV6.prototype.import» (32)");
+      assert(middletest2 === 702, "is not returning expectations about «ModulerV6.prototype.import» (33)");
+      assert(middletest3 === 703, "is not returning expectations about «ModulerV6.prototype.import» (34)");
+      assert(middletest4 === "hello", "is not returning expectations about «ModulerV6.prototype.import» (35)");
+      assert(middletest5 === "hello", "is not returning expectations about «ModulerV6.prototype.export(String:id,String:file)» (36)");
+      
+    }
     const main = await submoduler.import("./main.dist.js");
-    const assert = modulerV6.createAssertFunction();
     assert(typeof main === "function", "is not returning a function here about «ModulerV6.prototype.import» (1)");
     const result = await main();
     Tests_of_import: {
@@ -26,11 +40,18 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
       assert(typeof result[0].f1 === "object", "is not returning expectations about «ModulerV6.prototype.import» (5)");
       assert(typeof result[0].f2 === "object", "is not returning expectations about «ModulerV6.prototype.import» (6)");
       assert(typeof result[1] === "object", "is not returning expectations about «ModulerV6.prototype.import» (7)");
-      assert(typeof result[1][0] === "object", "is not returning expectations about «ModulerV6.prototype.import» (8)");
-      assert(typeof result[1][1] === "object", "is not returning expectations about «ModulerV6.prototype.import» (9)");
+      assert(typeof result[1][0] === "string", "is not returning expectations about «ModulerV6.prototype.import» (8)");
+      assert(typeof result[1][1] === "string", "is not returning expectations about «ModulerV6.prototype.import» (9)");
       assert(typeof result[1][2] === "undefined", "is not returning expectations about «ModulerV6.prototype.import» (10)");
       assert(typeof result[2] === "number", "is not returning expectations about «ModulerV6.prototype.import» (11)");
-      assert(typeof result[3] === "object", "is not returning expectations about «ModulerV6.prototype.import» (12)");
+      assert(typeof result[3] === "string", "is not returning expectations about «ModulerV6.prototype.import» (12)");
+    }
+    Tests_of_export: {
+      assert(typeof result[4] === "string", "is not returning expectations about «ModulerV6.prototype.export» (20)");
+      assert(typeof result[5] === "object", "is not returning expectations about «ModulerV6.prototype.export» (21)");
+      assert(typeof result[6] === "number", "is not returning expectations about «ModulerV6.prototype.export» (22)");
+      assert(typeof result[7] === "object", "is not returning expectations about «ModulerV6.prototype.export» (23)");
+
     }
   }
 

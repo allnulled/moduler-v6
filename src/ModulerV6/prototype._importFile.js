@@ -13,18 +13,18 @@ _importFile(filepath) {
       originalHolder = output;
     }
   };
-  this.modules[filepath] = moduleHolder.exports;
-  const intermediatePromise = this.evaluateFile(filepath, {
+  // this.modules[filepath] = moduleHolder.exports;
+  return this.evaluateFile(filepath, {
     module: moduleHolder,
     exports: moduleHolder.exports,
     $moduler: this.cloneForFile(filepath),
-  });
-  return intermediatePromise.then(result => {
-    if (typeof result !== "undefined") {
-      this.modules[filepath] = result;
+  }).then(result => {
+    let output = undefined;
+    if (typeof result === "undefined") {
+      output = moduleHolder.exports;
     } else {
-      this.modules[filepath] = originalHolder;
+      output = moduleHolder.exports = result;
     }
-    return this.modules[filepath];
+    return this.modules[filepath] = output;
   });
 }

@@ -22,8 +22,8 @@ _formatExportParameters(signature) {
       // Dependency to name
       return {
         id: signature[0],
-        file: null,
-        dependencies: [signature[1]],
+        file: signature[1],
+        dependencies: [],
         factory: null,
       };
     } else if(typeof signature[0] === "string" && typeof signature[1] === "object") {

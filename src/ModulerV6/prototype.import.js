@@ -3,7 +3,7 @@
  * @type 
  * @description 
  */
-async import(...signature) {
+import(...signature) {
   let filepath, dependencies;
   const parameters = this._formatImportParameters(signature);
   const {
@@ -34,7 +34,7 @@ async import(...signature) {
       // Si tiene dependencies, las carga:
       dependencies = Promise.all(_dependencies.map(dependency => {
         // @NOTESE: Diuuuuuu a fondískiuts aquí hay inyéections fuli si no hay algún assert impidiéndolo por otro lao
-        return this.import(dependency);
+        return this._importFile(dependency);
       }));
       if(!_factory) {
         return dependencies;
@@ -53,5 +53,4 @@ async import(...signature) {
     }
   }
   throw new Error("This error should never happen by design (4993)");
-  console.log(parameters);
 }

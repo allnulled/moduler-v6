@@ -239,11 +239,11 @@
         constructor(basedirArg = null, cloneOf = null) {
             const basedir = basedirArg === null ? this.constructor.getEnvironmentDirectory() : basedirArg;
             this.assert(typeof basedir === "string", `Parameter «basedir» must be string and not «${typeof basedir}» on «ModulerV6.constructor»`);
-            this.assert(typeof cloneOf === "object", "Parameter «cloneOf» must be object on «ModulerV6.constructor»");
+            this.assert(typeof cloneOf === "object", `Parameter «cloneOf» must be object or null not «${typeof cloneOf}» on «ModulerV6.constructor»`);
             this.assert(typeof basedir === "string", `Parameter «basedir» must be string on «Moduler.constructor»`);
             this.basedir = basedir;
             this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
-            this.modules = {};
+            this.modules = cloneOf ? cloneOf.modules : {};
             this.grammars = {
                 forJs: this.constructor.defaultGrammars.forJs,
                 forCss: this.constructor.defaultGrammars.forCss,
@@ -316,8 +316,8 @@
                 } else if (typeof signature[0] === "string" && typeof signature[1] === "string") {
                     return {
                         id: signature[0],
-                        file: null,
-                        dependencies: [ signature[1] ],
+                        file: signature[1],
+                        dependencies: [],
                         factory: null
                     };
                 } else if (typeof signature[0] === "string" && typeof signature[1] === "object") {
@@ -482,7 +482,7 @@
             const asyncFunction = this._createAsyncFunction(finalSource, allKeys);
             return asyncFunction(...allObjects);
         }
-        async import(...signature) {
+        import(...signature) {
             let filepath, dependencies;
             const parameters = this._formatImportParameters(signature);
             const {id: _id = null, file: _file = null, dependencies: _dependencies = null, factory: _factory = null} = parameters;
@@ -503,7 +503,7 @@
             }
             Resolve_by_dependencies: {
                 if (_dependencies && _dependencies.length) {
-                    dependencies = Promise.all(_dependencies.map(dependency => this.import(dependency)));
+                    dependencies = Promise.all(_dependencies.map(dependency => this._importFile(dependency)));
                     if (!_factory) {
                         return dependencies;
                     }
@@ -521,10 +521,18 @@
                 }
             }
             throw new Error("This error should never happen by design (4993)");
-            console.log(parameters);
         }
         export(...signature) {
+            let filepath, dependencies, output;
             const parameters = this._formatExportParameters(signature);
+            const {id: _id = null, file: _file = null, dependencies: _dependencies = null, factory: _factory = null} = parameters;
+            this.assert(!(_id in this.modules), `Cannot export module with id «${_id}» because it already exists on «ModulerV6.prototype.export»`);
+            Resolving_module: {
+                const signatureCopy = [ ...signature ];
+                signatureCopy.splice(0, 1);
+                output = this.import(...signatureCopy);
+            }
+            return this.modules[_id] = output;
         }
         _importFile(filepath) {
             let originalHolder = {};
@@ -536,19 +544,18 @@
                     originalHolder = output;
                 }
             };
-            this.modules[filepath] = moduleHolder.exports;
-            const intermediatePromise = this.evaluateFile(filepath, {
+            return this.evaluateFile(filepath, {
                 module: moduleHolder,
                 exports: moduleHolder.exports,
                 $moduler: this.cloneForFile(filepath)
-            });
-            return intermediatePromise.then(result => {
-                if (typeof result !== "undefined") {
-                    this.modules[filepath] = result;
+            }).then(result => {
+                let output = undefined;
+                if (typeof result === "undefined") {
+                    output = moduleHolder.exports;
                 } else {
-                    this.modules[filepath] = originalHolder;
+                    output = moduleHolder.exports = result;
                 }
-                return this.modules[filepath];
+                return this.modules[filepath] = output;
             });
         }
         _importFactory(factory, dependencies = []) {

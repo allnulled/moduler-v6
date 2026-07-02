@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.modules = {};
+this.modules = cloneOf ? cloneOf.modules : {};
