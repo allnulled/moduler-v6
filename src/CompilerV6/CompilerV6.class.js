@@ -4,26 +4,26 @@ class CompilerV6 {
    * @type 
    * @description 
    */
-  /*="./Parser.js"*/
-  /*="./Tracer.js"*/
-  /*="./AssertionError.js"*/
-  /*="./Logger.js"*/
-  /*="./Moduler.js"*/
+  /*="./static.Parser.js"*/
+  /*="./static.Tracer.js"*/
+  /*="./static.AssertionError.js"*/
+  /*="./static.Logger.js"*/
+  /*="./static.Moduler.js"*/
   /*="./CompilationProcess/CompilationProcess.js"*/
   /*="./CompilationFile/CompilationFile.js"*/
   /*="./CompilationResult/CompilationResult.js"*/
-  /*="./_nativeGrammars.js"*/
-  /*="./_defaultGrammars.js"*/
-  /*="./_changeFileExtension.js"*/
-  /*="./beautifyJs.js"*/
-  /*="./softMinifyJs.js"*/
-  /*="./hardMinifyJs.js"*/
-  /*="./getStringSize.js"*/
-  /*="./create.js"*/
-  /*="./fromDirectory.js"*/
-  /*="./fromRootOf.js"*/
-  /*="./findRootOf.js"*/
-  /*="./ansi.js"*/
+  /*="./static._nativeGrammars.js"*/
+  /*="./static._defaultGrammars.js"*/
+  /*="./static._changeFileExtension.js"*/
+  /*="./static.beautifyJs.js"*/
+  /*="./static.softMinifyJs.js"*/
+  /*="./static.hardMinifyJs.js"*/
+  /*="./static.getStringSize.js"*/
+  /*="./static.create.js"*/
+  /*="./static.fromDirectory.js"*/
+  /*="./static.fromRootOf.js"*/
+  /*="./static.findRootOf.js"*/
+  /*="./static.ansi.js"*/
   /*="./constructor.js"*/
   /*="./prototype._readPath.js"*/
   /*="./prototype._readUrl.js"*/

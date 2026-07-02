@@ -255,9 +255,10 @@
             this.assert(signature.length !== 0, "ModulerV6.prototype.import cannot have 0 arguments");
             if (signature.length === 1) {
                 if (typeof signature[0] === "string") {
+                    const isId = signature[0].startsWith("#");
                     return {
-                        id: signature[0],
-                        file: signature[0],
+                        id: isId ? signature[0] : null,
+                        file: !isId ? signature[0] : null,
                         dependencies: [],
                         factory: null
                     };
@@ -297,6 +298,8 @@
             this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.prototype._formatExportParameters»");
             this.assert(signature.length !== 0, "ModulerV6.prototype.export cannot have 0 arguments");
             this.assert(signature.length !== 1, "ModulerV6.prototype.export cannot have 1 argument only");
+            this.assert(typeof signature[0] === "string", "ModulerV6.prototype.export first argument must be a string");
+            this.assert(signature[0].startsWith("#"), "ModulerV6.prototype.export first argument must be a string starting with «#»");
             if (signature.length === 2) {
                 if (typeof signature[0] === "string" && typeof signature[1] === "function") {
                     return {
@@ -402,22 +405,39 @@
         _appendPathSeparator(subpath) {
             return subpath.replace(this.constructor.symbols.REGEX_FOR_SLASH_AT_THE_END, "") + "/";
         }
-        readFile(file) {
+        _readFile(file) {
             return require("fs").promises.readFile(this.normalizationOf(file), "utf8");
         }
-        readUrl(url) {
+        _readUrl(url) {
             return fetch(this.normalizationOf(url), {
                 method: "GET"
             }).then(response => response.text());
         }
-        readPath(url) {
+        _readPath(url) {
             return this._isBrowser ? this._readUrl(url) : this._readFile(url);
         }
+        _wrapInTry(source, parameters = {}, file = null) {
+            let js = "";
+            js += `try {\n`;
+            js += `  ${source}\n`;
+            js += `} catch(error) {\n`;
+            js += `  console.error("Injection source failed somewhere:", ${JSON.stringify(source)});\n`;
+            js += `  console.error("Injection parameters:", ${JSON.stringify(Object.keys(parameters).map(id => id + ":" + typeof parameters[id]))});\n`;
+            if (file !== null) {
+                js += `  console.error("Injected file:", ${JSON.stringify(file)});\n`;
+            }
+            js += `  console.error("Injection failed:", error);\n`;
+            js += `}`;
+            return js;
+        }
         _createAsyncFunction(source, parameters = []) {
-            return new async function() {}.constructor(source, ...parameters);
+            return new async function() {}.constructor(...parameters, source);
         }
         assert(condition, message) {
             return this.constructor.assert(condition, message);
+        }
+        createAssertFunction() {
+            return (...args) => this.assert(...args);
         }
         normalizationOf(subpath) {
             this.assert(typeof subpath === "string", `Parameter «subpath» must be string on «ModulerV6.prototype.normalizationOf»`);
@@ -444,17 +464,104 @@
             return new ModulerV6(dirpath, this);
         }
         evaluateFile(file, injections = {}) {
-            return this._readPath(file).then(source => this.evaluateSource(source, injections));
+            return this._readPath(file).then(source => this.evaluateSource(source, injections, file));
         }
-        evaluateSource(source, injections = {}) {
-            const asyncFunction = this._createAsyncFunction(source, ...Object.keys(injections));
-            return asyncFunction(...Object.values(injections));
+        evaluateSource(source, injections = {}, file = null) {
+            this.assert(typeof source === "string", `Parameter «source» must be string but «${typeof source}» was passed instead on «ModulerV6.prototype.evaluateSource»`);
+            this.assert(typeof injections === "object", `Parameter «injections» must be object but «${typeof injections}» was passed instead on «ModulerV6.prototype.evaluateSource»`);
+            this.assert(!Array.isArray(injections), `Parameter «injections» must be object but not array on «ModulerV6.prototype.evaluateSource»`);
+            this.assert(injections !== null, `Parameter «injections» must be object but not null on «ModulerV6.prototype.evaluateSource»`);
+            const allKeys = Object.keys(injections);
+            const allObjects = Object.values(injections);
+            const finalSource = this._wrapInTry(source, injections, file);
+            const asyncFunction = this._createAsyncFunction(finalSource, allKeys);
+            return asyncFunction(...allObjects);
         }
-        import(...signature) {
+        async import(...signature) {
+            let filepath, dependencies;
             const parameters = this._formatImportParameters(signature);
+            const {id: _id = null, file: _file = null, dependencies: _dependencies = null, factory: _factory = null} = parameters;
+            Resolve_by_id: {
+                if (_id) {
+                    this.assert(_id in this.modules, `No module named «${_id}» on «ModulerV6.prototype.import»`);
+                    return this.modules[_id];
+                }
+            }
+            Resolve_by_file: {
+                if (_file) {
+                    filepath = this.normalizationOf(_file);
+                    if (filepath in this.modules) {
+                        return this.modules[filepath];
+                    }
+                    return this._importFile(filepath);
+                }
+            }
+            Resolve_by_dependencies: {
+                if (_dependencies && _dependencies.length) {
+                    dependencies = Promise.all(_dependencies.map(dependency => this.import(dependency)));
+                    if (!_factory) {
+                        return dependencies;
+                    }
+                }
+            }
+            Resolve_by_factory: {
+                if (_factory && dependencies) {
+                    return dependencies.then(resolvedDependencies => this._importFactory(_factory, resolvedDependencies));
+                } else if (_factory && !dependencies) {
+                    return this._importFactory(_factory, []);
+                } else if (dependencies) {
+                    return dependencies;
+                } else {
+                    throw new Error("This error should never happen by design (8210)");
+                }
+            }
+            throw new Error("This error should never happen by design (4993)");
+            console.log(parameters);
         }
         export(...signature) {
             const parameters = this._formatExportParameters(signature);
+        }
+        _importFile(filepath) {
+            let originalHolder = {};
+            const moduleHolder = {
+                get exports() {
+                    return originalHolder;
+                },
+                set exports(output) {
+                    originalHolder = output;
+                }
+            };
+            this.modules[filepath] = moduleHolder.exports;
+            const intermediatePromise = this.evaluateFile(filepath, {
+                module: moduleHolder,
+                exports: moduleHolder.exports,
+                $moduler: this.cloneForFile(filepath)
+            });
+            return intermediatePromise.then(result => {
+                if (typeof result !== "undefined") {
+                    this.modules[filepath] = result;
+                } else {
+                    this.modules[filepath] = originalHolder;
+                }
+                return this.modules[filepath];
+            });
+        }
+        _importFactory(factory, dependencies = []) {
+            let originalHolder = {};
+            const moduleHolder = {
+                get exports() {
+                    return originalHolder;
+                },
+                set exports(output) {
+                    originalHolder = output;
+                }
+            };
+            const result = factory(dependencies, {
+                module: moduleHolder,
+                exports: moduleHolder.exports,
+                $moduler: this
+            });
+            return typeof result === "undefined" ? originalHolder : result;
         }
         static globalInstance=new this;
     };
@@ -769,12 +876,12 @@
                 this.compiler = compiler;
             }
             toFile(file, options = {}) {
+                this.compiler.assert(require("path").basename(file).includes(".dist."), `Method «toFile» only accepts files containing «.dist.» pattern and file «${file}» does not incur the case`);
                 const fileExtension = require("path").extname(file);
                 const fileNormalization = this.compiler.normalizationOf(file);
-                this.compiler.assert(!fileNormalization.match(/\.dist\.{js,css,md}$/g), `Method «toFile» does not accept files ending with «.dist.{js,css,md}» and file «${fileNormalization}» incurs this case`);
-                const fileJs = this.compiler.constructor._changeFileExtension(fileNormalization, ".dist.js");
-                const fileCss = this.compiler.constructor._changeFileExtension(fileNormalization, ".dist.css");
-                const fileMd = this.compiler.constructor._changeFileExtension(fileNormalization, ".dist.md");
+                const fileJs = this.compiler.constructor._changeFileExtension(fileNormalization, ".js");
+                const fileCss = this.compiler.constructor._changeFileExtension(fileNormalization, ".css");
+                const fileMd = this.compiler.constructor._changeFileExtension(fileNormalization, ".md");
                 const promises = [];
                 if (this.js) {
                     const outputJs = options.mode === "beautified" && this.beautifiedJs ? this.beautifiedJs.code : options.mode === "minified" && this.minifiedJs ? this.minifiedJs.code : this.js;
@@ -785,6 +892,12 @@
                     promises.push(require("fs").promises.writeFile(fileMd, this.md, "utf8"));
                 }
                 return Promise.all(promises);
+            }
+            toJsonable() {
+                return Object.assign({}, this, {
+                    compiler: undefined,
+                    moduler: undefined
+                });
             }
         };
         static _nativeGrammars=ModulerV6.nativeGrammars;

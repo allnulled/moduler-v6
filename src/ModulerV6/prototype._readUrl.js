@@ -1,9 +1,9 @@
 /**
- * @name CompilerV6.prototype.readUrl
+ * @name CompilerV6.prototype._readUrl
  * @type 
  * @description 
  */
-readUrl(url) {
+_readUrl(url) {
   return fetch(this.normalizationOf(url), {
     method: "GET",
   }).then(response => response.text());

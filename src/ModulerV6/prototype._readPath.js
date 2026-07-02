@@ -1,8 +1,8 @@
 /**
- * @name ModulerV6.prototype.readPath
+ * @name ModulerV6.prototype._readPath
  * @type 
  * @description 
  */
-readPath(url) {
+_readPath(url) {
   return this._isBrowser ? this._readUrl(url) : this._readFile(url);
 }

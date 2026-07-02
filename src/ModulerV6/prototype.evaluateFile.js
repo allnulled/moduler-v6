@@ -4,5 +4,5 @@
  * @description 
  */
 evaluateFile(file, injections = {}) {
-  return this._readPath(file).then(source => this.evaluateSource(source, injections));
+  return this._readPath(file).then(source => this.evaluateSource(source, injections, file));
 }

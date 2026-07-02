@@ -5,17 +5,33 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
   Test_from_assets: {
     const submoduler = modulerV6.cloneForFile(`${__dirname}/../assets/unit/103/main.js`);
     const subcompiler = compilerV6._cloneForFile(`${__dirname}/../assets/unit/103/main.js`);
-    
-    const compilation = await subcompiler.compile("./main.js", {
-      beautify: true,
-      minify: true,
-    });
-    const persistenceDist = await compilation.toFile("./main.dist.js", {mode:"beautified"});
-    const persistenceDistMin = await compilation.toFile("./main.dist.min.js", {mode:"minified"});
-    
-    const main = await submoduler.import("./main.js");
-
-    console.log(main);
+    try {await require("fs").promises.unlink(subcompiler.normalizationOf("./main.dist.js"));} catch (error) {}
+    try {await require("fs").promises.unlink(subcompiler.normalizationOf("./main.dist.min.js"));} catch (error) {}
+    Test_de_los_distribuibles: {
+      const compilation = await subcompiler.compile("./main.js", {
+        beautify: true,
+        minify: true,
+      });
+      const persistenceDist = await compilation.toFile("./main.dist.js", {mode:"beautified"});
+      const persistenceDistMin = await compilation.toFile("./main.dist.min.js", {mode:"minified"});
+    }
+    const main = await submoduler.import("./main.dist.js");
+    const assert = modulerV6.createAssertFunction();
+    assert(typeof main === "function", "is not returning a function here about «ModulerV6.prototype.import» (1)");
+    const result = await main();
+    Tests_of_import: {
+      assert(Array.isArray(result), "is not returning 8 an array here about «ModulerV6.prototype.import» (2)");
+      assert(result.length === 8, "is not returning 8 items in the array here about «ModulerV6.prototype.import» (3)");
+      assert(typeof result[0] === "object", "is not returning expectations about «ModulerV6.prototype.import» (4)");
+      assert(typeof result[0].f1 === "object", "is not returning expectations about «ModulerV6.prototype.import» (5)");
+      assert(typeof result[0].f2 === "object", "is not returning expectations about «ModulerV6.prototype.import» (6)");
+      assert(typeof result[1] === "object", "is not returning expectations about «ModulerV6.prototype.import» (7)");
+      assert(typeof result[1][0] === "object", "is not returning expectations about «ModulerV6.prototype.import» (8)");
+      assert(typeof result[1][1] === "object", "is not returning expectations about «ModulerV6.prototype.import» (9)");
+      assert(typeof result[1][2] === "undefined", "is not returning expectations about «ModulerV6.prototype.import» (10)");
+      assert(typeof result[2] === "number", "is not returning expectations about «ModulerV6.prototype.import» (11)");
+      assert(typeof result[3] === "object", "is not returning expectations about «ModulerV6.prototype.import» (12)");
+    }
   }
 
 };

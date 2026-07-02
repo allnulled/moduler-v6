@@ -7,6 +7,8 @@ _formatExportParameters(signature) {
   this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.prototype._formatExportParameters»");
   this.assert(signature.length !== 0, "ModulerV6.prototype.export cannot have 0 arguments");
   this.assert(signature.length !== 1, "ModulerV6.prototype.export cannot have 1 argument only");
+  this.assert(typeof signature[0] === "string", "ModulerV6.prototype.export first argument must be a string");
+  this.assert(signature[0].startsWith("#"), "ModulerV6.prototype.export first argument must be a string starting with «#»");
   if(signature.length === 2) {
     if(typeof signature[0] === "string" && typeof signature[1] === "function") {
       // Factory module to name

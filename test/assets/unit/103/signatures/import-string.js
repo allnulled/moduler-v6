@@ -1,1 +1,1 @@
-$moduler.import("./file.js")
+$moduler.import("./signatures/file1.js")

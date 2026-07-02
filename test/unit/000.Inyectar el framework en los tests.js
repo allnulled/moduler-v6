@@ -7,7 +7,7 @@ module.exports = async function({ assert, utils, injection }) {
       // Restart logger
       injection.compilerV6._initializeLogger(`${__dirname}/logs/`);
       // Logger by console off
-      injection.compilerV6._logger.current.setOption("console", true);
+      injection.compilerV6._logger.current.setOption("console", false);
       // Logger resets file
       injection.compilerV6._logger.resetFile("Test started");
       // Tracer off

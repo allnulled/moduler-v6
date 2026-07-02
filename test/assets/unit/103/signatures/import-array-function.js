@@ -1,6 +1,6 @@
 $moduler.import([
-  "./file1.js",
-  "./file2.js"
+  "./signatures/file1.js",
+  "./signatures/file2.js"
 ], (f1, f2) => {
   return { f1, f2 };
 })

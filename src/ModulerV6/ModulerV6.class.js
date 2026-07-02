@@ -22,8 +22,10 @@ class ModulerV6 {
   /*="./prototype._readFile.js"*/
   /*="./prototype._readUrl.js"*/
   /*="./prototype._readPath.js"*/
+  /*="./prototype._wrapInTry.js"*/
   /*="./prototype._createAsyncFunction.js"*/
   /*="./prototype.assert.js"*/
+  /*="./prototype.createAssertFunction.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.basedirOf.js"*/
   /*="./prototype.rootdirOf.js"*/
@@ -32,5 +34,7 @@ class ModulerV6 {
   /*="./prototype.evaluateSource.js"*/
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
+  /*="./prototype._importFile.js"*/
+  /*="./prototype._importFactory.js"*/
   /*="./static.globalInstance.js"*/
 }

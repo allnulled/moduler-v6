@@ -9,9 +9,10 @@ _formatImportParameters(signature) {
   if(signature.length === 1) {
     if(typeof signature[0] === "string") {
       // By file or id
+      const isId = signature[0].startsWith("#");
       return {
-        id: signature[0],
-        file: signature[0],
+        id: isId ? signature[0] : null,
+        file: !isId ? signature[0] : null,
         dependencies: [],
         factory: null,
       };

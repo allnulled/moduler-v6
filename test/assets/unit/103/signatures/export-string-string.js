@@ -1,1 +1,1 @@
-$moduler.export("#export-string-string", "./file1.js")
+$moduler.export("#export-string-string", "./signatures/file1.js")

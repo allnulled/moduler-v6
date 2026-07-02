@@ -6,4 +6,5 @@
 static CompilationResult = class {
   /*="./constructor.js"*/
   /*="./prototype.toFile.js"*/
+  /*="./prototype.toJsonable.js"*/
 }
