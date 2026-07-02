@@ -4,15 +4,15 @@ class ModulerV6 {
    * @type class
    * @description ...
    */
-  /*="./AssertionError.js"*/
-  /*="./CssManager.js"*/
-  /*="./Parser.js"*/
-  /*="./assert.js"*/
-  /*="./isBrowser.js"*/
-  /*="./nativeGrammars.js"*/
-  /*="./defaultGrammars.js"*/
-  /*="./symbols.js"*/
-  /*="./getEnvironmentDirectory.js"*/
+  /*="./static.AssertionError.js"*/
+  /*="./static.CssManager.js"*/
+  /*="./static.Parser.js"*/
+  /*="./static.assert.js"*/
+  /*="./static.isBrowser.js"*/
+  /*="./static.nativeGrammars.js"*/
+  /*="./static.defaultGrammars.js"*/
+  /*="./static.symbols.js"*/
+  /*="./static.getEnvironmentDirectory.js"*/
   /*="./constructor.js"*/
   /*="./prototype._formatImportParameters.js"*/
   /*="./prototype._formatExportParameters.js"*/
@@ -22,12 +22,15 @@ class ModulerV6 {
   /*="./prototype._readFile.js"*/
   /*="./prototype._readUrl.js"*/
   /*="./prototype._readPath.js"*/
+  /*="./prototype._createAsyncFunction.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.basedirOf.js"*/
   /*="./prototype.rootdirOf.js"*/
   /*="./prototype.cloneForFile.js"*/
+  /*="./prototype.evaluateFile.js"*/
+  /*="./prototype.evaluateSource.js"*/
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
-  /*="./globalInstance.js"*/
+  /*="./static.globalInstance.js"*/
 }

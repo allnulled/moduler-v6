@@ -418,6 +418,9 @@
         readPath(url) {
             return this._isBrowser ? this._readUrl(url) : this._readFile(url);
         }
+        _createAsyncFunction(source, parameters = []) {
+            return new async function() {}.constructor(source, ...parameters);
+        }
         assert(condition, message) {
             return this.constructor.assert(condition, message);
         }
@@ -444,6 +447,13 @@
         cloneForFile(filepath) {
             const dirpath = this._joinPaths([ filepath, ".." ]);
             return new ModulerV6(dirpath, this);
+        }
+        evaluateFile(file, injections = {}) {
+            return this._readPath(file).then(source => this.evaluateSource(source, injections));
+        }
+        evaluateSource(source, injections = {}) {
+            const asyncFunction = this._createAsyncFunction(source, ...Object.keys(injections));
+            return asyncFunction(...Object.values(injections));
         }
         import(...signature) {
             const parameters = this._formatImportParameters(signature);

@@ -54,6 +54,10 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
       }
     }
   }
+  Bundle_as_CompilationResult_if_file_is_root:
+  if (fileParameters.isRoot) {
+    output = new this.constructor.CompilationResult(output, this);
+  }
   this._traceOut("_compileRecursively", arguments);
   return output;
 }

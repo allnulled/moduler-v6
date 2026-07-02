@@ -4,9 +4,9 @@
  * @description 
  */
 constructor(basedirInput, parent = null, grammars = this.constructor._defaultGrammars) {
-  if(!(typeof basedirInput === "string")) { throw new this.constructor.AssertionError("Parameter «basedir» must be string on «CompilerV6.constructor»"); }
-  if(!(typeof parent === "object")) { throw new this.constructor.AssertionError("Parameter «parent» must be object on «CompilerV6.constructor»"); }
-  if(!(typeof grammars === "object")) { throw new this.constructor.AssertionError("Parameter «grammars» must be object on «CompilerV6.constructor»"); }
+  if(!(typeof basedirInput === "string")) { throw new this.constructor.AssertionError(`Parameter «basedir» must be string not «${typeof basedirInput}» on «CompilerV6.constructor»`); }
+  if(!(typeof parent === "object")) { throw new this.constructor.AssertionError(`Parameter «parent» must be object not «${typeof parent}» on «CompilerV6.constructor»`); }
+  if(!(typeof grammars === "object")) { throw new this.constructor.AssertionError(`Parameter «grammars» must be object not «${typeof grammars}» on «CompilerV6.constructor»`); }
   if(parent) {
     this._tracer = parent._tracer;
   }

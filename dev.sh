@@ -11,6 +11,7 @@ pwd > cwd.txt
     -w "$(pwd)" \
     -i "**/node_modules/**/*" \
     -i "**/dist/**/*" \
+    -i "**/*.dist.*" \
     -i "**/logs/**/*" \
     -p "3004" \
     -d 0 \

@@ -413,6 +413,9 @@
         readPath(url) {
             return this._isBrowser ? this._readUrl(url) : this._readFile(url);
         }
+        _createAsyncFunction(source, parameters = []) {
+            return new async function() {}.constructor(source, ...parameters);
+        }
         assert(condition, message) {
             return this.constructor.assert(condition, message);
         }
@@ -439,6 +442,13 @@
         cloneForFile(filepath) {
             const dirpath = this._joinPaths([ filepath, ".." ]);
             return new ModulerV6(dirpath, this);
+        }
+        evaluateFile(file, injections = {}) {
+            return this._readPath(file).then(source => this.evaluateSource(source, injections));
+        }
+        evaluateSource(source, injections = {}) {
+            const asyncFunction = this._createAsyncFunction(source, ...Object.keys(injections));
+            return asyncFunction(...Object.values(injections));
         }
         import(...signature) {
             const parameters = this._formatImportParameters(signature);
@@ -753,8 +763,41 @@
                 return new this(...args);
             }
         };
+        static CompilationResult=class {
+            constructor(output = {}, compiler = null) {
+                Object.assign(this, output);
+                this.compiler = compiler;
+            }
+            toFile(file, options = {}) {
+                const fileExtension = require("path").extname(file);
+                const fileNormalization = this.compiler.normalizationOf(file);
+                this.compiler.assert(!fileNormalization.match(/\.dist\.{js,css,md}$/g), `Method «toFile» does not accept files ending with «.dist.{js,css,md}» and file «${fileNormalization}» incurs this case`);
+                const fileJs = this.compiler.constructor._changeFileExtension(fileNormalization, ".dist.js");
+                const fileCss = this.compiler.constructor._changeFileExtension(fileNormalization, ".dist.css");
+                const fileMd = this.compiler.constructor._changeFileExtension(fileNormalization, ".dist.md");
+                const promises = [];
+                if (this.js) {
+                    const outputJs = options.mode === "beautified" && this.beautifiedJs ? this.beautifiedJs.code : options.mode === "minified" && this.minifiedJs ? this.minifiedJs.code : this.js;
+                    promises.push(require("fs").promises.writeFile(fileJs, outputJs, "utf8"));
+                } else if (this.css) {
+                    promises.push(require("fs").promises.writeFile(fileCss, this.css, "utf8"));
+                } else if (this.md) {
+                    promises.push(require("fs").promises.writeFile(fileMd, this.md, "utf8"));
+                }
+                return Promise.all(promises);
+            }
+        };
         static _nativeGrammars=ModulerV6.nativeGrammars;
         static _defaultGrammars=ModulerV6.defaultGrammars;
+        static _changeFileExtension(file, nuevaExt) {
+            const path = require("path");
+            if (!nuevaExt.startsWith(".")) {
+                nuevaExt = "." + nuevaExt;
+            }
+            const dir = path.dirname(file);
+            const nombre = path.basename(file, path.extname(file));
+            return path.join(dir, nombre + nuevaExt);
+        }
         static beautifyJs(code) {
             return require("prettier").format(code, {
                 parser: "babel"
@@ -987,13 +1030,13 @@
         };
         constructor(basedirInput, parent = null, grammars = this.constructor._defaultGrammars) {
             if (!(typeof basedirInput === "string")) {
-                throw new this.constructor.AssertionError("Parameter «basedir» must be string on «CompilerV6.constructor»");
+                throw new this.constructor.AssertionError(`Parameter «basedir» must be string not «${typeof basedirInput}» on «CompilerV6.constructor»`);
             }
             if (!(typeof parent === "object")) {
-                throw new this.constructor.AssertionError("Parameter «parent» must be object on «CompilerV6.constructor»");
+                throw new this.constructor.AssertionError(`Parameter «parent» must be object not «${typeof parent}» on «CompilerV6.constructor»`);
             }
             if (!(typeof grammars === "object")) {
-                throw new this.constructor.AssertionError("Parameter «grammars» must be object on «CompilerV6.constructor»");
+                throw new this.constructor.AssertionError(`Parameter «grammars» must be object not «${typeof grammars}» on «CompilerV6.constructor»`);
             }
             if (parent) {
                 this._tracer = parent._tracer;
@@ -1211,6 +1254,9 @@
                         };
                     }
                 }
+            }
+            Bundle_as_CompilationResult_if_file_is_root: if (fileParameters.isRoot) {
+                output = new this.constructor.CompilationResult(output, this);
             }
             this._traceOut("_compileRecursively", arguments);
             return output;

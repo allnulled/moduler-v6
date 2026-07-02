@@ -11,8 +11,10 @@ class CompilerV6 {
   /*="./Moduler.js"*/
   /*="./CompilationProcess/CompilationProcess.js"*/
   /*="./CompilationFile/CompilationFile.js"*/
+  /*="./CompilationResult/CompilationResult.js"*/
   /*="./_nativeGrammars.js"*/
   /*="./_defaultGrammars.js"*/
+  /*="./_changeFileExtension.js"*/
   /*="./beautifyJs.js"*/
   /*="./softMinifyJs.js"*/
   /*="./hardMinifyJs.js"*/
