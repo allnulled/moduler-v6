@@ -5,7 +5,7 @@
  */
 async compile(resource, options = {}) {
   return this._compileRecursively({
-    resource,
+    resource: this.normalizationOf(resource),
     isRoot: true,
   }, {
     ...options,

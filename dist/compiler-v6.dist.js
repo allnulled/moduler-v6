@@ -1763,7 +1763,7 @@
         }
         normalizationOf(nodepath, origin = false) {
             this._trace("normalizationOf", arguments);
-            const output = require("path").resolve(nodepath);
+            const output = require("path").resolve(this.basedir, nodepath);
             if (origin) {
                 this._debug("called normalizationOf from: " + origin + " (" + output + ")");
             }
@@ -1780,7 +1780,7 @@
         }
         async compile(resource, options = {}) {
             return this._compileRecursively({
-                resource: resource,
+                resource: this.normalizationOf(resource),
                 isRoot: true
             }, {
                 ...options

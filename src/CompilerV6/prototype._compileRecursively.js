@@ -1,7 +1,7 @@
 /**
  * @name CompilerV6.prototype._compileRecursively
  * @type private class method
- * @description 
+ * @description  
  */
 async _compileRecursively(fileParameters = {}, processParameters = {}) {
   this._traceIn("_compileRecursively", arguments);

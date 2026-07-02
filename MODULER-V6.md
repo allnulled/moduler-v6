@@ -63,14 +63,14 @@ En los siguientes ejemplos se van a repetir los mismos parámetros:
 
 ```js
 $compiler.inject.source("./file.js")
-/*@injects:./file.md*/
+/*@injects:./file.js*/
 ```
 
 ### Inyectar desde js a css
 
 ```js
 $compiler.inject.source("./file.css")
-/*@injects:./file.md*/
+/*@injects:./file.css*/
 ```
 
 ### Inyectar desde js a md
