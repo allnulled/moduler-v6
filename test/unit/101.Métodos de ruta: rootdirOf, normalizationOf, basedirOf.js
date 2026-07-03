@@ -26,7 +26,6 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     compilerV6.assert(out8.includes('//some/windows/absolute.js'), "Path using basedirOf works (8)");
     compilerV6.assert(out9.includes('//some/windows/absolute.js'), "Path using basedirOf works (9)");
     compilerV6.assert(out10.includes('http://whatever.com/so'), "Path using basedirOf works (10)");
-
   }
 
   Tests_de_rootdirOf: {
@@ -60,5 +59,7 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     compilerV6.assert(out5.includes('some/path.js'), `Paths using normalizationOf works (5)`);
     compilerV6.assert(out6.includes('http://whatever.com/so'), `Paths using normalizationOf works (6)`);
   }
+
+  compilerV6._logger.log("Test 101 ok");
 
 };

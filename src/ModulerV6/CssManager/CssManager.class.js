@@ -5,10 +5,14 @@
  */
 class CssManager {
   /*="./constructor.js"*/
-  /*="./prototype._addSheetRecursively.js"*/
-  /*="./prototype._parseSheet.js"*/
-  /*="./prototype._loadRequiresFromSheet.js"*/
-  /*="./prototype.addSheet.js"*/
-  /*="./prototype.removeSheet.js"*/
-  /*="./prototype.synchronizeDom.js"*/
+  /*="./prototype._addRecursively.js"*/
+  /*="./prototype._fetchSheet.js"*/
+  /*="./prototype._extractRequires.js"*/
+  /*="./prototype.trace.js"*/
+  /*="./prototype.assert.js"*/
+  /*="./prototype.add.js"*/
+  /*="./prototype.remove.js"*/
+  /*="./prototype.synchronize.js"*/
+  /*="./prototype.cloneForFile.js"*/
+  /*="./prototype.getSortedSheets.js"*/
 }

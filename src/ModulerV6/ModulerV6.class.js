@@ -13,7 +13,6 @@ class ModulerV6 {
   /*="./static.defaultGrammars.js"*/
   /*="./static.symbols.js"*/
   /*="./static.getEnvironmentDirectory.js"*/
-  /*="./constructor.js"*/
   /*="./prototype._formatImportParameters.js"*/
   /*="./prototype._formatExportParameters.js"*/
   /*="./prototype._joinPaths.js"*/
@@ -24,6 +23,8 @@ class ModulerV6 {
   /*="./prototype._readPath.js"*/
   /*="./prototype._wrapInTry.js"*/
   /*="./prototype._createAsyncFunction.js"*/
+  /*="./prototype._importFile.js"*/
+  /*="./prototype._importFactory.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.createAssertFunction.js"*/
   /*="./prototype.normalizationOf.js"*/
@@ -34,7 +35,6 @@ class ModulerV6 {
   /*="./prototype.evaluateSource.js"*/
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
-  /*="./prototype._importFile.js"*/
-  /*="./prototype._importFactory.js"*/
   /*="./static.globalInstance.js"*/
+  /*="./constructor.js"*/
 }

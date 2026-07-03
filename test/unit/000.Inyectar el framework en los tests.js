@@ -1,9 +1,9 @@
 module.exports = async function({ assert, utils, injection }) {
   injection.CompilerV6 = require(`${__dirname}/../../dist/compiler-v6.dist.js`);
   injection.compilerV6 = CompilerV6.create(`${__dirname}/../..`);
-  const settingsProfile = "clean";
+  const settingsProfile = "clean" || "debug" || "clean";
   const profiles = {
-    debugging: () => {
+    debug: () => {
       // Restart logger
       injection.compilerV6._initializeLogger(`${__dirname}/logs/`);
       // Logger by console off

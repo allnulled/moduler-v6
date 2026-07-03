@@ -1,0 +1,77 @@
+
+/*!file:"@/test/assets/unit/104/styles/reset/section-1.css"*/
+html {
+    background-image: url("reset.section1.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/reset/section-2.css"*/
+html {
+    background-image: url("reset.section2.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/reset/reset.css"*/
+/*!requires:"./section-1.css"*/
+/*!requires:"./section-2.css"*/
+
+/*!file:"@/test/assets/unit/104/styles/framework/section-1.css"*/
+html {
+    background-image: url("framework.section1.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/framework/section-2.css"*/
+html {
+    background-image: url("framework.section2.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/framework/framework.css"*/
+/*!requires:"./section-1.css"*/
+/*!requires:"./section-2.css"*/
+
+/*!file:"@/test/assets/unit/104/styles/custom/section-1.css"*/
+html {
+    background-image: url("custom.section1.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/custom/section-2.css"*/
+html {
+    background-image: url("custom.section2.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/custom/custom.css"*/
+/*!requires:"./section-1.css"*/
+/*!requires:"./section-2.css"*/
+
+/*!file:"@/test/assets/unit/104/styles/plugins/section-1.css"*/
+html {
+    background-image: url("plugins.section1.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/plugins/section-2.css"*/
+html {
+    background-image: url("plugins.section2.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/plugins/plugins.css"*/
+/*!requires:"./section-1.css"*/
+/*!requires:"./section-2.css"*/
+
+/*!file:"@/test/assets/unit/104/styles/theme-1/section-1.css"*/
+html {
+    background-image: url("theme-1.section1.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/theme-1/section-2.css"*/
+html {
+    background-image: url("theme-1.section2.png");
+}
+
+/*!file:"@/test/assets/unit/104/styles/theme-1/theme-1.css"*/
+/*!requires:"./section-1.css"*/
+/*!requires:"./section-2.css"*/
+
+/*!file:"@/test/assets/unit/104/main.css"*/
+/*!requires:"./styles/reset/reset.css"*/
+/*!requires:"./styles/framework/framework.css"*/
+/*!requires:"./styles/custom/custom.css"*/
+/*!requires:"./styles/plugins/plugins.css"*/
+/*!requires:"./styles/theme-1/theme-1.css"*/

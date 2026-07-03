@@ -1,5 +1,10 @@
 OK: lógica del import
-FALTA: lógica del export
+OK: lógica del export
 FALTA: css manager
-FALTA: su puente con el browser
-FALTA: tests de todo esto que falta
+
+- CssManager.prototype.add
+- CssManager.prototype._addRecursively
+- CssManager.prototype.remove
+- CssManager.prototype.synchronize
+- CssManager.prototype.reset
+- CssManager.prototype.set = add + synchronize

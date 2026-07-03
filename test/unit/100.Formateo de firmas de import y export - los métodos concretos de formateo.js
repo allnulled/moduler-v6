@@ -93,4 +93,6 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     }
   }
 
+  compilerV6._logger.log("Test 100 ok");
+
 };

@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.sheets = [];
+this.sheets = {};

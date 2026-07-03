@@ -1,5 +1,7 @@
 module.exports = async function ({ assert:assertLoudly, utils, compilerV6 }) {
 
+  compilerV6._logger.log("Test 103 iniciando");
+
   const { moduler: modulerV6 } = compilerV6;
   const assert = modulerV6.createAssertFunction() || assertLoudly;
 
@@ -9,13 +11,17 @@ module.exports = async function ({ assert:assertLoudly, utils, compilerV6 }) {
     try {await require("fs").promises.unlink(subcompiler.normalizationOf("./main.dist.js"));} catch (error) {}
     try {await require("fs").promises.unlink(subcompiler.normalizationOf("./main.dist.min.js"));} catch (error) {}
     Test_de_los_distribuibles: {
+      // La llamada cara es esta:
       const compilation = await subcompiler.compile("./main.js", {
         beautify: true,
         minify: true,
       });
-      const persistenceDist = await compilation.toFile("./main.dist.js", {mode:"beautified"});
-      const persistenceDistMin = await compilation.toFile("./main.dist.min.js", {mode:"minified"});
+      const [persistenceDist, persistenceDistMin] = await Promise.all([
+        compilation.toFile("./main.dist.js", {mode:"beautified"}),
+        compilation.toFile("./main.dist.min.js", {mode:"minified"}),
+      ]);
     }
+    compilerV6._logger.log("Test 103 - ok - parte 1 - distribuibles");
     Test_of_first_level_file_evaluation: {
       const middletest1 = await submoduler.import("./middletests/exports.any.js");
       const middletest2 = await submoduler.import("./middletests/module.exports.js");
@@ -28,8 +34,8 @@ module.exports = async function ({ assert:assertLoudly, utils, compilerV6 }) {
       assert(middletest3 === 703, "is not returning expectations about «ModulerV6.prototype.import» (34)");
       assert(middletest4 === "hello", "is not returning expectations about «ModulerV6.prototype.import» (35)");
       assert(middletest5 === "hello", "is not returning expectations about «ModulerV6.prototype.export(String:id,String:file)» (36)");
-      
     }
+    compilerV6._logger.log("Test 103 - ok - parte 2 - evaluación de ficheros");
     const main = await submoduler.import("./main.dist.js");
     assert(typeof main === "function", "is not returning a function here about «ModulerV6.prototype.import» (1)");
     const result = await main();
@@ -51,8 +57,10 @@ module.exports = async function ({ assert:assertLoudly, utils, compilerV6 }) {
       assert(typeof result[5] === "object", "is not returning expectations about «ModulerV6.prototype.export» (21)");
       assert(typeof result[6] === "number", "is not returning expectations about «ModulerV6.prototype.export» (22)");
       assert(typeof result[7] === "object", "is not returning expectations about «ModulerV6.prototype.export» (23)");
-
     }
+    compilerV6._logger.log("Test 103 - ok - parte 3 - firmas de import y export");
   }
+
+  compilerV6._logger.log("Test 103 ok");
 
 };

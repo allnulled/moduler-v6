@@ -17,11 +17,121 @@
             }
         };
         static CssManager=class CssManager {
-            constructor() {
-                this.sheets = [];
+            constructor(moduler, cloneOfCssManager = null) {
+                this.trace("constructor", arguments);
+                this.assert(typeof moduler === "object", `Parameter «moduler» must be object on «CssManager.constructor»`);
+                this.assert(moduler instanceof ModulerV6, `Parameter «moduler» must be instance of ModulerV6 on «CssManager.constructor»`);
+                this.moduler = moduler;
+                this.sheets = {};
+                this.parser = TextParserV1.create(ModulerV6.defaultGrammars.forCssOnRuntime);
+                this._isTracing = true;
             }
-            addSheet(id, cssContent) {}
-            removeSheet(id) {}
+            async _addRecursively(fileBrute, addEvent = {
+                sheets: {}
+            }) {
+                let file, source, tokens;
+                Normalize_filepath: {
+                    file = this.moduler.rootdirOf(fileBrute);
+                }
+                Return_cached_if_so: {
+                    if (file in this.sheets) {
+                        return this.sheets[file];
+                    }
+                    if (file in addEvent.sheets) {
+                        return addEvent.sheets[file];
+                    }
+                }
+                Start_cache: {
+                    addEvent.sheets[file] = {
+                        priority: undefined
+                    };
+                }
+                Load_source: {
+                    source = await this._fetchSheet(file);
+                    addEvent.sheets[file].source = source;
+                }
+                Extract_tokens: {
+                    tokens = await this._extractRequires(source, file);
+                    addEvent.sheets[file].tokens = tokens.formatted;
+                }
+                Load_requires: {
+                    const loadedRequires = [];
+                    for (let index = 0; index < tokens.formatted.length; index++) {
+                        const requiresToken = tokens.formatted[index];
+                        const requiresPathBrute = JSON.parse(requiresToken.inner);
+                        const requiresPath = this.moduler.rootdirOf(requiresPathBrute);
+                        loadedRequires.push(requiresPath);
+                        const submoduler = this.cloneForFile(requiresPath);
+                        if (!(requiresPath in this.sheets)) {
+                            await submoduler.css._addRecursively(requiresPath);
+                        }
+                    }
+                    addEvent.sheets[file].requires = loadedRequires;
+                }
+                Define_priority_now: {
+                    addEvent.sheets[file].priority = Object.keys(this.sheets).length;
+                }
+                return Object.assign(this.sheets, addEvent.sheets);
+            }
+            _fetchSheet(file) {
+                return this.moduler._readPath(file);
+            }
+            _extractRequires(source, file) {
+                const matches = this.parser.parse(source);
+                matches.file = {
+                    original: file,
+                    absolute: this.moduler.normalizationOf(file),
+                    basedir: this.moduler.basedir,
+                    based: this.moduler.basedirOf(file),
+                    rootdir: this.moduler.rootdir,
+                    rooted: this.moduler.rootdirOf(file)
+                };
+                return matches;
+            }
+            trace(method, args = [], forceLog = false) {
+                if (this._isTracing || forceLog) {
+                    console.log(`[css-manager][${method}] ${args.length} args: ${[ ...args ].map(arg => typeof arg).join(",")}`);
+                }
+            }
+            assert(condition, message) {
+                if (!condition) throw new Error(message);
+            }
+            async add(input) {
+                let output = undefined;
+                if (typeof input === "string") {
+                    output = await this._addRecursively(input);
+                } else if (Array.isArray(input)) {
+                    output = [];
+                    for (let index = 0; index < input.length; index++) {
+                        const item = input[index];
+                        this.moduler.assert(typeof item === "string", `Parameter «arguments[0][${index}]» must be string too on «CssManager.prototype.add»`);
+                        const result = await this._addRecursively(item);
+                        output.push(result);
+                    }
+                } else {
+                    throw new Error(`Parameter «arguments[0]» can only be string or array on «CssManager.prototype.add»`);
+                }
+                return output;
+            }
+            remove(file) {}
+            synchronize() {
+                let outputCss = "";
+                const sorted = this.getSortedSheets().map(sheet => `\n/*!file:${JSON.stringify(sheet.id)}*/\n${sheet.source}`).join("\n").replace(/\/\*\@requires\:/g, "/*!requires:");
+                return sorted;
+            }
+            cloneForFile(file) {
+                const submoduler = this.moduler.cloneForFile(file);
+                Synchronized_inheritance_between_css_managers: {
+                    submoduler.css.sheets = this.sheets;
+                }
+                return submoduler;
+            }
+            getSortedSheets() {
+                return Object.keys(this.sheets).map(id => ({
+                    id: id,
+                    ...this.sheets[id]
+                })).sort((a, b) => a.priority - b.priority);
+            }
         };
         static Parser=function(mod) {
             if (typeof window !== "undefined") window["TextParserV1"] = mod;
@@ -222,7 +332,8 @@
         static defaultGrammars={
             forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
             forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
-            forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ]
+            forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+            forCssOnRuntime: [ this.nativeGrammars.AtRequires ]
         };
         static symbols={
             REGEX_FOR_SLASH_AT_THE_END: /(\\|\/)$/g,
@@ -235,25 +346,6 @@
             } else {
                 return process.cwd();
             }
-        }
-        constructor(basedirArg = null, cloneOf = null) {
-            const basedir = basedirArg === null ? this.constructor.getEnvironmentDirectory() : basedirArg;
-            this.assert(typeof basedir === "string", `Parameter «basedir» must be string and not «${typeof basedir}» on «ModulerV6.constructor»`);
-            this.assert(typeof cloneOf === "object", `Parameter «cloneOf» must be object or null not «${typeof cloneOf}» on «ModulerV6.constructor»`);
-            this.assert(typeof basedir === "string", `Parameter «basedir» must be string on «Moduler.constructor»`);
-            this.basedir = basedir;
-            this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
-            this.modules = cloneOf ? cloneOf.modules : {};
-            this.grammars = {
-                forJs: this.constructor.defaultGrammars.forJs,
-                forCss: this.constructor.defaultGrammars.forCss,
-                forMd: this.constructor.defaultGrammars.forMd
-            };
-            this.parser = {
-                forJs: this.constructor.Parser.create(this.grammars.forJs),
-                forCss: this.constructor.Parser.create(this.grammars.forCss),
-                forMd: this.constructor.Parser.create(this.grammars.forMd)
-            };
         }
         _formatImportParameters(signature) {
             this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.prototype._formatImportParameters»");
@@ -438,6 +530,48 @@
         _createAsyncFunction(source, parameters = []) {
             return new async function() {}.constructor(...parameters, source);
         }
+        _importFile(filepathBrute) {
+            let originalHolder = {};
+            const filepath = this.normalizationOf(filepathBrute);
+            const moduleHolder = {
+                get exports() {
+                    return originalHolder;
+                },
+                set exports(output) {
+                    originalHolder = output;
+                }
+            };
+            return this.evaluateFile(filepath, {
+                module: moduleHolder,
+                exports: moduleHolder.exports,
+                $moduler: this.cloneForFile(filepath)
+            }).then(result => {
+                let output = undefined;
+                if (typeof result === "undefined") {
+                    output = moduleHolder.exports;
+                } else {
+                    output = moduleHolder.exports = result;
+                }
+                return this.modules[filepath] = output;
+            });
+        }
+        _importFactory(factory, dependencies = []) {
+            let originalHolder = {};
+            const moduleHolder = {
+                get exports() {
+                    return originalHolder;
+                },
+                set exports(output) {
+                    originalHolder = output;
+                }
+            };
+            const result = factory(dependencies, {
+                module: moduleHolder,
+                exports: moduleHolder.exports,
+                $moduler: this
+            });
+            return typeof result === "undefined" ? originalHolder : result;
+        }
         assert(condition, message) {
             return this.constructor.assert(condition, message);
         }
@@ -534,47 +668,26 @@
             }
             return this.modules[_id] = output;
         }
-        _importFile(filepath) {
-            let originalHolder = {};
-            const moduleHolder = {
-                get exports() {
-                    return originalHolder;
-                },
-                set exports(output) {
-                    originalHolder = output;
-                }
-            };
-            return this.evaluateFile(filepath, {
-                module: moduleHolder,
-                exports: moduleHolder.exports,
-                $moduler: this.cloneForFile(filepath)
-            }).then(result => {
-                let output = undefined;
-                if (typeof result === "undefined") {
-                    output = moduleHolder.exports;
-                } else {
-                    output = moduleHolder.exports = result;
-                }
-                return this.modules[filepath] = output;
-            });
-        }
-        _importFactory(factory, dependencies = []) {
-            let originalHolder = {};
-            const moduleHolder = {
-                get exports() {
-                    return originalHolder;
-                },
-                set exports(output) {
-                    originalHolder = output;
-                }
-            };
-            const result = factory(dependencies, {
-                module: moduleHolder,
-                exports: moduleHolder.exports,
-                $moduler: this
-            });
-            return typeof result === "undefined" ? originalHolder : result;
-        }
         static globalInstance=new this;
+        constructor(basedirArg = null, cloneOf = null) {
+            const basedir = basedirArg === null ? this.constructor.getEnvironmentDirectory() : basedirArg;
+            this.assert(typeof basedir === "string", `Parameter «basedir» must be string and not «${typeof basedir}» on «ModulerV6.constructor»`);
+            this.assert(typeof cloneOf === "object", `Parameter «cloneOf» must be object or null not «${typeof cloneOf}» on «ModulerV6.constructor»`);
+            this.assert(typeof basedir === "string", `Parameter «basedir» must be string on «Moduler.constructor»`);
+            this.basedir = basedir;
+            this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
+            this.modules = cloneOf ? cloneOf.modules : {};
+            this.grammars = {
+                forJs: this.constructor.defaultGrammars.forJs,
+                forCss: this.constructor.defaultGrammars.forCss,
+                forMd: this.constructor.defaultGrammars.forMd
+            };
+            this.parser = {
+                forJs: this.constructor.Parser.create(this.grammars.forJs),
+                forCss: this.constructor.Parser.create(this.grammars.forCss),
+                forMd: this.constructor.Parser.create(this.grammars.forMd)
+            };
+            this.css = new ModulerV6.CssManager(this);
+        }
     };
 }.call());
