@@ -1,6 +1,6 @@
 module.exports = async function({ assert, utils, compilerV6 }) {
-  const output1 = await compilerV6.compile("test/assets/unit/001/main.js", { to: "data" });
-  const output2 = await compilerV6.compile("test/assets/unit/001/main.js", { to: "code" });
+  const output1 = await compilerV6.compile("./test/assets/unit/001/main.js", { to: "data" });
+  const output2 = await compilerV6.compile("./test/assets/unit/001/main.js", { to: "code" });
 
   To_data: {
     compilerV6.assert(typeof output1 === "object", "can compile (to data) and return an object (point 1)");

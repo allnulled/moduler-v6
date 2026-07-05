@@ -4,6 +4,7 @@ const rootdir = path.resolve(`${__dirname}/..`);
 const rootrel = (subpath) => path.resolve(rootdir, subpath);
 const { minify } = require("terser");
 const settings = {
+  printInjections: 1,
   fulfillTemplate: options => `/**
  * @name ${options.name || ""}
  * @type ${options.type || ""}
@@ -30,7 +31,10 @@ let fileCounter = 0;
 const reduceTemplate = function(file, dir) {
   const filepath = path.resolve(dir, file);
   const dirpath = path.dirname(filepath);
-  console.log("Injecting file " + (fileCounter++) + ":", filepath);
+  fileCounter++;
+  if(settings.printInjections) {
+    console.log("Injecting file " + (fileCounter) + ":", filepath);
+  }
   const template = ensureFileSync(filepath, "utf8");
   const source = template.replace(/\$inject\.source\("([^"]+)"\)|\/\*\=\"(((?!\*\/).)+)\*\//g, function(match, group1, group2) {
     if(match.startsWith("$inject.")) {
@@ -85,7 +89,14 @@ const main = async function() {
       dist: "dist/moduler-v6.dist.js",
       distMin: "dist/moduler-v6.min.dist.js",
     }),
+    compileFile({
+      src: "src/dev-binary-v6.js",
+      dist: "dist/dev-binary-v6.dist.js",
+      distMin: "dist/dev-binary-v6.min.dist.js",
+    }),
   ]);
+  console.log(`[*] Total of ${fileCounter} injections`);
+  console.log(`[*] Successfully built all ModulerV6 APIs collection`);
 };
 
 module.exports = main();

@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.moduler = parent ? parent.moduler : new ModulerV6(this.basedir);
+this.moduler = new ModulerV6(basedir);

@@ -1,1 +1,1 @@
-funciones import y export con tests minimos
+CssManager haciendo la función de add y synchronize + tests

@@ -2,7 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 const settings = {
-  separateTests: false,
+  abortOnError: false,
+  separateTests: true,
   debugSuccess: true,
 };
 
@@ -55,6 +56,9 @@ const main = async function () {
         console.log(`\x1b[31m❌ · FAILED test ${filename}: ${index + 1}/${filenames.length} \x1b[0m`);
         console.log(error);
         errors.push({file:path.basename(filepath), error});
+        if(settings.abortOnError) {
+          break Iterating_tests;
+        }
       }
     }
   }

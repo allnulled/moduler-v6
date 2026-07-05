@@ -1,6 +1,8 @@
 module.exports = async function({ assert, utils, injection }) {
-  injection.CompilerV6 = require(`${__dirname}/../../dist/compiler-v6.dist.js`);
-  injection.compilerV6 = CompilerV6.create(`${__dirname}/../..`);
+  injection.DevBinaryV6 = require(`${__dirname}/../../dist/dev-binary-v6.dist.js`);
+  injection.devBinaryV6 = DevBinaryV6.create(`${__dirname}/../..`);
+  injection.CompilerV6 = injection.DevBinaryV6.CompilerV6;
+  injection.compilerV6 = injection.devBinaryV6.compiler;
   const settingsProfile = "clean" || "debug" || "clean";
   const profiles = {
     debug: () => {

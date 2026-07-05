@@ -1,7 +1,7 @@
 module.exports = async function({ assert, utils, compilerV6 }) {
-  const output1 = await compilerV6.compile("test/assets/unit/002/main.js", { to: "code" });
-  const output2 = await compilerV6.compile("test/assets/unit/002/main.css", { to: "code" });
-  const output3 = await compilerV6.compile("test/assets/unit/002/main.md", { to: "code" });
+  const output1 = await compilerV6.compile("./test/assets/unit/002/main.js", { to: "code" });
+  const output2 = await compilerV6.compile("./test/assets/unit/002/main.css", { to: "code" });
+  const output3 = await compilerV6.compile("./test/assets/unit/002/main.md", { to: "code" });
   compilerV6.assert(typeof output1 === "object", "Can compile and produce an object (1)");
   compilerV6.assert(typeof output1.js === "string", "Can compile and produce a string on «output.js» (1.1)");
   compilerV6.assert(typeof output1.css === "string", "Can compile and produce a string on «output.css» (1.2)");

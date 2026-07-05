@@ -11,12 +11,13 @@ constructor(basedirInput, parent = null, grammars = this.constructor._defaultGra
     this._tracer = parent._tracer;
   }
   this._trace("constructor", arguments);
-  const basedir = this.normalizationOf(basedirInput);
-  /*="./prototype.basedir.js"*/
+  const basedir = parent ? parent.fullpathOf(basedirInput) : this.fullpathOf(basedirInput);
+  // const basedir = this.normalizationOf(basedirInput);
   /*="./prototype.isBrowser.js"*/
+  /*="./prototype.basedir.js"*/
   /*="./prototype.previousdir.js"*/
   /*="./prototype.rootdir.js"*/
+  /*="./prototype.moduler.js"*/
   /*="./prototype._grammars.js"*/
   /*="./prototype._parser.js"*/
-  /*="./prototype.moduler.js"*/
 }

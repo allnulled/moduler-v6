@@ -7,9 +7,9 @@
   if (typeof CompilerV6 !== 'undefined') return CompilerV6;
   if (typeof window !== 'undefined') window['CompilerV6'] = mod;
   if (typeof global !== 'undefined') global['CompilerV6'] = mod;
-  if (typeof module !== 'undefined') module.exports = mod;
+  // if (typeof module !== 'undefined') module.exports = mod;
 })(function () {
-  const ModulerV6 = $inject.source("./ModulerV6/ModulerV6.class.js");
+  $inject.source("./moduler-v6.js")
   const CompilerV6 = $inject.source("./CompilerV6/CompilerV6.class.js");
   return CompilerV6;
 }.call());
