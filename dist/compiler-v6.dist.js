@@ -583,6 +583,12 @@
             createAssertFunction() {
                 return (...args) => this.assert(...args);
             }
+            setBasedir(basedir) {
+                this.basedir = this.normalizationOf(basedir);
+                if (this.compiler) {
+                    this.compiler.basedir = this.basedir;
+                }
+            }
             normalizationOf(subpath) {
                 this.assert(typeof subpath === "string", `Parameter «subpath» must be string on «ModulerV6.prototype.normalizationOf»`);
                 return this._joinPaths([ subpath ], "normalizationOf");
@@ -682,6 +688,7 @@
                 this.basedir = basedir;
                 this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
                 this.modules = cloneOf ? cloneOf.modules : {};
+                this.compiler = null;
                 this.grammars = {
                     forJs: this.constructor.defaultGrammars.forJs,
                     forCss: this.constructor.defaultGrammars.forCss,
@@ -1292,6 +1299,7 @@
             this.previousdir = parent ? parent.basedir : basedir;
             this.rootdir = parent ? parent.rootdir : basedir;
             this.moduler = new ModulerV6(basedir);
+            this.moduler.compiler = this;
             this._grammars = {
                 forJs: this.constructor._defaultGrammars.forJs,
                 forCss: this.constructor._defaultGrammars.forCss,
@@ -2071,6 +2079,10 @@
             }, {
                 ...options
             });
+        }
+        setBasedir(basedir) {
+            this.basedir = this.normalizationOf(basedir);
+            this.moduler.basedir = this.basedir;
         }
         log(...args) {
             if (!this._logger) {

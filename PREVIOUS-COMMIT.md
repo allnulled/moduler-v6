@@ -1,1 +1,1 @@
-CssManager haciendo la función de add y synchronize + tests
+normalizationOf de compiler y moduler van al mismo ahora

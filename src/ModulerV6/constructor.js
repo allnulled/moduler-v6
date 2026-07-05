@@ -10,6 +10,7 @@ constructor(basedirArg = null, cloneOf = null) {
   /*="./prototype.basedir.js"*/
   /*="./prototype.rootdir.js"*/
   /*="./prototype.modules.js"*/
+  /*="./prototype.compiler.js"*/
   /*="./prototype.grammars.js"*/
   /*="./prototype.parser.js"*/
   /*="./prototype.css.js"*/

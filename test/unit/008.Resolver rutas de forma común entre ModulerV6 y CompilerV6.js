@@ -2,7 +2,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
 
   const assert = assertLoudly || compilerV6.createAssertFunction();
 
-  Test_de_resolucion_de_rutas_desde_compiler_y_moduler: {
+  Resolucion_en_bug_noticiado: {
     assert(typeof DevBinaryV6 === "function", "Can find DevBinary class");
     assert(typeof devBinaryV6 === "object", "Can find devBinary instance");
     const innerDir = devBinaryV6.compiler.normalizationOf("@/test/assets/unit/008/find-first-parent-directory-containing/src/vendor/artifact");
@@ -15,7 +15,20 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
     assert(innerRoot2 !== root1, "Can find first parent directory containing certain file (2)");
   }
 
-  await devBinaryV6.command(["touch", "--file", "@/src/moduler-v6.js"]);
+  Sincronia_entre_compiler_y_moduler: {
+    From_compiler_to_moduler: {
+      const compiler1 = new CompilerV6(process.cwd());
+      compiler1.setBasedir(`${__dirname}/../assets/008`);
+      assert(compiler1.basedir === compiler1.moduler.basedir, "Can .setBasedir and change compiler and moduler basedir (1)");
+      assert(compiler1.normalizationOf("./whatever.js") === compiler1.moduler.normalizationOf("./whatever.js"), "Can change basedir of compiler and be reflected on moduler (2)");
+    }
+    From_moduler_to_compiler: {
+      const compiler2 = new CompilerV6(process.cwd());
+      compiler2.moduler.setBasedir(`${__dirname}/../assets/008`);
+      assert(compiler2.basedir === compiler2.moduler.basedir, "Can .setBasedir and change compiler and moduler basedir (3)");
+      assert(compiler2.normalizationOf("./whatever.js") === compiler2.moduler.normalizationOf("./whatever.js"), "Can change basedir of compiler and be reflected on moduler (4)");
+    }
+  }
 
   compilerV6._logger.log("Test 008 ok");
 

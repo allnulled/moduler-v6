@@ -68,5 +68,6 @@ class CompilerV6 {
   /*="./prototype.rootpathOf.js"*/
   /*="./prototype.fullpathOf.js"*/
   /*="./prototype.compile.js"*/
+  /*="./prototype.setBasedir.js"*/
   /*="./prototype.log.js"*/
 }

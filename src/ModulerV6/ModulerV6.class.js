@@ -27,6 +27,7 @@ class ModulerV6 {
   /*="./prototype._importFactory.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.createAssertFunction.js"*/
+  /*="./prototype.setBasedir.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.basedirOf.js"*/
   /*="./prototype.rootdirOf.js"*/
