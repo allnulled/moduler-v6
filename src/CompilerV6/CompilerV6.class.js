@@ -31,6 +31,7 @@ class CompilerV6 {
   /*="./prototype.assert.js"*/
   /*="./prototype.assertThrows.js"*/
   /*="./prototype.assertDoesNotThrow.js"*/
+  /*="./prototype.createAssertFunction.js"*/
   /*="./prototype._notifyAssertion.js"*/
   /*="./prototype._logger.js"*/
   /*="./prototype._tracer.js"*/
@@ -69,5 +70,6 @@ class CompilerV6 {
   /*="./prototype.fullpathOf.js"*/
   /*="./prototype.compile.js"*/
   /*="./prototype.setBasedir.js"*/
+  /*="./prototype.setRootdir.js"*/
   /*="./prototype.log.js"*/
 }

@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.isTracing = true;
+this.isTracing = false;

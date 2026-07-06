@@ -4,7 +4,7 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
 
   compilerV6.assert(typeof output.report === "object", "Can compile with {to:'data'} and return an object on .report (1)");
   compilerV6.assert(typeof output.report.tree === "object", "Can compile with {to:'data'} and return an object on .report.tree (2)");
-  console.log(output.report.tree);
+  // console.log(output.report.tree);
   compilerV6.assert(typeof output.report.tree["@/test/assets/unit/005/app.js"] === "object", "Can compile with {to:'data'} and return an object on .report.tree.<file> (3)");
   Test_de_reporte_de_sintaxis_moduler_import_export: {
     compilerV6.assert(Object.keys(output.report.tree).length > 1, "Can compile with {to:'data'} and return an object on .report.tree.<file> with multiple keys on .report.tree when dependencies are found (4)");

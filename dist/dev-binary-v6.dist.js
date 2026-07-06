@@ -600,6 +600,12 @@
                         this.compiler.basedir = this.basedir;
                     }
                 }
+                setRootdir(rootdir) {
+                    this.rootdir = this.normalizationOf(rootdir);
+                    if (this.compiler) {
+                        this.compiler.rootdir = this.rootdir;
+                    }
+                }
                 normalizationOf(subpath) {
                     this.assert(typeof subpath === "string", `Parameter «subpath» must be string on «ModulerV6.prototype.normalizationOf»`);
                     return this._joinPaths([ subpath ], "normalizationOf");
@@ -720,7 +726,7 @@
                 constructor(compiler) {
                     this.compiler = compiler;
                     this.isBrowser = compiler.isBrowser;
-                    this.isTracing = true;
+                    this.isTracing = false;
                     this.isLogging = true;
                     this.stack = [];
                     this.highlightedPatterns = [ [ "assert", "blackBright" ], [ "_compileRecursively", "cyan,underline" ], [ "_tokenizeText", "cyan,underline" ], [ "_compileTokens", "cyan,underline" ], [ ".constructor", "blue" ], [ "_replaceTextRange", "yellow,bold" ] ];
@@ -1369,6 +1375,9 @@
                     }
                     throw new this.constructor.AssertionError(`Should not have thrown: ${err.name}: ${err.message}`);
                 }
+            }
+            createAssertFunction() {
+                return (...args) => this.assert(...args);
             }
             _notifyAssertion(message) {
                 const text = `[ok] ${message}`;
@@ -2095,6 +2104,10 @@
                 this.basedir = this.normalizationOf(basedir);
                 this.moduler.basedir = this.basedir;
             }
+            setRootdir(rootdir) {
+                this.rootdir = this.normalizationOf(rootdir);
+                this.moduler.rootdir = this.rootdir;
+            }
             log(...args) {
                 if (!this._logger) {
                     this._logger = new this.constructor.Logger({
@@ -2112,63 +2125,202 @@
         }
         static CompilerV6=CompilerV6;
         static ModulerV6=CompilerV6.ModulerV6;
-        async command(args = []) {
-            let params;
-            Format_input: {
-                if (Array.isArray(args)) {
-                    params = {
-                        _: []
-                    };
-                    let selected = "_";
-                    for (let index = 0; index < args.length; index++) {
-                        const arg = args[index];
-                        if (arg.startsWith("-")) {
-                            selected = arg;
-                            params[selected] = params[selected] || [];
-                        } else {
-                            params[selected].push(arg);
+        static Utils=class DevBinaryV6Utils {
+            static async findFirstParentDirectoryContaining(dirBrute, file = "package.json", includingSelf = true) {
+                const fs = require("fs").promises;
+                const path = require("path");
+                const dir = path.resolve(dirBrute);
+                let dir2 = includingSelf ? dir : path.dirname(dir);
+                let prevDir2 = undefined;
+                let selectedDir = false;
+                Search_directory_up: while (dir2 !== prevDir2) {
+                    const filepath = path.resolve(dir2, file);
+                    try {
+                        await fs.readFile(filepath, "utf8");
+                        selectedDir = dir2;
+                        break Search_directory_up;
+                    } catch (error) {}
+                    prevDir2 = dir2;
+                    dir2 = path.dirname(dir2);
+                }
+                if (selectedDir) {
+                    return selectedDir;
+                }
+                throw new Error(`No directory up found with file «${file}» from directory «${dir}» on «DevBinaryV6Utils.findFirstParentDirectoryContaining»`);
+            }
+            assert(...args) {
+                return this.devbin.moduler.assert(...args);
+            }
+            parseCliArgs(args) {
+                this.assert(typeof args === "object", `Parameter «args» must be object on «DevBinaryV6.Utils.prototype.parseCliArgs»`);
+                this.assert(Array.isArray(args), `Parameter «args» must be array on «DevBinaryV6.Utils.prototype.parseCliArgs»`);
+                this.assert(args.length !== 0, `Parameter «args» must have at least 1 item on «DevBinaryV6.Utils.prototype.parseCliArgs»`);
+                let params = {
+                    _: []
+                };
+                let selected = "_";
+                for (let index = 0; index < args.length; index++) {
+                    const arg = args[index];
+                    if (arg.startsWith("-")) {
+                        selected = arg;
+                        params[selected] = params[selected] || [];
+                    } else {
+                        params[selected].push(arg);
+                    }
+                }
+                return params;
+            }
+            formatCliArgs(definition = false, argsBrute = process.argv) {
+                this.assert(typeof definition === "object", "Parameter «definition» must be object on «DevBinaryV6.Utils.prototype.formatCliArgs»");
+                Validate_arguments: {
+                    this.assert(typeof argsBrute === "object", "Parameter «args» must be object on «DevBinary.Utils.prototype.formatCliArgs»");
+                    this.assert(argsBrute !== null, "Parameter «args» cannot be null on «DevBinary.Utils.prototype.formatCliArgs»");
+                }
+                let args, result, usedKeys;
+                Initialize_args: {
+                    args = Array.isArray(argsBrute) ? this.parseCliArgs(argsBrute) : argsBrute;
+                }
+                result = {};
+                Initialize_positionals: {
+                    result._ = args ? args._ : [];
+                }
+                usedKeys = new Set([ "_" ]);
+                Iterating_definition_entries: for (const [name, config] of Object.entries(definition)) {
+                    const longKey = "--" + name;
+                    const aliases = config.alias || [];
+                    const sources = [];
+                    if (longKey in args) {
+                        sources.push({
+                            key: longKey,
+                            value: args[longKey]
+                        });
+                    }
+                    Iterating_aliases: for (const alias of aliases) {
+                        if (alias in args) {
+                            sources.push({
+                                key: alias,
+                                value: args[alias]
+                            });
                         }
                     }
+                    if (sources.length > 1) {
+                        throw new Error(`Option "${name}" was specified multiple times (${sources.map(v => v.key).join(", ")}).`);
+                    }
+                    if (sources.length === 0) {
+                        if ("default" in config) {
+                            result[name] = config.default;
+                        }
+                        continue Iterating_definition_entries;
+                    }
+                    usedKeys.add(longKey);
+                    for (const alias of aliases) {
+                        usedKeys.add(alias);
+                    }
+                    let value = sources[0].value;
+                    if (typeof config.onFormat === "function") {
+                        value = config.onFormat.call(this, [ ...value ]);
+                    }
+                    result[name] = value;
+                }
+                Iterating_keys: for (const key of Object.keys(args)) {
+                    if (usedKeys.has(key)) {
+                        continue Iterating_keys;
+                    }
+                    if (key.startsWith("-")) {
+                        throw new Error(`Unknown option "${key}".`);
+                    }
+                    result[key] = args[key];
+                }
+                return result;
+            }
+            constructor(devbin) {
+                this.devbin = devbin;
+            }
+        };
+        static ShadowCommands=class DevBinaryV6ShadowCommands {
+            constructor(devbin) {
+                this.devbin = devbin;
+            }
+            "new project"(args, devbin) {
+                const parameters = devbin.utils.formatCliArgs({
+                    from: {
+                        onFormat: devbin.constructor.Formatters.asString,
+                        default: false,
+                        alias: [ "-f" ],
+                        description: "Empty directory from which to start the new project"
+                    }
+                }, args);
+                console.log("Parameters:", parameters);
+                console.log("Aqui hay que conseguir crear un proyecto compatible con DevBinaryV6 desde 0.");
+            }
+            loop(args) {
+                console.log("Aqui hay que conseguir el loop de refrescador combinado con el touch");
+            }
+            touch(args) {
+                console.log("Aqui hay que conseguir el proceso del touch");
+            }
+        };
+        static Formatters={
+            asString: function(values) {
+                return values.at(-1);
+            },
+            asBoolean: function(values) {
+                return true;
+            }
+        };
+        async command(args = []) {
+            let commandParameters, commandSubpath, commandCallback, commandType;
+            Format_input: {
+                if (Array.isArray(args)) {
+                    commandParameters = this.utils.parseCliArgs(args);
+                    break Format_input;
                 } else if (typeof args === "object") {
-                    params = args;
-                } else {
-                    throw new Error(`Parameter «args» must be array or object but «${typeof args}» was found instead on «DevBinary.prototype.command»`);
+                    commandParameters = args;
+                    break Format_input;
+                }
+                throw new Error(`Parameter «args» must be array or object but «${typeof args}» was found instead on «DevBinary.prototype.command»`);
+            }
+            Define_path_from_command: {
+                commandSubpath = this.compiler.normalizationOf(`./dev/command/${commandParameters._.join("/")}/command.js`);
+            }
+            Load_command_callback_from_file_or_shadowCommands: {
+                let isReadable = undefined;
+                First_file: {
+                    try {
+                        await require("fs").promises.readFile(commandSubpath, "utf8");
+                        isReadable = true;
+                    } catch (error) {
+                        isReadable = false;
+                    }
+                }
+                Second_hook: {
+                    if (isReadable) {
+                        commandType = "file";
+                        commandCallback = require(commandSubpath);
+                    } else {
+                        commandType = "hook";
+                        const possibleHookId = commandParameters._.join(" ");
+                        if (possibleHookId in this.shadowCommands) {
+                            commandCallback = this.shadowCommands[possibleHookId];
+                            break Load_command_callback_from_file_or_shadowCommands;
+                        }
+                        throw new Error(`Could not find any command «${commandParameters._.join("/")}/command.js» at «${commandSubpath}» or any hook «${commandParameters._.join(" ")}» on «DevBinaryV6.prototype.command»`);
+                    }
                 }
             }
-            const commandSubpath = this.compiler.normalizationOf(`./dev/command/${params._.join("/")}/command.js`);
-            try {
-                await require("fs").promises.readFile(commandSubpath, "utf8");
-            } catch (error) {
-                throw new Error(`Could not find any command «${params._.join("/")}» at «${commandSubpath}» on «DevBinaryV6.prototype.command»`);
+            Execute_command_callback: {
+                return await commandCallback(commandParameters, this, commandType, commandSubpath);
             }
-            const callback = require(commandSubpath);
-            return await callback(params);
         }
-        static async _findFirstParentDirectoryContaining(dirBrute, file = "package.json", includingSelf = true) {
-            const fs = require("fs").promises;
-            const path = require("path");
-            const dir = path.resolve(dirBrute);
-            let dir2 = includingSelf ? dir : path.dirname(dir);
-            let prevDir2 = undefined;
-            let selectedDir = false;
-            Search_directory_up: while (dir2 !== prevDir2) {
-                const filepath = path.resolve(dir2, file);
-                try {
-                    await fs.readFile(filepath, "utf8");
-                    selectedDir = dir2;
-                    break Search_directory_up;
-                } catch (error) {}
-                prevDir2 = dir2;
-                dir2 = path.dirname(dir2);
-            }
-            if (selectedDir) {
-                return selectedDir;
-            }
-            throw new Error(`No directory up found with file «${file}» from directory «${dir}» on «DevBinary._findFirstParentDirectoryContaining»`);
+        selfDispatch() {
+            console.log(process.argv);
         }
         static globalInstance=new DevBinaryV6;
         constructor(basedir) {
             this.compiler = new CompilerV6(basedir || process.cwd());
+            this.moduler = this.compiler.moduler;
+            this.utils = new this.constructor.Utils(this);
+            this.shadowCommands = new this.constructor.ShadowCommands(this);
         }
     };
 }.call());

@@ -584,6 +584,12 @@
                 this.compiler.basedir = this.basedir;
             }
         }
+        setRootdir(rootdir) {
+            this.rootdir = this.normalizationOf(rootdir);
+            if (this.compiler) {
+                this.compiler.rootdir = this.rootdir;
+            }
+        }
         normalizationOf(subpath) {
             this.assert(typeof subpath === "string", `Parameter «subpath» must be string on «ModulerV6.prototype.normalizationOf»`);
             return this._joinPaths([ subpath ], "normalizationOf");

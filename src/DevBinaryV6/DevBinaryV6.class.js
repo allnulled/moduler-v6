@@ -7,8 +7,11 @@ class DevBinaryV6 {
   /*="./static.create.js"*/
   /*="./static.CompilerV6.js"*/
   /*="./static.ModulerV6.js"*/
+  /*="./static.Utils.js"*/
+  /*="./static.ShadowCommands.js"*/
+  /*="./static.Formatters.js"*/
   /*="./prototype.command.js"*/
-  /*="./static._findFirstParentDirectoryContaining.js"*/
+  /*="./prototype.selfDispatch.js"*/
   /*="./static.globalInstance.js"*/
   /*="./constructor.js"*/
 }

@@ -1,9 +1,9 @@
 /**
- * @name DevBinaryV6.static._findFirstParentDirectoryContaining
+ * @name DevBinaryV6Utils.findFirstParentDirectoryContaining
  * @type 
  * @description 
  */
-static async _findFirstParentDirectoryContaining(dirBrute, file = "package.json", includingSelf = true) {
+static async findFirstParentDirectoryContaining(dirBrute, file = "package.json", includingSelf = true) {
   const fs = require("fs").promises;
   const path = require("path");
   const dir = path.resolve(dirBrute);
@@ -26,5 +26,5 @@ static async _findFirstParentDirectoryContaining(dirBrute, file = "package.json"
   if(selectedDir) {
     return selectedDir;
   }
-  throw new Error(`No directory up found with file «${file}» from directory «${dir}» on «DevBinary._findFirstParentDirectoryContaining»`);
+  throw new Error(`No directory up found with file «${file}» from directory «${dir}» on «DevBinaryV6Utils.findFirstParentDirectoryContaining»`);
 }

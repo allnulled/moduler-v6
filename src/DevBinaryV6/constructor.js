@@ -4,5 +4,8 @@
  * @description 
  */
 constructor(basedir) {
-  this.compiler = new CompilerV6(basedir || process.cwd());
+  /*="./prototype.compiler.js"*/
+  /*="./prototype.moduler.js"*/
+  /*="./prototype.utils.js"*/
+  /*="./prototype.shadowCommands.js"*/
 }

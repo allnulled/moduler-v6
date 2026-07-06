@@ -589,6 +589,12 @@
                     this.compiler.basedir = this.basedir;
                 }
             }
+            setRootdir(rootdir) {
+                this.rootdir = this.normalizationOf(rootdir);
+                if (this.compiler) {
+                    this.compiler.rootdir = this.rootdir;
+                }
+            }
             normalizationOf(subpath) {
                 this.assert(typeof subpath === "string", `Parameter «subpath» must be string on «ModulerV6.prototype.normalizationOf»`);
                 return this._joinPaths([ subpath ], "normalizationOf");
@@ -709,7 +715,7 @@
             constructor(compiler) {
                 this.compiler = compiler;
                 this.isBrowser = compiler.isBrowser;
-                this.isTracing = true;
+                this.isTracing = false;
                 this.isLogging = true;
                 this.stack = [];
                 this.highlightedPatterns = [ [ "assert", "blackBright" ], [ "_compileRecursively", "cyan,underline" ], [ "_tokenizeText", "cyan,underline" ], [ "_compileTokens", "cyan,underline" ], [ ".constructor", "blue" ], [ "_replaceTextRange", "yellow,bold" ] ];
@@ -1358,6 +1364,9 @@
                 }
                 throw new this.constructor.AssertionError(`Should not have thrown: ${err.name}: ${err.message}`);
             }
+        }
+        createAssertFunction() {
+            return (...args) => this.assert(...args);
         }
         _notifyAssertion(message) {
             const text = `[ok] ${message}`;
@@ -2083,6 +2092,10 @@
         setBasedir(basedir) {
             this.basedir = this.normalizationOf(basedir);
             this.moduler.basedir = this.basedir;
+        }
+        setRootdir(rootdir) {
+            this.rootdir = this.normalizationOf(rootdir);
+            this.moduler.rootdir = this.rootdir;
         }
         log(...args) {
             if (!this._logger) {

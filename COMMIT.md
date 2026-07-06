@@ -1,1 +1,1 @@
-unificado basedir entre compiler y moduler mediante metodos setBasedir - por no usar proxis directamente
+api de hooks pasa a ser shadowcommands + todo preparado para entrar con los comandos
