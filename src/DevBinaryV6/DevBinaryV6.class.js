@@ -10,6 +10,7 @@ class DevBinaryV6 {
   /*="./static.Utils.js"*/
   /*="./static.ShadowCommands.js"*/
   /*="./static.Formatters.js"*/
+  /*="./prototype.assert.js"*/
   /*="./prototype.command.js"*/
   /*="./prototype.selfDispatch.js"*/
   /*="./static.globalInstance.js"*/

@@ -13,6 +13,7 @@ pwd > cwd.txt
     -i "**/dist/**/*" \
     -i "**/*.dist.*" \
     -i "**/logs/**/*" \
+    -i "**/test/assets/unit/**/*" \
     -p "3004" \
     -d 0 \
     -e "sh" \

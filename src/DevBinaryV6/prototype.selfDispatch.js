@@ -5,4 +5,5 @@
  */
 selfDispatch() {
   console.log(process.argv);
+  throw new Error("Method «selfDispatch» is not coded yet");
 }

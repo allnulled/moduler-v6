@@ -1,1 +1,1 @@
-api de hooks pasa a ser shadowcommands + todo preparado para entrar con los comandos
+comando de devbinaryv6: new project con test aimbolico
