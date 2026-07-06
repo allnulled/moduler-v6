@@ -1,1 +1,1 @@
-comando de devbinaryv6: new project con test aimbolico
+guia de modulacion en camino
