@@ -17,8 +17,10 @@
   },
   "devDependencies": {},
   "scripts": {
+    "up": "bash up.sh",
+    "build": "node dev/build.js",
     "dev": "bash dev.sh",
-    "up": "bash up.sh"
+    "test": "node test/runner.js"
   },
   "keywords": [],
   "author": "allnulled",
