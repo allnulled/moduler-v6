@@ -5,8 +5,8 @@
  */
 _reportFileToken(compilationFile, targetBrute, token) {
   this._traceIn("_reportFileToken", arguments);
-  const owner = this.rootpathOf(compilationFile.resource);
-  const target = this.rootpathOf(targetBrute);
+  const owner = this.rootdirOf(compilationFile.resource);
+  const target = this.rootdirOf(targetBrute);
   if (!(owner in compilationFile.report.tree)) {
     compilationFile.report.tree[owner] = {};
   }

@@ -2,8 +2,6 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
 
   const assert = compilerV6.createAssertFunction() || assertLoudly;
 
-  await devBinaryV6.command(["touch", "--file", "@/src/moduler-v6.js"]);
-
   assert(typeof devBinaryV6.command === "function", "Can find api methods (1)");
   assert(typeof devBinaryV6.selfDispatch === "function", "Can find api methods (2)");
   assert(typeof devBinaryV6.compiler === "object", "Can find api methods (3)");

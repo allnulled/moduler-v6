@@ -40,7 +40,7 @@ async "new project"(args, devbin) {
   await fs.promises.mkdir(`${targetDir}/test/unit/src`);
   await fs.promises.mkdir(`${targetDir}/docs`);
   await fs.promises.writeFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
-  await fs.promises.writeFile(`${targetDir}/dev/bin.js`, '#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/../src/lib/dev-binary-v6.dist.js`).create(`${__dirname}/..`);', "utf8");
+  await fs.promises.writeFile(`${targetDir}/dev/bin.js`, '#!/usr/bin/env node\n\nrequire(`${__dirname}/../src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);', "utf8");
   await fs.promises.writeFile(`${targetDir}/dev/run.js`, '#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();', "utf8");
   await fs.promises.writeFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
   await fs.promises.copyFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.dist.js`);

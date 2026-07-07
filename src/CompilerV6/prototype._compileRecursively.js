@@ -14,8 +14,8 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
     compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
   }
   Add_entry_in_tree: {
-    // compilationFile.resource = this.rootpathOf(compilationFile.resource);
-    const id = this.rootpathOf(compilationFile.resource);
+    // compilationFile.resource = this.rootdirOf(compilationFile.resource);
+    const id = this.rootdirOf(compilationFile.resource);
     compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
   }
   Compile_inner_files_recursively_with_subcompiler: {

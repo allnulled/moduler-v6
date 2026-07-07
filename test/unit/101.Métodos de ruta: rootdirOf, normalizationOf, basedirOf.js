@@ -60,6 +60,12 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     compilerV6.assert(out6.includes('http://whatever.com/so'), `Paths using normalizationOf works (6)`);
   }
 
+  Funciona_fullpathOf: {
+    const out1 = compilerV6.fullpathOf("@/some/path.js");
+    const out2 = require("path").resolve(compilerV6.rootdir, "some/path.js");
+    compilerV6.assert(out1 === out2, "Paths using fullpathOf works (1)");
+  }
+
   compilerV6._logger.log("Test 101 ok");
 
 };

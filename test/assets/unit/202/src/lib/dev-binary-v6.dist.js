@@ -1,7 +1,7 @@
 (function(mod) {
-    if (typeof $dev === "undefined") {
-        if (typeof window !== "undefined") window["$dev"] = mod.globalInstance;
-        if (typeof global !== "undefined") global["$dev"] = mod.globalInstance;
+    if (typeof $devbin === "undefined") {
+        if (typeof window !== "undefined") window["$devbin"] = mod.globalInstance;
+        if (typeof global !== "undefined") global["$devbin"] = mod.globalInstance;
     }
     if (typeof DevBinaryV6 === "undefined") {
         if (typeof window !== "undefined") window["DevBinaryV6"] = mod;
@@ -1487,7 +1487,7 @@
                     compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
                 }
                 Add_entry_in_tree: {
-                    const id = this.rootpathOf(compilationFile.resource);
+                    const id = this.rootdirOf(compilationFile.resource);
                     compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
                 }
                 Compile_inner_files_recursively_with_subcompiler: {
@@ -1885,8 +1885,8 @@
             }
             _reportFileToken(compilationFile, targetBrute, token) {
                 this._traceIn("_reportFileToken", arguments);
-                const owner = this.rootpathOf(compilationFile.resource);
-                const target = this.rootpathOf(targetBrute);
+                const owner = this.rootdirOf(compilationFile.resource);
+                const target = this.rootdirOf(targetBrute);
                 if (!(owner in compilationFile.report.tree)) {
                     compilationFile.report.tree[owner] = {};
                 }
@@ -1925,7 +1925,7 @@
                     referenceOf: (() => {
                         const entry = this._hydrateParameters(token.inner)[0];
                         const fullpath = this.fullpathOf(entry);
-                        const rootpath = this.rootpathOf(fullpath);
+                        const rootpath = this.rootdirOf(fullpath);
                         return {
                             type: "file",
                             entry: entry,
@@ -2083,13 +2083,16 @@
                 this._trace("normalizationOf", arguments);
                 return this.moduler.normalizationOf(nodepath);
             }
-            rootpathOf(fullpath) {
-                this._trace("rootpathOf", arguments);
+            rootdirOf(fullpath) {
+                this._trace("rootdirOf", arguments);
                 const normalization = this.normalizationOf(fullpath);
                 return normalization.startsWith(this.rootdir + "/") ? normalization.replace(this.rootdir + "/", "@/") : normalization;
             }
             fullpathOf(nodepath) {
                 this._trace("fullpathOf", arguments);
+                if (nodepath.startsWith("@/")) {
+                    return require("path").resolve(this.rootdir, nodepath.substr(2));
+                }
                 return require("path").resolve(this.basedir, nodepath);
             }
             async compile(resource, options = {}) {
@@ -2233,6 +2236,175 @@
                 }
                 return result;
             }
+            async compileDistribuiblesOf(filepath, event) {
+                let compilation, outputJs, outputCss, outputMd, report;
+                Initialize_report: {
+                    report = {};
+                }
+                Get_compilation: {
+                    compilation = await this.devbin.compiler.compile(filepath);
+                }
+                Get_dist_filepaths: {
+                    const outputNames = this.getDistribuibleFilenamesOf(compilation.file);
+                    const inputDir = require("path").dirname(outputNames.file);
+                    const inputRootdir = this.devbin.compiler.rootdirOf(inputDir);
+                    const outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\//g, "@/dist/"));
+                    outputJs = require("path").resolve(outputDir, outputNames.js);
+                    outputCss = require("path").resolve(outputDir, outputNames.css);
+                    outputMd = require("path").resolve(outputDir, outputNames.md);
+                    report.names = outputNames;
+                }
+                Make_assertions_for_safety: {
+                    this.assert(outputJs.endsWith(".dist.js"));
+                    this.assert(outputCss.endsWith(".dist.css"));
+                    this.assert(outputMd.endsWith(".md"));
+                    this.assert(outputJs.includes("/dist/"));
+                }
+                Overwrite_dist_files: {
+                    await this.ensureDirectoryOf(outputJs);
+                    if (compilation.js) {
+                        await require("fs").promises.writeFile(outputJs, compilation.js, "utf8");
+                        report.js = outputJs;
+                    }
+                    if (compilation.css) {
+                        await require("fs").promises.writeFile(outputCss, compilation.css, "utf8");
+                        report.css = outputCss;
+                    }
+                    if (compilation.md) {
+                        await require("fs").promises.writeFile(outputMd, compilation.md, "utf8");
+                        report.md = outputMd;
+                    }
+                }
+                Feedback_report: {
+                    return report;
+                }
+            }
+            getDistribuibleFilenamesOf(fileBrute) {
+                let file, filename, fileExtension;
+                file = require("path").basename(fileBrute);
+                if (file.endsWith(".entry.js")) {
+                    filename = file.substr(0, file.length - ".entry.js".length);
+                    fileExtension = "js";
+                } else if (file.endsWith(".entry.css")) {
+                    filename = file.substr(0, file.length - ".entry.css".length);
+                    fileExtension = "css";
+                } else if (file.endsWith(".entry.md")) {
+                    filename = file.substr(0, file.length - ".entry.md".length);
+                    fileExtension = "md";
+                } else {
+                    throw new Error(`Parameter «file» must end with «.entry.js», «.entry.css» or «.entry.md» but it is «${file}» on «DevBinaryV6.Utils.prototype.getDistribuibleFilenamesOf»`);
+                }
+                return {
+                    file: fileBrute,
+                    rootdir: this.devbin.compiler.rootdirOf(fileBrute),
+                    rootdirDirectory: require("path").dirname(this.devbin.compiler.rootdirOf(fileBrute)),
+                    basename: file,
+                    extension: fileExtension,
+                    test: filename + ".test.js",
+                    js: filename + ".dist.js",
+                    css: filename + ".dist.css",
+                    md: filename + ".md"
+                };
+            }
+            async fabricateUnitTestFileOf(filepath, event) {
+                const path = require("path");
+                const fs = require("fs");
+                const testunitFile = path.resolve(event.distribution.names.rootdirDirectory.replace(/^\@\/src/g, this.devbin.compiler.fullpathOf("@/test/unit/src")), event.distribution.names.test);
+                const devBinaryV6Filepath = this.devbin.compiler.fullpathOf("@/dev/bin.js");
+                const devBinaryV6RelativeFilepath = path.relative(path.dirname(testunitFile), devBinaryV6Filepath);
+                const relativeTarget = path.relative(path.dirname(testunitFile), event.distribution.js);
+                const testunitContent = `const devbin = require(__dirname + ${JSON.stringify("/" + devBinaryV6RelativeFilepath)});\nconst target = require(__dirname + ${JSON.stringify("/" + relativeTarget)});\n\ndevbin.assert(true, "Test is empty right now");`;
+                const testunitDir = path.dirname(testunitFile);
+                await fs.promises.mkdir(testunitDir, {
+                    recursive: true
+                });
+                await fs.promises.writeFile(testunitFile, testunitContent, "utf8");
+                return {
+                    unitDir: testunitDir,
+                    unitFile: testunitFile,
+                    unitContent: testunitContent,
+                    targetFile: event.distribution.names.file
+                };
+            }
+            executeUnitTestFileOf(filepath, event) {
+                return require(event.testFabrication.unitFile);
+            }
+            async propagateUpTouchEventFrom(filepath) {
+                const fs = require("fs");
+                const path = require("path");
+                let nextPropagationFiles = [];
+                let dir = path.dirname(path.dirname(path.resolve(filepath)));
+                Iterating_entries: while (true) {
+                    const entries = await fs.promises.readdir(dir, {
+                        withFileTypes: true
+                    });
+                    const matchedEntries = entries.filter(e => e.isFile() && (e.name.endsWith(".entry.js") || e.name.endsWith(".entry.css") || e.name.endsWith(".entry.md"))).map(e => path.resolve(e.path, e.name));
+                    if (matchedEntries.length) {
+                        nextPropagationFiles = matchedEntries;
+                        break Iterating_entries;
+                    }
+                    const parentDir = path.dirname(dir);
+                    if (parentDir === dir) {
+                        return null;
+                    }
+                    dir = parentDir;
+                }
+                const file0 = nextPropagationFiles[0];
+                await Promise.all(nextPropagationFiles.map(file => this.touchFile(file, {
+                    propagateUp: false
+                })));
+                return this.propagateUpTouchEventFrom(file0);
+            }
+            ensureDirectoryOf(file) {
+                return require("fs").promises.mkdir(require("path").dirname(file), {
+                    recursive: true
+                }).catch(error => false);
+            }
+            async touchFile(file, options = {
+                propagateUp: true
+            }) {
+                this.assert(typeof file === "string", `Parameter «--file» must be string and not «${typeof file}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+                const fs = require("fs");
+                const path = require("path");
+                const filepath = this.devbin.compiler.fullpathOf(file);
+                this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${filepath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+                const event = {
+                    options: options
+                };
+                event.isJsEntry = filepath.endsWith(".entry.js");
+                event.isCssEntry = filepath.endsWith(".entry.css");
+                event.isMdEntry = filepath.endsWith(".entry.md");
+                const isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
+                Processing_entry: {
+                    if (!isEntry) {
+                        console.log(`[*] Ignored because file is not entry: ${filepath}`) || -1;
+                    } else {
+                        Paso_1_compilar_distribuibles: {
+                            Object.assign(event, {
+                                distribution: await this.compileDistribuiblesOf(filepath, event)
+                            });
+                        }
+                        Paso_2_fabricar_test_unitario: {
+                            Object.assign(event, {
+                                testFabrication: await this.fabricateUnitTestFileOf(filepath, event)
+                            });
+                        }
+                        Paso_3_ejecutar_test_unitario: {
+                            Object.assign(event, {
+                                testExecution: await this.executeUnitTestFileOf(filepath, event)
+                            });
+                        }
+                    }
+                }
+                Propagating_touch_up: {
+                    Paso_4_propagar_evento_arriba: {
+                        Object.assign(event, {
+                            touchPropagation: options.propagateUp ? await this.propagateUpTouchEventFrom(filepath, event) : false
+                        });
+                    }
+                }
+                return event;
+            }
             constructor(devbin) {
                 this.devbin = devbin;
             }
@@ -2281,7 +2453,7 @@
                 await fs.promises.mkdir(`${targetDir}/test/unit/src`);
                 await fs.promises.mkdir(`${targetDir}/docs`);
                 await fs.promises.writeFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
-                await fs.promises.writeFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/../src/lib/dev-binary-v6.dist.js`).create(`${__dirname}/..`);", "utf8");
+                await fs.promises.writeFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nrequire(`${__dirname}/../src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
                 await fs.promises.writeFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
                 await fs.promises.writeFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
                 await fs.promises.copyFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.dist.js`);
@@ -2295,7 +2467,16 @@
                 console.log("Aqui hay que conseguir el loop de refrescador combinado con el touch");
             }
             touch(args) {
-                console.log("Aqui hay que conseguir el proceso del touch");
+                const parameters = this.devbin.utils.formatCliArgs({
+                    file: {
+                        onFormat: this.devbin.constructor.Formatters.asString,
+                        default: false,
+                        alias: [ "-f" ],
+                        description: "Target file. Must be js, css or md."
+                    }
+                }, args);
+                this.assert(typeof parameters.file === "string", `Parameter «--file» is required as string on «DevBinaryV6.ShadowCommands.prototype.touch»`);
+                return this.devbin.utils.touchFile(parameters.file);
             }
         };
         static Formatters={
@@ -2342,7 +2523,7 @@
                         commandType = "hook";
                         const possibleHookId = commandParameters._.join(" ");
                         if (possibleHookId in this.shadowCommands) {
-                            commandCallback = this.shadowCommands[possibleHookId].bind(this.shadowCommands);
+                            commandCallback = this.shadowCommands[possibleHookId];
                             break Load_command_callback_from_file_or_shadowCommands;
                         }
                         throw new Error(`Could not find any command «${commandParameters._.join("/")}/command.js» at «${commandSubpath}» or any hook «${commandParameters._.join(" ")}» on «DevBinaryV6.prototype.command»`);
@@ -2350,19 +2531,25 @@
                 }
             }
             Execute_command_callback: {
-                return await commandCallback(commandParameters, this, commandType, commandSubpath);
+                return await commandCallback.call(this.shadowCommands, commandParameters, this, commandType, commandSubpath);
             }
         }
         selfDispatch() {
             console.log(process.argv);
             throw new Error("Method «selfDispatch» is not coded yet");
         }
+        cloneForFile(resource, devbin = false) {
+            this.assert(typeof resource === "string", "Parameter «resource» must be string on «DevBinaryV6.prototype.cloneForFile»");
+            const dirpath = require("path").dirname(this.compiler.fullpathOf(resource));
+            const clone = new this.constructor(dirpath, devbin);
+            return clone;
+        }
         static globalInstance=new DevBinaryV6;
-        constructor(basedir) {
-            this.compiler = new CompilerV6(basedir || process.cwd());
+        constructor(basedir, parent = null) {
+            this.compiler = new CompilerV6(basedir || process.cwd(), ...parent ? [ parent.compiler ] : []);
             this.moduler = this.compiler.moduler;
-            this.utils = new this.constructor.Utils(this);
-            this.shadowCommands = new this.constructor.ShadowCommands(this);
+            this.utils = parent ? parent.utils : new this.constructor.Utils(this);
+            this.shadowCommands = parent ? parent.shadowCommands : new this.constructor.ShadowCommands(this);
         }
     };
 }.call());

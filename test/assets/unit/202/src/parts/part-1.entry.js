@@ -1,0 +1,1 @@
+$compiler.inject.source("./m1.js")

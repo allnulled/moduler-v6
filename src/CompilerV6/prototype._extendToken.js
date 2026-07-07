@@ -9,7 +9,7 @@ _extendToken(token, fields = [], submoduler = false) {
     referenceOf: (() => {
       const entry = this._hydrateParameters(token.inner)[0];
       const fullpath = this.fullpathOf(entry);
-      const rootpath = this.rootpathOf(fullpath);
+      const rootpath = this.rootdirOf(fullpath);
       return { type: "file", entry, fullpath, rootpath };
     })(),
   });

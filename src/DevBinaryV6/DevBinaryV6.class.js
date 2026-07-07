@@ -13,6 +13,7 @@ class DevBinaryV6 {
   /*="./prototype.assert.js"*/
   /*="./prototype.command.js"*/
   /*="./prototype.selfDispatch.js"*/
+  /*="./prototype.cloneForFile.js"*/
   /*="./static.globalInstance.js"*/
   /*="./constructor.js"*/
 }

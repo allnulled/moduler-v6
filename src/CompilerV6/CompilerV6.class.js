@@ -66,7 +66,7 @@ class CompilerV6 {
   /*="./prototype._getParametersFromModulerImportSignature.js"*/
   /*="./prototype._getStringForDevelopment.js"*/
   /*="./prototype.normalizationOf.js"*/
-  /*="./prototype.rootpathOf.js"*/
+  /*="./prototype.rootdirOf.js"*/
   /*="./prototype.fullpathOf.js"*/
   /*="./prototype.compile.js"*/
   /*="./prototype.setBasedir.js"*/

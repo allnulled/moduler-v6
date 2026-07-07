@@ -1,8 +1,15 @@
 # Guía de modulación con ModulerV6
 
-Esta es la guía de modulación con DevBinaryV6.
+Esta es la guía de modulación con CompilerV6 y ModulerV6.
 
-Con DevBinaryV6 se incluyen CompilerV6 y ModulerV6.
+## Índice
+
+- [Guía de modulación con ModulerV6](#guía-de-modulación-con-modulerv6)
+  - [Índice](#índice)
+  - [Definiciones iniciales](#definiciones-iniciales)
+  - [El principal problema que intenta resolver esta guía](#el-principal-problema-que-intenta-resolver-esta-guía)
+  - [Las variables principales al decidir el óptimo método de modulación](#las-variables-principales-al-decidir-el-óptimo-método-de-modulación)
+  - [Los 3 ejemplos paradigmáticos](#los-3-ejemplos-paradigmáticos)
 
 ## Definiciones iniciales
 
@@ -26,7 +33,7 @@ Hay diferentes tipos de modulación que encajan con diferentes casuísticas.
 
 Esta guía intenta facilitar averiguar cuál es el método óptimo para cada casuística.
 
-## Las variables principales
+## Las variables principales al decidir el óptimo método de modulación
 
 Las variables principales *para discriminar el método óptimo de modulación* son:
 
@@ -58,7 +65,7 @@ Las variables que no deben contar para nada:
 - El **trackeo**
    - Porque el reporte del compilador también va a cazar las dependencias por inyección (módulo acoplado)
 
-## El ejemplo paradigmático
+## Los 3 ejemplos paradigmáticos
 
 Con este ejemplo se pretenden abarcar los 3 casos más típicos donde la modulación plantea una respuesta clara:
 
@@ -114,10 +121,12 @@ El tercer caso es el punto intermedio: una API grande, pero con muchas (o muy pe
 Este caso, los frameworks suelen resolverlo distinguiendo:
 
 - Una parte de la API es el Core
+   - Esta se haría con inyecciones de código
    - Se carga de 1 vez para todas
    - Incluye lo que tiene más frecuencia de uso
    - Incluye el esqueleto de la dependencia horizontal
 - Las otras partes de la API son módulos
+   - Esta se haría con módulos programáticos
    - Se cargan a medida que se precisan de usar
 
 Esto puede verse por ejemplo en APIs grandes como Babylon.js, donde tienes una parte central, pero tienes otras varias satelitales que también forman parte de la API.

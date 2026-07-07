@@ -1,1 +1,1 @@
-fix documentacion
+función del touch para que fabrique el dist y el test

@@ -1,7 +1,7 @@
 (function (mod) {
-  if (typeof $dev === 'undefined') {
-    if (typeof window !== 'undefined') window['$dev'] = mod.globalInstance;
-    if (typeof global !== 'undefined') global['$dev'] = mod.globalInstance;
+  if (typeof $devbin === 'undefined') {
+    if (typeof window !== 'undefined') window['$devbin'] = mod.globalInstance;
+    if (typeof global !== 'undefined') global['$devbin'] = mod.globalInstance;
   }
   if (typeof DevBinaryV6 === 'undefined') {
     if (typeof window !== 'undefined') window['DevBinaryV6'] = mod;

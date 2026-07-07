@@ -1476,7 +1476,7 @@
                 compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
             }
             Add_entry_in_tree: {
-                const id = this.rootpathOf(compilationFile.resource);
+                const id = this.rootdirOf(compilationFile.resource);
                 compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
             }
             Compile_inner_files_recursively_with_subcompiler: {
@@ -1874,8 +1874,8 @@
         }
         _reportFileToken(compilationFile, targetBrute, token) {
             this._traceIn("_reportFileToken", arguments);
-            const owner = this.rootpathOf(compilationFile.resource);
-            const target = this.rootpathOf(targetBrute);
+            const owner = this.rootdirOf(compilationFile.resource);
+            const target = this.rootdirOf(targetBrute);
             if (!(owner in compilationFile.report.tree)) {
                 compilationFile.report.tree[owner] = {};
             }
@@ -1914,7 +1914,7 @@
                 referenceOf: (() => {
                     const entry = this._hydrateParameters(token.inner)[0];
                     const fullpath = this.fullpathOf(entry);
-                    const rootpath = this.rootpathOf(fullpath);
+                    const rootpath = this.rootdirOf(fullpath);
                     return {
                         type: "file",
                         entry: entry,
@@ -2072,13 +2072,16 @@
             this._trace("normalizationOf", arguments);
             return this.moduler.normalizationOf(nodepath);
         }
-        rootpathOf(fullpath) {
-            this._trace("rootpathOf", arguments);
+        rootdirOf(fullpath) {
+            this._trace("rootdirOf", arguments);
             const normalization = this.normalizationOf(fullpath);
             return normalization.startsWith(this.rootdir + "/") ? normalization.replace(this.rootdir + "/", "@/") : normalization;
         }
         fullpathOf(nodepath) {
             this._trace("fullpathOf", arguments);
+            if (nodepath.startsWith("@/")) {
+                return require("path").resolve(this.rootdir, nodepath.substr(2));
+            }
             return require("path").resolve(this.basedir, nodepath);
         }
         async compile(resource, options = {}) {

@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.compiler = new CompilerV6(basedir || process.cwd());
+this.compiler = new CompilerV6(basedir || process.cwd(), ...(parent ? [parent.compiler] : []));

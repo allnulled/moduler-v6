@@ -1,0 +1,1 @@
+$compiler.inject.source("./parts/part-2.entry.js")
