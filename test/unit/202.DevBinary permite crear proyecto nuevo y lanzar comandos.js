@@ -33,7 +33,13 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
     assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-1.dist.js`), "File should exist already (832195-3)");
     assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-2.dist.js`), "File should exist already (832195-4)");
   }
-  await devBinaryV6.command(["loop", "--port", "5006"]);
+  devBinaryV6.compiler.setRootdir(`${__dirname}/../assets/unit/202`);
+  devBinaryV6.compiler.setBasedir(`${__dirname}/../assets/unit/202`);
+  const output = await devBinaryV6.command(["loop", "--port", "5006"]);
+  await Promise.all([
+    output.server.server.close(),
+    output.server.watcher.close(),
+  ]);
 
   compilerV6._logger.log("Test 202 ok");
 };

@@ -1,1 +1,1 @@
-se genera un dist en la ruta del src + refrescador integrado en DevBinaryV6 mediante require - todo preparado para el comando loop
+ya llegando comando loop casi

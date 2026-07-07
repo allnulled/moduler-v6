@@ -3,11 +3,44 @@
  * @type 
  * @description 
  */
-loop(args) {
-  // @TODO: completar el comando de que empiecen las escuchas para hacer touch
-  // Lo suyo sería: refrescador y pipe a 1 genérico que administre el evento
-  // Y tener claro DÓNDE SÍ hay que escuchar y DÓNDE NO
-  // De esta forma dejarlo claro con los ignore del principio y normas de prohibición de sentido común
-  // NOS AHORRARÍAMOS LOS SEMÁFOROS, que es una API que sería exagerada para el caso de uso
-  console.log("Aqui hay que conseguir el loop de refrescador combinado con el touch");
+async loop(args) {
+  const targetRoot = await this.devbin.utils.constructor.findFirstParentDirectoryContaining(process.cwd(), "package.json");
+  const targetDir = require("path").resolve(targetRoot, "src");
+  return this.devbin.constructor.Refrescador.run({
+    watch: [
+      targetDir,
+    ],
+    bulletproof: false,
+    ignore: [
+      "**/node_modules/**/*",
+      "**/dist/**/*",
+      "**/*.dist.*",
+      "**/logs/**/*",
+      "**/test/assets/unit/**/*"
+    ],
+    port: 3005,
+    debounce: 0,
+    extensions: [
+      "sh",
+      "ts",
+      "tsx",
+      "txt",
+      "js",
+      "json",
+      "css",
+      "html",
+      "md",
+    ],
+    execute: [
+      'dev/run.js touch --file @{refrescador.file}',
+    ],
+    message: "El tiempo de refrescar ha llegado",
+    messageFile: "TODO.md",
+    payload: 'console.log("📟 Evento de refrescar activado");',
+    // ignoreCallback: __dirname + "/ignorer.js",
+    // executeCallback: ["file/from/cwd/target.js",],
+    // payloadFile: 'browser-payload.js',
+    // serve: 'some/static/www',
+    // urlPrefix: 'static/subpath/on/server',
+  });
 }
