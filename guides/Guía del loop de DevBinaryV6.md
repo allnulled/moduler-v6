@@ -58,10 +58,10 @@ Hay una serie de patrones de rutas de fichero o directorio que pueden interferir
 
 - Los `src/**/*.entry.{js,css,md}` son los ficheros susceptibles de procesarse por el loop
    - Te permite compilar APIs recursivamente
-   - Los que no acaben con `.entry.{js,css,md}` no disparan el touch del loop
+   - Los que no acaben con `.entry.{js,css,md}` no disparan el touch del loop dentro del directorio `@/src`
 - Los `test/**/*.test.{js,css,md}` son ficheros susceptibles de disparar una auto-ejecución
    - Te permite probar el test mientras lo manipulas
-   - Los que no acaben con `.entry.{js,css,md}` no disparan el touch del loop
+   - Los que no acaben con `.test.{js,css,md}` no disparan el touch del loop dentro del directorio `@/test`
 
 ## Directorios y ficheros importantes en el loop
 

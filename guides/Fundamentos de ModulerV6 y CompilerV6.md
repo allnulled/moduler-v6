@@ -77,7 +77,7 @@ $compiler.inject.source("./file.css")
 
 ```js
 $compiler.inject.source("./file.md")
-/*@injects:./file.md*/
+/*@injects:"./file.md"*/
 ```
 
 ### Inyectar desde js a html u otros textos
@@ -95,13 +95,13 @@ const texto = $compiler.inject.string("./file.html")
 ### Inyectar desde css a md
 
 ```css
-/*@injects:./file.md*/
+/*@injects:"./file.md"*/
 ```
 
 ### Inyectar desde md a md
 
 ```md
-/*@injects:./file.md*/
+/*@injects:"./file.md"*/
 ```
 
 Esto será reemplazado antes de volver del `ComilerV6.prototype.compile`, por lo que no se verá luego.
