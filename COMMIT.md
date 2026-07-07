@@ -1,1 +1,1 @@
-función del touch para que fabrique el dist y el test
+comando devbin touch ok + no tests muy consistentes pero algun test
