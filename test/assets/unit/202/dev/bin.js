@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-require(`${__dirname}/../src/lib/dev-binary-v6.dist.js`);
+require(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);
 
 module.exports = DevBinaryV6.create(`${__dirname}/..`);

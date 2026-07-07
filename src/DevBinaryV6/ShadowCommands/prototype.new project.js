@@ -28,6 +28,7 @@ async "new project"(args, devbin) {
     author: "allnulled",
     version: "1.0.0",
   };
+
   await fs.promises.mkdir(`${targetDir}/dev`);
   await fs.promises.mkdir(`${targetDir}/dev/bin`);
   await fs.promises.mkdir(`${targetDir}/dev/bin/help`);
@@ -35,16 +36,25 @@ async "new project"(args, devbin) {
   await fs.promises.mkdir(`${targetDir}/src/lib`);
   await fs.promises.mkdir(`${targetDir}/dist`);
   await fs.promises.mkdir(`${targetDir}/dist/src`);
+  await fs.promises.mkdir(`${targetDir}/dist/src/lib`);
   await fs.promises.mkdir(`${targetDir}/test`);
   await fs.promises.mkdir(`${targetDir}/test/unit`);
   await fs.promises.mkdir(`${targetDir}/test/unit/src`);
   await fs.promises.mkdir(`${targetDir}/docs`);
   await fs.promises.writeFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
-  await fs.promises.writeFile(`${targetDir}/dev/bin.js`, '#!/usr/bin/env node\n\nrequire(`${__dirname}/../src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);', "utf8");
-  await fs.promises.writeFile(`${targetDir}/dev/run.js`, '#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();', "utf8");
+  await fs.promises.writeFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nrequire(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
+  await fs.promises.writeFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
   await fs.promises.writeFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
-  await fs.promises.copyFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.dist.js`);
-  await fs.promises.copyFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/lib/compiler-v6.dist.js`);
-  await fs.promises.copyFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/lib/dev-binary-v6.dist.js`);
+  await fs.promises.copyFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.entry.js`);
+  await fs.promises.copyFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);
+  await fs.promises.copyFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/lib/compiler-v6.entry.js`);
+  await fs.promises.copyFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/dist/src/lib/compiler-v6.dist.js`);
+  await fs.promises.copyFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/lib/dev-binary-v6.entry.js`);
+  await fs.promises.copyFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/dist/src/lib/dev-binary-v6.dist.js`);
+  await fs.promises.copyFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/lib/refrescador.entry.js`);
+  await fs.promises.copyFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/dist/src/lib/refrescador.dist.js`);
+  await fs.promises.cp(`${__dirname}/refrescador`, `${targetDir}/src/lib/refrescador`, { recursive: true });
+  await fs.promises.cp(`${__dirname}/refrescador`, `${targetDir}/dist/src/lib/refrescador`, { recursive: true });
+
   return { targetDir };
 }

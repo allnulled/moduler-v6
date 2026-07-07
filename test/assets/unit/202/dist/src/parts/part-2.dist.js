@@ -1,1 +1,1 @@
-console.log("Part 2");
+"Part 2";

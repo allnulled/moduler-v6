@@ -4,7 +4,7 @@
  * @description 
  */
 async compileDistribuiblesOf(filepath, event) {
-  let compilation, outputJs, outputCss, outputMd, report;
+  let compilation, srcDistJs, srcDistCss, srcDistMd, distJs, distCss, distMd, report;
   Initialize_report: {
     report = {};
   }
@@ -16,30 +16,36 @@ async compileDistribuiblesOf(filepath, event) {
     const inputDir = require("path").dirname(outputNames.file);
     const inputRootdir = this.devbin.compiler.rootdirOf(inputDir);
     const outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\//g, "@/dist/"));
-    outputJs = require("path").resolve(outputDir, outputNames.js);
-    outputCss = require("path").resolve(outputDir, outputNames.css);
-    outputMd = require("path").resolve(outputDir, outputNames.md);
+    distJs = require("path").resolve(outputDir, outputNames.js);
+    distCss = require("path").resolve(outputDir, outputNames.css);
+    distMd = require("path").resolve(outputDir, outputNames.md);
+    srcDistJs = require("path").resolve(inputDir, outputNames.js);
+    srcDistCss = require("path").resolve(inputDir, outputNames.css);
+    srcDistMd = require("path").resolve(inputDir, outputNames.md);
     report.names = outputNames;
   }
   Make_assertions_for_safety: {
-    this.assert(outputJs.endsWith(".dist.js"));
-    this.assert(outputCss.endsWith(".dist.css"));
-    this.assert(outputMd.endsWith(".md"));
-    this.assert(outputJs.includes("/dist/"));
+    this.assert(distJs.endsWith(".dist.js"));
+    this.assert(distCss.endsWith(".dist.css"));
+    this.assert(distMd.endsWith(".md"));
+    this.assert(distJs.includes("/dist/"));
   }
   Overwrite_dist_files: {
-    await this.ensureDirectoryOf(outputJs);
+    await this.ensureDirectoryOf(distJs);
     if (compilation.js) {
-      await require("fs").promises.writeFile(outputJs, compilation.js, "utf8");
-      report.js = outputJs;
+      await require("fs").promises.writeFile(distJs, compilation.js, "utf8");
+      await require("fs").promises.writeFile(srcDistJs, compilation.js, "utf8");
+      report.js = distJs;
     }
     if (compilation.css) {
-      await require("fs").promises.writeFile(outputCss, compilation.css, "utf8");
-      report.css = outputCss;
+      await require("fs").promises.writeFile(distCss, compilation.css, "utf8");
+      await require("fs").promises.writeFile(srcDistCss, compilation.css, "utf8");
+      report.css = distCss;
     }
     if (compilation.md) {
-      await require("fs").promises.writeFile(outputMd, compilation.md, "utf8");
-      report.md = outputMd;
+      await require("fs").promises.writeFile(distMd, compilation.md, "utf8");
+      await require("fs").promises.writeFile(srcDistMd, compilation.md, "utf8");
+      report.md = distMd;
     }
   }
   Feedback_report: {

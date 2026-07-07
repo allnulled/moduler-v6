@@ -9,6 +9,6 @@ if [[ "$r" =~ ^[Yy]$ ]]; then
     git commit -F COMMIT.md
     git push
     cp COMMIT.md PREVIOUS-COMMIT.md
-    echo '' > COMMIT.md
+    : > COMMIT.md
 fi
 
