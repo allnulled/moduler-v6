@@ -1,1 +1,1 @@
-ya llegando comando loop casi
+ok con DevBinaryV6 + devbin new project + devbin touch + devbin loop y test minimísimos

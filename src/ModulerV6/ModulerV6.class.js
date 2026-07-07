@@ -6,6 +6,7 @@ class ModulerV6 {
    */
   /*="./static.AssertionError.js"*/
   /*="./static.CssManager.js"*/
+  /*="./static.SectionsManager.js"*/
   /*="./static.Parser.js"*/
   /*="./static.assert.js"*/
   /*="./static.isBrowser.js"*/
@@ -38,5 +39,7 @@ class ModulerV6 {
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
   /*="./static.globalInstance.js"*/
+  /*="./static.globalSectionsManagerInstance.js"*/
+  /*="./prototype.section.js"*/
   /*="./constructor.js"*/
 }

@@ -35,11 +35,14 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
   }
   devBinaryV6.compiler.setRootdir(`${__dirname}/../assets/unit/202`);
   devBinaryV6.compiler.setBasedir(`${__dirname}/../assets/unit/202`);
-  const output = await devBinaryV6.command(["loop", "--port", "5006"]);
-  await Promise.all([
-    output.server.server.close(),
-    output.server.watcher.close(),
-  ]);
+  Test_conflictivo_del_devbin_loop: {
+    break Test_conflictivo_del_devbin_loop;
+    const output = await devBinaryV6.command(["loop", "--port", "5006"]);
+    await Promise.all([
+      output.server.server.close(),
+      output.server.watcher.close(),
+    ]);
+  }
 
   compilerV6._logger.log("Test 202 ok");
 };
