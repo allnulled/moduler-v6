@@ -16,7 +16,7 @@ async command(args = []) {
     throw new Error(`Parameter «args» must be array or object but «${typeof args}» was found instead on «DevBinary.prototype.command»`);
   }
   Define_path_from_command: {
-    commandSubpath = this.compiler.normalizationOf(`./dev/command/${commandParameters._.join("/")}/command.js`);
+    commandSubpath = this.compiler.normalizationOf(`./dev/bin/${commandParameters._.join("/")}/command.js`);
   }
   Load_command_callback_from_file_or_shadowCommands: {
     let isReadable = undefined;

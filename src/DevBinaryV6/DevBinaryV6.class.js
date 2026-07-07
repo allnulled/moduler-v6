@@ -5,6 +5,7 @@ class DevBinaryV6 {
    * @description 
    */
   /*="./static.create.js"*/
+  /*="./static.fromRootDirectoryOf.js"*/
   /*="./static.Refrescador.js"*/
   /*="./static.CompilerV6.js"*/
   /*="./static.ModulerV6.js"*/

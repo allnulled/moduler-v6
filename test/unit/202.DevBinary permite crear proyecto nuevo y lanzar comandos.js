@@ -1,6 +1,6 @@
 module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devBinaryV6, injection }) {
 
-  const assert = assertLoudly || compilerV6.createAssertFunction();
+  const assert = compilerV6.createAssertFunction() || assertLoudly || compilerV6.createAssertFunction();
 
   await require("fs").promises.rm(`${__dirname}/../assets/unit/202`, { recursive: true });
   await require("fs").promises.mkdir(`${__dirname}/../assets/unit/202`);

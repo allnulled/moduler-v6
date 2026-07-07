@@ -1,1 +1,1 @@
-comando devbin touch ok + no tests muy consistentes pero algun test
+se genera un dist en la ruta del src + refrescador integrado en DevBinaryV6 mediante require - todo preparado para el comando loop

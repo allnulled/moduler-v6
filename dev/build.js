@@ -94,6 +94,10 @@ const main = async function() {
       dist: "dist/dev-binary-v6.dist.js",
       distMin: "dist/dev-binary-v6.min.dist.js",
     }),
+    fs.promises.copyFile(rootrel("src/dev-binary-v6.bin.js"), rootrel("dist/dev-binary-v6.bin.dist.js")),
+  ]);
+  await Promise.all([
+    fs.chmodSync(rootrel("dist/dev-binary-v6.bin.dist.js"), 0o755),
   ]);
   console.log(`[*] Total of ${fileCounter} injections`);
   console.log(`[*] Successfully built all ModulerV6 APIs collection`);

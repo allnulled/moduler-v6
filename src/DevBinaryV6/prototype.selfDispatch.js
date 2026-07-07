@@ -4,6 +4,6 @@
  * @description 
  */
 selfDispatch() {
-  console.log(process.argv);
+  return this.command([...process.argv].splice(2));
   throw new Error("Method «selfDispatch» is not coded yet");
 }

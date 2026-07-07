@@ -2126,6 +2126,9 @@
         static create(...args) {
             return new this(...args);
         }
+        static fromRootDirectoryOf(dir, file = "package.json") {
+            return this.Utils.findFirstParentDirectoryContaining(dir, file).then(upperDir => new this(upperDir));
+        }
         static Refrescador=require(`${__dirname}/refrescador/refrescador.api.dist.js`);
         static CompilerV6=CompilerV6;
         static ModulerV6=CompilerV6.ModulerV6;
@@ -2522,7 +2525,7 @@
                 throw new Error(`Parameter «args» must be array or object but «${typeof args}» was found instead on «DevBinary.prototype.command»`);
             }
             Define_path_from_command: {
-                commandSubpath = this.compiler.normalizationOf(`./dev/command/${commandParameters._.join("/")}/command.js`);
+                commandSubpath = this.compiler.normalizationOf(`./dev/bin/${commandParameters._.join("/")}/command.js`);
             }
             Load_command_callback_from_file_or_shadowCommands: {
                 let isReadable = undefined;
@@ -2554,7 +2557,7 @@
             }
         }
         selfDispatch() {
-            console.log(process.argv);
+            return this.command([ ...process.argv ].splice(2));
             throw new Error("Method «selfDispatch» is not coded yet");
         }
         cloneForFile(resource, devbin = false) {

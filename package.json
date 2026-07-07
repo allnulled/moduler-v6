@@ -6,6 +6,9 @@
   "directories": {
     "test": "test"
   },
+  "bin": {
+    "devbin": "./dist/dev-binary-v6.bin.dist.js"
+  },
   "dependencies": {
     "acorn": "^8.17.0",
     "buffer-from": "^1.1.2",
