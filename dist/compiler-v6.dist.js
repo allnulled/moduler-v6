@@ -420,6 +420,62 @@
                 }, {
                     allowInside: true
                 } ],
+                SectionGet: [ "$moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    return {
+                        syntax: "Moduler Section Get",
+                        ...token
+                    };
+                }, {
+                    allowInside: true
+                } ],
+                SectionSet: [ "$moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    return {
+                        syntax: "Moduler Section Set",
+                        ...token
+                    };
+                }, {
+                    allowInside: true
+                } ],
+                SectionOverwrite: [ "$moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    return {
+                        syntax: "Moduler Section Overwrite",
+                        ...token
+                    };
+                }, {
+                    allowInside: true
+                } ],
+                SectionExpand: [ "$moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    return {
+                        syntax: "Moduler Section Expand",
+                        ...token
+                    };
+                }, {
+                    allowInside: true
+                } ],
+                SectionFill: [ "$moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    return {
+                        syntax: "Moduler Section Fill",
+                        ...token
+                    };
+                }, {
+                    allowInside: true
+                } ],
+                SectionHas: [ "$moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    return {
+                        syntax: "Moduler Section Has",
+                        ...token
+                    };
+                }, {
+                    allowInside: true
+                } ],
+                SectionInitialize: [ "$moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    return {
+                        syntax: "Moduler Section Initialize",
+                        ...token
+                    };
+                }, {
+                    allowInside: true
+                } ],
                 MultilineCommentValueInjection: [ "/*%=", "%*/", function(token) {
                     return {
                         syntax: "Multiline Comment Value Injection",
@@ -448,7 +504,7 @@
                 } ]
             };
             static defaultGrammars={
-                forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+                forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment, this.nativeGrammars.SectionGet, this.nativeGrammars.SectionSet, this.nativeGrammars.SectionOverwrite, this.nativeGrammars.SectionExpand, this.nativeGrammars.SectionFill, this.nativeGrammars.SectionHas, this.nativeGrammars.SectionInitialize ],
                 forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
                 forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
                 forCssOnRuntime: [ this.nativeGrammars.AtRequires ]
@@ -1511,6 +1567,7 @@
                 }
                 console.log(this.constructor.ansi.colors.style("yellow,bold,underline").text(`[debug] parameter ${index}:`), output);
             }
+            return list[0];
         }
         _die(...args) {
             this._trace("die", arguments);
@@ -1564,7 +1621,13 @@
                 "Moduler Export": this._compileAsModulerExport,
                 "@Requires": this._compileAsRequires,
                 "@Injects": this._compileAsInjects,
-                "Javadoc Comment": this._compileAsJavadocComment
+                "Javadoc Comment": this._compileAsJavadocComment,
+                "Moduler Section Get": this._compileAsModulerSectionGet,
+                "Moduler Section Set": this._compileAsModulerSectionSet,
+                "Moduler Section Delete": this._compileAsModulerSectionDelete,
+                "Moduler Section Overwrite": this._compileAsModulerSectionOverwrite,
+                "Moduler Section Fill": this._compileAsModulerSectionFill,
+                "Moduler Section Expand": this._compileAsModulerSectionExpand
             };
             Iterating_tokens: for (let tokenIndex = tokens.length - 1; tokenIndex >= 0; tokenIndex--) {
                 const token = tokens[tokenIndex];
@@ -1661,6 +1724,42 @@
                 compilationFile.source = source;
                 return compilationFile.compilation[compilationFile.extension] = source;
             });
+        }
+        _compileAsModulerSectionGet(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerSectionGet", arguments);
+                return false;
+            }
+        }
+        _compileAsModulerSectionSet(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerSectionSet", arguments);
+                return false;
+            }
+        }
+        _compileAsModulerSectionDelete(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerSectionDelete", arguments);
+                return false;
+            }
+        }
+        _compileAsModulerSectionExpand(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerSectionExpand", arguments);
+                return false;
+            }
+        }
+        _compileAsModulerSectionOverwrite(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerSectionOverwrite", arguments);
+                return false;
+            }
+        }
+        _compileAsModulerSectionFill(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+            if (compilationProcess.to !== "data") {
+                this._trace("_compileAsModulerSectionFill", arguments);
+                return false;
+            }
         }
         async _compileAsInjectSource(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
             this._traceIn("_compileAsInjectSource", arguments);
@@ -1789,8 +1888,8 @@
                 }
             } else {
                 Extract_targets_path: {
-                    namedParameters = this._getParametersFromModulerImportSignature(parameters, compilationFile.resource);
-                    targetPaths = namedParameters.dependencies;
+                    namedParameters = this.moduler._formatImportParameters(parameters, compilationFile.resource);
+                    targetPaths = (namedParameters.file ? [ namedParameters.file ] : []).concat(namedParameters.dependencies);
                 }
                 Extend_token: {
                     token.dependenciesOf = targetPaths;
@@ -1839,8 +1938,8 @@
                 }
             } else {
                 Extract_targets_path: {
-                    namedParameters = this._getParametersFromModulerExportSignature(parameters, compilationFile.resource);
-                    targetPaths = namedParameters.dependencies;
+                    namedParameters = this.moduler._formatExportParameters(parameters, compilationFile.resource);
+                    targetPaths = (namedParameters.file ? [ namedParameters.file ] : []).concat(namedParameters.dependencies);
                 }
                 Extend_token: {
                     token.dependenciesOf = targetPaths;
@@ -2064,120 +2163,6 @@
             }
             this._traceOut("_getDataForTokenCompilation", arguments);
             return output;
-        }
-        _getParametersFromModulerExportSignature(parameters, resource = null) {
-            this._trace("_getParametersFromModulerExportSignature", arguments);
-            this.assert(Array.isArray(parameters), "Parameter «parameters» must be array on «CompilerV6.prototype._getParametersFromModulerExportSignature»");
-            const formatted = {};
-            if (parameters.length === 1) {
-                throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (1)`);
-            } else if (parameters.length === 2) {
-                if (typeof parameters[0] === "string" && typeof parameters[1] === "string") {
-                    Object.assign(formatted, {
-                        id: parameters[0],
-                        dependencies: [ parameters[1] ],
-                        factory: null
-                    });
-                } else if (typeof parameters[0] === "string" && typeof parameters[1] === "function") {
-                    Object.assign(formatted, {
-                        id: parameters[0],
-                        dependencies: [],
-                        factory: parameters[1]
-                    });
-                } else if (typeof parameters[0] === "string" && typeof parameters[1] === "object") {
-                    Object.assign(formatted, {
-                        id: parameters[0],
-                        dependencies: parameters[1],
-                        factory: null
-                    });
-                } else {
-                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (2)`);
-                }
-            } else if (parameters.length === 3) {
-                if (typeof parameters[0] === "string" && typeof parameters[1] === "object" && typeof parameters[2] === "function") {
-                    Object.assign(formatted, {
-                        id: parameters[0],
-                        dependencies: parameters[1],
-                        factory: parameters[2]
-                    });
-                } else {
-                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (3)`);
-                }
-            } else {
-                throw new Error(`Signature with «${parameters.length}» parameters is not valid for method «$moduler.import» on «CompilerV6.prototype._getParametersFromModulerExportSignature» (5)`);
-            }
-            return formatted;
-        }
-        _getParametersFromModulerImportSignature(parameters, resource = null) {
-            this._trace("_getParametersFromModulerImportSignature", arguments);
-            this.assert(Array.isArray(parameters), `Parameter «parameters» must be array on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature»`);
-            const formatted = {};
-            if (parameters.length === 1) {
-                if (typeof parameters[0] === "string") {
-                    if (parameters[0].endsWith(".js")) {
-                        Object.assign(formatted, {
-                            id: null,
-                            dependencies: [ parameters[0] ],
-                            factory: null
-                        });
-                    } else if (parameters[0].endsWith(".css")) {
-                        Object.assign(formatted, {
-                            id: null,
-                            dependencies: [ parameters[0] ],
-                            factory: null
-                        });
-                    } else if (parameters[0].endsWith(".md")) {
-                        Object.assign(formatted, {
-                            id: null,
-                            dependencies: [ parameters[0] ],
-                            factory: null
-                        });
-                    } else {
-                        Object.assign(formatted, {
-                            id: parameters[0],
-                            dependencies: [],
-                            factory: null
-                        });
-                    }
-                } else if (Array.isArray(parameters[0])) {
-                    Object.assign(formatted, {
-                        id: null,
-                        dependencies: [],
-                        factory: parameters[0]
-                    });
-                } else if (typeof parameters[0] === "function") {
-                    Object.assign(formatted, {
-                        id: null,
-                        dependencies: [],
-                        factory: parameters[0]
-                    });
-                } else {
-                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (1)`);
-                }
-            } else if (parameters.length === 2) {
-                if (Array.isArray(parameters[0]) && typeof parameters[1] === "function") {
-                    Object.assign(formatted, {
-                        id: null,
-                        dependencies: parameters[0],
-                        factory: parameters[1]
-                    });
-                } else {
-                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (2)`);
-                }
-            } else if (parameters.length === 3) {
-                if (typeof parameters[0] === "string" && Array.isArray(parameters[1]) && typeof parameters[2] === "function") {
-                    Object.assign(formatted, {
-                        id: parameters[0],
-                        dependencies: parameters[1],
-                        factory: parameters[2]
-                    });
-                } else {
-                    throw new Error(`Signature «${parameters.map(p => typeof p).join(",")}» not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (3)`);
-                }
-            } else {
-                throw new Error(`Signature with «${parameters.length}» parameters is not valid for method «$moduler.import» on file «${resource}» on «CompilerV6.prototype._getParametersFromModulerImportSignature» (5)`);
-            }
-            return formatted;
         }
         _getStringForDevelopment(text, tab = 0) {
             this._trace("_getStringForDevelopment", arguments);

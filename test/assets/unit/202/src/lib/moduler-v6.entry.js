@@ -415,6 +415,62 @@
             }, {
                 allowInside: true
             } ],
+            SectionGet: [ "$moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Moduler Section Get",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            SectionSet: [ "$moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Moduler Section Set",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            SectionOverwrite: [ "$moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Moduler Section Overwrite",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            SectionExpand: [ "$moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Moduler Section Expand",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            SectionFill: [ "$moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Moduler Section Fill",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            SectionHas: [ "$moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Moduler Section Has",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
+            SectionInitialize: [ "$moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                return {
+                    syntax: "Moduler Section Initialize",
+                    ...token
+                };
+            }, {
+                allowInside: true
+            } ],
             MultilineCommentValueInjection: [ "/*%=", "%*/", function(token) {
                 return {
                     syntax: "Multiline Comment Value Injection",
@@ -443,7 +499,7 @@
             } ]
         };
         static defaultGrammars={
-            forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+            forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment, this.nativeGrammars.SectionGet, this.nativeGrammars.SectionSet, this.nativeGrammars.SectionOverwrite, this.nativeGrammars.SectionExpand, this.nativeGrammars.SectionFill, this.nativeGrammars.SectionHas, this.nativeGrammars.SectionInitialize ],
             forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
             forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
             forCssOnRuntime: [ this.nativeGrammars.AtRequires ]

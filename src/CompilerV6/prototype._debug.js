@@ -15,4 +15,5 @@ _debug(...list) {
     }
     console.log(this.constructor.ansi.colors.style("yellow,bold,underline").text(`[debug] parameter ${index}:`), output);
   }
+  return list[0];
 }

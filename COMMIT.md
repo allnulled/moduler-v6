@@ -1,1 +1,1 @@
-métodos de moduler.section expandidos y mejor testeados
+unificados métodos de formateo de parámetros del moduler.{import,export} y eliminados anteriores

@@ -45,6 +45,14 @@ class CompilerV6 {
   /*="./prototype._compileTokens.js"*/
   /*="./prototype._compileRecursively.js"*/
   /*="./prototype._fetchCompilable.js"*/
+  
+  /*="./prototype._compileAsModulerSectionGet.js"*/
+  /*="./prototype._compileAsModulerSectionSet.js"*/
+  /*="./prototype._compileAsModulerSectionDelete.js"*/
+  /*="./prototype._compileAsModulerSectionExpand.js"*/
+  /*="./prototype._compileAsModulerSectionOverwrite.js"*/
+  /*="./prototype._compileAsModulerSectionFill.js"*/
+
   /*="./prototype._compileAsInjectSource.js"*/
   /*="./prototype._compileAsInjectString.js"*/
   /*="./prototype._compileAsMultilineCommentCodeInjection.js"*/
@@ -62,8 +70,6 @@ class CompilerV6 {
   /*="./prototype._cloneStructureAsJson.js"*/
   /*="./prototype._extendToken.js"*/
   /*="./prototype._getDataForTokenCompilation.js"*/
-  /*="./prototype._getParametersFromModulerExportSignature.js"*/
-  /*="./prototype._getParametersFromModulerImportSignature.js"*/
   /*="./prototype._getStringForDevelopment.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/

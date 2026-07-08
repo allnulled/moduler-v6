@@ -18,6 +18,27 @@ static nativeGrammars = {
   ExportJs: ["$moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Moduler Export", ...token, };
   }, {allowInside:true}],
+  SectionGet: ["$moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Section Get", ...token, };
+  }, {allowInside:true}],
+  SectionSet: ["$moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Section Set", ...token, };
+  }, {allowInside:true}],
+  SectionOverwrite: ["$moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Section Overwrite", ...token, };
+  }, {allowInside:true}],
+  SectionExpand: ["$moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Section Expand", ...token, };
+  }, {allowInside:true}],
+  SectionFill: ["$moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Section Fill", ...token, };
+  }, {allowInside:true}],
+  SectionHas: ["$moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Section Has", ...token, };
+  }, {allowInside:true}],
+  SectionInitialize: ["$moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Moduler Section Initialize", ...token, };
+  }, {allowInside:true}],
   // ["/*%", "%*/", function (token) {
   //   return { syntax: "Multiline Comment Code Injection", ...token, };
   // }],

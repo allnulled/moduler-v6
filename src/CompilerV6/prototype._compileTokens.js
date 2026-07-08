@@ -16,6 +16,12 @@ async _compileTokens(compilationFile, compilationProcess) {
     "@Requires": this._compileAsRequires,
     "@Injects": this._compileAsInjects,
     "Javadoc Comment": this._compileAsJavadocComment,
+    "Moduler Section Get": this._compileAsModulerSectionGet,
+    "Moduler Section Set": this._compileAsModulerSectionSet,
+    "Moduler Section Delete": this._compileAsModulerSectionDelete,
+    "Moduler Section Overwrite": this._compileAsModulerSectionOverwrite,
+    "Moduler Section Fill": this._compileAsModulerSectionFill,
+    "Moduler Section Expand": this._compileAsModulerSectionExpand,
   };
   Iterating_tokens:
   for (let tokenIndex = tokens.length - 1; tokenIndex >= 0; tokenIndex--) {

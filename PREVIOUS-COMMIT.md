@@ -1,1 +1,1 @@
-sections api con metodos get set extend fill delete y resetAll + tests
+métodos de moduler.section expandidos y mejor testeados

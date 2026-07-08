@@ -7,10 +7,10 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
   // console.log(output.report.tree);
   compilerV6.assert(typeof output.report.tree["@/test/assets/unit/005/app.js"] === "object", "Can compile with {to:'data'} and return an object on .report.tree.<file> (3)");
   Test_de_reporte_de_sintaxis_moduler_import_export: {
+    // Estoy aquí, explorando el tree
     compilerV6.assert(Object.keys(output.report.tree).length > 1, "Can compile with {to:'data'} and return an object on .report.tree.<file> with multiple keys on .report.tree when dependencies are found (4)");
     compilerV6.assert(Object.keys(output.report.tree["@/test/assets/unit/005/app.js"]).length !== 0, "Can compile with {to:'data'} and return an object on .report.tree.<file> with multiple keys on .report.tree.<file> when dependencies are found (5)");
     compilerV6.assert("@/test/assets/unit/005/app.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (6)");
-    compilerV6.assert("@/test/assets/unit/005/payload.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (100)");
     compilerV6.assert("@/test/assets/unit/005/imported-1.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (101)");
     compilerV6.assert("@/test/assets/unit/005/imported-1.css" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (102)");
     compilerV6.assert("@/test/assets/unit/005/imported-1.md" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (103)");
@@ -20,7 +20,11 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     compilerV6.assert("@/test/assets/unit/005/framework-2.css" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (107)");
     compilerV6.assert("@/test/assets/unit/005/framework-3.css" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (108)");
     compilerV6.assert("@/test/assets/unit/005/framework-3.md" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (109)");
-    compilerV6.assert(output.report.tree["@/test/assets/unit/005/app.js"]["423-453"].dependenciesOf.length > 0, `Can compile with {to:'data'} and return dependenciesOf (7)`);
+    compilerV6.assert("@/test/assets/unit/005/payload.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (110)");
+    compilerV6.assert("@/test/assets/unit/005/exported-1.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (111)");
+    compilerV6.assert("@/test/assets/unit/005/exported-2.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (112)");
+    compilerV6.assert("@/test/assets/unit/005/exported-3.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (113)");
+    compilerV6.assert(output.report.tree["@/test/assets/unit/005/app.js"]["306-453"].dependenciesOf.length > 0, `Can compile with {to:'data'} and return dependenciesOf (7)`);
   }
   No_captura_exports_con_primer_string_sin_extension_pq_son_ids_no_files: {
     compilerV6.assert(!("@/test/assets/unit/005/app" in output.report.tree), `Can compile with {to:'data'} and return dependenciesOf (8)`);

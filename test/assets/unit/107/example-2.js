@@ -1,0 +1,1 @@
+$moduler.import(["./example-4.js"]);

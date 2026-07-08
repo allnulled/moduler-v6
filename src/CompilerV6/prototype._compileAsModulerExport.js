@@ -37,8 +37,8 @@ async _compileAsModulerExport(compilationFile, compilationProcess, { token, toke
     }
   } else {
     Extract_targets_path: {
-      namedParameters = this._getParametersFromModulerExportSignature(parameters, compilationFile.resource);
-      targetPaths = namedParameters.dependencies;
+      namedParameters = this.moduler._formatExportParameters(parameters, compilationFile.resource);
+      targetPaths = (namedParameters.file ? [namedParameters.file] : []).concat(namedParameters.dependencies);
     }
     Extend_token: {
       token.dependenciesOf = targetPaths;
