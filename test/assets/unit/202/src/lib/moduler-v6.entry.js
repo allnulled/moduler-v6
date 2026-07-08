@@ -152,7 +152,7 @@
             _splitPropertyPath(path) {
                 return path.split("/").filter(Boolean);
             }
-            _getPropertyAndHolder(path, create = false, commingFromMethod = "_getPropertyAndHolder") {
+            _getPropertyAndHolder(path, throwOnMissing = true, commingFromMethod = "_getPropertyAndHolder") {
                 const keys = this._splitPropertyPath(path);
                 const last = keys.pop();
                 let obj = this.root;
@@ -160,7 +160,7 @@
                 for (const key of keys) {
                     counter++;
                     if (this.isNull(obj[key]) || !this._isPropertoid(obj[key])) {
-                        if (!create) {
+                        if (throwOnMissing) {
                             throw new Error(`Missing iterable intermediate property «${key}» at index «${counter}» of path «${path}» on «SectionsManager.prototype._getPropertyAndHolder called from method «SectionsManager.prototype.${commingFromMethod}»`);
                         }
                         obj[key] = {};
@@ -174,7 +174,7 @@
             }
             has(path) {
                 const ref = this._getPropertyAndHolder(path, false, "has");
-                this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.has»`);
+                if (!this._isPropertoid(ref.obj)) return false;
                 return ref.last in ref.obj;
             }
             get(path, defaultValue = Error) {
@@ -187,28 +187,28 @@
                 return ref.obj[ref.last];
             }
             set(path, value) {
-                const ref = this._getPropertyAndHolder(path, true, "set");
+                const ref = this._getPropertyAndHolder(path, false, "set");
                 this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.set»`);
                 return ref.obj[ref.last] = value;
             }
             initialize(path, value) {
-                const ref = this._getPropertyAndHolder(path, true, "initialize");
+                const ref = this._getPropertyAndHolder(path, false, "initialize");
                 this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.initialize»`);
                 if (this._hasKey(ref.obj, ref.last)) return ref.obj[ref.last];
                 return ref.obj[ref.last] = value;
             }
             overwrite(path, values = {}) {
-                const ref = this._getPropertyAndHolder(path, true, "overwrite");
+                const ref = this._getPropertyAndHolder(path, false, "overwrite");
                 this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.overwrite»`);
                 return Object.assign(ref.obj[ref.last] ??= {}, values);
             }
             fill(path, values = {}) {
-                const ref = this._getPropertyAndHolder(path, true, "fill");
+                const ref = this._getPropertyAndHolder(path, false, "fill");
                 this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.fill»`);
                 return ref.obj[ref.last] = Object.assign({}, values, ref.obj[ref.last] ??= {});
             }
             expand(path, values = {}) {
-                const ref = this._getPropertyAndHolder(path, true, "expand");
+                const ref = this._getPropertyAndHolder(path, false, "expand");
                 Initialize_if_it_is_empty: {
                     this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.expand»`);
                     if (!this._hasKey(ref.obj, ref.last)) {
@@ -227,7 +227,7 @@
                 }
             }
             delete(path) {
-                const ref = this._getPropertyAndHolder(path, true, "delete");
+                const ref = this._getPropertyAndHolder(path, false, "delete");
                 if ([ "object", "function" ].includes(typeof ref.obj)) {
                     if (ref.obj === null) {
                         throw new Error(`Cannot delete property «${ref.last}» of a null value of path «${path}» on «SectionsManager.prototype.delete»`);
@@ -803,8 +803,8 @@
             const {id: _id = null, file: _file = null, dependencies: _dependencies = null, factory: _factory = null} = parameters;
             Resolve_by_id: {
                 if (_id) {
-                    this.assert(_id in this.modules, `No module named «${_id}» on «ModulerV6.prototype.import»`);
-                    return this.modules[_id];
+                    this.assert(this.section.has(_id), `No section named «${_id}» on «ModulerV6.prototype.import»`);
+                    return this.section.get(_id);
                 }
             }
             Resolve_by_file: {
@@ -841,13 +841,20 @@
             let filepath, dependencies, output;
             const parameters = this._formatExportParameters(signature);
             const {id: _id = null, file: _file = null, dependencies: _dependencies = null, factory: _factory = null} = parameters;
-            this.assert(!(_id in this.modules), `Cannot export module with id «${_id}» because it already exists on «ModulerV6.prototype.export»`);
+            this.assert(!this.section.has(_id), `Cannot export section by id «${_id}» because it already exists on «ModulerV6.prototype.export»`);
             Resolving_module: {
                 const signatureCopy = [ ...signature ];
                 signatureCopy.splice(0, 1);
                 output = this.import(...signatureCopy);
             }
-            return this.modules[_id] = output;
+            if (output === null) {
+                this.section.set(_id, output);
+            } else if ([ "object" ].includes(typeof output)) {
+                this.section.expand(_id, output);
+            } else {
+                this.section.set(_id, output);
+            }
+            return output;
         }
         static globalInstance=new this;
         static globalSectionsManagerInstance=new this.SectionsManager;

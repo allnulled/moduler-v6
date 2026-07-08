@@ -15,8 +15,8 @@ import(...signature) {
   Resolve_by_id: {
     if (_id) {
       // Si tiene id, devuelve el id por huevos:
-      this.assert(_id in this.modules, `No module named «${_id}» on «ModulerV6.prototype.import»`);
-      return this.modules[_id];
+      this.assert(this.section.has(_id), `No section named «${_id}» on «ModulerV6.prototype.import»`);
+      return this.section.get(_id);
     }
   }
   Resolve_by_file: {

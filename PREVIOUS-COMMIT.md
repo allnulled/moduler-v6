@@ -1,1 +1,0 @@
-métodos de moduler.section expandidos y mejor testeados

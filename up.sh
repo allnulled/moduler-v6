@@ -8,7 +8,7 @@ if [[ "$r" =~ ^[Yy]$ ]]; then
     git add .
     git commit -F COMMIT.md
     git push
-    cp COMMIT.md PREVIOUS-COMMIT.md
+    cp COMMIT.md COMMIT-PREVIOUS.md
     : > COMMIT.md
 fi
 

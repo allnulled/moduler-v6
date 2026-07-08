@@ -6,4 +6,7 @@ $moduler.import("./example-1.js");
 
 $moduler.import(["./example-2.js","./example-3.js"]);
 
+$moduler.export("#some/section/x", ["./example-1.js"]);
+$moduler.export("#some/section/y", () => ["./example-1.js"]);
+
 console.log($moduler.section.get("una/seccion/concreta"));

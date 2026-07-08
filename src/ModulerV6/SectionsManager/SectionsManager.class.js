@@ -24,7 +24,7 @@ class SectionsManager {
     return path.split("/").filter(Boolean);
   }
 
-  _getPropertyAndHolder(path, create = false, commingFromMethod = "_getPropertyAndHolder") {
+  _getPropertyAndHolder(path, throwOnMissing = true, commingFromMethod = "_getPropertyAndHolder") {
     const keys = this._splitPropertyPath(path);
     const last = keys.pop();
     let obj = this.root;
@@ -32,7 +32,7 @@ class SectionsManager {
     for (const key of keys) {
       counter++;
       if (this.isNull(obj[key]) || !this._isPropertoid(obj[key])) {
-        if (!create) {
+        if (throwOnMissing) {
           throw new Error(`Missing iterable intermediate property «${key}» at index «${counter}» of path «${path}» on «SectionsManager.prototype._getPropertyAndHolder called from method «SectionsManager.prototype.${commingFromMethod}»`);
         }
         obj[key] = {};
@@ -45,7 +45,7 @@ class SectionsManager {
   has(path) {
     // @DESCRIPTION: devuelve true si está definida la ruta de propiedad, false si no
     const ref = this._getPropertyAndHolder(path, false, "has");
-    this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.has»`);
+    if(!this._isPropertoid(ref.obj)) return false;
     return ref.last in ref.obj;
   }
 
@@ -62,14 +62,14 @@ class SectionsManager {
 
   set(path, value) {
     // @DESCRIPTION: sobreescribe la propiedad de la ruta con el valor
-    const ref = this._getPropertyAndHolder(path, true, "set");
+    const ref = this._getPropertyAndHolder(path, false, "set");
     this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.set»`);
     return ref.obj[ref.last] = value;
   }
 
   initialize(path, value) {
     // @DESCRIPTION: rellena la propiedad de la ruta con el valor si está sin definir o en su defecto devuelve la definición anterior
-    const ref = this._getPropertyAndHolder(path, true, "initialize");
+    const ref = this._getPropertyAndHolder(path, false, "initialize");
     this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.initialize»`);
     if (this._hasKey(ref.obj, ref.last)) return ref.obj[ref.last];
     return ref.obj[ref.last] = value;
@@ -77,21 +77,21 @@ class SectionsManager {
 
   overwrite(path, values = {}) {
     // @DESCRIPTION: sobreescribe las propiedades de la ruta (objeto o función) con las propiedades del valor
-    const ref = this._getPropertyAndHolder(path, true, "overwrite");
+    const ref = this._getPropertyAndHolder(path, false, "overwrite");
     this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.overwrite»`);
     return Object.assign(ref.obj[ref.last] ??= {}, values);
   }
 
   fill(path, values = {}) {
     // @DESCRIPTION: rellena las propiedades de la ruta (objeto o función) con las propiedades del valor, e ignora la propiedad en caso de colisión
-    const ref = this._getPropertyAndHolder(path, true, "fill");
+    const ref = this._getPropertyAndHolder(path, false, "fill");
     this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.fill»`);
     return ref.obj[ref.last] = Object.assign({}, values, ref.obj[ref.last] ??= {});
   }
 
   expand(path, values = {}) {
     // @DESCRIPTION: rellena las propiedades de la ruta (objeto o función) con las propiedades del valor, y lanza error en caso de colisión
-    const ref = this._getPropertyAndHolder(path, true, "expand");
+    const ref = this._getPropertyAndHolder(path, false, "expand");
     Initialize_if_it_is_empty: {
       this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.expand»`);
       if (!this._hasKey(ref.obj, ref.last)) {
@@ -112,7 +112,7 @@ class SectionsManager {
 
   delete(path) {
     // @DESCRIPTION: elimina 1 propiedad de un objeto o 
-    const ref = this._getPropertyAndHolder(path, true, "delete");
+    const ref = this._getPropertyAndHolder(path, false, "delete");
     if (["object", "function"].includes(typeof ref.obj)) {
       if (ref.obj === null) {
         throw new Error(`Cannot delete property «${ref.last}» of a null value of path «${path}» on «SectionsManager.prototype.delete»`);

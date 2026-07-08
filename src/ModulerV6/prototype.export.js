@@ -13,11 +13,18 @@ export (...signature) {
     dependencies: _dependencies = null,
     factory: _factory = null,
   } = parameters;
-  this.assert(!(_id in this.modules), `Cannot export module with id «${_id}» because it already exists on «ModulerV6.prototype.export»`);
+  this.assert(!this.section.has(_id), `Cannot export section by id «${_id}» because it already exists on «ModulerV6.prototype.export»`);
   Resolving_module: {
     const signatureCopy = [...signature];
     signatureCopy.splice(0,1);
     output = this.import(...signatureCopy);
   }
-  return this.modules[_id] = output;
+  if(output === null) {
+    this.section.set(_id, output);
+  } else if(["object"].includes(typeof output)) {
+    this.section.expand(_id, output);
+  } else {
+    this.section.set(_id, output);
+  }
+  return output;
 }

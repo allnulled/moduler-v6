@@ -4,7 +4,7 @@ DIR2="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 cd "$DIR2"
 
-pwd > cwd.txt
+# pwd > cwd.txt
 # -x 'node dev/build.js @{refrescador.file}' \
 
 /usr/bin/refrescador \
