@@ -1,1 +1,1 @@
-ok con DevBinaryV6 + devbin new project + devbin touch + devbin loop y test minimísimos
+sections api con metodos get set extend fill delete y resetAll + tests

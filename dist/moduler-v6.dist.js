@@ -137,16 +137,31 @@
             constructor(root = {}) {
                 this.root = root;
             }
-            _resolve(path, create = false, commingFromMethod = "unknown") {
-                const keys = path.split("/").filter(Boolean);
+            _assert(condition, message) {
+                if (!condition) throw new Error(message);
+            }
+            _isPropertoid(it) {
+                return [ "object", "function" ].includes(typeof it);
+            }
+            isNull(it) {
+                return it === null;
+            }
+            _hasKey(obj, prop) {
+                return prop in obj;
+            }
+            _splitPropertyPath(path) {
+                return path.split("/").filter(Boolean);
+            }
+            _getPropertyAndHolder(path, create = false, commingFromMethod = "_getPropertyAndHolder") {
+                const keys = this._splitPropertyPath(path);
                 const last = keys.pop();
                 let obj = this.root;
                 let counter = -1;
                 for (const key of keys) {
                     counter++;
-                    if (obj[key] === null || ![ "object", "function" ].includes(typeof obj[key])) {
+                    if (this.isNull(obj[key]) || !this._isPropertoid(obj[key])) {
                         if (!create) {
-                            throw new Error(`Missing iterable intermediate property «${key}» at index «${counter}» of path «${path}» on «SectionsManager.prototype._resolve» called from method «SectionsManager.prototype.${commingFromMethod}»`);
+                            throw new Error(`Missing iterable intermediate property «${key}» at index «${counter}» of path «${path}» on «SectionsManager.prototype._getPropertyAndHolder called from method «SectionsManager.prototype.${commingFromMethod}»`);
                         }
                         obj[key] = {};
                     }
@@ -157,43 +172,76 @@
                     last: last
                 };
             }
+            has(path) {
+                const ref = this._getPropertyAndHolder(path, false, "has");
+                this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.has»`);
+                return ref.last in ref.obj;
+            }
             get(path, defaultValue = Error) {
-                const ref = this._resolve(path, false, "get");
-                const {obj: obj, last: last} = ref;
-                if (!(last in obj)) {
-                    if (defaultValue === Error) throw new Error(`Could not find section property «${path}» on «SectionsManager.prototype.get»`);
+                const ref = this._getPropertyAndHolder(path, false, "get");
+                this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.get»`);
+                if (!this._hasKey(ref.obj, ref.last)) {
+                    if (defaultValue === Error) throw new Error(`Could not find section property «${ref.last}» in path «${path}» on «SectionsManager.prototype.get»`);
                     return defaultValue;
                 }
-                return obj[last];
+                return ref.obj[ref.last];
             }
             set(path, value) {
-                const ref = this._resolve(path, true, "set");
+                const ref = this._getPropertyAndHolder(path, true, "set");
+                this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.set»`);
                 return ref.obj[ref.last] = value;
             }
-            extend(path, values = {}) {
-                const ref = this._resolve(path, true, "extend");
+            initialize(path, value) {
+                const ref = this._getPropertyAndHolder(path, true, "initialize");
+                this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.initialize»`);
+                if (this._hasKey(ref.obj, ref.last)) return ref.obj[ref.last];
+                return ref.obj[ref.last] = value;
+            }
+            overwrite(path, values = {}) {
+                const ref = this._getPropertyAndHolder(path, true, "overwrite");
+                this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.overwrite»`);
                 return Object.assign(ref.obj[ref.last] ??= {}, values);
             }
             fill(path, values = {}) {
-                const ref = this._resolve(path, true, "fill");
+                const ref = this._getPropertyAndHolder(path, true, "fill");
+                this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.fill»`);
                 return ref.obj[ref.last] = Object.assign({}, values, ref.obj[ref.last] ??= {});
             }
+            expand(path, values = {}) {
+                const ref = this._getPropertyAndHolder(path, true, "expand");
+                Initialize_if_it_is_empty: {
+                    this._assert(this._isPropertoid(ref.obj), `Could not access last property «${ref.last}» in path «${path}» because its holder is not «object» or «function» but «${typeof ref.obj}» on «SectionsManager.prototype.expand»`);
+                    if (!this._hasKey(ref.obj, ref.last)) {
+                        ref.obj[ref.last] = {};
+                    }
+                }
+                Check_it_has_no_common_properties_before_overwriting: {
+                    this._assert(this._isPropertoid(ref.obj[ref.last]), `Could not expand last property «${ref.last}» in path «${path}» with more properties because the previous value is of type «${typeof ref.obj[ref.last]}» on «SectionsManager.prototype.expand»`);
+                    const val = ref.obj[ref.last];
+                    for (let prop in values) {
+                        this._assert(!this._hasKey(val, prop), `Property «${prop}» under path «${path}» cannot be expanded because it is already initialized on «SectionsManager.prototype.expand»`);
+                    }
+                }
+                Overwrite: {
+                    return Object.assign(ref.obj[ref.last], values);
+                }
+            }
             delete(path) {
-                const ref = this._resolve(path, true, "delete");
-                if ([ "object", "function" ].includes(typeof ref.object)) {
-                    if (ref.object === null) {
+                const ref = this._getPropertyAndHolder(path, true, "delete");
+                if ([ "object", "function" ].includes(typeof ref.obj)) {
+                    if (ref.obj === null) {
                         throw new Error(`Cannot delete property «${ref.last}» of a null value of path «${path}» on «SectionsManager.prototype.delete»`);
-                    } else if (ref.object instanceof Array) {
-                        ref.object.splice(ref.last, 1);
+                    } else if (ref.obj instanceof Array) {
+                        ref.obj.splice(ref.last, 1);
                     } else {
                         delete ref.obj[ref.last];
                     }
                 } else {
-                    throw new Error(`Cannot delete property «${ref.last}» of a type «${typeof ref.object}» of path «${path}» on «SectionsManager.prototype.delete»`);
+                    throw new Error(`Cannot delete property «${ref.last}» of a holder of type «${typeof ref.obj}» of path «${path}» on «SectionsManager.prototype.delete»`);
                 }
                 return ref.obj[ref.last];
             }
-            resetAll() {
+            reset() {
                 this.root = {};
                 return this;
             }
