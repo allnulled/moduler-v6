@@ -5,7 +5,7 @@ const settings = {
   bulletproof: 1,
   debugSuccess: 1,
   separateTests: 1,
-  testSpeed: 1,
+  testSpeed: 0,
   ignoredTestFiles: [
     // "--000.Inyectar el framework en los tests.js",
     "!001.Compilar recursivamente sintaxis más simple.js",

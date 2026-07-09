@@ -1,1 +1,1 @@
-el comando touch del devbin ahora cachea las dist antes compiladas en el mismo touch via el fichero dist - no en memoria + test de velocidad confirmando que hay mejoria
+comando touch - que borre la profundidad después del test de velocidad

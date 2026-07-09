@@ -1,2 +1,0 @@
-noop(172);
-$compiler.inject.source("./inner/item.entry.js")

@@ -9,7 +9,11 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
   const fs = require("fs");
   const path = require("path");
 
-  await fs.promises.rm(`${__dirname}/../../assets/unit/203`, { recursive: true });
+  try {
+    await fs.promises.rm(`${__dirname}/../../assets/unit/203`, { recursive: true });
+  } catch (error) {
+    // @OK puede que no exista
+  }
   await fs.promises.mkdir(`${__dirname}/../../assets/unit/203`);
   assert(!fs.existsSync(`${__dirname}/../../assets/unit/203/package.json`), "No package.json should be here now");
   await devBinaryV6.command(["new", "project", "--from", `${__dirname}/../../assets/unit/203`]);
@@ -64,7 +68,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
     }
   }
 
-  // console.log(compilation);
+  await fs.promises.rm(`${__dirname}/../../assets/unit/203`, { recursive: true });
 
   compilerV6._logger.log("Test 203 ok");
 
