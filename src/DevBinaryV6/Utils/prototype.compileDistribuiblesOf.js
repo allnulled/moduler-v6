@@ -9,7 +9,10 @@ async compileDistribuiblesOf(filepath, event) {
     report = {};
   }
   Get_compilation: {
-    compilation = await this.devbin.compiler.compile(filepath);
+    compilation = await this.devbin.compiler.compile(filepath, {
+      processedEntries: event.processedEntries,
+      uncacheInjections: event.uncacheInjections,
+    });
   }
   Get_dist_filepaths: {
     const outputNames = this.getDistribuibleFilenamesOf(compilation.file);
@@ -34,18 +37,28 @@ async compileDistribuiblesOf(filepath, event) {
     await this.ensureDirectoryOf(distJs);
     if (compilation.js) {
       await require("fs").promises.writeFile(distJs, compilation.js, "utf8");
-      await require("fs").promises.writeFile(srcDistJs, compilation.js, "utf8");
+      // Antes se creaba un .dist en el source:
+      // await require("fs").promises.writeFile(srcDistJs, compilation.js, "utf8");
       report.js = distJs;
+      Save_in_touch_event_cache: {
+        // Antes estaba esto:
+        // event.processedEntries[compilation.file] = compilation;
+        event.processedEntries[compilation.file] = { distJs };
+      }
     }
     if (compilation.css) {
       await require("fs").promises.writeFile(distCss, compilation.css, "utf8");
       await require("fs").promises.writeFile(srcDistCss, compilation.css, "utf8");
       report.css = distCss;
+      // No cache para css ni md:
+      // event.processedEntries[distCss] = compilation.css;
     }
     if (compilation.md) {
       await require("fs").promises.writeFile(distMd, compilation.md, "utf8");
       await require("fs").promises.writeFile(srcDistMd, compilation.md, "utf8");
       report.md = distMd;
+      // No cache para css ni md:
+      // event.processedEntries[distMd] = compilation.md;
     }
   }
   Feedback_report: {

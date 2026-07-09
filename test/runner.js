@@ -2,9 +2,10 @@ const fs = require("fs");
 const path = require("path");
 
 const settings = {
-  abortOnError: false,
-  separateTests: true,
-  debugSuccess: true,
+  bulletproof: 1,
+  debugSuccess: 1,
+  separateTests: 1,
+  testSpeed: 1,
   ignoredTestFiles: [
     // "--000.Inyectar el framework en los tests.js",
     "!001.Compilar recursivamente sintaxis más simple.js",
@@ -80,7 +81,7 @@ const main = async function () {
         console.log(`\x1b[31m❌ · FAILED test ${filename}: ${index + 1}/${filenames.length} \x1b[0m`);
         console.log(error);
         errors.push({file:path.basename(filepath), error});
-        if(settings.abortOnError) {
+        if(!settings.bulletproof) {
           break Iterating_tests;
         }
       }
@@ -92,6 +93,11 @@ const main = async function () {
       console.log(`\x1b[31m❌ Report errors of ${errors.length}/${filenames.length} failed tests:\x1b[0m`, errors);
     } else {
       console.log("\x1b[32m · All tests successfully passed\x1b[0m");
+    }
+  }
+  Tests_de_velocidad: {
+    if(settings.testSpeed) {
+      await require(`${__dirname}/speed/runner.js`)(injection);
     }
   }
 };

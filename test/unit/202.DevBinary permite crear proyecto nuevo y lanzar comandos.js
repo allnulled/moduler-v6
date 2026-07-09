@@ -29,9 +29,13 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
     assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/test/unit/src/main.test.js`), "File should exist already (832195-2)");
   }
   Test_de_que_se_genera_el_fichero_dist_en_directorio_src: {
-    assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/main.dist.js`), "File should exist already (832195-1)");
-    assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-1.dist.js`), "File should exist already (832195-3)");
-    assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-2.dist.js`), "File should exist already (832195-4)");
+    // @FALSE: no tiene que generarse un dist en el src
+    // La razón es que la estructura del src solo sirve para los dist y otros assets
+    // Los src puros no deberían tener relevancia en el dist, esa es la gracia del dist.
+    break Test_de_que_se_genera_el_fichero_dist_en_directorio_src;
+    // assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/main.dist.js`), "File should exist already (832195-3)");
+    // assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-1.dist.js`), "File should exist already (832195-4)");
+    // assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-2.dist.js`), "File should exist already (832195-5)");
   }
   devBinaryV6.compiler.setRootdir(`${__dirname}/../assets/unit/202`);
   devBinaryV6.compiler.setBasedir(`${__dirname}/../assets/unit/202`);

@@ -1,1 +1,1 @@
-import y export funcionando con sections y no modules + tests
+el comando touch del devbin ahora cachea las dist antes compiladas en el mismo touch via el fichero dist - no en memoria + test de velocidad confirmando que hay mejoria

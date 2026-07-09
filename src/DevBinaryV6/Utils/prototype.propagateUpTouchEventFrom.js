@@ -3,7 +3,7 @@
  * @type 
  * @description 
  */
-async propagateUpTouchEventFrom(filepath) {
+async propagateUpTouchEventFrom(filepath, event = {}) {
   const fs = require("fs");
   const path = require("path");
   let nextPropagationFiles = [];
@@ -28,7 +28,10 @@ async propagateUpTouchEventFrom(filepath) {
   }
   const file0 = nextPropagationFiles[0];
   await Promise.all(nextPropagationFiles.map(file => {
-    return this.touchFile(file, { propagateUp: false });
+    return this.touchFile(file, {
+      propagateUp: false,
+      processedEntries: event.processedEntries || {},
+    });
   }));
-  return this.propagateUpTouchEventFrom(file0);
+  return this.propagateUpTouchEventFrom(file0, event);
 }

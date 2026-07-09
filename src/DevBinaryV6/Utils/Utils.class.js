@@ -4,6 +4,7 @@
  * @description 
  */
 class DevBinaryV6Utils {
+  /*="./static.defaultTouchFileOptions.js"*/
   /*="./static.findFirstParentDirectoryContaining.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.parseCliArgs.js"*/

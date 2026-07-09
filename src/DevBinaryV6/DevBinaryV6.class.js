@@ -8,10 +8,12 @@ class DevBinaryV6 {
   /*="./static.fromRootDirectoryOf.js"*/
   /*="./static.Refrescador.js"*/
   /*="./static.CompilerV6.js"*/
+  /*="./static.Cronometer.js"*/
   /*="./static.ModulerV6.js"*/
   /*="./static.Utils.js"*/
   /*="./static.ShadowCommands.js"*/
   /*="./static.Formatters.js"*/
+  /*="./prototype.cronometer.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.command.js"*/
   /*="./prototype.selfDispatch.js"*/

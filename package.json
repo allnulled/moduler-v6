@@ -29,7 +29,8 @@
     "up": "bash up.sh",
     "build": "node dev/build.js",
     "dev": "bash dev.sh",
-    "test": "node test/runner.js"
+    "test": "node test/runner.js",
+    "test:speed": "node test/speed/runner.js"
   },
   "keywords": [],
   "author": "allnulled",

@@ -1,1 +1,1 @@
-unificados métodos de formateo de parámetros del moduler.{import,export} y eliminados anteriores
+import y export funcionando con sections y no modules + tests

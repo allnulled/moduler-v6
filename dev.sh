@@ -13,7 +13,7 @@ cd "$DIR2"
     -i "**/dist/**/*" \
     -i "**/*.dist.*" \
     -i "**/logs/**/*" \
-    -i "**/test/assets/unit/202/**/*" \
+    -i "**/test/assets/unit/{202,203}/**/*" \
     -p "3004" \
     -d 0 \
     -e "sh" \

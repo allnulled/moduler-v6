@@ -13,6 +13,7 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
     compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
     compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
   }
+  this.assert(processParameters.uncacheInjections === compilationProcess.uncacheInjections, "Las inyecciones 1");
   Add_entry_in_tree: {
     // compilationFile.resource = this.rootdirOf(compilationFile.resource);
     const id = this.rootdirOf(compilationFile.resource);

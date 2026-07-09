@@ -1128,7 +1128,9 @@
                 if (!condition) throw new Error(message);
             }
             static get _defaultProcessData() {
-                return {};
+                return {
+                    processedEntries: {}
+                };
             }
             constructor(compilationFile, compilationProcess, compiler) {
                 this.constructor.assert(typeof compiler === "object", "Parameter «compiler» must be object on «CompilerV6.CompilationProcess.constructor»");
@@ -1137,26 +1139,26 @@
                 this.compiler._traceIn("CompilationProcess.constructor", arguments);
                 if (compilationProcess instanceof this.constructor) {
                     this.compiler._traceOut("CompilationProcess.constructor", arguments);
-                    return Object.assign(this, compilationProcess);
+                    Object.assign(this, this.constructor._defaultProcessData, compilationProcess);
+                    return this;
+                } else {
+                    this.compiler.assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.CompilationProcess.constructor»");
+                    this.compiler.assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «CompilerV6.CompilationProcess.constructor»");
+                    Object.assign(this, this.constructor._defaultProcessData, compilationProcess);
+                    if (typeof this.resource === "undefined") {
+                        this.compiler.assert(typeof compilationFile.resource === "string", "Parameter «compilationProcess.resource» or «compilationFile.resource» must be string on «CompilerV6.CompilationProcess.constructor»");
+                        this.resource = compilationFile.resource;
+                    }
+                    if (typeof this.isRoot === "undefined") {
+                        this.isRoot = compilationFile.isRoot;
+                    }
+                    this.compiler.assert(typeof this.resource === "string", "Parameter «compilationProcess.resource» must be string on «CompilerV6.CompilationProcess.constructor»");
+                    this.compiler.assert(typeof this.isRoot === "boolean", "Parameter «compilationProcess.isRoot» must be boolean on «CompilerV6.CompilationProcess.constructor»");
+                    this.compiler._traceOut("CompilationProcess.constructor", arguments);
+                    return this;
                 }
-                this.compiler.assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.CompilationProcess.constructor»");
-                this.compiler.assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «CompilerV6.CompilationProcess.constructor»");
-                Object.assign(this, this.constructor._defaultProcessData, compilationProcess);
-                if (typeof this.resource === "undefined") {
-                    this.compiler.assert(typeof compilationFile.resource === "string", "Parameter «compilationProcess.resource» or «compilationFile.resource» must be string on «CompilerV6.CompilationProcess.constructor»");
-                    this.resource = compilationFile.resource;
-                }
-                if (typeof this.isRoot === "undefined") {
-                    this.isRoot = compilationFile.isRoot;
-                }
-                this.compiler.assert(typeof this.resource === "string", "Parameter «compilationProcess.resource» must be string on «CompilerV6.CompilationProcess.constructor»");
-                this.compiler.assert(typeof this.isRoot === "boolean", "Parameter «compilationProcess.isRoot» must be boolean on «CompilerV6.CompilationProcess.constructor»");
-                this.compiler._traceOut("CompilationProcess.constructor", arguments);
             }
             static from(...args) {
-                if (args[0] instanceof this.constructor) {
-                    return args[0];
-                }
                 return new this(...args);
             }
         };
@@ -1180,10 +1182,15 @@
                 this.constructor.assert(typeof compiler === "object", "Parameter «compiler» must be object on «CompilerV6.CompilationFile.constructor»");
                 this.constructor.assert(compiler instanceof CompilerV6, "Parameter «compiler» must be instance of «CompilerV6» on «CompilerV6.CompilationFile.constructor»");
                 this.compiler = compiler;
+                if (compilationProcess instanceof this.constructor) {
+                    this.compiler._traceOut("CompilationProcess.constructor", arguments);
+                    Object.assign(this, this.constructor._defaultFileData, compilationFile);
+                    return this;
+                }
                 this.compiler._traceIn("CompilationFile.constructor", arguments);
                 this.compiler.assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.CompilationFile.constructor»");
                 this.compiler.assert(typeof compilationProcess === "object", "Parameter «compilationProcess» must be object on «CompilerV6.CompilationFile.constructor»");
-                Object.assign(this, JSON.parse(JSON.stringify(this.constructor._defaultFileData)), compilationFile);
+                Object.assign(this, this.constructor._defaultFileData, compilationFile);
                 this.compiler.assert(typeof this.resource === "string", "Parameter «compilationFile.resource» must be string on «CompilerV6.CompilationFile.constructor»");
                 this.compiler.assert(typeof this.isRoot === "boolean", "Parameter «compilationFile.isRoot» must be boolean on «CompilerV6.CompilationFile.constructor»");
                 this.compiler._traceOut("CompilationFile.constructor", arguments);
@@ -1660,6 +1667,7 @@
                 compilationFile = this.constructor.CompilationFile.from(fileParameters, processParameters, this);
                 compilationProcess = this.constructor.CompilationProcess.from(fileParameters, processParameters, this);
             }
+            this.assert(processParameters.uncacheInjections === compilationProcess.uncacheInjections, "Las inyecciones 1");
             Add_entry_in_tree: {
                 const id = this.rootdirOf(compilationFile.resource);
                 compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
@@ -1770,7 +1778,7 @@
         }
         async _compileAsInjectSource(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
             this._traceIn("_compileAsInjectSource", arguments);
-            let parameters, targetPath, targetCompilation;
+            let parameters, targetPath, targetCompilation, targetInjection;
             const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot} = compilationFile;
             Evaluate_parameters: {
                 parameters = await this._getDataForTokenCompilation({
@@ -1788,33 +1796,32 @@
                 targetPath = token.referenceOf.fullpath;
             }
             Compile_target: {
+                Use_processedEntries_cache_if_possible: {
+                    if (compilationProcess.to === "data") {
+                        break Use_processedEntries_cache_if_possible;
+                    }
+                    if (compilationProcess.uncacheInjections) {
+                        break Use_processedEntries_cache_if_possible;
+                    }
+                    if (Object.keys(compilationProcess.processedEntries).length) {
+                        if (targetPath in compilationProcess.processedEntries) {
+                            targetInjection = await require("fs").promises.readFile(compilationProcess.processedEntries[targetPath].distJs, "utf8");
+                            break Compile_target;
+                        }
+                    }
+                }
                 targetCompilation = await this._compileRecursively({
                     resource: targetPath,
                     isRoot: false
                 }, compilationProcess);
             }
             Inject_in_compilation_text: {
-                if (compilationFile.extension === "js") {
-                    let replacement = "";
-                    if (targetPath.endsWith(".js")) {
-                        replacement = targetCompilation.js;
-                    } else if (targetPath.endsWith(".css")) {
-                        throw new Error(`Syntax of «$compiler.inject.source» on file «${targetPath}» should not be used to import «css» files. Use commented @injects syntax instead.`);
-                        compilationFile.compilation.css += "\n" + targetCompilation.css;
-                    } else if (targetPath.endsWith(".md")) {
-                        throw new Error(`Syntax of «$compiler.inject.source» on file «${targetPath}» should not be used to import «md» files. Use commented @injects syntax instead.`);
-                        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
-                    } else {
-                        throw new Error(`Syntax of «$compiler.inject.source» on file «${targetPath}» is trying to import foraneous extension`);
-                    }
-                    compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
-                } else if (compilationFile.extension === "css") {
-                    throw new Error("Syntax of «$compiler.inject.source» should not be available on «css» files");
-                } else if (compilationFile.extension === "md") {
-                    throw new Error("Syntax of «$compiler.inject.source» should not be available on «md» files");
-                } else {
-                    throw new Error(`Syntax of «$compiler.inject.source» should only be available on «js» files and not on «${compilationFile.extension}»`);
+                this.assert(compilationFile.extension === "js", `Syntax of «$compiler.inject.source» should only be available on «js» files and not on «${compilationFile.extension}»`);
+                this.assert(targetPath.endsWith(".js"), `Syntax of «$compiler.inject.source» on file «${targetPath}» is trying to import foraneous extension format from file «${targetPath}» on «CompilerV6.prototype._compileAsInjectSource»`);
+                if (!targetInjection) {
+                    targetInjection = targetCompilation.js;
                 }
+                compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], targetInjection);
             }
             Inject_in_report_object: {
                 if (compilationProcess.to !== "data") {

@@ -5,6 +5,7 @@
  */
 static get _defaultProcessData() {
   return {
-    
+    processedEntries: {},
+    // uncacheInjections: false,
   }
 };
