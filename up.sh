@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+node up-cleaner.js
+
 cat COMMIT.md
 
 read -p "Is that commit message okay? [y/N] " r

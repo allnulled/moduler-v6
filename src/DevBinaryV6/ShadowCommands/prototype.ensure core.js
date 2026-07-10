@@ -19,6 +19,7 @@ async "ensure core"(args, devbin) {
   return devbin.utils.ensureCoreFrom(parameters.from, {
     ignoreErrors: 1,
     allowDirtyDirectory: 1,
+    dontOverride: 1,
   });
 
 }
