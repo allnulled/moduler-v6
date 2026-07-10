@@ -11,9 +11,10 @@ cd "$DIR2"
     -w "$(pwd)" \
     -i "**/node_modules/**/*" \
     -i "**/dist/**/*" \
-    -i "**/*.dist.*" \
+    -i "**/src-tmp/**/*" \
+    -i "**/*.{dist,ign}.*" \
     -i "**/logs/**/*" \
-    -i "**/test/assets/unit/{202,203}/**/*" \
+    -i "**/test/assets/unit/{202,203,204}/**/*" \
     -p "3004" \
     -d 0 \
     -e "sh" \

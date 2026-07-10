@@ -2604,6 +2604,79 @@
                 }
                 return event;
             }
+            async ensureCoreFrom(basedirInput, parametersInput = {}) {
+                const basedir = this.devbin.compiler.normalizationOf(basedirInput);
+                const parameters = Object.assign({}, {
+                    ignoreErrors: false,
+                    allowDirtyDirectory: false
+                }, parametersInput, {
+                    from: basedirInput
+                });
+                const fs = require("fs");
+                const path = require("path");
+                const targetDir = path.resolve(parameters.from);
+                const innerFiles = await fs.promises.readdir(targetDir);
+                if (!parameters.allowDirtyDirectory) {
+                    this.assert(innerFiles.length === 0, `Parameter «--from» should point to an empty directory but «${targetDir}» is not empty on «DevBinaryV6.Utils.prototype.ensureCoreFrom»`);
+                }
+                const initialPackageJson = {
+                    name: "name-of-the-project",
+                    bin: {},
+                    main: "dist/main.dist.js",
+                    scripts: {
+                        test: "echo 'no tests now'"
+                    },
+                    author: "allnulled",
+                    version: "1.0.0"
+                };
+                const createDirectory = function(dir) {
+                    return fs.promises.mkdir(dir);
+                };
+                const saveFile = function(file, contents) {
+                    return fs.promises.writeFile(file, contents, "utf8");
+                };
+                const duplicateFile = function(src, dst) {
+                    return fs.promises.copyFile(src, dst);
+                };
+                const duplicateDirectory = function(src, dst) {
+                    return fs.promises.cp(src, dst, {
+                        recursive: true
+                    });
+                };
+                await createDirectory(`${targetDir}/dev`);
+                await createDirectory(`${targetDir}/dev/bin`);
+                await createDirectory(`${targetDir}/dev/bin/help`);
+                await createDirectory(`${targetDir}/src`);
+                await createDirectory(`${targetDir}/src/lib`);
+                await createDirectory(`${targetDir}/dist`);
+                await createDirectory(`${targetDir}/dist/src`);
+                await createDirectory(`${targetDir}/dist/src/lib`);
+                await createDirectory(`${targetDir}/test`);
+                await createDirectory(`${targetDir}/test/unit`);
+                await createDirectory(`${targetDir}/test/unit/src`);
+                await createDirectory(`${targetDir}/docs`);
+                await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
+                await saveFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nrequire(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
+                await saveFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
+                await saveFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
+                await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.entry.js`);
+                await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);
+                await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/lib/compiler-v6.entry.js`);
+                await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/dist/src/lib/compiler-v6.dist.js`);
+                await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/lib/dev-binary-v6.entry.js`);
+                await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/dist/src/lib/dev-binary-v6.dist.js`);
+                await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/lib/refrescador.entry.js`);
+                await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/dist/src/lib/refrescador.dist.js`);
+                await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/src/lib/refrescador`, {
+                    recursive: true
+                });
+                await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/dist/src/lib/refrescador`, {
+                    recursive: true
+                });
+                return {
+                    targetDir: targetDir
+                };
+            }
             constructor(devbin) {
                 this.devbin = devbin;
             }
@@ -2615,7 +2688,7 @@
             assert(...args) {
                 return this.devbin.assert(...args);
             }
-            async "new project"(args, devbin) {
+            "new project"(args, devbin) {
                 const parameters = devbin.utils.formatCliArgs({
                     from: {
                         onFormat: devbin.constructor.Formatters.asString,
@@ -2625,54 +2698,25 @@
                     }
                 }, args);
                 this.assert(typeof parameters.from === "string", `Parameter «--from» is required as string on «DevBinaryV6.ShadowCommands.prototype['new project']»`);
-                const fs = require("fs");
-                const path = require("path");
-                const targetDir = path.resolve(parameters.from);
-                const innerFiles = await fs.promises.readdir(targetDir);
-                this.assert(innerFiles.length === 0, `Parameter «--from» should point to an empty directory but «${targetDir}» is not empty on «DevBinaryV6.ShadowCommands.prototype['new project']»`);
-                const initialPackageJson = {
-                    name: "name-of-the-project",
-                    bin: {},
-                    main: "dist/main.dist.js",
-                    scripts: {
-                        test: "echo 'no tests now'"
-                    },
-                    author: "allnulled",
-                    version: "1.0.0"
-                };
-                await fs.promises.mkdir(`${targetDir}/dev`);
-                await fs.promises.mkdir(`${targetDir}/dev/bin`);
-                await fs.promises.mkdir(`${targetDir}/dev/bin/help`);
-                await fs.promises.mkdir(`${targetDir}/src`);
-                await fs.promises.mkdir(`${targetDir}/src/lib`);
-                await fs.promises.mkdir(`${targetDir}/dist`);
-                await fs.promises.mkdir(`${targetDir}/dist/src`);
-                await fs.promises.mkdir(`${targetDir}/dist/src/lib`);
-                await fs.promises.mkdir(`${targetDir}/test`);
-                await fs.promises.mkdir(`${targetDir}/test/unit`);
-                await fs.promises.mkdir(`${targetDir}/test/unit/src`);
-                await fs.promises.mkdir(`${targetDir}/docs`);
-                await fs.promises.writeFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
-                await fs.promises.writeFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nrequire(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
-                await fs.promises.writeFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
-                await fs.promises.writeFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
-                await fs.promises.copyFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.entry.js`);
-                await fs.promises.copyFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);
-                await fs.promises.copyFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/lib/compiler-v6.entry.js`);
-                await fs.promises.copyFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/dist/src/lib/compiler-v6.dist.js`);
-                await fs.promises.copyFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/lib/dev-binary-v6.entry.js`);
-                await fs.promises.copyFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/dist/src/lib/dev-binary-v6.dist.js`);
-                await fs.promises.copyFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/lib/refrescador.entry.js`);
-                await fs.promises.copyFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/dist/src/lib/refrescador.dist.js`);
-                await fs.promises.cp(`${__dirname}/refrescador`, `${targetDir}/src/lib/refrescador`, {
-                    recursive: true
+                return devbin.utils.ensureCoreFrom(parameters.from, {
+                    ignoreErrors: 0,
+                    allowDirtyDirectory: 0
                 });
-                await fs.promises.cp(`${__dirname}/refrescador`, `${targetDir}/dist/src/lib/refrescador`, {
-                    recursive: true
+            }
+            async "ensure core"(args, devbin) {
+                const parameters = devbin.utils.formatCliArgs({
+                    from: {
+                        onFormat: devbin.constructor.Formatters.asString,
+                        default: false,
+                        alias: [ "-f" ],
+                        description: "Any directory from which to ensure the core os a devbin project"
+                    }
+                }, args);
+                this.assert(typeof parameters.from === "string", `Parameter «--from» is required as string on «DevBinaryV6.ShadowCommands.prototype['ensure core']»`);
+                return devbin.utils.ensureCoreFrom(parameters.from, {
+                    ignoreErrors: 1,
+                    allowDirtyDirectory: 1
                 });
-                return {
-                    targetDir: targetDir
-                };
             }
             async loop(args) {
                 const targetRoot = await this.devbin.utils.constructor.findFirstParentDirectoryContaining(process.cwd(), "package.json");

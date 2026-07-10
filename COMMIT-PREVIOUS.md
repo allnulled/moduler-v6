@@ -1,1 +1,1 @@
-import y export funcionando con sections y no modules + tests
+comando touch - que borre la profundidad después del test de velocidad

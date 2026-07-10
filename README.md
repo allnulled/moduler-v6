@@ -77,3 +77,5 @@ En el proyecto se incluyen 3 ficheros distribuibles:
       - la llamada a `DevBinaryV6.prototype.shadowCommands.loop`
       - el método `DevBinaryV6.ShadowCommands.prototype.loop`
       - van a `DevBinary.Utils.prototype.touchFile`
+- [Guía de comandos de devbin](./guides/Gu%C3%ADa%20de%20comandos%20de%20devbin.md)
+   - Se explican los pasos que sigue el evento *touch* de (todas van al mismo sitio):

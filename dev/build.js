@@ -51,9 +51,14 @@ const reduceTemplate = function(file, dir) {
   return source;
 };
 
-const compileFile = async function({ src, dist, distMin }) {
-  const sourceV6 = reduceTemplate(src, rootdir);
-  const beautifiedDistV6 = await minify(sourceV6, {
+const compileFile = async function({ src:src1, dist, distMin }) {
+  const sourceV6 = reduceTemplate(src1, rootdir);
+  const src2 = src1.indexOf("src/") === 0 ? src1.replace("src/", "src-tmp/") : src1;
+  const src2Absolute = rootrel(src2);
+  if(src2.startsWith("src-tmp/")) {
+    await fs.promises.writeFile(src2Absolute, sourceV6, "utf8");
+  }
+  const beautifiedDistV6 = await minify({[src2Absolute]:sourceV6}, {
     compress: false,
     mangle: false,
     toplevel: true,
@@ -62,7 +67,7 @@ const compileFile = async function({ src, dist, distMin }) {
       beautify: true
     }
   });
-  const compressedDistV6 = await minify(sourceV6, {
+  const compressedDistV6 = await minify({[src2Absolute]:sourceV6}, {
     compress: true,
     mangle: true,
     toplevel: true,

@@ -1,0 +1,10 @@
+{
+  "name": "name-of-the-project",
+  "bin": {},
+  "main": "dist/main.dist.js",
+  "scripts": {
+    "test": "echo 'no tests now'"
+  },
+  "author": "allnulled",
+  "version": "1.0.0"
+}

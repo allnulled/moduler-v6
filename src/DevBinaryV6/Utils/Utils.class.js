@@ -16,5 +16,6 @@ class DevBinaryV6Utils {
   /*="./prototype.propagateUpTouchEventFrom.js"*/
   /*="./prototype.ensureDirectoryOf.js"*/
   /*="./prototype.touchFile.js"*/
+  /*="./prototype.ensureCoreFrom.js"*/
   /*="./constructor.js"*/
 }

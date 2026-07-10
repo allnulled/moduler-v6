@@ -7,6 +7,7 @@ class DevBinaryV6ShadowCommands {
   /*="./constructor.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.new project.js"*/
+  /*="./prototype.ensure core.js"*/
   /*="./prototype.loop.js"*/
   /*="./prototype.touch.js"*/
 }

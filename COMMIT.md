@@ -1,1 +1,1 @@
-comando touch - que borre la profundidad después del test de velocidad
+comando devbin ensure core + test + otra guia para los comandos del devbin

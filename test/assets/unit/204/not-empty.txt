@@ -1,0 +1,1 @@
+This file is to demonstrate the directory was not empty when devbin ensure core --from ... was fired.
