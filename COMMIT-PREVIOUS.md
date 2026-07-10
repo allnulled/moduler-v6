@@ -1,1 +1,1 @@
-comando devbin ensure core intenta crear ficheros si no existen pero si existen los deja
+fixes en readme + mejor up-cleaner

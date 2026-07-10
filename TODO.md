@@ -1,1 +1,1 @@
-comand devbin ensure core --from dir para lo mismo que el create, pero intenta sobreescribirlos en lugar de pedir que el directorio esté vacío
+devbin ensure core permite flag --reset para forzar los overwrites

@@ -47,6 +47,16 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
         }
       }
     }
+    Create_file_unless_it_exists_or_option_dontCreateOnInjectSource_is_true: {
+      if(!compilationProcess.dontCreateOnInjectSource) {
+        const existsFile = await this._existsFile(targetPath);
+        if(!existsFile) {
+          const path = require("path");
+          const targetId = this.rootdirOf(targetPath).replace(/\.js$/g, "");
+          await this._createDefaultInjectedFile(targetPath, targetId);
+        }
+      }
+    }
     targetCompilation = await this._compileRecursively({
       resource: targetPath,
       isRoot: false,

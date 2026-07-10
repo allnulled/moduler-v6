@@ -6,6 +6,8 @@
 static get _defaultProcessData() {
   return {
     processedEntries: {},
+    // @ATENTION: Si se descomenta petan los tests:
     // uncacheInjections: false,
+    createOnInjectSource: false,
   }
 };

@@ -115,7 +115,7 @@ const main = async function () {
         (async () => {
           const dir = path.resolve(`${rootdir}/../moduler-v6-starter`);
           const dirSrc = JSON.stringify(dir);
-          const cmdCommand = `devbin ensure core --from ${dirSrc}`;
+          const cmdCommand = `devbin ensure core --reset --from ${dirSrc}`;
           await execAsync(cmdCommand, { cwd: dir });
         })(),
       ]);

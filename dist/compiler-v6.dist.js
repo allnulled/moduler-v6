@@ -1129,7 +1129,8 @@
             }
             static get _defaultProcessData() {
                 return {
-                    processedEntries: {}
+                    processedEntries: {},
+                    createOnInjectSource: false
                 };
             }
             constructor(compilationFile, compilationProcess, compiler) {
@@ -1810,6 +1811,16 @@
                         }
                     }
                 }
+                Create_file_unless_it_exists_or_option_dontCreateOnInjectSource_is_true: {
+                    if (!compilationProcess.dontCreateOnInjectSource) {
+                        const existsFile = await this._existsFile(targetPath);
+                        if (!existsFile) {
+                            const path = require("path");
+                            const targetId = this.rootdirOf(targetPath).replace(/\.js$/g, "");
+                            await this._createDefaultInjectedFile(targetPath, targetId);
+                        }
+                    }
+                }
                 targetCompilation = await this._compileRecursively({
                     resource: targetPath,
                     isRoot: false
@@ -2181,6 +2192,15 @@
         _getStringForDevelopment(text, tab = 0) {
             this._trace("_getStringForDevelopment", arguments);
             return text.split("\n").map(line => JSON.stringify(line)).join("\n + ");
+        }
+        _existsFile(file) {
+            const fullpathFile = this.normalizationOf(file);
+            return require("fs").promises.readFile(fullpathFile).then(out => true).catch(err => false);
+        }
+        _createDefaultInjectedFile(file, targetId) {
+            return require("fs").promises.writeFile(file, `\n/**\n * @name ${targetId}\n * @type any\n * @description none\n */\n`, "utf8").catch(error => {
+                console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
+            });
         }
         normalizationOf(nodepath, origin = false) {
             this._trace("normalizationOf", arguments);

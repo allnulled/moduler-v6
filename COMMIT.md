@@ -1,1 +1,1 @@
-fixes en readme + mejor up-cleaner
+cambios para que el proyecto del ensure core funcione bien + opcion --reset para forzar overwrite + embellecimiento con terser en el touch + creacion de ficheros inyectados con inject.source + plantilla base

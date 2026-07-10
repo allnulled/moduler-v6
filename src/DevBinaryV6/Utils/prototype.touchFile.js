@@ -22,9 +22,10 @@ async touchFile(file, optionsInput = {}) {
   const isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
   Processing_entry: {
     if (!isEntry) {
-      console.log(`[*] Touch event not triggered because file is not entry: ${filepath}`) || -1;
+      console.log(`[-] Touch event dismissed from: ${filepath}`);
       break Processing_entry;
     }
+    console.log(`[*] Touch event triggered from: ${filepath}`);
     Paso_1_compilar_distribuibles: {
       Object.assign(event, {
         distribution: await this.compileDistribuiblesOf(filepath, event),

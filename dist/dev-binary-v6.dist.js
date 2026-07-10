@@ -1140,7 +1140,8 @@
                 }
                 static get _defaultProcessData() {
                     return {
-                        processedEntries: {}
+                        processedEntries: {},
+                        createOnInjectSource: false
                     };
                 }
                 constructor(compilationFile, compilationProcess, compiler) {
@@ -1821,6 +1822,16 @@
                             }
                         }
                     }
+                    Create_file_unless_it_exists_or_option_dontCreateOnInjectSource_is_true: {
+                        if (!compilationProcess.dontCreateOnInjectSource) {
+                            const existsFile = await this._existsFile(targetPath);
+                            if (!existsFile) {
+                                const path = require("path");
+                                const targetId = this.rootdirOf(targetPath).replace(/\.js$/g, "");
+                                await this._createDefaultInjectedFile(targetPath, targetId);
+                            }
+                        }
+                    }
                     targetCompilation = await this._compileRecursively({
                         resource: targetPath,
                         isRoot: false
@@ -2193,6 +2204,15 @@
                 this._trace("_getStringForDevelopment", arguments);
                 return text.split("\n").map(line => JSON.stringify(line)).join("\n + ");
             }
+            _existsFile(file) {
+                const fullpathFile = this.normalizationOf(file);
+                return require("fs").promises.readFile(fullpathFile).then(out => true).catch(err => false);
+            }
+            _createDefaultInjectedFile(file, targetId) {
+                return require("fs").promises.writeFile(file, `\n/**\n * @name ${targetId}\n * @type any\n * @description none\n */\n`, "utf8").catch(error => {
+                    console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
+                });
+            }
             normalizationOf(nodepath, origin = false) {
                 this._trace("normalizationOf", arguments);
                 return this.moduler.normalizationOf(nodepath);
@@ -2426,7 +2446,8 @@
                 Get_compilation: {
                     compilation = await this.devbin.compiler.compile(filepath, {
                         processedEntries: event.processedEntries,
-                        uncacheInjections: event.uncacheInjections
+                        uncacheInjections: event.uncacheInjections,
+                        dontCreateOnInjectSource: false
                     });
                 }
                 Get_dist_filepaths: {
@@ -2451,7 +2472,18 @@
                 Overwrite_dist_files: {
                     await this.ensureDirectoryOf(distJs);
                     if (compilation.js) {
-                        await require("fs").promises.writeFile(distJs, compilation.js, "utf8");
+                        const output = await require("terser").minify({
+                            [distJs]: compilation.js
+                        }, {
+                            compress: false,
+                            mangle: false,
+                            toplevel: true,
+                            format: {
+                                comments: false,
+                                beautify: true
+                            }
+                        });
+                        await require("fs").promises.writeFile(distJs, output.code, "utf8");
                         report.js = distJs;
                         Save_in_touch_event_cache: {
                             event.processedEntries[compilation.file] = {
@@ -2507,6 +2539,7 @@
                 const testunitFile = path.resolve(event.distribution.names.rootdirDirectory.replace(/^\@\/src/g, this.devbin.compiler.fullpathOf("@/test/unit/src")), event.distribution.names.test);
                 const devBinaryV6Filepath = this.devbin.compiler.fullpathOf("@/dev/bin.js");
                 const devBinaryV6RelativeFilepath = path.relative(path.dirname(testunitFile), devBinaryV6Filepath);
+                if (!event.distribution.js) return;
                 const relativeTarget = path.relative(path.dirname(testunitFile), event.distribution.js);
                 const testunitContent = `const devbin = require(__dirname + ${JSON.stringify("/" + devBinaryV6RelativeFilepath)});\nconst target = require(__dirname + ${JSON.stringify("/" + relativeTarget)});\n\ndevbin.assert(true, "Test is empty right now");`;
                 const testunitDir = path.dirname(testunitFile);
@@ -2576,9 +2609,10 @@
                 const isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
                 Processing_entry: {
                     if (!isEntry) {
-                        console.log(`[*] Touch event not triggered because file is not entry: ${filepath}`) || -1;
+                        console.log(`[-] Touch event dismissed from: ${filepath}`);
                         break Processing_entry;
                     }
+                    console.log(`[*] Touch event triggered from: ${filepath}`);
                     Paso_1_compilar_distribuibles: {
                         Object.assign(event, {
                             distribution: await this.compileDistribuiblesOf(filepath, event)
@@ -2620,6 +2654,16 @@
                 if (!parameters.allowDirtyDirectory) {
                     this.assert(innerFiles.length === 0, `Parameter «--from» should point to an empty directory but «${targetDir}» is not empty on «DevBinaryV6.Utils.prototype.ensureCoreFrom»`);
                 }
+                const currentPackageJson = (() => {
+                    try {
+                        return require(`${__dirname}/../package.json`);
+                    } catch (error) {
+                        return {
+                            devDependencies: {},
+                            dependencies: {}
+                        };
+                    }
+                })();
                 const initialPackageJson = {
                     name: "name-of-the-project",
                     bin: {},
@@ -2627,6 +2671,8 @@
                     scripts: {
                         test: "echo 'no tests now'"
                     },
+                    dependencies: currentPackageJson.dependencies,
+                    devDependencies: currentPackageJson.devDependencies,
                     author: "allnulled",
                     version: "1.0.0"
                 };
@@ -2685,6 +2731,7 @@
                 await createDirectory(`${targetDir}/test/unit/src`);
                 await createDirectory(`${targetDir}/docs`);
                 await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
+                if (!await utils._existsFile(`${targetDir}/.gitignore`)) await saveFile(`${targetDir}/.gitignore`, "node_modules", "utf8");
                 await saveFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
                 await saveFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
                 await saveFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nrequire(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
@@ -2739,13 +2786,20 @@
                         default: false,
                         alias: [ "-f" ],
                         description: "Any directory from which to ensure the core os a devbin project"
+                    },
+                    reset: {
+                        onFormat: devbin.constructor.Formatters.asBoolean,
+                        default: false,
+                        alias: [ "-r" ],
+                        description: "Overwrites all core files if used"
                     }
                 }, args);
                 this.assert(typeof parameters.from === "string", `Parameter «--from» is required as string on «DevBinaryV6.ShadowCommands.prototype['ensure core']»`);
+                this.assert(typeof parameters.reset === "boolean", `Parameter «--reset» is required as boolean on «DevBinaryV6.ShadowCommands.prototype['ensure core']»`);
                 return devbin.utils.ensureCoreFrom(parameters.from, {
                     ignoreErrors: 1,
                     allowDirtyDirectory: 1,
-                    dontOverride: 1
+                    dontOverride: !parameters.reset
                 });
             }
             async loop(args) {

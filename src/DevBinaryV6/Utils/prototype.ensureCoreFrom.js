@@ -24,6 +24,13 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
     this.assert(innerFiles.length === 0, `Parameter «--from» should point to an empty directory but «${targetDir}» is not empty on «DevBinaryV6.Utils.prototype.ensureCoreFrom»`);
   }
 
+  const currentPackageJson = (() => {
+    try {
+      return require(`${__dirname}/../package.json`);
+    } catch (error) {
+      return { devDependencies: {}, dependencies: {} };
+    }
+  })();
   const initialPackageJson = {
     name: "name-of-the-project",
     bin: {},
@@ -31,6 +38,8 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
     scripts: {
       test: "echo 'no tests now'"
     },
+    dependencies: currentPackageJson.dependencies,
+    devDependencies: currentPackageJson.devDependencies,
     author: "allnulled",
     version: "1.0.0",
   };
@@ -95,6 +104,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectory(`${targetDir}/docs`);
   
   await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
+  if(!await utils._existsFile(`${targetDir}/.gitignore`)) await saveFile(`${targetDir}/.gitignore`, "node_modules", "utf8");
   
   await saveFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
   await saveFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");

@@ -71,6 +71,8 @@ class CompilerV6 {
   /*="./prototype._extendToken.js"*/
   /*="./prototype._getDataForTokenCompilation.js"*/
   /*="./prototype._getStringForDevelopment.js"*/
+  /*="./prototype._existsFile.js"*/
+  /*="./prototype._createDefaultInjectedFile.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/
   /*="./prototype.fullpathOf.js"*/

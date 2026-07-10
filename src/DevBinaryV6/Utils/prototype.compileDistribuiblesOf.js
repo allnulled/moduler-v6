@@ -12,6 +12,7 @@ async compileDistribuiblesOf(filepath, event) {
     compilation = await this.devbin.compiler.compile(filepath, {
       processedEntries: event.processedEntries,
       uncacheInjections: event.uncacheInjections,
+      dontCreateOnInjectSource: false,
     });
   }
   Get_dist_filepaths: {
@@ -36,7 +37,16 @@ async compileDistribuiblesOf(filepath, event) {
   Overwrite_dist_files: {
     await this.ensureDirectoryOf(distJs);
     if (compilation.js) {
-      await require("fs").promises.writeFile(distJs, compilation.js, "utf8");
+      const output = await require("terser").minify({ [distJs]: compilation.js }, {
+        compress: false,
+        mangle: false,
+        toplevel: true,
+        format: {
+          comments: false, // Esta es la única cambiada
+          beautify: true
+        }
+      });
+      await require("fs").promises.writeFile(distJs, output.code, "utf8");
       // Antes se creaba un .dist en el source:
       // await require("fs").promises.writeFile(srcDistJs, compilation.js, "utf8");
       report.js = distJs;
