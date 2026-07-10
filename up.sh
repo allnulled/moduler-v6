@@ -4,6 +4,9 @@ node up-cleaner.js
 
 cat COMMIT.md
 
+echo ''
+echo ''
+
 read -p "Is that commit message okay? [y/N] " r
 
 if [[ "$r" =~ ^[Yy]$ ]]; then

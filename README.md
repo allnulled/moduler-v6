@@ -74,8 +74,10 @@ En el proyecto se incluyen 3 ficheros distribuibles:
 - [Guía del loop de DevBinaryV6](./guides/Gu%C3%ADa%20del%20loop%20de%20DevBinaryV6.md)
    - Se explican los pasos que sigue el evento *touch* de (todas van al mismo sitio):
       - el comando `devbin loop` desde línea de consola
-      - la llamada a `DevBinaryV6.prototype.shadowCommands.loop`
-      - el método `DevBinaryV6.ShadowCommands.prototype.loop`
-      - van a `DevBinary.Utils.prototype.touchFile`
+      - el método [`DevBinaryV6.prototype.shadowCommands.loop` o `DevBinaryV6.ShadowCommands.prototype.loop`](./src/DevBinaryV6/ShadowCommands/prototype.loop.js)
+      - siempre llaman a [`DevBinary.Utils.prototype.touchFile`](./src/DevBinaryV6/Utils/prototype.touchFile.js)
 - [Guía de comandos de devbin](./guides/Gu%C3%ADa%20de%20comandos%20de%20devbin.md)
-   - Se explican los pasos que sigue el evento *touch* de (todas van al mismo sitio):
+   - Se explica el uso de `devbin` por consola
+   - Se explica la *DevModulerV6/ShadowCommands API*
+   - Se explican los comandos sombra que lleva por defecto `DevModulerV6`
+- [Guía del moduler-v6-starter](./guides/)

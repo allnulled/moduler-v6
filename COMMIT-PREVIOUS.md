@@ -1,1 +1,1 @@
-comando devbin ensure core + test + otra guia para los comandos del devbin
+comando devbin ensure core intenta crear ficheros si no existen pero si existen los deja
