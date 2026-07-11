@@ -4,6 +4,7 @@
 
 - [Guía rápida del moduler-v6-starter](#guía-rápida-del-moduler-v6-starter)
   - [Índice](#índice)
+  - [Requisitos](#requisitos)
   - [Instalación](#instalación)
   - [Uso](#uso)
   - [El loop](#el-loop)
@@ -18,10 +19,26 @@
   - [El evento touch](#el-evento-touch)
   - [Ficheros y directorios especiales](#ficheros-y-directorios-especiales)
 
+## Requisitos
+
+- node, npm y git
+- el `devbin` de `moduler-v6` por línea de comandos no es necesario
+
 ## Instalación
 
+Si tienes instalado `devbin` globalmente:
+
 ```sh
-git clone ...
+# si empiezas en un directorio fresco y quieres que haga la comprobación:
+devbin new project --from . 
+# o este comando que simplemente se asegura que tengas todos los ficheros o te los crea:
+devbin ensure core --from . 
+```
+
+Si no tienes instalado `devbin` globalmente:
+
+```sh
+git clone https://github.com/allnulled/moduler-v6-starter.git .
 npm install
 ```
 
@@ -45,10 +62,12 @@ De ahí:
 
 - trabajas editando el `src/**/*` pero pensando en el `dist/**/*`
 - cada edición de fichero en `src` genera un *evento touch*
+- hay una *propagación* al final de cada *evento touch*
 - una *propagación* consiste en:
    - hacer un *evento touch* en el `<dirname>.entry.js` del directorio actual, si existe
-   - hacer un *evento touch* en todos los `*.entry.js` de los directorios superiores
-- cada *evento touch* hará lo siguiente:
+   - hacer un *evento touch* en todos los `*.entry.js` del directorio superior
+   - esta propagación se repite hasta la raíz del proyecto o `CompilerV6.prototype.rootdir`
+- un *evento touch* hace lo siguiente:
    - si no es un `*.entry.js`, continúa la *propagación*
    - cada `src/**/*.entry.js` genera su homólogo en `dist/**/*.dist.js` nuevamente
       - en este paso se da la compilación
