@@ -1,1 +1,1 @@
-cambios para que el proyecto del ensure core funcione bien + opcion --reset para forzar overwrite + embellecimiento con terser en el touch + creacion de ficheros inyectados con inject.source + plantilla base
+propagateUp del touchFile ahora mira el ficher {dirname}.entry.js del mismo directorio antes de subir + mejor fichero por defecto segun prefijos y sufijos: prototype, static, class, sync, async

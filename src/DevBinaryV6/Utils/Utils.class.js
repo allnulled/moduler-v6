@@ -17,5 +17,6 @@ class DevBinaryV6Utils {
   /*="./prototype.ensureDirectoryOf.js"*/
   /*="./prototype.touchFile.js"*/
   /*="./prototype.ensureCoreFrom.js"*/
+  /*="./prototype.existsFile.js"*/
   /*="./constructor.js"*/
 }

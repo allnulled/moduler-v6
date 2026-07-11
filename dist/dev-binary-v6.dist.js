@@ -2209,7 +2209,61 @@
                 return require("fs").promises.readFile(fullpathFile).then(out => true).catch(err => false);
             }
             _createDefaultInjectedFile(file, targetId) {
-                return require("fs").promises.writeFile(file, `\n/**\n * @name ${targetId}\n * @type any\n * @description none\n */\n`, "utf8").catch(error => {
+                const filename = require("path").basename(file).replace(/\.js$/g, "");
+                let name, targetType, targetIsClass = false, targetRootdir;
+                targetType = "any";
+                targetRootdir = this.rootdirOf(file);
+                name = (() => {
+                    const isPrototype = filename.startsWith("prototype.");
+                    const isStatic = filename.startsWith("static.");
+                    const isClass = filename.endsWith(".class");
+                    const isAsync = filename.match(/(^async\.)|(\.async\.)|(\.async$)/g);
+                    const isSync = filename.match(/(^sync\.)|(\.sync\.)|(\.sync$)/g);
+                    const isConstructor = filename === "constructor";
+                    const isOnlyClass = isClass && !isPrototype && !isStatic;
+                    const fileId = filename.replace(/^(prototype|static)\./g, "").replace(/^a?sync\./g, "").replace(/\.a?sync$/g, "").replace(/\.class$/g, "");
+                    const isJsFriendly = fileId.match(/^[A-Za-z_$][A-Za-z0-9_$]*$/g);
+                    let out = "";
+                    let prefixes = "";
+                    let middle = "";
+                    let suffixes = "";
+                    if (isStatic) {
+                        prefixes += `static `;
+                        targetType = "static class member";
+                    } else if (isPrototype) {
+                        targetType = "prototype class member";
+                    } else if (isClass) {
+                        targetType = "pure class";
+                    }
+                    if (isClass) {
+                        if (isStatic || isPrototype) {
+                            suffixes += " = ";
+                        }
+                        suffixes += `class ${fileId}`;
+                        targetType = targetType === "pure class" ? targetType : targetType + " + class";
+                    } else if (isAsync) {
+                        prefixes += `async `;
+                        suffixes += `()`;
+                        targetType += " + async";
+                    } else if (isSync) {
+                        prefixes += ``;
+                        suffixes += `()`;
+                        targetType += " + sync";
+                    } else {
+                        suffixes = " =";
+                    }
+                    if (!isOnlyClass) {
+                        if (isJsFriendly) {
+                            middle = fileId;
+                        } else {
+                            middle = JSON.stringify(fileId);
+                        }
+                    }
+                    out = prefixes + middle + suffixes;
+                    return out;
+                })();
+                const headerComment = `/**\n   * @file ${targetRootdir}\n   * @type ${targetType}\n   */`;
+                return require("fs").promises.writeFile(file, `${name} {\n  ${headerComment}\n}`, "utf8").catch(error => {
                     console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
                 });
             }
@@ -2563,28 +2617,44 @@
                 const fs = require("fs");
                 const path = require("path");
                 let nextPropagationFiles = [];
-                let dir = path.dirname(path.dirname(path.resolve(filepath)));
-                Iterating_entries: while (true) {
-                    const entries = await fs.promises.readdir(dir, {
-                        withFileTypes: true
-                    });
-                    const matchedEntries = entries.filter(e => e.isFile() && (e.name.endsWith(".entry.js") || e.name.endsWith(".entry.css") || e.name.endsWith(".entry.md"))).map(e => path.resolve(e.path, e.name));
-                    if (matchedEntries.length) {
-                        nextPropagationFiles = matchedEntries;
-                        break Iterating_entries;
+                let currentDirectory = path.dirname(path.resolve(filepath));
+                let currentDirectoryName = path.basename(currentDirectory);
+                let upperDirectory = path.dirname(currentDirectory);
+                let pivotDirectory = undefined;
+                let firstFile = undefined;
+                Propagate_to_directory_main_entry: {
+                    const possibleMainEntry = `${currentDirectory}/${currentDirectoryName}.entry.js`;
+                    if (await this.existsFile(possibleMainEntry)) {
+                        await this.touchFile(possibleMainEntry, {
+                            propagateUp: false,
+                            processedEntries: event.processedEntries || {}
+                        });
                     }
-                    const parentDir = path.dirname(dir);
-                    if (parentDir === dir) {
-                        return null;
-                    }
-                    dir = parentDir;
                 }
-                const file0 = nextPropagationFiles[0];
-                await Promise.all(nextPropagationFiles.map(file => this.touchFile(file, {
-                    propagateUp: false,
-                    processedEntries: event.processedEntries || {}
-                })));
-                return this.propagateUpTouchEventFrom(file0, event);
+                Propagate_to_upper_directory: {
+                    pivotDirectory = upperDirectory;
+                    Iterating_entries: while (true) {
+                        const entries = await fs.promises.readdir(pivotDirectory, {
+                            withFileTypes: true
+                        });
+                        const matchedEntries = entries.filter(e => e.isFile() && (e.name.endsWith(".entry.js") || e.name.endsWith(".entry.css") || e.name.endsWith(".entry.md"))).map(e => path.resolve(e.path, e.name));
+                        if (matchedEntries.length) {
+                            nextPropagationFiles = matchedEntries;
+                            break Iterating_entries;
+                        }
+                        const parentDir = path.dirname(pivotDirectory);
+                        if (parentDir === pivotDirectory) {
+                            return null;
+                        }
+                        pivotDirectory = parentDir;
+                    }
+                    firstFile = nextPropagationFiles[0];
+                    await Promise.all(nextPropagationFiles.map(file => this.touchFile(file, {
+                        propagateUp: false,
+                        processedEntries: event.processedEntries || {}
+                    })));
+                }
+                return this.propagateUpTouchEventFrom(firstFile, event);
             }
             ensureDirectoryOf(file) {
                 return require("fs").promises.mkdir(require("path").dirname(file), {
@@ -2752,6 +2822,9 @@
                 return {
                     targetDir: targetDir
                 };
+            }
+            existsFile(file) {
+                return require("fs").promises.access(file).then(() => true).catch(error => false);
             }
             constructor(devbin) {
                 this.devbin = devbin;

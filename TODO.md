@@ -1,1 +1,19 @@
-devbin ensure core permite flag --reset para forzar los overwrites
+- [ ] LAS MÁS ÚLTIMAS
+  - [x] del moduler-v6-starter
+    - [x] Que el touch en el propagate mire también si hay 1 `"<dirname.basename>.entry.js"` en el directorio
+      - [x] Si lo hay, entonces ese sí lo triggea
+    - [x] Mejorar el fichero por defecto generado, un poco más inteligente según los prefijos y sufijos de clase:
+      - [x] class
+      - [x] static
+      - [x] prototype
+      - [x] sync
+      - [x] async
+- [ ] En moduler-v6-starter
+  - [ ] Que el loop+touch funcione con dist - sin compilación intermedia
+  - [ ] Que el $moduler.{export,import} funcione conforme:
+    - [ ] Que las rutas de ficheros importadas como file o dependencies:
+      - [ ] si empiezan por @/src se pasan a @/dist
+      - [ ] si terminan por .entry.js se pasan a .dist.js
+  - [ ] Que el build.js haga un copyDir del @/src/www al @/dist/www
+  - [x] Mejorar la template del fichero por defecto
+    - [x] Que sea tipo método prototipo con comentario javadoc por defecto
