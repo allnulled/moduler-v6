@@ -1,1 +1,1 @@
-guia del moduler-v6-starter incluida
+fix en guia

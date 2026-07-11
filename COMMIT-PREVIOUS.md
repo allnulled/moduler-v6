@@ -1,1 +1,1 @@
-propagateUp del touchFile ahora mira el ficher {dirname}.entry.js del mismo directorio antes de subir + mejor fichero por defecto segun prefijos y sufijos: prototype, static, class, sync, async
+guia del moduler-v6-starter incluida

@@ -156,8 +156,9 @@ Durante el desarrollo de clases recursivas, se ve natural hacer:
    - estás diciendo: es una propiedad estática, que a su vez, es una clase de nombre `ClassName`
    - este fichero conecta la propiedad de la clase con la otra clase diferente
    - el nombre se repite como propiedad y como nombre de la clase por propósito de mejor debug y reflexión interna estática
+- un `<ClassName>/<ClassName>.class.js` para la definición de la clase puramente
+   - aquí es el código de la clase y nada más
 - un `<ClassName>/<ClassName>.entry.js` para la definición con exportación propia
-- un `<ClassName>/<ClassName>.class.js` para la definición con exportación propia
    - no tiene por qué exportar la clase tal cual, puede hacer de mediador y retornar otras formas, como:
       - llamada a función inmediata síncrona con cabecera de exportación (compatible con `CompilerV6`)
       - retorno de llamada a `$moduler.export` o `$moduler.import` (compatible con `ModulerV6`)
