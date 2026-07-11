@@ -8,6 +8,6 @@ static get _defaultProcessData() {
     processedEntries: {},
     // @ATENTION: Si se descomenta petan los tests:
     // uncacheInjections: false,
-    createOnInjectSource: false,
+    dontCreateOnInjectSource: true,
   }
 };

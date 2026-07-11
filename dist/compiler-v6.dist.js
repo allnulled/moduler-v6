@@ -1130,7 +1130,7 @@
             static get _defaultProcessData() {
                 return {
                     processedEntries: {},
-                    createOnInjectSource: false
+                    dontCreateOnInjectSource: true
                 };
             }
             constructor(compilationFile, compilationProcess, compiler) {

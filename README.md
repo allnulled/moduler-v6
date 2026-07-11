@@ -80,4 +80,9 @@ En el proyecto se incluyen 3 ficheros distribuibles:
    - Se explica el uso de `devbin` por consola
    - Se explica la *DevModulerV6/ShadowCommands API*
    - Se explican los comandos sombra que lleva por defecto `DevModulerV6`
-- [Guía del moduler-v6-starter](./guides/)
+- [Guía rápida del moduler-v6-starter](./guides/Gu%C3%ADa%20r%C3%A1pida%20del%20moduler-v6-starter.md)
+   - Se explica el desarrollo con `moduler-v6-starter`
+      - Proyecto basado en `devbin`, `ModulerV6`, `CompilerV6` y `DevBinaryV6`
+   - Se explica el proyecto base generado con los comandos:
+      - `devbin new project --from $dir`
+      - `devbin ensure core --from $dir`
