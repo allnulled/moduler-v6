@@ -24,7 +24,8 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
     compilerV6.assert("@/test/assets/unit/005/exported-1.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (111)");
     compilerV6.assert("@/test/assets/unit/005/exported-2.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (112)");
     compilerV6.assert("@/test/assets/unit/005/exported-3.js" in output.report.tree, "Can compile with {to:'data'} and return $moduler.imported/exported dependencies (113)");
-    compilerV6.assert(output.report.tree["@/test/assets/unit/005/app.js"]["306-453"].dependenciesOf.length > 0, `Can compile with {to:'data'} and return dependenciesOf (7)`);
+    const o1 = output.report.tree["@/test/assets/unit/005/app.js"];
+    compilerV6.assert(o1[Object.keys(o1)[0]].dependenciesOf.length > 0, `Can compile with {to:'data'} and return dependenciesOf (7)`);
   }
   No_captura_exports_con_primer_string_sin_extension_pq_son_ids_no_files: {
     compilerV6.assert(!("@/test/assets/unit/005/app" in output.report.tree), `Can compile with {to:'data'} and return dependenciesOf (8)`);

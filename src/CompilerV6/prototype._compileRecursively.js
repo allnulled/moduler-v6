@@ -32,6 +32,7 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
       const originalSize = this.constructor.getStringSize(output.js);
       if (processParameters.beautify) {
         const startedAt = new Date();
+        console.log(output.js);
         const beautifiedCode = await this.constructor.beautifyJs(output.js);
         output.beautifiedJs = {
           code: beautifiedCode,

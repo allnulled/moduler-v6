@@ -26,13 +26,22 @@
           grammar[2] = it => it;
         }
         if ((typeof grammar[3] === "undefined") || (grammar[3] === null)) {
-          grammar[3] = {};
+          grammar[3] = {
+            allowInside: false,
+            includeAppendix: undefined,
+          };
         }
         this.assert(typeof grammar === "object", `Grammar «${index}» must be object`);
         this.assert(typeof grammar[0] === "string", `Item «0» in grammar «${index}» must be string`);
         this.assert(typeof grammar[1] === "string" || typeof grammar[1] === "object", `Item «1» in grammar «${index}» must be string or object`);
         this.assert(typeof grammar[2] === "function", `Item «2» in grammar «${index}» must be function`);
         this.assert(typeof grammar[3] === "object", `Item «3» in grammar «${index}» must be object`);
+        if(("allowInside" in grammar[3]) && (typeof grammar[3].allowInside !== "undefined")) {
+          this.assert(typeof grammar[3].allowInside === "boolean", `Property «allowInside» in item «3» in grammar «${index}» must be boolean or none`);
+        }
+        if(("includeAppendix" in grammar[3]) && (typeof grammar[3].includeAppendix !== "undefined")) {
+          this.assert(["string","function"].includes(typeof grammar[3].includeAppendix), `Property «includeAppendix» in item «3» in grammar «${index}» must be string or function or none`);
+        }
       }
       this.grammars = grammars;
     }
@@ -41,17 +50,34 @@
       const output = this._processTokens(text, tokens);
       return output;
     }
+    _getAppendixOffset(text, grammar, currentPosition, ender) {
+      if(grammar[3].includeAppendix) {
+        if(text.startsWith(grammar[3].includeAppendix, currentPosition + ender.length)) {
+          return grammar[3].includeAppendix.length;
+        }
+      }
+      return 0;
+    }
+    _pushToken({ state, starter, currentPosition, countingFrom, enderLength, text, extraOffset }) {
+      const lastPosition = currentPosition + enderLength + extraOffset;
+      return state.output.push({
+        type: starter,
+        location: [state.position, lastPosition],
+        text: text.substring(state.position, lastPosition),
+        inner: text.substring(countingFrom, currentPosition),
+        outer: text.substring(state.position, lastPosition),
+      });
+    }
     _processTokens(text, tokens) {
       const formattedOutput = { size: text.length, text, tokens, formatted: [] };
       Iterating_tokens:
-      for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
-        const token = tokens[tokenIndex];
+      for (let indexToken = 0; indexToken < tokens.length; indexToken++) {
+        const token = tokens[indexToken];
         Iterating_grammars:
         for (let indexGrammar = 0; indexGrammar < this.grammars.length; indexGrammar++) {
           const grammar = this.grammars[indexGrammar];
-          const [ starter, ender, formatter, options ] = grammar;
-          if (starter === token.starter) {
-            const formattedToken = formatter.call(this, token, formattedOutput, tokenIndex, grammar, indexGrammar, text);
+          if (grammar[0] === token.type) {
+            const formattedToken = grammar[2].call(this, token, formattedOutput, indexToken, grammar, indexGrammar, text);
             formattedOutput.formatted.push(formattedToken);
             break Iterating_grammars;
           }
@@ -85,13 +111,7 @@
               const isMatchingEnder = text.startsWith(ender, currentPosition);
               if (isMatchingEnder) {
                 wasEnded = true;
-                state.output.push({
-                  starter: starter,
-                  location: [state.position, currentPosition + ender.length],
-                  // text: text.substring(state.position, currentPosition + ender.length),
-                  inner: text.substring(countingFrom, currentPosition),
-                  outer: text.substring(state.position, currentPosition + ender.length),
-                });
+                this._pushToken({ state, starter, currentPosition, countingFrom, text, enderLength: ender.length, extraOffset: this._getAppendixOffset(text, grammar, currentPosition, ender) });
                 break Processing_match;
               }
               offset++;
@@ -109,13 +129,7 @@
                 openedParenthesys--;
                 if (openedParenthesys === 0) {
                   wasEnded = true;
-                  state.output.push({
-                    starter: starter,
-                    location: [state.position, currentPosition],
-                    // text: text.substring(state.position, currentPosition + 1),
-                    inner: text.substring(countingFrom, currentPosition),
-                    outer: text.substring(state.position, currentPosition + 1),
-                  });
+                  this._pushToken({ state, starter, currentPosition, countingFrom, text, enderLength: 0, extraOffset: this._getAppendixOffset(text, grammar, currentPosition, ender) });
                   break Processing_match;
                 }
               }
@@ -123,7 +137,7 @@
             }
             if (!wasEnded) throw new Error(`Unclosed starter of grammar «${starter}» reached end of text but the first parenthesys was not closed on grammar index «${index}»`);
           } else {
-            throw new Error(`Ender (2nd argument) of grammar «${starter}» at grammar index «${index}» has not valid starter: «${typeof ender}»`);
+            throw new Error(`Ender (2nd argument) of grammar «${starter}» at grammar index «${index}» has not valid type: «${typeof ender}»`);
           }
           if (options.allowInside) {
             state.position += starter.length;

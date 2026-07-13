@@ -32,10 +32,12 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6 }) {
     // console.log("Token at", tokenPosition + ":", tokenData);
   }
 
-  assert(output.report.tree["@/test/assets/unit/107/main.js"]["117-168"].syntax === "Moduler Import", "Can report runtime dependencies only if they are based on files (1)");
-  assert(output.report.tree["@/test/assets/unit/107/main.js"]["81-113"].syntax === "Moduler Import", "Can report runtime dependencies only if they are based on files (2)");
-  assert(output.report.tree["@/test/assets/unit/107/main.js"]["172-225"].syntax === "Moduler Export", "Can report runtime dependencies only if they are based on files (3)");
-  assert(3 === Object.keys(output.report.tree["@/test/assets/unit/107/main.js"]).length, "Can report runtime dependencies only if they are based on files (99)");
+  const o1 = output.report.tree["@/test/assets/unit/107/main.js"];
+  const o1keys = Object.keys(o1);
+  assert(o1[o1keys[0]].syntax === "Moduler Export", "Can report runtime dependencies only if they are based on files (1)");
+  assert(o1[o1keys[1]].syntax === "Moduler Import", "Can report runtime dependencies only if they are based on files (2)");
+  assert(o1[o1keys[2]].syntax === "Moduler Import", "Can report runtime dependencies only if they are based on files (3)");
+  assert(3 === Object.keys(o1).length, "Can report runtime dependencies only if they are based on files (99)");
 
   compilerV6._logger.log("Test 107 ok");
 
