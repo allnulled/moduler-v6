@@ -12,12 +12,16 @@ static nativeGrammars = {
   InjectString: ["$compiler.inject.string(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Inject String", inner: token.inner, location: token.location };
   }],
+  InjectTemplate: ["$compiler.inject.template(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Inject Template", ...token, };
+  }],
   ImportJs: ["$moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Moduler Import", ...token, };
   }, {allowInside:true}],
   ExportJs: ["$moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Moduler Export", ...token, };
   }, {allowInside:true}],
+  //*
   SectionGet: ["$moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Moduler Section Get", ...token, };
   }, {allowInside:true}],
@@ -39,12 +43,13 @@ static nativeGrammars = {
   SectionInitialize: ["$moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Moduler Section Initialize", ...token, };
   }, {allowInside:true}],
-  // ["/*%", "%*/", function (token) {
-  //   return { syntax: "Multiline Comment Code Injection", ...token, };
-  // }],
-  MultilineCommentValueInjection: ["/*%=", "%*/", function (token) {
+  //*/
+  MultilineCommentValueInjection: ["/*%=", "*/", function (token) {
     return { syntax: "Multiline Comment Value Injection", ...token, };
-  }],
+  }, {includeAppendix: ['"template"', "0"]}],
+  MultilineCommentCodeInjection: ["/*%", "*/", function (token) {
+    return { syntax: "Multiline Comment Value Injection", ...token, };
+  }, {includeAppendix: ['"template"', "0"]}],
   AtRequires: ["/*@requires:", "*/", function (token) {
     return { syntax: "@Requires", ...token, };
   }],

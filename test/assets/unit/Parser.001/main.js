@@ -1,0 +1,1 @@
+$compiler.inject.template("./pattern001.js", { a: 100, b: 200 })

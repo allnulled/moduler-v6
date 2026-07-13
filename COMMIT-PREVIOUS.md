@@ -1,1 +1,1 @@
-mas fixes en guia
+actualización del text-parser-v1 + correccion de tests
