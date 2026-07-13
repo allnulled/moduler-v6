@@ -7,4 +7,5 @@ this.grammars = {
   forJs: this.constructor.defaultGrammars.forJs,
   forCss: this.constructor.defaultGrammars.forCss,
   forMd: this.constructor.defaultGrammars.forMd,
+  forTemplateComments: this.constructor.defaultGrammars.forTemplateComments,
 };

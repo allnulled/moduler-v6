@@ -9,6 +9,7 @@ async _compileTokens(compilationFile, compilationProcess) {
   const _tokenCompilationSwitcher = {
     "Inject Source": this._compileAsInjectSource,
     "Inject String": this._compileAsInjectString,
+    "Inject Template": this._compileAsInjectTemplate,
     "Multiline Comment Code Injection": this._compileAsMultilineCommentCodeInjection,
     "Multiline Comment Value Injection": this._compileAsMultilineCommentValueInjection,
     "Moduler Import": this._compileAsModulerImport,

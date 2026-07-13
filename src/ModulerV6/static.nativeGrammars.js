@@ -46,10 +46,10 @@ static nativeGrammars = {
   //*/
   MultilineCommentValueInjection: ["/*%=", "*/", function (token) {
     return { syntax: "Multiline Comment Value Injection", ...token, };
-  }, {includeAppendix: ['"template"', "0"]}],
+  }, {includeAppendix: ['"template"', "0", "() {}"]}],
   MultilineCommentCodeInjection: ["/*%", "*/", function (token) {
-    return { syntax: "Multiline Comment Value Injection", ...token, };
-  }, {includeAppendix: ['"template"', "0"]}],
+    return { syntax: "Multiline Comment Code Injection", ...token, };
+  }, {includeAppendix: ['"template"', "0", "() {}"]}],
   AtRequires: ["/*@requires:", "*/", function (token) {
     return { syntax: "@Requires", ...token, };
   }],

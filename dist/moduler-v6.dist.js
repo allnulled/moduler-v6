@@ -523,15 +523,15 @@
                     ...token
                 };
             }, {
-                includeAppendix: [ '"template"', "0" ]
+                includeAppendix: [ '"template"', "0", "() {}" ]
             } ],
             MultilineCommentCodeInjection: [ "/*%", "*/", function(token) {
                 return {
-                    syntax: "Multiline Comment Value Injection",
+                    syntax: "Multiline Comment Code Injection",
                     ...token
                 };
             }, {
-                includeAppendix: [ '"template"', "0" ]
+                includeAppendix: [ '"template"', "0", "() {}" ]
             } ],
             AtRequires: [ "/*@requires:", "*/", function(token) {
                 return {
@@ -555,10 +555,11 @@
             } ]
         };
         static defaultGrammars={
-            forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment, this.nativeGrammars.SectionGet, this.nativeGrammars.SectionSet, this.nativeGrammars.SectionOverwrite, this.nativeGrammars.SectionExpand, this.nativeGrammars.SectionFill, this.nativeGrammars.SectionHas, this.nativeGrammars.SectionInitialize ],
-            forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+            forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.InjectTemplate, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+            forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.InjectTemplate, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
             forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
-            forCssOnRuntime: [ this.nativeGrammars.AtRequires ]
+            forCssOnRuntime: [ this.nativeGrammars.AtRequires ],
+            forTemplateComments: [ this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.MultilineCommentCodeInjection ]
         };
         static symbols={
             REGEX_FOR_SLASH_AT_THE_END: /(\\|\/)$/g,
@@ -927,7 +928,8 @@
             this.grammars = {
                 forJs: this.constructor.defaultGrammars.forJs,
                 forCss: this.constructor.defaultGrammars.forCss,
-                forMd: this.constructor.defaultGrammars.forMd
+                forMd: this.constructor.defaultGrammars.forMd,
+                forTemplateComments: this.constructor.defaultGrammars.forTemplateComments
             };
             this.parser = {
                 forJs: this.constructor.Parser.create(this.grammars.forJs),

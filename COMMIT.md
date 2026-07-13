@@ -1,1 +1,1 @@
-actualizado text-parser-v1 con soporte para multiples apendices de gramatica
+parser especifico para plantillas ya soporta apendices + test + inicios de la sintaxis compiler.inject.template

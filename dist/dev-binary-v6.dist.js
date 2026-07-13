@@ -539,15 +539,15 @@
                             ...token
                         };
                     }, {
-                        includeAppendix: [ '"template"', "0" ]
+                        includeAppendix: [ '"template"', "0", "() {}" ]
                     } ],
                     MultilineCommentCodeInjection: [ "/*%", "*/", function(token) {
                         return {
-                            syntax: "Multiline Comment Value Injection",
+                            syntax: "Multiline Comment Code Injection",
                             ...token
                         };
                     }, {
-                        includeAppendix: [ '"template"', "0" ]
+                        includeAppendix: [ '"template"', "0", "() {}" ]
                     } ],
                     AtRequires: [ "/*@requires:", "*/", function(token) {
                         return {
@@ -571,10 +571,11 @@
                     } ]
                 };
                 static defaultGrammars={
-                    forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment, this.nativeGrammars.SectionGet, this.nativeGrammars.SectionSet, this.nativeGrammars.SectionOverwrite, this.nativeGrammars.SectionExpand, this.nativeGrammars.SectionFill, this.nativeGrammars.SectionHas, this.nativeGrammars.SectionInitialize ],
-                    forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+                    forJs: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.InjectTemplate, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
+                    forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.InjectTemplate, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
                     forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
-                    forCssOnRuntime: [ this.nativeGrammars.AtRequires ]
+                    forCssOnRuntime: [ this.nativeGrammars.AtRequires ],
+                    forTemplateComments: [ this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.MultilineCommentCodeInjection ]
                 };
                 static symbols={
                     REGEX_FOR_SLASH_AT_THE_END: /(\\|\/)$/g,
@@ -943,7 +944,8 @@
                     this.grammars = {
                         forJs: this.constructor.defaultGrammars.forJs,
                         forCss: this.constructor.defaultGrammars.forCss,
-                        forMd: this.constructor.defaultGrammars.forMd
+                        forMd: this.constructor.defaultGrammars.forMd,
+                        forTemplateComments: this.constructor.defaultGrammars.forTemplateComments
                     };
                     this.parser = {
                         forJs: this.constructor.Parser.create(this.grammars.forJs),
@@ -1562,12 +1564,14 @@
                 this._grammars = {
                     forJs: this.constructor._defaultGrammars.forJs,
                     forCss: this.constructor._defaultGrammars.forCss,
-                    forMd: this.constructor._defaultGrammars.forMd
+                    forMd: this.constructor._defaultGrammars.forMd,
+                    forTemplateComments: this.constructor._defaultGrammars.forTemplateComments
                 };
                 this._parser = {
                     forJs: this.constructor.Parser.create(this._grammars.forJs),
                     forCss: this.constructor.Parser.create(this._grammars.forCss),
-                    forMd: this.constructor.Parser.create(this._grammars.forMd)
+                    forMd: this.constructor.Parser.create(this._grammars.forMd),
+                    forTemplateComments: this.constructor.Parser.create(this._grammars.forTemplateComments)
                 };
             }
             _readPath(url) {
@@ -1697,6 +1701,7 @@
                 const _tokenCompilationSwitcher = {
                     "Inject Source": this._compileAsInjectSource,
                     "Inject String": this._compileAsInjectString,
+                    "Inject Template": this._compileAsInjectTemplate,
                     "Multiline Comment Code Injection": this._compileAsMultilineCommentCodeInjection,
                     "Multiline Comment Value Injection": this._compileAsMultilineCommentValueInjection,
                     "Moduler Import": this._compileAsModulerImport,
@@ -1947,6 +1952,48 @@
                     Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
                 }
                 this._traceOut("_compileAsInjectString", arguments);
+            }
+            async _compileAsInjectTemplate(compilationFile, compilationProcess, {token: token, tokenIndex: tokenIndex}) {
+                this._traceIn("_compileAsInjectTemplate", arguments);
+                let parameters, targetPath, fileContent;
+                const {tokenization: tokenization, source: source, resource: resource, isRoot: isRoot} = compilationFile;
+                Evaluate_parameters: {
+                    parameters = await this._getDataForTokenCompilation({
+                        compilationFile: compilationFile,
+                        compilationProcess: compilationProcess,
+                        token: token,
+                        tokenIndex: tokenIndex
+                    });
+                }
+                Extend_token: {
+                    this._extendToken(token, [ "referenceOf" ]);
+                }
+                Extract_target_path: {
+                    this.assert(token.referenceOf.fullpath === this.fullpathOf(parameters[0]), "DesignError: The first parameter and the token.referenceOf.fullpath should be the same on «CompilerV6.prototype._compileAsInjectTemplate»");
+                    targetPath = token.referenceOf.fullpath;
+                }
+                Compile_target: {
+                    fileContent = await this._readPath(targetPath);
+                }
+                Inject_in_compilation_text: {
+                    if (compilationFile.extension !== "js") {
+                        break Inject_in_compilation_text;
+                    }
+                    const templateOutput = await this._renderTemplate(fileContent, {
+                        __filename: targetPath,
+                        __dirname: require("path").dirname(targetPath),
+                        ...parameters[1] || {}
+                    });
+                    compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], templateOutput);
+                }
+                Inject_in_report_object: {
+                    if (compilationProcess.to !== "data") {
+                        break Inject_in_report_object;
+                    }
+                    this._reportFileToken(compilationFile, targetPath, token);
+                    Object.assign(compilationFile.report.tree, targetCompilation.report.tree);
+                }
+                this._traceOut("_compileAsInjectTemplate", arguments);
             }
             _compileAsMultilineCommentCodeInjection() {
                 this._trace("_compileAsMultilineCommentCodeInjection", arguments);
@@ -2323,6 +2370,11 @@
                 return require("fs").promises.writeFile(file, `${name} {\n  ${headerComment}\n}`, "utf8").catch(error => {
                     console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
                 });
+            }
+            _renderTemplate(templateSource, args = {}) {
+                const templateTokens = this._parser.forTemplateComments.parse(templateSource);
+                return templateTokens.tokens[0].inner;
+                return templateSource;
             }
             normalizationOf(nodepath, origin = false) {
                 this._trace("normalizationOf", arguments);

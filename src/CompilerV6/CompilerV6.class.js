@@ -55,6 +55,7 @@ class CompilerV6 {
 
   /*="./prototype._compileAsInjectSource.js"*/
   /*="./prototype._compileAsInjectString.js"*/
+  /*="./prototype._compileAsInjectTemplate.js"*/
   /*="./prototype._compileAsMultilineCommentCodeInjection.js"*/
   /*="./prototype._compileAsMultilineCommentValueInjection.js"*/
   /*="./prototype._compileAsModulerImport.js"*/
@@ -73,6 +74,7 @@ class CompilerV6 {
   /*="./prototype._getStringForDevelopment.js"*/
   /*="./prototype._existsFile.js"*/
   /*="./prototype._createDefaultInjectedFile.js"*/
+  /*="./prototype._renderTemplate.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/
   /*="./prototype.fullpathOf.js"*/
