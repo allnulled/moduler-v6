@@ -74,6 +74,7 @@ class CompilerV6 {
   /*="./prototype._getStringForDevelopment.js"*/
   /*="./prototype._existsFile.js"*/
   /*="./prototype._createDefaultInjectedFile.js"*/
+  /*="./prototype._renderSourceAsTemplate.js"*/
   /*="./prototype._renderTemplate.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/

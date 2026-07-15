@@ -12,7 +12,7 @@ module.exports = async function ({ assert:assertLoudly, utils, compilerV6 }) {
     try {await require("fs").promises.unlink(subcompiler.normalizationOf("./main.dist.min.js"));} catch (error) {}
     Test_de_los_distribuibles: {
       // @ATENTION: si vienes por los tiempos del test:
-      // La llamada cara es esta:
+      // La llamada cara es esta:;
       const compilation = await subcompiler.compile("./main.js", {
         beautify: true,
         minify: true,

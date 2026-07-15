@@ -9,5 +9,6 @@ static get _defaultProcessData() {
     // @ATENTION: Si se descomenta petan los tests:
     // uncacheInjections: false,
     dontCreateOnInjectSource: true,
+    disableTemplates: false,
   }
 };

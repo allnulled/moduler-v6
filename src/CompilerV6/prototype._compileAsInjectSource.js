@@ -33,11 +33,6 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
         break Use_processedEntries_cache_if_possible;
       }
       if (compilationProcess.uncacheInjections) {
-        // @CHATGPT:
-        // se está perdiendo la info del compilationProcess.uncacheInjections en el test que lo lanzo con el --uncacheInjections
-        // parece que hay coherencia entre las transformaciones
-        // dime dónde quieres que ponga logs o asserts si quieres
-        // pero aquí no entra aunque el comando se lo lance con command(["touch", "--file", "file-tal.js", "--uncacheInjections"])
         break Use_processedEntries_cache_if_possible;
       }
       if (Object.keys(compilationProcess.processedEntries).length) {

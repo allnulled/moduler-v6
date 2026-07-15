@@ -1199,7 +1199,8 @@
                 static get _defaultProcessData() {
                     return {
                         processedEntries: {},
-                        dontCreateOnInjectSource: true
+                        dontCreateOnInjectSource: true,
+                        disableTemplates: false
                     };
                 }
                 constructor(compilationFile, compilationProcess, compiler) {
@@ -1749,6 +1750,7 @@
                     subcompiler = this._cloneForFile(compilationFile.resource, this);
                     compilationFile.subcompiler = subcompiler;
                     await subcompiler._fetchCompilable(compilationFile, compilationProcess);
+                    await subcompiler._renderSourceAsTemplate(compilationFile, compilationProcess);
                     subcompiler._tokenizeText(compilationFile, compilationProcess);
                     await subcompiler._compileTokens(compilationFile, compilationProcess);
                     output = subcompiler._getPreferredOutput(compilationFile, compilationProcess);
@@ -1758,7 +1760,6 @@
                         const originalSize = this.constructor.getStringSize(output.js);
                         if (processParameters.beautify) {
                             const startedAt = new Date;
-                            console.log(output.js);
                             const beautifiedCode = await this.constructor.beautifyJs(output.js);
                             output.beautifiedJs = {
                                 code: beautifiedCode,
@@ -2371,10 +2372,37 @@
                     console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
                 });
             }
-            _renderTemplate(templateSource, args = {}) {
-                const templateTokens = this._parser.forTemplateComments.parse(templateSource);
-                return templateTokens.tokens[0].inner;
-                return templateSource;
+            async _renderSourceAsTemplate(compilationFile, compilationProcess) {
+                if (!compilationFile.resource.endsWith(".js")) {
+                    return "ok:1:no js file so no template";
+                }
+                if (compilationProcess.disableTemplates) {
+                    return "ok:2:disabled templates";
+                }
+                compilationFile.compilation.js = compilationFile.source = await this._renderTemplate(compilationFile.source, {
+                    compilationFile: compilationFile,
+                    compilationProcess: compilationProcess,
+                    $compiler: this
+                });
+            }
+            async _renderTemplate(templateSource, argsBrute = {}) {
+                const {tokens: tokens} = this._parser.forTemplateComments.parse(templateSource);
+                if (!tokens.length) {
+                    return templateSource;
+                }
+                const args = Object.assign({}, argsBrute);
+                const code = [ "const __out=[];\nconst print = function(...x) {\n  return __out.push(...x);\n};" ];
+                let cursor = 0;
+                for (const token of tokens) {
+                    if (cursor < token.location[0]) code.push(`__out.push(${JSON.stringify(templateSource.slice(cursor, token.location[0]))});`);
+                    if (token.type === "/*%") code.push(token.inner); else if (token.type === "/*%=") code.push(`__out.push(await (${token.inner}));`);
+                    cursor = token.location[1] + 0;
+                }
+                if (cursor < templateSource.length) code.push(`__out.push(${JSON.stringify(templateSource.slice(cursor))});`);
+                code.push("return __out.join('');");
+                const templateCallback = new async function() {}.constructor(...Object.keys(args), code.join(""));
+                const templateResult = await templateCallback.call(this, ...Object.values(args));
+                return templateResult;
             }
             normalizationOf(nodepath, origin = false) {
                 this._trace("normalizationOf", arguments);

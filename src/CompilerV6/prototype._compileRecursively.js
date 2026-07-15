@@ -23,6 +23,7 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
     subcompiler = this._cloneForFile(compilationFile.resource, this);
     compilationFile.subcompiler = subcompiler;
     await subcompiler._fetchCompilable(compilationFile, compilationProcess);
+    await subcompiler._renderSourceAsTemplate(compilationFile, compilationProcess);
     subcompiler._tokenizeText(compilationFile, compilationProcess);
     await subcompiler._compileTokens(compilationFile, compilationProcess);
     output = subcompiler._getPreferredOutput(compilationFile, compilationProcess);
@@ -32,7 +33,6 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
       const originalSize = this.constructor.getStringSize(output.js);
       if (processParameters.beautify) {
         const startedAt = new Date();
-        console.log(output.js);
         const beautifiedCode = await this.constructor.beautifyJs(output.js);
         output.beautifiedJs = {
           code: beautifiedCode,

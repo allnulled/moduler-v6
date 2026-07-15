@@ -1,3 +1,49 @@
+Queremos que se puedan renderizar plantillas con lenguaje tipo TJS
+  - directamente desde el CompilerV6.prototype.compile
+  - directamente desde el $compiler.inject.source
+  - que en un paso entre el readPath y el compileAs:
+    - parsee el código como plantilla
+    - y si encuentra algo, que lo resuelva
+  - detalles importantes:
+    - solo funciona en js+compiler, no en css+moduler ni js+moduler
+      - el css no porque
+        - abres vulnerabilidades en potencia que no te interesan
+        - abres complejidad en potencia que no te interesa
+      - el js+moduler tampoco porque
+        - abres complejidad en potencia que no te interesa
+        - más código boilerplate en runtime
+        - más complejidad añadida en runtime
+        - menos performance en runtime
+        - funcionalidades que abren más superficie de vulnerabilidad
+        - funcionalidades que tampoco son primordiales en runtime
+        - funcionalidades que realmente no se apreciarían/destacarían/explorarían mucho en runtime
+        - más flexibilidad pero
+        - más código dormido
+        - más legacy
+        - aunque podemos bajar estas funciones al moduler
+        - yo el runtime lo ensuciaría lo menos posible
+        - y es una feature muy potente
+        - pero que explotarla en runtime en vez de en devtime no es su mejor posición
+    - solo funciona en devtime/compiler-v6, no runtime/moduler-v6
+      - esto e
+
+Hay algunos fallos menores acumulados:
+
+- Sections, retirarlo del analizer, mala suerte tú, files y gou
+- El parser duplica el match en outer y en text
+- El parser duplica contenidos en token y en formatter
+- Faltan traceos de métodos dinámicos (estáticos mala suerte tú)
+  - En el moduler/compiler y devbinary creo que no tiene ni 1
+
+
+
+------
+
+
+
+
+
+
 - [ ] Otro TJS a mano
   - [ ] Sin tantos métodos
     - [ ] solo el que interesa

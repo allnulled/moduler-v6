@@ -1,1 +1,1 @@
-parser especifico para plantillas ya soporta apendices + test + inicios de la sintaxis compiler.inject.template
+soporte para plantillas en compile+js con el parser.forTemplateComments

@@ -1,1 +1,1 @@
-/*%=a + b*/"template"
+=== /*%const base = 50;*//*%=base + 200 + 300*/"template" + 200
