@@ -1,12 +1,13 @@
 const fs = require("fs");
 const path = require("path");
-const { exec } = require("child_process");
+const { spawn, exec } = require("child_process");
 const { promisify } = require("util");
 const execAsync = promisify(exec);
 const rootdir = path.resolve(`${__dirname}/..`);
 const rootrel = (subpath) => path.resolve(rootdir, subpath);
 const { minify } = require("terser");
 const settings = {
+  disableBeautifierAndMinifier: 0,
   printInjections: 1,
   fulfillTemplate: options => `/**
  * @name ${options.name || ""}
@@ -53,7 +54,7 @@ const reduceTemplate = function (file, dir) {
   });
   return source;
 };
-
+let transformationsTiming = 0;
 const compileFile = async function ({ src: src1, dist, distMin }) {
   const sourceV6 = reduceTemplate(src1, rootdir);
   const src2 = src1.indexOf("src/") === 0 ? src1.replace("src/", "src-tmp/") : src1;
@@ -61,28 +62,39 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
   if (src2.startsWith("src-tmp/")) {
     await fs.promises.writeFile(src2Absolute, sourceV6, "utf8");
   }
-  const beautifiedDistV6 = await minify({ [src2Absolute]: sourceV6 }, {
-    compress: false,
-    mangle: false,
-    toplevel: true,
-    format: {
-      comments: false, // Esta es la única cambiada
-      beautify: true
-    }
-  });
-  const compressedDistV6 = await minify({ [src2Absolute]: sourceV6 }, {
-    compress: true,
-    mangle: true,
-    toplevel: true,
-    format: {
-      comments: false,
-      beautify: false,
-    }
-  });
-  await Promise.all([
-    fs.promises.writeFile(rootrel(dist), beautifiedDistV6.code, "utf8"),
-    fs.promises.writeFile(rootrel(distMin), compressedDistV6.code, "utf8"),
-  ]);
+  if(settings.disableBeautifierAndMinifier) {
+    return;
+  }
+  Transformaciones: {
+    const transformationsStart = new Date();
+    const [beautifiedDistV6, compressedDistV6] = await Promise.all([
+      minify({ [src2Absolute]: sourceV6 }, {
+        compress: false,
+        mangle: false,
+        toplevel: true,
+        format: {
+          comments: false, // Esta es la única cambiada
+          beautify: true
+        }
+      }),
+      minify({ [src2Absolute]: sourceV6 }, {
+        compress: true,
+        mangle: true,
+        toplevel: true,
+        format: {
+          comments: false,
+          beautify: false,
+        }
+      }),
+    ]);
+    const transformationTiming = (((new Date()) - transformationsStart) / 1000);
+    transformationsTiming += transformationTiming;
+    console.log(`[*] Took ${transformationTiming.toFixed(2)} secs to beautify and minify (minify takes more time usually)`);
+    await Promise.all([
+      fs.promises.writeFile(rootrel(dist), beautifiedDistV6.code, "utf8"),
+      fs.promises.writeFile(rootrel(distMin), compressedDistV6.code, "utf8"),
+    ]);
+  }
 };
 
 const main = async function () {
@@ -116,7 +128,18 @@ const main = async function () {
           const dir = path.resolve(`${rootdir}/../moduler-v6-starter`);
           const dirSrc = JSON.stringify(dir);
           const cmdCommand = `devbin ensure core --reset --from ${dirSrc}`;
-          await execAsync(cmdCommand, { cwd: dir });
+          const child = spawn("devbin", [
+            "ensure",
+            "core",
+            "--reset",
+            "--from",
+            dir,
+          ], {
+            cwd: dir,
+            detached: true,
+            stdio: "ignore",
+          });
+          child.unref();
         })(),
       ]);
     } catch (error) {
@@ -125,6 +148,7 @@ const main = async function () {
   }
   console.log(`[*] Total of ${fileCounter} injections`);
   console.log(`[*] Successfully built all ModulerV6 APIs collection`);
+  console.log(`[*] Took ${transformationsTiming.toFixed(2)} secs all beautifies and minifies`);
 };
 
 module.exports = main();

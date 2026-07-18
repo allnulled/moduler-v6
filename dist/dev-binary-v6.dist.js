@@ -533,6 +533,18 @@
                     }, {
                         allowInside: true
                     } ],
+                    EmbeddedFormFieldOpener: [ "/*=¿", "*/", function(token) {
+                        return {
+                            syntax: "Embedded Form Field Opener",
+                            ...token
+                        };
+                    }, {} ],
+                    EmbeddedFormFieldCloser: [ "/*?*/", "", function(token) {
+                        return {
+                            syntax: "Embedded Form Field Closer",
+                            ...token
+                        };
+                    }, {} ],
                     MultilineCommentValueInjection: [ "/*%=", "*/", function(token) {
                         return {
                             syntax: "Multiline Comment Value Injection",
@@ -575,7 +587,8 @@
                     forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.InjectTemplate, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
                     forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
                     forCssOnRuntime: [ this.nativeGrammars.AtRequires ],
-                    forTemplateComments: [ this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.MultilineCommentCodeInjection ]
+                    forTemplateComments: [ this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.MultilineCommentCodeInjection ],
+                    forEmbeddedForms: [ this.nativeGrammars.EmbeddedFormFieldOpener, this.nativeGrammars.EmbeddedFormFieldCloser ]
                 };
                 static symbols={
                     REGEX_FOR_SLASH_AT_THE_END: /(\\|\/)$/g,
@@ -945,12 +958,15 @@
                         forJs: this.constructor.defaultGrammars.forJs,
                         forCss: this.constructor.defaultGrammars.forCss,
                         forMd: this.constructor.defaultGrammars.forMd,
-                        forTemplateComments: this.constructor.defaultGrammars.forTemplateComments
+                        forTemplateComments: this.constructor.defaultGrammars.forTemplateComments,
+                        forEmbeddedForms: this.constructor.defaultGrammars.forEmbeddedForms
                     };
                     this.parser = {
                         forJs: this.constructor.Parser.create(this.grammars.forJs),
                         forCss: this.constructor.Parser.create(this.grammars.forCss),
-                        forMd: this.constructor.Parser.create(this.grammars.forMd)
+                        forMd: this.constructor.Parser.create(this.grammars.forMd),
+                        forTemplateComments: this.constructor.Parser.create(this.grammars.forTemplateComments),
+                        forEmbeddedForms: this.constructor.Parser.create(this.grammars.forEmbeddedForms)
                     };
                     this.css = new ModulerV6.CssManager(this);
                 }
@@ -1562,18 +1578,8 @@
                 this.rootdir = parent ? parent.rootdir : basedir;
                 this.moduler = new ModulerV6(basedir);
                 this.moduler.compiler = this;
-                this._grammars = {
-                    forJs: this.constructor._defaultGrammars.forJs,
-                    forCss: this.constructor._defaultGrammars.forCss,
-                    forMd: this.constructor._defaultGrammars.forMd,
-                    forTemplateComments: this.constructor._defaultGrammars.forTemplateComments
-                };
-                this._parser = {
-                    forJs: this.constructor.Parser.create(this._grammars.forJs),
-                    forCss: this.constructor.Parser.create(this._grammars.forCss),
-                    forMd: this.constructor.Parser.create(this._grammars.forMd),
-                    forTemplateComments: this.constructor.Parser.create(this._grammars.forTemplateComments)
-                };
+                this._grammars = this.moduler.grammars;
+                this._parser = this.moduler.parser;
             }
             _readPath(url) {
                 this._trace("_readPath", arguments);
@@ -2835,6 +2841,20 @@
                             testExecution: await this.executeUnitTestFileOf(filepath, event)
                         });
                     }
+                    Triggering_onDistribute_file: {
+                        const onDistributeFile = path.join(path.dirname(filepath), "e.onDistribute.js");
+                        await this.triggerCallbackFromFile(onDistributeFile, {
+                            file: filepath,
+                            event: event
+                        });
+                    }
+                }
+                Triggering_onTouch_file: {
+                    const onTouchFile = path.join(path.dirname(filepath), "e.onTouch.js");
+                    await this.triggerCallbackFromFile(onTouchFile, {
+                        file: filepath,
+                        event: event
+                    });
                 }
                 Propagating_touch_up: {
                     Paso_4_propagar_evento_arriba: {
@@ -2963,6 +2983,17 @@
             existsFile(file) {
                 return require("fs").promises.access(file).then(() => true).catch(error => false);
             }
+            async triggerCallbackFromFile(file, injection = {}, dontThrow = false) {
+                if (!await this.existsFile(file)) {
+                    return -1;
+                }
+                const callback = require(file);
+                this.assert(typeof callback === "function", `File «${file}» should export a function on «DevBinaryV6.Utils.prototype.triggerCallbackFromFile»`);
+                return await callback.call(this, {
+                    devbin: this,
+                    ...injection
+                });
+            }
             constructor(devbin) {
                 this.devbin = devbin;
             }
@@ -3011,6 +3042,9 @@
                     allowDirtyDirectory: 1,
                     dontOverride: !parameters.reset
                 });
+            }
+            "print root"(args, devbin) {
+                console.log(devbin.compiler.rootdir);
             }
             async loop(args) {
                 const targetRoot = await this.devbin.utils.constructor.findFirstParentDirectoryContaining(process.cwd(), "package.json");
@@ -3103,7 +3137,9 @@
                             commandCallback = this.shadowCommands[possibleHookId];
                             break Load_command_callback_from_file_or_shadowCommands;
                         }
-                        throw new Error(`Could not find any command «${commandParameters._.join("/")}/command.js» at «${commandSubpath}» or any hook «${commandParameters._.join(" ")}» on «DevBinaryV6.prototype.command»`);
+                        const errorMessage = `Error of «devbin command not found» for parameters «${commandParameters._.join("/")}»`;
+                        console.error(errorMessage);
+                        return new Error(errorMessage);
                     }
                 }
             }

@@ -11,6 +11,7 @@ cd "$DIR2"
     -w "$(pwd)" \
     -i "**/node_modules/**/*" \
     -i "**/dist/**/*" \
+    -i "**/trash/**/*" \
     -i "**/src-tmp/**/*" \
     -i "**/*.{dist,ign}.*" \
     -i "**/logs/**/*" \

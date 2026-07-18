@@ -41,6 +41,14 @@ async touchFile(file, optionsInput = {}) {
         testExecution: await this.executeUnitTestFileOf(filepath, event),
       });
     }
+    Triggering_onDistribute_file: {
+      const onDistributeFile = path.join(path.dirname(filepath), "e.onDistribute.js");
+      await this.triggerCallbackFromFile(onDistributeFile, { file: filepath, event, });
+    }
+  }
+  Triggering_onTouch_file: {
+    const onTouchFile = path.join(path.dirname(filepath), "e.onTouch.js");
+    await this.triggerCallbackFromFile(onTouchFile, { file: filepath, event });
   }
   Propagating_touch_up: {
     Paso_4_propagar_evento_arriba: {

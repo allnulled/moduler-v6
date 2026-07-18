@@ -40,7 +40,10 @@ async command(args = []) {
           commandCallback = this.shadowCommands[possibleHookId];
           break Load_command_callback_from_file_or_shadowCommands;
         }
-        throw new Error(`Could not find any command «${commandParameters._.join("/")}/command.js» at «${commandSubpath}» or any hook «${commandParameters._.join(" ")}» on «DevBinaryV6.prototype.command»`);
+        const errorMessage = `Error of «devbin command not found» for parameters «${commandParameters._.join("/")}»`;
+        console.error(errorMessage);
+        return new Error(errorMessage);
+        // throw new Error(`Could not find any command «${commandParameters._.join("/")}/command.js» at «${commandSubpath}» or any hook «${commandParameters._.join(" ")}» on «DevBinaryV6.prototype.command»`);
       }
     }
   }

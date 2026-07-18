@@ -34,7 +34,9 @@ Hay algunos fallos menores acumulados:
 - El parser duplica contenidos en token y en formatter
 - Faltan traceos de métodos dinámicos (estáticos mala suerte tú)
   - En el moduler/compiler y devbinary creo que no tiene ni 1
-
+- El directorio www no se está pasando
+  - En principio debería ser un directorio linkado
+  - Con fs.symlink
 
 
 ------

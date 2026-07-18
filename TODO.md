@@ -1,0 +1,10 @@
+- Entorno y tests para el browser
+   - www
+- El touch tiene que disparar al onTouch.js de cada directorio que visita en el propagateUp
+   - se dispara 1 vez por vuelta
+   - con esto resolvemos exportaciones de api
+- El touch tiene que disparar al onDistribute.js de cada directorio que visita en el propagateUp
+   - con esto resolvemos si hay que copiar distribuibles al dist/www
+   - se llama cada vez que un distribuible se fabrica
+   - le pones un if para saber qué fichero está disparando el evento
+   - o atacas al onTouch.js directamente

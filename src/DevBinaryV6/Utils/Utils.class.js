@@ -18,5 +18,6 @@ class DevBinaryV6Utils {
   /*="./prototype.touchFile.js"*/
   /*="./prototype.ensureCoreFrom.js"*/
   /*="./prototype.existsFile.js"*/
+  /*="./prototype.triggerCallbackFromFile.js"*/
   /*="./constructor.js"*/
 }

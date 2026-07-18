@@ -12,7 +12,7 @@ const settings = {
     "!002.Compilar ficheros js, css y md desde ficheros js mediante inject source.js",
     "!003.Bloquear inyecciones según sintaxis de fichero original.js",
     "!004.Reportar relaciones de sintaxis inject.source y @injects con to:data.js",
-    "!!005.Reportar relaciones de sintaxis moduler.import y moduler.export con to:data.js",
+    "!005.Reportar relaciones de sintaxis moduler.import y moduler.export con to:data.js",
     "!006.Reportar relaciones de sintaxis @injects y @requires on to:data.js",
     "!007.Compilar ficheros como strings con inject.string.js",
     "!008.Resolver rutas de forma común entre ModulerV6 y CompilerV6.js",
@@ -23,10 +23,16 @@ const settings = {
     "!105.Indexar valores estáticos como secciones.js",
     "!106.Métodos de section: get, set, overwrite, fill, expand, delete, reset.js",
     "!107.Generar report tree desde los métodos de SectionsManager también.js",
+    "!108.Exporta e importa secciones mediante el parámetro id de las firmas.js",
     "!200.DevBinary tiene las firmas esperadas.js",
     "!201.DevBinary puede parsear y formatear argumentos tipo consola.js",
     "!202.DevBinary permite crear proyecto nuevo y lanzar comandos.js",
-    // "--999.Cerrar todo.js",
+    "!204.DevBinary permite implementarse en un proyecto iniciado con devbin ensure core.js",
+    "!301.Parser soporta sintaxis de js embedible.js",
+    "!302.CompilerV6 compila plantillas mediante inject source.js",
+    "!303.Parser soporta sintaxis de formularios embedibles.js",
+    "304.ModulerV6 puede correr módulos como formulario.js",
+    // "--ZZZ.Cerrar todo.js",
   ]
 };
 

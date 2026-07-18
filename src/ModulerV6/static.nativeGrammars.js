@@ -44,6 +44,12 @@ static nativeGrammars = {
     return { syntax: "Moduler Section Initialize", ...token, };
   }, {allowInside:true}],
   //*/
+  EmbeddedFormFieldOpener: ["/*=¿", "*/", function (token) {
+    return { syntax: "Embedded Form Field Opener", ...token, };
+  }, {}],
+  EmbeddedFormFieldCloser: ["/*?*/", "", function (token) {
+    return { syntax: "Embedded Form Field Closer", ...token, };
+  }, {}],
   MultilineCommentValueInjection: ["/*%=", "*/", function (token) {
     return { syntax: "Multiline Comment Value Injection", ...token, };
   }, {includeAppendix: ['"template"', "0", "() {}"]}],

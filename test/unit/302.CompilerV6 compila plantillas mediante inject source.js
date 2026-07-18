@@ -12,4 +12,5 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, devBi
     assert(compilation2.js === "ok".repeat(4), "Can compile template syntax on devtime by compiler-v6 (advanced test)");
   }
 
+  compilerV6._logger.log("Test 302 ok");
 };

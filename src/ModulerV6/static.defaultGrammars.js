@@ -61,4 +61,8 @@ static defaultGrammars = {
     this.nativeGrammars.MultilineCommentValueInjection,
     this.nativeGrammars.MultilineCommentCodeInjection,
   ],
+  forEmbeddedForms: [
+    this.nativeGrammars.EmbeddedFormFieldOpener,
+    this.nativeGrammars.EmbeddedFormFieldCloser,
+  ],
 };

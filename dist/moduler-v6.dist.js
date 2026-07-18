@@ -517,6 +517,18 @@
             }, {
                 allowInside: true
             } ],
+            EmbeddedFormFieldOpener: [ "/*=¿", "*/", function(token) {
+                return {
+                    syntax: "Embedded Form Field Opener",
+                    ...token
+                };
+            }, {} ],
+            EmbeddedFormFieldCloser: [ "/*?*/", "", function(token) {
+                return {
+                    syntax: "Embedded Form Field Closer",
+                    ...token
+                };
+            }, {} ],
             MultilineCommentValueInjection: [ "/*%=", "*/", function(token) {
                 return {
                     syntax: "Multiline Comment Value Injection",
@@ -559,7 +571,8 @@
             forCss: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.InjectTemplate, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
             forMd: [ this.nativeGrammars.InjectSource, this.nativeGrammars.InjectString, this.nativeGrammars.ImportJs, this.nativeGrammars.ExportJs, this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.AtRequires, this.nativeGrammars.AtInjects, this.nativeGrammars.JavadocComment ],
             forCssOnRuntime: [ this.nativeGrammars.AtRequires ],
-            forTemplateComments: [ this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.MultilineCommentCodeInjection ]
+            forTemplateComments: [ this.nativeGrammars.MultilineCommentValueInjection, this.nativeGrammars.MultilineCommentCodeInjection ],
+            forEmbeddedForms: [ this.nativeGrammars.EmbeddedFormFieldOpener, this.nativeGrammars.EmbeddedFormFieldCloser ]
         };
         static symbols={
             REGEX_FOR_SLASH_AT_THE_END: /(\\|\/)$/g,
@@ -929,12 +942,15 @@
                 forJs: this.constructor.defaultGrammars.forJs,
                 forCss: this.constructor.defaultGrammars.forCss,
                 forMd: this.constructor.defaultGrammars.forMd,
-                forTemplateComments: this.constructor.defaultGrammars.forTemplateComments
+                forTemplateComments: this.constructor.defaultGrammars.forTemplateComments,
+                forEmbeddedForms: this.constructor.defaultGrammars.forEmbeddedForms
             };
             this.parser = {
                 forJs: this.constructor.Parser.create(this.grammars.forJs),
                 forCss: this.constructor.Parser.create(this.grammars.forCss),
-                forMd: this.constructor.Parser.create(this.grammars.forMd)
+                forMd: this.constructor.Parser.create(this.grammars.forMd),
+                forTemplateComments: this.constructor.Parser.create(this.grammars.forTemplateComments),
+                forEmbeddedForms: this.constructor.Parser.create(this.grammars.forEmbeddedForms)
             };
             this.css = new ModulerV6.CssManager(this);
         }

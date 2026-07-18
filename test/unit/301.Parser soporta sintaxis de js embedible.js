@@ -9,4 +9,5 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, devBi
   assert(output1.tokens[0].inner === "500 + 300", "can parse comments with adequate parser (2)");
   assert(output1.tokens[0].outer.endsWith("*/() {}"), "can parse comments with adequate parser (3)");
 
+  compilerV6._logger.log("Test 301 ok");
 };
