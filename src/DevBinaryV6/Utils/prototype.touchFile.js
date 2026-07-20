@@ -8,7 +8,7 @@ async touchFile(file, optionsInput = {}) {
   const fs = require("fs");
   const path = require("path");
   const filepath = this.devbin.compiler.fullpathOf(file);
-  this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${filepath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+  // this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${filepath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
   const event = this.constructor.defaultTouchFileOptions({
     propagateUp: true,
     processedEntries: {},
@@ -19,10 +19,11 @@ async touchFile(file, optionsInput = {}) {
   event.isJsEntry = filepath.endsWith(".entry.js");
   event.isCssEntry = filepath.endsWith(".entry.css");
   event.isMdEntry = filepath.endsWith(".entry.md");
+  event.isJsTest = filepath.endsWith(".test.js");
   const isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
   Processing_entry: {
     if (!isEntry) {
-      console.log(`[-] Touch event dismissed from: ${filepath}`);
+      if(!event.isJsTest) console.log(`[-] Touch event dismissed from: ${filepath}`);
       break Processing_entry;
     }
     console.log(`[*] Touch event triggered from: ${filepath}`);
@@ -44,6 +45,13 @@ async touchFile(file, optionsInput = {}) {
     Triggering_onDistribute_file: {
       const onDistributeFile = path.join(path.dirname(filepath), "e.onDistribute.js");
       await this.triggerCallbackFromFile(onDistributeFile, { file: filepath, event, });
+    }
+  }
+  Processing_test: {
+    if(event.isJsTest) {
+      console.log(`[-] Touch event processed as test from: ${filepath}`);
+      await this.executeUnitTestFileOf(filepath, {testFabrication:{ unitFile: filepath }});
+      return event;
     }
   }
   Triggering_onTouch_file: {

@@ -11,10 +11,16 @@ async fabricateUnitTestFileOf(filepath, event) {
   const devBinaryV6RelativeFilepath = path.relative(path.dirname(testunitFile), devBinaryV6Filepath);
   if(!event.distribution.js) return;
   const relativeTarget = path.relative(path.dirname(testunitFile), event.distribution.js);
-  const testunitContent = `const devbin = require(__dirname + ${JSON.stringify("/" + devBinaryV6RelativeFilepath)});\nconst target = require(__dirname + ${JSON.stringify("/" + relativeTarget)});\n\ndevbin.assert(true, "Test is empty right now");`
+  const testunitContent = `const devbin = require(__dirname + ${JSON.stringify("/" + devBinaryV6RelativeFilepath)});\nconst target = require(__dirname + ${JSON.stringify("/" + relativeTarget)});\n\nmodule.exports = (async function () {
+
+  devbin.assert(true, "Test is empty right now");
+
+})();`
   const testunitDir = path.dirname(testunitFile);
-  await fs.promises.mkdir(testunitDir, { recursive: true });
-  await fs.promises.writeFile(testunitFile, testunitContent, "utf8");
+  if(!await this.existsFile(testunitFile)) {
+    await fs.promises.mkdir(testunitDir, { recursive: true });
+    await fs.promises.writeFile(testunitFile, testunitContent, "utf8");
+  }
   return {
     unitDir: testunitDir,
     unitFile: testunitFile,

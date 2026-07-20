@@ -5,18 +5,18 @@
  */
 async loop(args) {
   const targetRoot = await this.devbin.utils.constructor.findFirstParentDirectoryContaining(process.cwd(), "package.json");
-  const targetDir = require("path").resolve(targetRoot, "src");
+  const targetDirs = [
+    require("path").resolve(targetRoot, "src"),
+    require("path").resolve(targetRoot, "test/unit/src"),
+  ];
   return this.devbin.constructor.Refrescador.run({
-    watch: [
-      targetDir,
-    ],
+    watch: targetDirs,
     bulletproof: false,
     ignore: [
       "**/node_modules/**/*",
       "**/dist/**/*",
       "**/*.dist.*",
       "**/logs/**/*",
-      "**/test/assets/unit/**/*"
     ],
     port: 3005,
     debounce: 0,

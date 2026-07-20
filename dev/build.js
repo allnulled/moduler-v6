@@ -125,21 +125,26 @@ const main = async function () {
         fs.chmodSync(rootrel("dist/dev-binary-v6.bin.dist.js"), 0o755),
         // Exportar core del proyecto base devbin a directorio paralelo del proyecto base devbin:
         (async () => {
-          const dir = path.resolve(`${rootdir}/../moduler-v6-starter`);
-          const dirSrc = JSON.stringify(dir);
-          const cmdCommand = `devbin ensure core --reset --from ${dirSrc}`;
-          const child = spawn("devbin", [
-            "ensure",
-            "core",
-            "--reset",
-            "--from",
-            dir,
-          ], {
-            cwd: dir,
-            detached: true,
-            stdio: "ignore",
-          });
-          child.unref();
+          const allDirs = [
+            path.resolve(`${rootdir}/../moduler-v6-starter`),
+            path.resolve(`${rootdir}/../moduler-v6-repo-1`),
+          ];
+          for(let index=0; index<allDirs.length; index++) {
+            const dir = allDirs[index];
+            console.log("[*] Exporting to: " + dir);
+            const child = spawn("devbin", [
+              "ensure",
+              "core",
+              "--reset",
+              "--from",
+              dir,
+            ], {
+              cwd: dir,
+              detached: true,
+              stdio: "ignore",
+            });
+            child.unref();
+          }
         })(),
       ]);
     } catch (error) {

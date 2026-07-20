@@ -1,1 +1,1 @@
-soporte para plantillas en compile+js con el parser.forTemplateComments
+eventos e.onTouch y e.onDistribute integrados en el touchFile + tests dentro del 202 + parser de formularios + test en 303 + desestimada 304 por complejidad va para el starter

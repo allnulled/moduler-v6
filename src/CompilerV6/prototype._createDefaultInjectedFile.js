@@ -32,14 +32,14 @@ _createDefaultInjectedFile(file, targetId) {
     } else if(isPrototype) {
       targetType = "prototype class member";
     } else if(isClass) {
-      targetType = "pure class"
+      targetType = "only class"
     }
     if(isClass) {
       if(isStatic || isPrototype)  {
         suffixes += " = ";
       }
       suffixes += `class ${fileId}`;
-      targetType = targetType === "pure class" ? targetType : targetType + " + class";
+      targetType = targetType === "class" ? targetType : targetType + " + class";
     } else if(isAsync) {
       prefixes += `async `;
       suffixes += `()`;
@@ -49,7 +49,7 @@ _createDefaultInjectedFile(file, targetId) {
       suffixes += `()`;
       targetType += " + sync";
     } else {
-      suffixes = " =";
+      suffixes = " ()";
     }
     if(!isOnlyClass) {
       if(isJsFriendly) {
