@@ -1,1 +1,1 @@
-resueltos algunos bugs que estaban pasando en el loop/touch, como no eventos en los .test.js del test/unit, propiedad en vez de método por defecto al crear nuevos ficheros por el dontCreateOnInjectSource
+devbin loop solo escuchará extensiones: js, css, html, md.

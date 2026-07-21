@@ -21,12 +21,7 @@ async loop(args) {
     port: 3005,
     debounce: 0,
     extensions: [
-      "sh",
-      "ts",
-      "tsx",
-      "txt",
       "js",
-      "json",
       "css",
       "html",
       "md",
