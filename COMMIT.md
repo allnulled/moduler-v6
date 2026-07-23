@@ -1,1 +1,1 @@
-devbin loop solo escuchará extensiones: js, css, html, md.
+bug en ModulerV6.prototype.section que no se cargaba por el orden de los métodos estáticos

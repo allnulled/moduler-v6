@@ -1,5 +1,5 @@
 /**
- * @name ModulerV6.prototype.section
+ * @name ModulerV6.prototype.get.section
  * @type 
  * @description 
  */

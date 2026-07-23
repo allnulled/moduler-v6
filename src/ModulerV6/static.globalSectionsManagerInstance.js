@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-static globalSectionsManagerInstance = new this.SectionsManager();
+static globalSectionsManagerInstance = new this.SectionsManager({});

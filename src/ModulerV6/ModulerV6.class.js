@@ -38,8 +38,8 @@ class ModulerV6 {
   /*="./prototype.evaluateSource.js"*/
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
-  /*="./static.globalInstance.js"*/
   /*="./static.globalSectionsManagerInstance.js"*/
   /*="./prototype.section.js"*/
   /*="./constructor.js"*/
+  /*="./static.globalInstance.js"*/
 }
