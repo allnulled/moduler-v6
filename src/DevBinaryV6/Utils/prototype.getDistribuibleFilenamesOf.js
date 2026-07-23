@@ -3,7 +3,7 @@
  * @type 
  * @description 
  */
-getDistribuibleFilenamesOf(fileBrute) {
+getDistribuibleFilenamesOf(fileBrute, event) {
   let file, filename, fileExtension;
   file = require("path").basename(fileBrute);
   if(file.endsWith(".entry.js")) {

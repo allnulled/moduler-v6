@@ -20,6 +20,7 @@ async touchFile(file, optionsInput = {}) {
   event.isCssEntry = filepath.endsWith(".entry.css");
   event.isMdEntry = filepath.endsWith(".entry.md");
   event.isJsTest = filepath.endsWith(".test.js");
+  event.isWww = filepath.startsWith(this.devbin.compiler.fullpathOf("@/src/www") + "/");
   const isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
   Processing_entry: {
     if (!isEntry) {

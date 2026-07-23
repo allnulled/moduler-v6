@@ -16,10 +16,18 @@ async compileDistribuiblesOf(filepath, event) {
     });
   }
   Get_dist_filepaths: {
-    const outputNames = this.getDistribuibleFilenamesOf(compilation.file);
+    const outputNames = this.getDistribuibleFilenamesOf(compilation.file, event);
     const inputDir = require("path").dirname(outputNames.file);
     const inputRootdir = this.devbin.compiler.rootdirOf(inputDir);
-    const outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\//g, "@/dist/"));
+    let outputDir = undefined;
+    Export_directly_to_dist_www_if_isWww: {
+      if (event.isWww) {
+        console.log(inputRootdir);
+        outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\/src\/www/g, "@/dist/www"));
+      } else {
+        outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\//g, "@/dist/"));
+      }
+    }
     distJs = require("path").resolve(outputDir, outputNames.js);
     distCss = require("path").resolve(outputDir, outputNames.css);
     distMd = require("path").resolve(outputDir, outputNames.md);
@@ -29,10 +37,10 @@ async compileDistribuiblesOf(filepath, event) {
     report.names = outputNames;
   }
   Make_assertions_for_safety: {
-    this.assert(distJs.endsWith(".dist.js"));
-    this.assert(distCss.endsWith(".dist.css"));
-    this.assert(distMd.endsWith(".md"));
-    this.assert(distJs.includes("/dist/"));
+    this.assert(distJs.endsWith(".dist.js"), `File should end with «.dist.js» but it is not the case on «${distJs}»`);
+    this.assert(distCss.endsWith(".dist.css"), `File should end with «.dist.css» but it is not the case on «${distCss}»`);
+    this.assert(distMd.endsWith(".md"), `File should end with «.md» but it is not the case on «${distMd}»`);
+    this.assert(distJs.includes("/dist/"), `File should include «/dist/» but it is not the case on «${distJs}»`);
   }
   Overwrite_dist_files: {
     await this.ensureDirectoryOf(distJs);
@@ -47,6 +55,7 @@ async compileDistribuiblesOf(filepath, event) {
         }
       });
       await require("fs").promises.writeFile(distJs, output.code, "utf8");
+      console.log(`[*] Distribution file generated at: ${distJs}`);
       // Antes se creaba un .dist en el source:
       // await require("fs").promises.writeFile(srcDistJs, compilation.js, "utf8");
       report.js = distJs;
