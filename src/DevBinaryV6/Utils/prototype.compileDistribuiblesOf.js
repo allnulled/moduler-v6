@@ -22,7 +22,6 @@ async compileDistribuiblesOf(filepath, event) {
     let outputDir = undefined;
     Export_directly_to_dist_www_if_isWww: {
       if (event.isWww) {
-        console.log(inputRootdir);
         outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\/src\/www/g, "@/dist/www"));
       } else {
         outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\//g, "@/dist/"));
@@ -63,6 +62,19 @@ async compileDistribuiblesOf(filepath, event) {
         // Antes estaba esto:
         // event.processedEntries[compilation.file] = compilation;
         event.processedEntries[compilation.file] = { distJs };
+      }
+      Generate_instrumentalized_if_settings_instrumentalize_includes_it: {
+        await this.devbin.settings.load();
+        const instrumentalizeFiles = this.devbin.settings?.data?.instrumentalize || [];
+        const isMatch = this.globOf(instrumentalizeFiles).matches(distJs);
+        if(isMatch) {
+          Create_instrumentalization: {
+            const instrJs = distJs.replace(/\.dist\.js$/g, ".dist.instr.js");
+            const instrSource = this.instrumentCode(output.code, distJs);
+            await require("fs").promises.writeFile(instrJs, instrSource, "utf8");
+            console.log(`[*] Instrumentation file generated at: ${instrJs}`);
+          }
+        }
       }
     }
     if (compilation.css) {

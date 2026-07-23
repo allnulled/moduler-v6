@@ -1,1 +1,1 @@
-feature 1: soporte para compilados en browser - los ficheros en @/src/www se compilan a @/dist/www sin pasar por @/dist/src/www y feature 2: el loop debe ignorar tests en ficheros de entorno browser - los ficheros en @/src/www no generan el @/test/unit/src de momento el browser no automatiza la generación de test
+API de Settings incluida en DevBinaryV6 + test + instrumentalización del .dist.js si hace glob-match con alguno del devbin.settings.instrumentalize que se carga en el dev/setting.js

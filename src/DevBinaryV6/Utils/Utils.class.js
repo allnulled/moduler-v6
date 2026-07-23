@@ -19,5 +19,7 @@ class DevBinaryV6Utils {
   /*="./prototype.ensureCoreFrom.js"*/
   /*="./prototype.existsFile.js"*/
   /*="./prototype.triggerCallbackFromFile.js"*/
+  /*="./prototype.instrumentCode.js"*/
+  /*="./prototype.globOf.js"*/
   /*="./constructor.js"*/
 }
