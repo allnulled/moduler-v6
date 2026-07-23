@@ -66,6 +66,11 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
       // @CAUTION: aquí no hay filtro de dontOverride
       return fs.promises.cp(src, dst, { recursive: true });
     },
+    _initializeDuplicatedFile: async function(src, dst) {
+      if(!await utils._existsFile(dst)) {
+        return await fs.promises.copyFile(src, dst);
+      }
+    },
     _readFile: function (src) {
       return fs.promises.readFile(src, "utf8");
     },
@@ -89,6 +94,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   const saveFile = parameters.ignoreErrors ? utils.trify(utils._saveFile) : utils._saveFile;
   const duplicateFile = parameters.ignoreErrors ? utils.trify(utils._duplicateFile) : utils._duplicateFile;
   const duplicateDirectory = parameters.ignoreErrors ? utils.trify(utils._duplicateDirectory) : utils._duplicateDirectory;
+  const duplicateFileIfNotExists = utils.trify(utils._initializeDuplicatedFile);
 
   await createDirectory(`${targetDir}/dev`);
   await createDirectory(`${targetDir}/dev/bin`);
@@ -97,6 +103,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectory(`${targetDir}/src/lib`);
   await createDirectory(`${targetDir}/dist`);
   await createDirectory(`${targetDir}/dist/src`);
+  await createDirectory(`${targetDir}/dist/www`);
   await createDirectory(`${targetDir}/dist/src/lib`);
   await createDirectory(`${targetDir}/test`);
   await createDirectory(`${targetDir}/test/unit`);
@@ -110,6 +117,9 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await saveFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
   await saveFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nrequire(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
   
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/index.html`, `${targetDir}/dist/www/index.html`);
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.js`, `${targetDir}/dist/www/app.js`);
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.css`, `${targetDir}/dist/www/app.css`);
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.entry.js`);
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);
   

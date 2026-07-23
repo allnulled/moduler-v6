@@ -35,7 +35,8 @@ async loop(args) {
     // ignoreCallback: __dirname + "/ignorer.js",
     // executeCallback: ["file/from/cwd/target.js",],
     // payloadFile: 'browser-payload.js',
-    // serve: 'some/static/www',
-    // urlPrefix: 'static/subpath/on/server',
+    serve: this.devbin.compiler.fullpathOf("@/dist/www"),
+    staticPath: "dist/www",
+    urlPrefix: "/",
   });
 }

@@ -1,1 +1,1 @@
-bug en ModulerV6.prototype.section que no se cargaba por el orden de los métodos estáticos
+actualizado refrescador + exposición estática del directorio dist/www en el refrescador del devbin loop + refrescador con staticPath permite tener el directorio estático en el mismo urlPath dist/www + ensureCore garantiza unos index.html app.css y app.js iniciales + test al entrar en el loop puedes acceder al directorio estático - no testeados los imports en browser todavia
