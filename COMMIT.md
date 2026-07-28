@@ -1,1 +1,1 @@
-Settings API usa el loop.port para el refrescador --port
+actualizando al refrescador para soporte controladores extra + generando core con soporte directo para controlador extra que reciba el json del coverage (no terminado) y controlador extra que permita navegar por la cobertura

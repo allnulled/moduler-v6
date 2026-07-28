@@ -31,6 +31,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
       return { devDependencies: {}, dependencies: {} };
     }
   })();
+  
   const initialPackageJson = {
     name: "name-of-the-project",
     bin: {},
@@ -53,13 +54,13 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
     },
     _saveFile: async function (file, contents) {
       if (parameters.dontOverride && await utils._existsFile(file)) {
-        return;
+        return -1;
       }
       return await fs.promises.writeFile(file, contents, "utf8");
     },
     _duplicateFile: async function (src, dst) {
       if (parameters.dontOverride && await utils._existsFile(dst)) {
-        return;
+        return -1;
       }
       return await fs.promises.copyFile(src, dst);
     },
@@ -100,11 +101,13 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectory(`${targetDir}/dev`);
   await createDirectory(`${targetDir}/dev/bin`);
   await createDirectory(`${targetDir}/dev/bin/help`);
+  await createDirectory(`${targetDir}/dev/coverage`);
   await createDirectory(`${targetDir}/src`);
   await createDirectory(`${targetDir}/src/lib`);
   await createDirectory(`${targetDir}/dist`);
   await createDirectory(`${targetDir}/dist/src`);
   await createDirectory(`${targetDir}/dist/www`);
+  await createDirectory(`${targetDir}/dist/www/coverage`);
   await createDirectory(`${targetDir}/dist/src/lib`);
   await createDirectory(`${targetDir}/test`);
   await createDirectory(`${targetDir}/test/unit`);
@@ -116,11 +119,15 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   
   await saveFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
   await saveFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
-  await saveFile(`${targetDir}/dev/bin.js`, "#!/usr/bin/env node\n\nrequire(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
+  await saveFile(`${targetDir}/dev/bin.js`, "require(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
   
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/index.html`, `${targetDir}/dist/www/index.html`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.js`, `${targetDir}/dist/www/app.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.css`, `${targetDir}/dist/www/app.css`);
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/settings.js`, `${targetDir}/dev/settings.js`);
+  await duplicateFile(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
+  // await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
+  await duplicateFile(`${__dirname}/../src/DevBinaryV6/Utils/core/no-coverage.html`, `${targetDir}/dev/coverage/index.html`);
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.entry.js`);
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);
   
