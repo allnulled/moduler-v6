@@ -1,1 +1,1 @@
-API de Settings incluida en DevBinaryV6 + test + instrumentalización del .dist.js si hace glob-match con alguno del devbin.settings.instrumentalize que se carga en el dev/setting.js
+Settings API usa el loop.port para el refrescador --port

@@ -5,6 +5,7 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, modul
   devBinaryV6.compiler.setRootdir(await devBinaryV6.compiler.constructor.findRootOf(__dirname));
   await devBinaryV6.settings.load(true);
   assert(devBinaryV6.settings.data.message === "ok", "Can use Settings API (1)");
+  assert(await devBinaryV6.settings.get("message") === "ok", "Can use Settings API (2)");
 
   compilerV6._logger.log("Test 306 ok");
 };

@@ -36,6 +36,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
     bin: {},
     main: "dist/main.dist.js",
     scripts: {
+      dev: "./dev/run.js loop",
       test: "echo 'no tests now'"
     },
     dependencies: currentPackageJson.dependencies,

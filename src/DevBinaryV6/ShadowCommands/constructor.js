@@ -1,5 +1,5 @@
 /**
- * @name DevBinaryV6.Hooks.constructor
+ * @name DevBinaryV6.ShadowCommands.constructor
  * @type 
  * @description 
  */

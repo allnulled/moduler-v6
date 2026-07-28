@@ -6,4 +6,5 @@ class Settings {
    */
   /*="./constructor.js"*/
   /*="./prototype.load.js"*/
+  /*="./prototype.get.js"*/
 }

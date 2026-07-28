@@ -1,10 +1,12 @@
 /**
- * @name DevBinaryV6.Hooks.prototype.loop
+ * @name DevBinaryV6.ShadowCommands.prototype.loop
  * @type 
  * @description 
  */
 async loop(args) {
   const targetRoot = await this.devbin.utils.constructor.findFirstParentDirectoryContaining(process.cwd(), "package.json");
+  await this.devbin.settings.load();
+  const port = this.devbin.settings.data?.loop?.port || 3005;
   const targetDirs = [
     require("path").resolve(targetRoot, "src"),
     require("path").resolve(targetRoot, "test/unit/src"),
@@ -18,7 +20,7 @@ async loop(args) {
       "**/*.dist.*",
       "**/logs/**/*",
     ],
-    port: 3005,
+    port,
     debounce: 0,
     extensions: [
       "js",
