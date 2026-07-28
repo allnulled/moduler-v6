@@ -1,1 +1,1 @@
-dev controllers ahora tiene rutas de cobertura y de escribir leer y editar ficheros en lan para pasar cosas del movil al pc sin historietas
+import y export soportan secciones en el parámetro dependencies + @injects puede usarse con js-a-js con misma conducta que inject.source + tests de todo

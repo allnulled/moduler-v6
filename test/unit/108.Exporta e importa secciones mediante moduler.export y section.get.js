@@ -11,6 +11,6 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6 }) {
   assert(2000 === modulerV6.section.get("#mil/por/2"), `Can use export to add sections (2)`);
   assert(3000 === modulerV6.section.get("#mil/por/3"), `Can use export to add sections (3)`);
 
-  compilerV6._logger.log("Test 107 ok");
+  compilerV6._logger.log("Test 108 ok");
 
 };

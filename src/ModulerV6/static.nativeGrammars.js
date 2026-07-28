@@ -60,7 +60,7 @@ static nativeGrammars = {
     return { syntax: "@Requires", ...token, };
   }],
   AtInjects: ["/*@injects:", "*/", function (token) {
-    return { syntax: "@Injects", ...token, };
+    return { syntax: "@Injects", inner: token.inner, location: token.location };
   }],
   JavadocComment: ["/**", "*/", function (token) {
     return { syntax: "Javadoc Comment", ...token, };

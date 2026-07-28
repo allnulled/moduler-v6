@@ -20,6 +20,13 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
       tokenIndex,
     });
   }
+  Early_delegation_to_compileAsInjectSource: {
+    const fromJs = compilationFile.resource?.endsWith(".js");
+    if(!fromJs) break Early_delegation_to_compileAsInjectSource;
+    const injectsJs = parameters[0].endsWith(".js");
+    if(!injectsJs) break Early_delegation_to_compileAsInjectSource;
+    return await this._compileAsInjectSource(compilationFile, compilationProcess, { token, tokenIndex });
+  }
   Extend_token: {
     this._extendToken(token, ["referenceOf"]);
   }
@@ -39,6 +46,7 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
       let replacement = "";
       if (targetPath.endsWith("js")) {
         // ...a un .js
+        // @CHATGPT: hablo de este caso exactamente. Tendría que poder hacer lo mismo que _compileAsInjectSource, pero antes estaba esto bloqueando porque era una feature confusa, ahora ya he visto que sí tiene sentido permitir una sintaxis de inyección de código mediante comentario y diferente a las sintaxis de plantillaje genéricas.
         throw new Error("Syntax of «@injects» should not be used to import «js» files from «js» files. Use another syntax instead, like «$v6.injects.source» or «commented template injection» on «CompilerV6.prototype._compileAsInjects»");
         replacement = targetCompilation.js;
       } else if (targetPath.endsWith("css")) {
