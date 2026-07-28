@@ -1,1 +1,1 @@
-actualizando al refrescador para soporte controladores extra + generando core con soporte directo para controlador extra que reciba el json del coverage (no terminado) y controlador extra que permita navegar por la cobertura
+dev controllers ahora tiene rutas de cobertura y de escribir leer y editar ficheros en lan para pasar cosas del movil al pc sin historietas
