@@ -9,4 +9,5 @@ constructor(basedir, parent = null) {
   /*="./prototype.utils.js"*/
   /*="./prototype.settings.js"*/
   /*="./prototype.shadowCommands.js"*/
+  /*="./prototype.shadowFileEvents.js"*/
 }

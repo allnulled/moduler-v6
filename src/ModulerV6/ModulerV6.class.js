@@ -7,6 +7,7 @@ class ModulerV6 {
   /*="./static.AssertionError.js"*/
   /*="./static.CssManager.js"*/
   /*="./static.SectionsManager.js"*/
+  /*="./static.Settings.js"*/
   /*="./static.Parser.js"*/
   /*="./static.assert.js"*/
   /*="./static.isBrowser.js"*/

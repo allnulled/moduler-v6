@@ -12,6 +12,7 @@ class DevBinaryV6 {
   /*="./static.ModulerV6.js"*/
   /*="./static.Utils.js"*/
   /*="./static.ShadowCommands.js"*/
+  /*="./static.ShadowFileEvents.js"*/
   /*="./static.Formatters.js"*/
   /*="./static.Settings.js"*/
   /*="./prototype.cronometer.js"*/

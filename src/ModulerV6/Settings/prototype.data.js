@@ -1,5 +1,5 @@
 /**
- * @name DevBinaryV6.Settings.prototype.data
+ * @name ModulerV6.Settings.prototype.data
  * @type 
  * @description 
  * 

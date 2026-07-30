@@ -1,1 +1,1 @@
-import y export soportan secciones en el parámetro dependencies + @injects puede usarse con js-a-js con misma conducta que inject.source + tests de todo
+el moduler tiene settings propios diferentes de los del devbin porque cada uno lo coge de una diferente + test + guia de sistema de rutas de moduler-v6

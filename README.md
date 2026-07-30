@@ -86,3 +86,7 @@ En el proyecto se incluyen 3 ficheros distribuibles:
    - Se explica el proyecto base generado con los comandos:
       - `devbin new project --from $dir`
       - `devbin ensure core --from $dir`
+- [Guía de sistema de rutas de ModulerV6](./guides/Gu%C3%ADa%20de%20sistema%20de%20rutas%20de%20ModulerV6.md)
+   - Se explican los métodos clave de la API para la resolución de rutas
+   - Se explican las variables clave de la API para la resolución de rutas
+   - Se dan algunos consejos extra

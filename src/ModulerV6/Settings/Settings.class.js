@@ -1,9 +1,10 @@
-class DevBinaryV6Settings extends ModulerV6.Settings {
+class ModulerV6Settings {
   /**
-   * @name DevBinaryV6.Settings
+   * @name ModulerV6.Settings
    * @type 
    * @description 
    */
   /*="./constructor.js"*/
   /*="./prototype.load.js"*/
+  /*="./prototype.get.js"*/
 }

@@ -14,4 +14,5 @@ constructor(basedirArg = null, cloneOf = null) {
   /*="./prototype.grammars.js"*/
   /*="./prototype.parser.js"*/
   /*="./prototype.css.js"*/
+  /*="./prototype.settings.js"*/
 }

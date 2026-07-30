@@ -11,6 +11,7 @@
 6. [ ] que los globs del instr permitan negación también con !
 7. [ ] que los glob dels instr sirvan para gestionar el coverage sin estar más pendiente.
    - [ ] muy importante, conseguir olvidarse 100% solo el dev/settings.js
+   - [ ] tanto en inject.source como @injects como moduler.import y moduler.export
 8.[ ] vigilar el flujo de los tests
    - [ ] caso www
    - [ ] caso módulo conectado a otro (propag test)

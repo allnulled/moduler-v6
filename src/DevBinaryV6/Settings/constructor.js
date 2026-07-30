@@ -4,6 +4,6 @@
  * @description 
  */
 constructor(devbin) {
+  super(devbin.moduler);
   /*="./prototype.devbin.js"*/
-  /*="./prototype.data.js"*/
 }
