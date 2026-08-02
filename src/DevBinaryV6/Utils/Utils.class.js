@@ -6,6 +6,7 @@
 class DevBinaryV6Utils {
   /*="./static.defaultTouchFileOptions.js"*/
   /*="./static.findFirstParentDirectoryContaining.js"*/
+  /*="./static.removeNullPropertiesFromObject.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.parseCliArgs.js"*/
   /*="./prototype.formatCliArgs.js"*/

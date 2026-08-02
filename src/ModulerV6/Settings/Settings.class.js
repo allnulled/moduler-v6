@@ -6,5 +6,6 @@ class ModulerV6Settings {
    */
   /*="./constructor.js"*/
   /*="./prototype.load.js"*/
+  /*="./prototype.loadSilently.js"*/
   /*="./prototype.get.js"*/
 }

@@ -35,9 +35,16 @@
         this.stoppedAt = new Date();
         return this;
       },
+      milliseconds() {
+        return this.stoppedAt - this.openedAt;
+      }
     };
     return tasks[name];
   }
+
+  getTask.pick = function(name, defaultValue = null) {
+    return tasks[name] || defaultValue;
+  };
 
   getTask.export = function () {
     return Object.values(tasks).map(task => ({

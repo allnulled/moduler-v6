@@ -10,7 +10,11 @@ async loop(args) {
   const settingsControllers = this.devbin.settings.data?.loop?.controllers || [];
   const targetDirs = [
     require("path").resolve(targetRoot, "src"),
+    require("path").resolve(targetRoot, "dev/settings.js"),
     require("path").resolve(targetRoot, "test/unit/src"),
+    require("path").resolve(targetRoot, "test/feature"),
+    require("path").resolve(targetRoot, "test/integrity"),
+    require("path").resolve(targetRoot, "test/spontaneous"),
   ];
   const devControllersFile = `${targetRoot}/dev/controllers.js`;
   const devControllers = await this.devbin.utils.existsFile(devControllersFile) ? [devControllersFile] : [];
@@ -22,6 +26,7 @@ async loop(args) {
       "**/dist/**/*",
       "**/*.dist.*",
       "**/logs/**/*",
+      "**/test/unit/**/*",
     ],
     port,
     debounce: 0,

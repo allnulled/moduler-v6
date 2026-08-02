@@ -104,15 +104,20 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectory(`${targetDir}/dev/coverage`);
   await createDirectory(`${targetDir}/dev/files`);
   await createDirectory(`${targetDir}/src`);
-  await createDirectory(`${targetDir}/src/lib`);
   await createDirectory(`${targetDir}/dist`);
   await createDirectory(`${targetDir}/dist/src`);
   await createDirectory(`${targetDir}/dist/www`);
   await createDirectory(`${targetDir}/dist/www/coverage`);
+  await createDirectory(`${targetDir}/dist/www/lib`);
+  await createDirectory(`${targetDir}/dist/www/dev`);
+  await createDirectory(`${targetDir}/dist/www/dev/settings`);
   await createDirectory(`${targetDir}/dist/src/lib`);
   await createDirectory(`${targetDir}/test`);
+  await createDirectory(`${targetDir}/test/feature`);
+  await createDirectory(`${targetDir}/test/integrity`);
   await createDirectory(`${targetDir}/test/unit`);
   await createDirectory(`${targetDir}/test/unit/src`);
+  await createDirectory(`${targetDir}/test/spontaneous`);
   await createDirectory(`${targetDir}/docs`);
   
   await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
@@ -129,18 +134,11 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await duplicateFile(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
   // @ATENCIÓN: Devolver a IfNotExists al terminar
   // await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
-  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/lib/moduler-v6.entry.js`);
-  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);
-  
-  await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/lib/compiler-v6.entry.js`);
+  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);  
+  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/www/lib/moduler-v6.dist.js`);
   await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/dist/src/lib/compiler-v6.dist.js`);
-  
-  await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/lib/dev-binary-v6.entry.js`);
   await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/dist/src/lib/dev-binary-v6.dist.js`);
-
-  await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/lib/refrescador.entry.js`);
   await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/dist/src/lib/refrescador.dist.js`);
-  await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/src/lib/refrescador`, { recursive: true });
   await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/dist/src/lib/refrescador`, { recursive: true });
 
   return { targetDir };

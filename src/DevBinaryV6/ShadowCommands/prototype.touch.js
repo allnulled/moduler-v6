@@ -27,5 +27,6 @@ touch(args) {
   this.assert(typeof parameters.file === "string", `Parameter «--file» is required as string on «DevBinaryV6.ShadowCommands.prototype.touch»`);
   return this.devbin.utils.touchFile(parameters.file, {
     uncacheInjections: parameters.uncacheInjections,
+    isRoot: true,
   });
 }

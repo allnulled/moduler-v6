@@ -8,7 +8,7 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, modul
     name: "Notior Bisnes",
   });
   
-  console.log(output1);
+  // console.log(output1);
 
   compilerV6._logger.log("Test 304 ok");
 };

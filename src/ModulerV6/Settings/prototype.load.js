@@ -7,11 +7,9 @@ async load(forceReload = false) {
   if((!forceReload) && this.data) {
     return this.data;
   }
-  const settingsPath = this.moduler.normalizationOf("@/dist/www/dev/settings.js");
   try {
-    return this.data = await this.moduler.import(settingsPath);
+    return this.data = await this.moduler.import("@/dist/www/dev/settings.dist.js");
   } catch (error) {
-    console.error(error);
-    return undefined;
+    console.log("[!] Could not load settings because:", error);
   }
 }

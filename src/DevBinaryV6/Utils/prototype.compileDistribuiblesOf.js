@@ -4,7 +4,7 @@
  * @description 
  */
 async compileDistribuiblesOf(filepath, event) {
-  let compilation, srcDistJs, srcDistCss, srcDistMd, distJs, distCss, distMd, report;
+  let compilation, srcDistJs, srcDistMd, distJs, distCss, distMd, report;
   Initialize_report: {
     report = {};
   }
@@ -31,7 +31,6 @@ async compileDistribuiblesOf(filepath, event) {
     distCss = require("path").resolve(outputDir, outputNames.css);
     distMd = require("path").resolve(outputDir, outputNames.md);
     srcDistJs = require("path").resolve(inputDir, outputNames.js);
-    srcDistCss = require("path").resolve(inputDir, outputNames.css);
     srcDistMd = require("path").resolve(inputDir, outputNames.md);
     report.names = outputNames;
   }
@@ -66,7 +65,8 @@ async compileDistribuiblesOf(filepath, event) {
       Generate_instrumentalized_if_settings_instrumentalize_includes_it: {
         await this.devbin.settings.load();
         const instrumentalizeFiles = this.devbin.settings?.data?.instrumentalize || [];
-        const isMatch = this.globOf(instrumentalizeFiles).matches(distJs);
+        // const isMatch = this.globOf(instrumentalizeFiles).matches(distJs);
+        const isMatch = instrumentalizeFiles.map(file => this.devbin.moduler.normalizationOf(file)).includes(distJs);
         if(isMatch) {
           Create_instrumentalization: {
             const instrJs = distJs.replace(/\.dist\.js$/g, ".dist.instr.js");
@@ -79,7 +79,6 @@ async compileDistribuiblesOf(filepath, event) {
     }
     if (compilation.css) {
       await require("fs").promises.writeFile(distCss, compilation.css, "utf8");
-      await require("fs").promises.writeFile(srcDistCss, compilation.css, "utf8");
       report.css = distCss;
       // No cache para css ni md:
       // event.processedEntries[distCss] = compilation.css;

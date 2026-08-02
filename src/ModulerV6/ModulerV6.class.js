@@ -4,6 +4,9 @@ class ModulerV6 {
    * @type class
    * @description ...
    */
+  /*="./static.createResolvable.js"*/
+  /*="./static.onLoaded.js"*/
+  /*="./static.Runtime.js"*/
   /*="./static.AssertionError.js"*/
   /*="./static.CssManager.js"*/
   /*="./static.SectionsManager.js"*/
@@ -43,4 +46,5 @@ class ModulerV6 {
   /*="./prototype.section.js"*/
   /*="./constructor.js"*/
   /*="./static.globalInstance.js"*/
+  /*="./static.isLoaded.js"*/
 }

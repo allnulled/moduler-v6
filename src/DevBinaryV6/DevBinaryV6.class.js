@@ -15,6 +15,7 @@ class DevBinaryV6 {
   /*="./static.ShadowFileEvents.js"*/
   /*="./static.Formatters.js"*/
   /*="./static.Settings.js"*/
+  /*="./static.Tester.js"*/
   /*="./prototype.cronometer.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.command.js"*/

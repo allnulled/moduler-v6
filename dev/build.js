@@ -62,7 +62,7 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
   if (src2.startsWith("src-tmp/")) {
     await fs.promises.writeFile(src2Absolute, sourceV6, "utf8");
   }
-  if(settings.disableBeautifierAndMinifier) {
+  if (settings.disableBeautifierAndMinifier) {
     return;
   }
   Transformaciones: {
@@ -125,25 +125,35 @@ const main = async function () {
         fs.chmodSync(rootrel("dist/dev-binary-v6.bin.dist.js"), 0o755),
         // Exportar core del proyecto base devbin a directorio paralelo del proyecto base devbin:
         (async () => {
-          const allDirs = [
-            path.resolve(`${rootdir}/../moduler-v6-starter`),
-            path.resolve(`${rootdir}/../moduler-v6-repo-1`),
-          ];
-          for(let index=0; index<allDirs.length; index++) {
-            const dir = allDirs[index];
-            console.log("[*] Exporting to: " + dir);
-            const child = spawn("devbin", [
-              "ensure",
-              "core",
-              "--reset",
-              "--from",
-              dir,
-            ], {
-              cwd: dir,
-              detached: true,
-              stdio: "ignore",
-            });
-            child.unref();
+          Exportar_core_a_starter_y_repo_1: {
+            const allDirs = [
+              path.resolve(`${rootdir}/../moduler-v6-starter`),
+              path.resolve(`${rootdir}/../moduler-v6-repo-1`),
+            ];
+            for (let index = 0; index < allDirs.length; index++) {
+              const dir = allDirs[index];
+              console.log("[*] Exporting to: " + dir);
+              const child = spawn("devbin", [
+                "ensure",
+                "core",
+                "--reset",
+                "--from",
+                dir,
+              ], {
+                cwd: dir,
+                detached: true,
+                stdio: "ignore",
+              });
+              child.unref();
+            }
+          }
+        })(),
+        (async () => {
+          Triggear_cambio_en_repo_1: {
+            const target = "src/www/app.entry.js";
+            const targetFile = path.resolve(`${rootdir}/../moduler-v6-repo-1/${target}`);
+            const contents = await fs.promises.readFile(targetFile, "utf8");
+            await fs.promises.writeFile(targetFile, contents, "utf8");
           }
         })(),
       ]);
