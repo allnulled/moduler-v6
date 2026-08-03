@@ -3,7 +3,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6 }) {
   const { moduler: modulerV6 } = compilerV6;
   const assert = modulerV6.createAssertFunction();
   
-  console.log(modulerV6.runtime);
+  // console.log(modulerV6.runtime);
   
   await modulerV6.runtime.constructor.onLoaded.promise;
 

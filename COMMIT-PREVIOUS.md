@@ -1,1 +1,1 @@
-el moduler tiene settings propios diferentes de los del devbin porque cada uno lo coge de una diferente + test + guia de sistema de rutas de moduler-v6
+runner de integrity y feature tests incorporados con runDirectory en touchFile + ficheros instr importados automaticamente por moduler cuando aparecen en dev/settings.js + dev/settings.js se pasa parcialmente a dist/www/dev/settings/publicable.json + se pueden importar json

@@ -20,8 +20,8 @@ async compileDistribuiblesOf(filepath, event) {
     const inputDir = require("path").dirname(outputNames.file);
     const inputRootdir = this.devbin.compiler.rootdirOf(inputDir);
     let outputDir = undefined;
-    Export_directly_to_dist_www_if_isWww: {
-      if (event.isWww) {
+    Export_directly_to_dist_www_if_isSrcWww: {
+      if (event.isSrcWww) {
         outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\/src\/www/g, "@/dist/www"));
       } else {
         outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\//g, "@/dist/"));

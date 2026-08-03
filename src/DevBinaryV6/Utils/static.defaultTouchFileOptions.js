@@ -6,6 +6,7 @@
 static defaultTouchFileOptions(overrider = {}) {
   return {
     propagateUp: true,
+    testFeatures: [],
     ...overrider,
   };
 }

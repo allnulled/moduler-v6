@@ -4,7 +4,7 @@
  * @description 
  */
 executeUnitTestFileOf(filepath, event) {
-  if(event.isWww) {
+  if(event.isSrcWww) {
     console.log(`[*] No test for browser file: ${filepath}`);
   } else {
     console.log(`[*] Executing unit test file of: ${event.testFabrication.unitFile}`);

@@ -1,1 +1,1 @@
-runner de integrity y feature tests incorporados con runDirectory en touchFile + ficheros instr importados automaticamente por moduler cuando aparecen en dev/settings.js + dev/settings.js se pasa parcialmente a dist/www/dev/settings/publicable.json + se pueden importar json
+e.onTestFeature.js permite concretar test-features por zona del src + dev/settings.js#features también pero globalmente + test/case se hacen en el touch + test/integrity no se hacen en el touch

@@ -117,7 +117,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectory(`${targetDir}/test/integrity`);
   await createDirectory(`${targetDir}/test/unit`);
   await createDirectory(`${targetDir}/test/unit/src`);
-  await createDirectory(`${targetDir}/test/spontaneous`);
+  await createDirectory(`${targetDir}/test/case`);
   await createDirectory(`${targetDir}/docs`);
   
   await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");

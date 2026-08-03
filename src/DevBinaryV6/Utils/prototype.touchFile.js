@@ -18,65 +18,79 @@ async touchFile(file, optionsInput = {}) {
   });
   this.assert(optionsInput.uncacheInjections === event.uncacheInjections, "Las inyections 2");
   // console.log(event.uncacheInjections);
+  event.isHtml = filepath.endsWith(".html");
   event.isJsEntry = filepath.endsWith(".entry.js");
   event.isCssEntry = filepath.endsWith(".entry.css");
   event.isMdEntry = filepath.endsWith(".entry.md");
   event.isJsTest = filepath.endsWith(".test.js");
-  event.isWww = filepath.startsWith(this.devbin.compiler.fullpathOf("@/src/www") + "/");
+  const rootPath = this.devbin.moduler.rootdirOf(filepath);
+  event.isSrcWww = rootPath.startsWith("@/src/www/");
+  event.isSrc = rootPath.startsWith("@/src/");
   const isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
   Touch_event: {
     Processing_entry: {
       Paso_previo_1_caso_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
         if (filepath === this.devbin.compiler.fullpathOf("@/dev/settings.js")) {
-          try {
-            const settingsAsyncFactory = require(filepath);
-            const settingsData = await settingsAsyncFactory({ devbin: this.devbin });
-            const publicableSettings = this.constructor.removeNullPropertiesFromObject({
-              env: settingsData.env || null,
-              instrumentalize: settingsData.instrumentalize || null,
-              traceExternalSources: settingsData.traceExternalSources || null,
-            });
-            const instrumentalizeJsonFile = this.devbin.compiler.fullpathOf("@/dist/www/dev/settings/publicable.json");
-            await fs.promises.writeFile(instrumentalizeJsonFile, JSON.stringify(publicableSettings, null, 2), "utf8");
-          } catch (error) {
-            console.log("[!] Error loading settings:", error);
-          }
+          await this.exportDevSettings(filepath);
           break Touch_event;
         }
       }
-      Paso_0_descartar_si_no_es_entry_o_test: {
-        if ((!isEntry) && (!event.isJsTest)) {
-          console.log(`[-] Touch event dismissed from: ${filepath}`);
-          break Processing_entry;
-        } else {
-          console.log(`[*] Touch event triggered from: ${filepath}`);
+      Paso_previo_2_caso_src_html: {
+        if (event.isHtml) {
+          if (event.isSrcWww) {
+            const outputFile = `@/dist/www/${rootPath.replace("@/src/www/", "")}`;
+            await this.copyFile(rootPath, outputFile);
+          } else if (event.isSrc) {
+            const outputFile = `@/dist/src/${rootPath.replace("@/src/", "")}`;
+            await this.copyFile(rootPath, outputFile);
+          } else {
+            console.log(`[-] Touch event dismissed from an *.html not under «@/src/»: ${filepath}`);
+            break Touch_event;
+          }
         }
       }
-      Paso_1_compilar_distribuibles: {
-        Object.assign(event, {
-          distribution: await this.compileDistribuiblesOf(filepath, event),
-        });
-      }
-      Paso_2_fabricar_test_unitario: {
-        Object.assign(event, {
-          testFabrication: await this.fabricateUnitTestFileOf(filepath, event),
-        });
-      }
-      Paso_3_ejecutar_test_unitario: {
-        Object.assign(event, {
-          testExecution: await this.executeUnitTestFileOf(filepath, event),
-        });
-      }
-      Triggering_onDistribute_file: {
-        const onDistributeFile = path.join(path.dirname(filepath), "e.onDistribute.js");
-        await this.triggerCallbackFromFile(onDistributeFile, { file: filepath, event, });
+      Caso_js_o_test_js: {
+        Paso_0_descartar_si_no_es_entry_o_test: {
+          if ((!isEntry) && (!event.isJsTest)) {
+            console.log(`[-] Touch event dismissed from not entry or test: ${filepath}`);
+            break Processing_entry;
+          } else {
+            console.log(`[*] Touch event triggered from: ${filepath}`);
+          }
+        }
+        Paso_1_compilar_distribuibles: {
+          Object.assign(event, {
+            distribution: await this.compileDistribuiblesOf(filepath, event),
+          });
+        }
+        Paso_2_fabricar_test_unitario: {
+          Object.assign(event, {
+            testFabrication: await this.fabricateUnitTestFileOf(filepath, event),
+          });
+        }
+        Paso_3_ejecutar_test_unitario: {
+          Object.assign(event, {
+            testExecution: await this.executeUnitTestFileOf(filepath, event),
+          });
+        }
+        Triggering_onDistribute_file: {
+          const onDistributeFile = path.join(path.dirname(filepath), "e.onDistribute.js");
+          await this.triggerCallbackFromFile(onDistributeFile, { file: filepath, event, });
+        }
+        Triggering_onTestFeature_file: {
+          const onTestFeatureFile = path.join(path.dirname(filepath), "e.onTestFeature.js");
+          const featuresAdded = await this.triggerCallbackFromFile(onTestFeatureFile, { file: filepath, event, });
+          if(typeof featuresAdded !== "number") {
+            this.assert(Array.isArray(featuresAdded), `File «e.onTestFeature.js» must return array about file «${onTestFeatureFile}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+            event.testFeatures.push(...featuresAdded);
+          }
+        }
       }
     }
     Processing_test: {
       if (event.isJsTest) {
-        console.log(`[-] Touch event processed as test from: ${filepath}`);
         await this.executeUnitTestFileOf(filepath, { testFabrication: { unitFile: filepath } });
-        return event;
+        break Touch_event;
       }
     }
     Triggering_onTouch_file: {
@@ -85,18 +99,24 @@ async touchFile(file, optionsInput = {}) {
     }
     Propagating_touch_up: {
       Paso_4_propagar_evento_arriba: {
+        const touchPropagation = event.propagateUp ? await this.propagateUpTouchEventFrom(filepath, event) : false;
         Object.assign(event, {
-          touchPropagation: event.propagateUp ? await this.propagateUpTouchEventFrom(filepath, event) : false,
+          touchPropagation: touchPropagation,
         });
       }
     }
     On_root_execute_tests: {
       if (event.isRoot) {
-        Test_integrity: {
-          await this.devbin.tester.runDirectory("@/test/integrity");
+        Run_feature_tests: {
+          await this.devbin.tester.runDirectory("@/test/feature", file => this.matchesFileWithSimpleSelector(path.basename(file), [
+            // Los features de los eventos acumulados:
+            ...(event.testFeatures),
+            // Los features del dev/settings.js#features:
+            ...(this.devbin.settings.data.features || [])
+          ]));
         }
-        Test_features: {
-          await this.devbin.tester.runDirectory("@/test/feature");
+        Run_case_tests: {
+          await this.devbin.tester.runDirectory("@/test/case", file => file.endsWith(".js"));
         }
       }
     }

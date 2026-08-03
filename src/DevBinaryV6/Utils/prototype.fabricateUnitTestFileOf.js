@@ -4,7 +4,7 @@
  * @description 
  */
 async fabricateUnitTestFileOf(filepath, event) {
-  if(event.isWww) {
+  if(event.isSrcWww) {
     // Si es para el dist/www no hay test
     return -2;
   }

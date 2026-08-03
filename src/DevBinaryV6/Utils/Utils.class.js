@@ -22,5 +22,8 @@ class DevBinaryV6Utils {
   /*="./prototype.triggerCallbackFromFile.js"*/
   /*="./prototype.instrumentCode.js"*/
   /*="./prototype.globOf.js"*/
+  /*="./prototype.exportDevSettings.js"*/
+  /*="./prototype.copyFile.js"*/
+  /*="./prototype.matchesFileWithSimpleSelector.js"*/
   /*="./constructor.js"*/
 }
