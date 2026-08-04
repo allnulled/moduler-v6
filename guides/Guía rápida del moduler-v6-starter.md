@@ -18,6 +18,14 @@
     - [Uso final del criterio estricto](#uso-final-del-criterio-estricto)
   - [El evento touch](#el-evento-touch)
   - [Ficheros y directorios especiales](#ficheros-y-directorios-especiales)
+    - [Ficheros de la API de DevBinaryV6](#ficheros-de-la-api-de-devbinaryv6)
+    - [Ficheros de comandos de DevBinaryV6](#ficheros-de-comandos-de-devbinaryv6)
+    - [Ficheros de entrada](#ficheros-de-entrada)
+    - [Ficheros de eventos del touch](#ficheros-de-eventos-del-touch)
+    - [Ficheros de APIs de terceros](#ficheros-de-apis-de-terceros)
+    - [Ficheros de distribución](#ficheros-de-distribución)
+    - [Ficheros de tests](#ficheros-de-tests)
+    - [Ficheros de desarrollo](#ficheros-de-desarrollo)
 
 ## Requisitos
 
@@ -191,18 +199,208 @@ El evento touch tiene su origen en [`DevBinaryV6.Utils.prototype.touchFile`](htt
 
 ## Ficheros y directorios especiales
 
-En los proyectos `moduler-v6-starter` hay una serie de ficheros y carpetas:
+A continuación se habla de los ficheros y directorios que tienen una importancia especial.
 
-- `dev/run.js` - para ejecutar `devbin` localmente
-- `dev/bin.js` - instancia `DevBinaryV6` del proyecto, la API, vaya
-- `dev/bin/**/command.js` - los comandos disponibles
-- `src/**/*.entry.js` - los ficheros de entrada
-- `src/**/<dirname>.entry.js` - los ficheros de entrada por directorio, sensibles a propagación horizontal
-- `src/lib/*` - librerías de terceros
-- `src/www/**/*` - contenido estático
-- `dist/**/*.dist.js` - ficheros de distribución o de entradas compiladas
-- `dist/www/**/*` - contenido estático de distribución
-- `test/unit/src/**/*.test.js` - ficheros de tests de entradas compiladas
+Muchos de ellos se corresponden con ficheros o carpetas que genera el comando `devbin ensure core`.
 
-Principalmente esto es lo que el `devbin new project` y el `devbin ensure core` van a asegurar de alguna forma.
+Esta lista se clasifica por grupos funcionales.
+
+En los proyectos `moduler-v6-starter` hay una serie de ficheros y carpetas.
+
+### Ficheros de la API de DevBinaryV6
+
+Estos 2 ficheros permiten acceso por `node` o `cmd` a la api de `DevBinaryV6` o `devbin`:
+
+- `@/dev/run.js`
+   - para ejecutar `devbin` localmente
+   - se usa así: `./dev/run.js path to command --arg0 val0`
+- `@/dev/bin.js`
+   - instancia `DevBinaryV6` del proyecto
+      - la API de prototype de DevBinary para el proyecto concreto
+   - se importa con el `require` de nodejs
+      - puede usarse `$moduler.{export,import}` también
+         - porque aceptan `module.exports` como fórmula de modulación
+
+### Ficheros de comandos de DevBinaryV6
+
+Este conjunto son los comandos disponibles en el `cmd` para `devbin ruta a comando --arg0 arg0`:
+
+- `@/dev/bin/**/command.js`
+   - los comandos disponibles
+   - la única condición es que tengan un `command.js` al final
+
+### Ficheros de entrada
+
+Las entradas `@/src/**/*.entry.js` son ficheros que se compilan al `@/dist/**/*.dist.js`.
+
+A continuación se explican los patrones y sus características:
+
+- `@/src/**/<dirname>.entry.js`
+   - los ficheros de entrada por directorio, sensibles a propagación horizontal
+   - significa que si un `touch` del mismo directorio se propaga, este fichero `entry` sí se compila
+      - en cambio, los otros `entry` del directorio no
+      - de esta forma, te ahorras compilar todos los `entry` del directorio
+      - consiguiendo que muchos `entry` puedan convivir en un mismo directorio
+         - sin saturar los tiempos de la propagación de la compilación
+         - pero permitiendo cierta propagabilidad también
+- `@/src/**/*.entry.js`
+   - los ficheros de entrada
+   - estos ficheros representan módulos programáticos/APIs modulables
+      - en el mejor de los casos, con `ModulerV6` donde quedaría siempre algo como:
+      - `module.exports = $moduler.export("#Sección/a/api", ["dep1","#sección/1"], async function([dep1,sec1]) {});`
+   - son sensibles al `devbin {touch,loop}`
+   - en el `touch` se compila su `@/src/**/*.entry.js` al `@/dist/**/*.dist.js`
+   - estos ficheros propagarán los eventos del directorio de:
+      - `e.onDistribute.js`
+      - `e.onTouch.js`
+      - `e.onTestFeature.js`
+- `@/src/www/**/*`
+   - los ficheros de desarrollo web
+   - los `@/src/www/**/*.entry.js`: se compilan al `@/dist/www/**/*.dist.js`
+   - los `@/src/www/**/*.entry.css`: se compilan al `@/dist/www/**/*.dist.css`
+   - los `@/src/www/**/*.html`: se copian al `@/dist/www/**/*.html`
+   - lo demás, tienes que copiarlo a mano al `@/dist/www`
+
+### Ficheros de eventos del touch
+
+Estos son los ficheros de eventos inyectables del `{touch,loop}`:
+
+- `@/src/**/e.onDistribute.js`
+   - evento inyectable
+   - se ejecutará después de ejecutar el test unitario del `entry`
+      - cuando ya se ha compilado el distribuible correspondiente
+   - debes hacer `module.exports` de una `Function`
+   - la función recibe el contexto en el primer parámetro
+   - tipicamente, aquí vas a querer:
+      - exportar el `*.dist.js` con `DevBinaryV6.Utils.prototype.copyFile`
+      - quizás hacer alguna tarea extra
+- `@/src/**/e.onTouch.js`
+   - evento inyectable
+   - se ejecutará antes de propagar el evento touch al directorio superior
+   - debes hacer `module.exports` de una `Function`
+   - la función recibe el contexto en el primer parámetro
+- `@/src/**/e.onTestFeature.js`
+   - evento inyectable
+   - se ejecutará después del `e.onDistribute.js` de haberlo.
+   - la función recibe el contexto en el primer parámetro
+   - la función debe devoler un `Array<String>` con selectores para el método `DevBinaryV6.Utils.prototype.matchesFileWithSimpleSelector`
+      - el `String` debe estar incluido en el `filename` (no el `filepath`, ojo)
+      - permite `startsWith` poniendo `^` al principio
+      - permite `includes` en todos los demás casos
+
+### Ficheros de APIs de terceros
+
+Las APIs de terceros tienen unos directorios muy concretos, y es, dentro de la carpeta de distribución, estos 2 lugares:
+
+- `@/dist/src/lib/**/*.js`
+   - librerías de terceros para nodejs
+   - aquí se copian las APIs del `DevBinaryV6,ModulerV6,CompilerV6,Refrescador` con el `devbin ensure core`
+- `@/dist/www/lib/**/*.js`
+   - librerías de terceros para web o ambivalente (web y nodejs irían aquí también)
+   - aquí se copia la API del `ModulerV6` con el `devbin ensure core`
+
+### Ficheros de distribución
+
+Los ficheros de distribución están pensados para poder usarse en runtime. Pero recordar que hay 2 runtimes principales: web y nodejs. Por eso:
+
+- `@/dist/src/**/*.dist.js`
+   - ficheros de distribución o de entradas compiladas para nodejs
+   - aquí van a parar todos los `@/src/**/*.entry.js` excepto los `@/src/www/**/*.entry.js`
+- `@/dist/www/**/*.dist.js`
+   - ficheros de distribución o de entradas compiladas para web o ambivalente (web y nodejs irían aquí también)
+   - aquí van a parar todos los `@/src/www/**/*.entry.js`
+   - en estos ficheros tienes los mismos métodos de modulación que en nodejs:
+      - tienes los `$compiler.inject.source` y familia, para el devtime
+      - tienes los `module.exports + $moduler.{import,export}`, para el runtime
+- `@/dist/www/**/*`
+   - ficheros de distribución web
+   - este contenido estará disponible en la aplicación web desde el servidor estático
+   - aquí pueden ir vídeos, imágenes, sonidos, texto, JSON, cualquier cosa que quieras en la web.
+
+### Ficheros de tests
+
+Los ficheros de tests se conforman por algunos grupos diferentes:
+
+- `@/test/unit/src/**/*.test.js`
+   - ficheros de tests de entradas compiladas
+   - esta colección de tests es la que se corresponde a los `@/src/**/*.entry.js`
+   - cada `entry`, al compilarse, genera un `test/unit` si no lo hay y se ejecuta en el evento `touch`
+   - se corresponden con los **tests de módulo de API**
+   - se generan solos, cuando cada `@/src/**/*.entry.js` es compilada
+- `@/test/feature/*/test.js`
+   - son los ficheros de los tests de features
+   - estos tests aseguran que el software de `@/src/` permita las **features** pretendidas
+   - esta colección de tests es muy importante porque lidera el desarrollo, básicamente
+      - lidera el TDD orientado a features que es la orientación que interesa
+- `@/test/integrity/*/test.js`
+   - son los ficheros de los tests de integridad
+   - estos tests aseguran que el software de `@/src/` cumple con los criterios de integridad considerados
+   - estos tests NO se ejecutan en el `devbin {touch,loop}`
+      - porque su propósito se considera superado normalmente en el devtime
+      - es más para asegurar que el software que corre (runtime) está sano
+   - principalmente, sería, a saco:
+      - asegurar que cada función contiene el código fuente no nativo que se espera
+      - asegurar que cada propiedad tiene un valor o inicial o igualmente válido
+      - asegurar que las funcionalidades mínimas se mantienen correctas
+         - pero esto ya sería features también, así que el límite estaría aquí
+   - estos tests pueden querer correrse en runtime, o en la web
+      - lo mejor es intentar mantener compatibilidad con `ModulerV6` para la modulación
+         - ni `<script>` ni `require`
+      - de esta forma te aseguras que los módulos son compatibles con ambos entornos
+- `@/test/case/*/test.js`
+   - son los ficheros del caso actual
+   - se ejecutan siempre, al final del `touch`
+   - aquí escribes los tests para el feature actual, antes de pasarlos en `test/feature`
+
+### Ficheros de desarrollo
+
+Los ficheros de desarrollo son ficheros que tienen un uso especial en el devtime y alguno en el runtime también.
+
+- `@/dev/bin/**/command.js`
+   - para el `devbin algun comando`, ya se ha explicado antes
+- `@/dev/settings.js`
+   - fichero de configuraciones para el devtime
+      - el runtime tiene otro: `@/dist/www/dev/settings.dist.js`
+   - es importante porque tiene un pipeline diferente en el `touch`:
+      - concretamente, genera una copia de parte de sus propiedades (las publicables), en: `@/dist/www/dev/settings/publicable.json`
+   - actualmente tiene propiedades como:
+      - `env:String` con `'dev' | 'test' | 'prod'`
+      - `features:Array<String>` con los selectores de filename de los features que quieres ejecutar globalmente
+         - se añadirán a los locales arrastrados por los `e.onTestFeature.js`
+         - el método es `DevBinaryV6.Utils.prototype.matchesFileWithSimpleSelector`
+      - `instrumentalize:Array<String>` con los rootpaths de los `@/dist/**/*.dist.js`
+      - `loop.port:Number`
+- `@/dist/www/dev/settings.dist.js`
+   - fichero de configuraciones para el runtime web
+   - debería hacer los imports necesarios 
+- `@/dist/www/dev/settings/publicable.json`
+   - fichero de configuraciones para el runtime web, heredadas de las configuraciones del devtime, y publicables
+   - este fichero se autogenera al guardar el `@/dev/settings.js` con el método `DevBinaryV6.Utils.prototype.exportDevSettings`
+   - son las propiedades que se heredan del `@/dev/settings.js` que sí pueden estar públicas en la aplicación web
+   - actualmente las propiedades publicables del devtime al runtime son:
+      - `env:String` con el nombre del entorno, que es `"dev" | "test" | "prod"`
+      - `instrumentalize:Array<String>` con los rootpath de los `@/dist/**/*.dist.js` de los que quieras el instrumental
+         - el instrumental será igual pero: ~~`filename.dist.js`~~ sino `filename.dist.instr.js`
+      - `traceExternalSources:Boolean` por si quieres imprimir los códigos que pasan por el `evaluateFile` del `ModulerV6`
+- `@/dev/coverage/*/index.html`
+   - vistas generadas por los reportes de cobertura de código
+   - participan métodos como:
+      - `DevBinaryV6.Utils.prototype.instrumentCode`
+      - `@/dev/controllers.js`
+- `@/dev/controllers.js` 
+   - fichero de controladores añadidos al `refrescador` en el `devbin loop`
+   - puedes extender el servidor de desarrollo fácilmente con este fichero
+   - el generado por `devbin ensure core` expone con `refrescador` los servicios HTTP de:
+      - `/dev/coverage/commit [POST]`
+         - permite generar un reporte de cobertura nuevo
+      - `/dev/coverage`
+         - permite consultar reportes de cobertura generados
+      - `/dev/file/{read,write,editor}`
+         - permite intercambiar texto plano entre el cliente y el servidor
+         - es solo para pasar texto del móvil al pc, en mi caso
+         - porque apunto cosas que luego me interesaría tener en el TODO.md o así, y Gmail es como muy aparatoso para un simple copy-paste
+   - probablemente esto se lleve al código de DevBinaryV6 y no se exponga el código de estos servicios
+- `@/dev/files` 
+   - es un directorio utilizado para el servicio de `/dev/file/{read,write,editor}` solamente
+
 

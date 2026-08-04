@@ -7,6 +7,18 @@ En este documento se explicarán:
 - Los métodos clave de la API de ModulerV6 en la resolución de rutas
 - Algunos consejos relacionados
 
+## Índice
+
+- [Guía de sistema de rutas de ModulerV6](#guía-de-sistema-de-rutas-de-modulerv6)
+  - [Índice](#índice)
+  - [Introducción](#introducción)
+  - [Métodos de resolución de rutas](#métodos-de-resolución-de-rutas)
+  - [Variables](#variables)
+  - [Consejos relacionados](#consejos-relacionados)
+    - [Cuidado con las rutas relativas en módulos importados](#cuidado-con-las-rutas-relativas-en-módulos-importados)
+    - [Casos de uso para cada ruta](#casos-de-uso-para-cada-ruta)
+    - [Patrones que se van creando](#patrones-que-se-van-creando)
+
 ## Introducción
 
 Las rutas en una aplicación `ModulerV6/CompilerV6/DevBinaryV6` tienen unas nomenclaturas concretas gracias a una serie de métodos concretos que usan una serie de variables concretas.
