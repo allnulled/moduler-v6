@@ -1,1 +1,1 @@
-e.onTestFeature.js permite concretar test-features por zona del src + dev/settings.js#features también pero globalmente + test/case se hacen en el touch + test/integrity no se hacen en el touch
+guia de moduler-v6-starter ampliada seccion de ficheros
