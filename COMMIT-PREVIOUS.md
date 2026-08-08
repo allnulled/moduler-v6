@@ -1,1 +1,0 @@
-guia de moduler-v6-starter ampliada seccion de ficheros
