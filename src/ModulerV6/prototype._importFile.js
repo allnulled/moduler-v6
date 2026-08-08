@@ -25,7 +25,7 @@ _importFile(filepathBrute) {
     isInstr = true;
     filepath = filepath.replace(/\.js$/g, ".instr.js");
   }
-  console.log("[*] Importing file: " + filepath);
+  console.log("[*] ModulerV6 imports: " + this.rootdirOf(filepath));
   Evaluate_file_and_export_results: {
     if (filepathBrute.endsWith(".json")) {
       return this.modules[filepathMask] = this._readPath(filepathBrute).then(content => {

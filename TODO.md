@@ -1,8 +1,0 @@
-- [x] que los html se pasen del src al dist
-- [ ] que el touchFile ejecute solo los test/feature acumulados por: e.onTestFeatures.js
-   - [ ] se devuelve un array con expresiones tipo:
-      - [ ] "^000." sería para un grupo de features
-      - [ ] "^000.001:" sería para un feature concreto
-      - [ ] "ModulerV6" sería más genérico
-      - [ ] "prototype.method" sería más genérico
-      - [ ] "static.method" sería más genérico

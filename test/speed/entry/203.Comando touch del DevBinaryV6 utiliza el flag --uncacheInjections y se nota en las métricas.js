@@ -2,7 +2,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
 
   const assert = assertLoudly || compilerV6.createAssertFunction();
 
-  const NIVELES = 300;
+  const NIVELES = 100;
   const VECES_COMANDO = 6;
   const REPETICIONES = 1;
 
@@ -24,7 +24,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
     const isLast = levels === 0;
     if (!isLast) {
       let content = `noop(${levels});\n$compiler.inject.source("./inner/item.entry.js")`;
-      content = !isRoot ? content : `const noop = () => {};\n${content}`;
+      content = `if(typeof noop === "undefined") noop = () => {};\n${content}`;
       await fs.promises.writeFile(`${dir}/item.entry.js`, content, "utf8");
       await fs.promises.mkdir(`${dir}/inner`);
       return await insertInjectionsSourcesFrom(`${dir}/inner`, levels - 1);

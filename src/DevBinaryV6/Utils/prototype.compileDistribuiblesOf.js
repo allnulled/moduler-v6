@@ -53,9 +53,7 @@ async compileDistribuiblesOf(filepath, event) {
         }
       });
       await require("fs").promises.writeFile(distJs, output.code, "utf8");
-      console.log(`[*] Distribution file generated at: ${distJs}`);
-      // Antes se creaba un .dist en el source:
-      // await require("fs").promises.writeFile(srcDistJs, compilation.js, "utf8");
+      console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 generated distribution file at: ${this.devbin.compiler.rootdirOf(distJs)}`));
       report.js = distJs;
       Save_in_touch_event_cache: {
         // Antes estaba esto:
@@ -65,30 +63,26 @@ async compileDistribuiblesOf(filepath, event) {
       Generate_instrumentalized_if_settings_instrumentalize_includes_it: {
         await this.devbin.settings.load();
         const instrumentalizeFiles = this.devbin.settings?.data?.instrumentalize || [];
-        // const isMatch = this.globOf(instrumentalizeFiles).matches(distJs);
         const isMatch = instrumentalizeFiles.map(file => this.devbin.moduler.normalizationOf(file)).includes(distJs);
         if(isMatch) {
           Create_instrumentalization: {
             const instrJs = distJs.replace(/\.dist\.js$/g, ".dist.instr.js");
             const instrSource = this.instrumentCode(output.code, distJs);
             await require("fs").promises.writeFile(instrJs, instrSource, "utf8");
-            console.log(`[*] Instrumentation file generated at: ${instrJs}`);
+            console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 generated instrumentation file at: ${this.devbin.compiler.rootdirOf(instrJs)}`));
           }
         }
       }
     }
     if (compilation.css) {
       await require("fs").promises.writeFile(distCss, compilation.css, "utf8");
+      event.processedEntries[compilation.file].distCss = distCss;
       report.css = distCss;
-      // No cache para css ni md:
-      // event.processedEntries[distCss] = compilation.css;
     }
     if (compilation.md) {
       await require("fs").promises.writeFile(distMd, compilation.md, "utf8");
-      await require("fs").promises.writeFile(srcDistMd, compilation.md, "utf8");
+      event.processedEntries[compilation.file].distMd = distMd;
       report.md = distMd;
-      // No cache para css ni md:
-      // event.processedEntries[distMd] = compilation.md;
     }
   }
   Feedback_report: {

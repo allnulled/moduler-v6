@@ -1,3 +1,108 @@
+- [ ] Caso md, hay que:
+   - [ ] generar un @/dist/**/*.md por cada @/dist/**/*.dist.js
+   - [ ] el entry marca que se genera un md (o ninguno)
+   - [ ] los otros entry pueden incluir snippets de otros ficheros md con la sintaxis de injects entre comentarios
+   - [ ] veremos si hacemos algo con los índices, probablemente sí
+   - [ ] luego tiene que cohabitar con formularios embedidos
+      - [ ] la sintaxis de los formularios es diferente, y no se pisan
+   - [ ] luego tiene que poder usar sintaxis de tipos en la documentación
+      - [ ] aquí es donde iría otro lenguaje aparte
+      - [ ] donde habría soporte para ands, ors, groups, lists (and subtypes), objects (and subtypes)
+      - [ ] donde habría soporte para vistas/componentes vue
+      - [ ] donde habría soporte para otros datos necesarios
+- [ ] pero ahora principalmente sería que:
+   - [ ] los entry generen un md
+   - [ ] los md al guardar puedan embeder a otros con injects
+   - [ ] con estas 2, conseguimos resolver todo el markdown de base
+   - [ ] luego quieres otras como:
+      - [ ] table of contents a demanda e inyectable
+      - [ ] lista de md internos con glob
+         - [ ] y filtras todos los md que tengan un .dist.js al lado con mismo nombre
+         - [ ] y lo pasas a snippet md
+         - [ ] y eso lo pones en la raíz del guides o lo inyectas en el guides/README.md donde aparezca {{ Internal Links }}
+         - [ ] y de esta forma tienes en el README.md global la lista de .md de las APIs internas
+         - [ ] si hay README.md sueltos, se quedan fuera
+            - [ ] a no ser que los inyectes en .md anteriores
+            - [ ] entonces aparecerían
+- [ ] qué se espera de la documentación?
+   - [ ] que se pueda escribir en markdown
+   - [ ] que soporte formularios internos embedidos
+   - [ ] que nos resuelva ya el escribir documentación separado del código
+      - [ ] poder definir desde clases, métodos, propiedades
+      - [ ] hasta funciones, variables locales, pasos
+      - [ ] y no nos pida grandes requisitos
+         - [ ] ECHO EN FALTA una sintaxis para embeder comentarios así:
+            - `   /// @ y aquí añades una nueva línea de markdown
+            - `   /// @@ y aquí añades texto en la misma línea de markdown
+            - De esta forma puedes acabar haciendo así:
+              ```js
+              function anonymous12389067(...args) {
+                 ///@! Función anónima nº 1 del algoritmo Talk Walk
+                 /**
+                  * - nombre: anonymous12389067
+                  * - tipo: función
+                  * - descripción: suma dígitos
+                  * - parámetros: `args:Array<Number>`
+                  * - retorno: `Number`
+                  * - pasos:
+                  */
+                 ///@1 Esto es el primer nivel de indentación de lista, el 0 es el mínimo
+                 ///@= Esto es otro nodo al mismo nivel
+                 ///@= Crea una variable local `output = 0`
+                 let output = 0;
+                 ///@= Itera los `args` con `arg, index`
+                 for(let index=0; index<args.length; index++) {
+                    ///@+ Suma el `arg` al `output` y lo pone en el `output`
+                    const arg = args[index];
+                    output += arg;
+                    ///@ ```js
+                    ///@ aquí puedes embeder código
+                    ///@ u otros elementos markdown
+                    ///@ y se identarán automáticamente
+                    ///@ ```
+                 }
+                 ///@- Retorna el `output`
+                 return output;
+                 ///@/ Fin del algoritmo
+              }
+              ```
+            - Y por cierto, aquí puedes seguir la {lista} con {párrafos, citas, todo} intercalados de markdown.
+            - Ta pepi, nosabiak.
+            - `///@@`: mismo nivel, misma línea, sin espacios
+            - `///@`:  mismo nivel, nueva línea (identación automática, intercalación en listas automática)
+            - `///@=`: mismo nivel, nuevo nodo
+            - `///@{0-9}`: nivel específico, nuevo nodo
+            - `///@+`: nivel siguiente, nuevo nodo
+            - `///@-`: nivel anterior, nuevo nodo
+            - `///@--`: 2 niveles anteriores, nuevo nodo
+            - `///@---`: 3 niveles anteriores, nuevo nodo
+            - `///@-/`: 3 niveles anteriores, nuevo nodo
+            - `///@/`: 
+            - `///@!`: separador + texto
+
+RESUMEN:
+
+- parser nuevo para la documentación generada vía comentarios
+- se tiene que combinar con el injects de md en orden
+- el parser que se utiliza contra los md es diferente que el que se utiliza contra los js
+   - el del js soporta a estos y el del md no:
+      - `///@@`
+      - `///@`
+      - `///@=`
+      - `///@{0-9}`
+      - `///@+`
+      - `///@-`
+
+
+
+-----
+
+
+
+
+
+
+
 1. Los instrumentalizados deben especificarse con ruta completa, no con globs
    - Esto es para poder reutilizarlo bien en el moduler
 2. El moduler debe tener un Settings

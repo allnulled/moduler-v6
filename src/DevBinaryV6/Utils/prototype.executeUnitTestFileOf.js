@@ -7,7 +7,7 @@ executeUnitTestFileOf(filepath, event) {
   if(event.isSrcWww) {
     console.log(`[*] No test for browser file: ${filepath}`);
   } else {
-    console.log(`[*] Executing unit test file of: ${event.testFabrication.unitFile}`);
+    // console.log(`[*] Executing unit test file of: ${event.testFabrication.unitFile}`);
     delete require.cache[event.testFabrication.unitFile];
     return require(event.testFabrication.unitFile);
   }

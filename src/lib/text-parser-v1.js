@@ -36,16 +36,16 @@
         this.assert(typeof grammar[1] === "string" || typeof grammar[1] === "object", `Item «1» in grammar «${index}» must be string or object`);
         this.assert(typeof grammar[2] === "function", `Item «2» in grammar «${index}» must be function`);
         this.assert(typeof grammar[3] === "object", `Item «3» in grammar «${index}» must be object`);
-        if(("allowInside" in grammar[3]) && (typeof grammar[3].allowInside !== "undefined")) {
+        if (("allowInside" in grammar[3]) && (typeof grammar[3].allowInside !== "undefined")) {
           this.assert(typeof grammar[3].allowInside === "boolean", `Property «allowInside» in item «3» in grammar «${index}» must be boolean or none`);
         }
-        if(("includeAppendix" in grammar[3]) && (typeof grammar[3].includeAppendix !== "undefined")) {
-          if(Array.isArray(grammar[3].includeAppendix)) {
-            for(let appendixIndex=0; appendixIndex<grammar[3].includeAppendix.length; appendixIndex++) {
-              this.assert(["string","function"].includes(typeof grammar[3].includeAppendix[appendixIndex]), `Property «includeAppendix» in item «3» in grammar «${index}» and in index «${appendixIndex}» must be string or function or none`);
+        if (("includeAppendix" in grammar[3]) && (typeof grammar[3].includeAppendix !== "undefined")) {
+          if (Array.isArray(grammar[3].includeAppendix)) {
+            for (let appendixIndex = 0; appendixIndex < grammar[3].includeAppendix.length; appendixIndex++) {
+              this.assert(["string", "function"].includes(typeof grammar[3].includeAppendix[appendixIndex]), `Property «includeAppendix» in item «3» in grammar «${index}» and in index «${appendixIndex}» must be string or function or none`);
             }
           } else {
-            this.assert(["string","function"].includes(typeof grammar[3].includeAppendix), `Property «includeAppendix» in item «3» in grammar «${index}» must be array, string or function or none`);
+            this.assert(["string", "function"].includes(typeof grammar[3].includeAppendix), `Property «includeAppendix» in item «3» in grammar «${index}» must be array, string or function or none`);
           }
         }
       }
@@ -58,9 +58,9 @@
     }
     _getAppendixOffset(text, grammar, currentPosition, ender) {
       const allAppendixes = Array.isArray(grammar[3].includeAppendix) ? grammar[3].includeAppendix : [grammar[3].includeAppendix];
-      for(let appendixIndex=0; appendixIndex<allAppendixes.length; appendixIndex++) {
+      for (let appendixIndex = 0; appendixIndex < allAppendixes.length; appendixIndex++) {
         const oneAppendix = allAppendixes[appendixIndex];
-        if(text.startsWith(oneAppendix, currentPosition + ender.length)) {
+        if (text.startsWith(oneAppendix, currentPosition + ender.length)) {
           return oneAppendix.length;
         }
       }
@@ -114,9 +114,10 @@
           let wasEnded = false;
           Processing_match:
           if (typeof ender === "string") {
-            while ((countingFrom + offset) < text.length) {
+            // Cambiada la condición de < a <= para la options.enderCanBeEOF:
+            while ((countingFrom + offset) <= text.length) {
               const currentPosition = countingFrom + offset;
-              const isMatchingEnder = text.startsWith(ender, currentPosition);
+              const isMatchingEnder = text.startsWith(ender, currentPosition) || ((currentPosition === text.length) && options.enderCanBeEOF === true);
               if (isMatchingEnder) {
                 wasEnded = true;
                 this._pushToken({ state, starter, currentPosition, countingFrom, text, enderLength: ender.length, extraOffset: this._getAppendixOffset(text, grammar, currentPosition, ender) });

@@ -18,7 +18,7 @@ static defaultGrammars = {
     //*/
     this.nativeGrammars.AtRequires,
     this.nativeGrammars.AtInjects,
-    this.nativeGrammars.JavadocComment,
+    /////////////////// this.nativeGrammars.JavadocComment,
     // Sections management grammars:
     /*
     this.nativeGrammars.SectionGet,
@@ -29,6 +29,17 @@ static defaultGrammars = {
     this.nativeGrammars.SectionHas,
     this.nativeGrammars.SectionInitialize,
     //*/
+    ////////////////////////////////////////
+    // Markdown grammars:
+    this.nativeGrammars.MultilineMarkdownComment,
+    this.nativeGrammars.NewParagraphMarkdownComment,
+    this.nativeGrammars.NewLineMarkdownComment,
+    this.nativeGrammars.PrecisedTabulationMarkdownComment,
+    this.nativeGrammars.IncreasedTabulationMarkdownComment,
+    this.nativeGrammars.DecreasedTabulationMarkdownComment,
+    this.nativeGrammars.InlineMarkdownComment,
+    this.nativeGrammars.UnspacedInlineMarkdownComment,
+    ////////////////////////////////////////
   ],
   forCss: [
     this.nativeGrammars.InjectSource,
@@ -42,7 +53,7 @@ static defaultGrammars = {
     //*/
     this.nativeGrammars.AtRequires,
     this.nativeGrammars.AtInjects,
-    this.nativeGrammars.JavadocComment,
+    /////////////////// this.nativeGrammars.JavadocComment,
   ],
   forMd: [
     this.nativeGrammars.InjectSource,
@@ -52,7 +63,7 @@ static defaultGrammars = {
     this.nativeGrammars.MultilineCommentValueInjection,
     this.nativeGrammars.AtRequires,
     this.nativeGrammars.AtInjects,
-    this.nativeGrammars.JavadocComment,
+    /////////////////// this.nativeGrammars.JavadocComment,
   ],
   forCssOnRuntime: [
     this.nativeGrammars.AtRequires,

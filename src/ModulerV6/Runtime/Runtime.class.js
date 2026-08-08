@@ -73,9 +73,6 @@ class Runtime {
     });
   }
   static load() {
-    if(this.globalInstance.cache.isLoaded) {
-      return this.globalInstance;
-    }
     return this.globalInstance.load();
   }
   static globalInstance = new this();

@@ -5,7 +5,9 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6 }) {
   
   // console.log(modulerV6.runtime);
   
-  await modulerV6.runtime.constructor.onLoaded.promise;
+  await modulerV6.runtime.load();
+  
+  await modulerV6.settings.load();
 
   assert(modulerV6.runtime.isBrowser === false, "modulerV6 debe tener acceso a las propiedades del runtime (1)");
   assert(modulerV6.runtime.isNodejs === true, "modulerV6 debe tener acceso a las propiedades del runtime (2)");

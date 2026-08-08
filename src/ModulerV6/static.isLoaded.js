@@ -3,9 +3,7 @@
  * @type 
  * @description 
  */
-static isLoaded = Promise.all([
-  () => {
-    this.onLoaded.resolve();
-  },
-  /*="./static.isRuntimeLoaded.js"*/,
-]);
+static isLoaded = (async () => {
+  await this.globalInstance.runtime.load();
+  this.onLoaded.resolve();
+})();

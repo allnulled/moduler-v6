@@ -1,1 +1,1 @@
-guia de moduler-v6-starter ampliada seccion de ficheros
+fix en runtime y moduler.isLoaded + compiler de js con soporte de comentarios para markdown + autogeneración del md en dist + tests

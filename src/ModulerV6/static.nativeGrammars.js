@@ -62,7 +62,32 @@ static nativeGrammars = {
   AtInjects: ["/*@injects:", "*/", function (token) {
     return { syntax: "@Injects", inner: token.inner, location: token.location };
   }],
-  JavadocComment: ["/**", "*/", function (token) {
-    return { syntax: "Javadoc Comment", ...token, };
-  }, {allowInside:true}],
+  
+  // JavadocComment: ["/**", "*/", function (token) {return { syntax: "Javadoc Comment", ...token, };}, {allowInside:true}],
+  
+  // Markdown related syntaxes:
+  MultilineMarkdownComment: ["/**", "*/", function(token) {
+    return { syntax: "Multiline Markdown Comment", ...token };
+  }],
+  NewParagraphMarkdownComment: ["///@@:", "\n", function(token) {
+    return { syntax: "New Paragraph Markdown Comment", ...token };
+  }, { enderCanBeEOF: true }],
+  NewLineMarkdownComment: ["///@:", "\n", function(token) {
+    return { syntax: "New Line Markdown Comment", ...token };
+  }, { enderCanBeEOF: true }],
+  PrecisedTabulationMarkdownComment: ["///@~", "\n", function(token) {
+    return { syntax: "Precised Tabulation Markdown Comment", ...token };
+  }, { enderCanBeEOF: true }],
+  IncreasedTabulationMarkdownComment: ["///@+", "\n", function(token) {
+    return { syntax: "Increased Tabulation Markdown Comment", ...token };
+  }, { enderCanBeEOF: true }],
+  DecreasedTabulationMarkdownComment: ["///@-", "\n", function(token) {
+    return { syntax: "Decreased Tabulation Markdown Comment", ...token };
+  }, { enderCanBeEOF: true }],
+  InlineMarkdownComment: ["///@&:", "\n", function(token) {
+    return { syntax: "Inline Markdown Comment", ...token };
+  }, { enderCanBeEOF: true }],
+  UnspacedInlineMarkdownComment: ["///@&&:", "\n", function(token) {
+    return { syntax: "Unspaced Inline Markdown Comment", ...token };
+  }, { enderCanBeEOF: true }],
 };

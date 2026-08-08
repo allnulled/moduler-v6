@@ -45,6 +45,8 @@ class CompilerV6 {
   /*="./prototype._compileTokens.js"*/
   /*="./prototype._compileRecursively.js"*/
   /*="./prototype._fetchCompilable.js"*/
+  /*="./prototype._tryToReadFile.js"*/
+  /*="./prototype._prependToParentCompilationFile.js"*/
   
   /*="./prototype._compileAsModulerSectionGet.js"*/
   /*="./prototype._compileAsModulerSectionSet.js"*/
@@ -63,6 +65,15 @@ class CompilerV6 {
   /*="./prototype._compileAsRequires.js"*/
   /*="./prototype._compileAsInjects.js"*/
   /*="./prototype._compileAsJavadocComment.js"*/
+  /*="./prototype._compileAsMultilineMarkdownComment.js"*/
+  /*="./prototype._compileAsNewParagraphMarkdownComment.js"*/
+  /*="./prototype._compileAsNewLineMarkdownComment.js"*/
+  /*="./prototype._compileAsPrecisedTabulationMarkdownComment.js"*/
+  /*="./prototype._compileAsIncreasedTabulationMarkdownComment.js"*/
+  /*="./prototype._compileAsDecreasedTabulationMarkdownComment.js"*/
+  /*="./prototype._compileAsInlineMarkdownComment.js"*/
+  /*="./prototype._compileAsUnspacedInlineMarkdownComment.js"*/
+
   /*="./prototype._initializeLogger.js"*/
   /*="./prototype._reportFileToken.js"*/
   /*="./prototype._getPreferredOutput.js"*/
@@ -76,6 +87,7 @@ class CompilerV6 {
   /*="./prototype._createDefaultInjectedFile.js"*/
   /*="./prototype._renderSourceAsTemplate.js"*/
   /*="./prototype._renderTemplate.js"*/
+  /*="./prototype._removeInitialSpace.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/
   /*="./prototype.fullpathOf.js"*/

@@ -8,7 +8,8 @@ async touchFile(file, optionsInput = {}) {
   const fs = require("fs");
   const path = require("path");
   const filepath = this.devbin.compiler.fullpathOf(file);
-  // this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${filepath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+  const rootedpath = this.devbin.compiler.rootdirOf(file);
+  // this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${rootedpath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
   const event = this.constructor.defaultTouchFileOptions({
     type: "TouchFileEvent",
     propagateUp: true,
@@ -17,7 +18,7 @@ async touchFile(file, optionsInput = {}) {
     ...optionsInput,
   });
   this.assert(optionsInput.uncacheInjections === event.uncacheInjections, "Las inyections 2");
-  // console.log(event.uncacheInjections);
+  // console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(event.uncacheInjections));
   event.isHtml = filepath.endsWith(".html");
   event.isJsEntry = filepath.endsWith(".entry.js");
   event.isCssEntry = filepath.endsWith(".entry.css");
@@ -44,7 +45,7 @@ async touchFile(file, optionsInput = {}) {
             const outputFile = `@/dist/src/${rootPath.replace("@/src/", "")}`;
             await this.copyFile(rootPath, outputFile);
           } else {
-            console.log(`[-] Touch event dismissed from an *.html not under «@/src/»: ${filepath}`);
+            console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from an *.html not under «@/src/»: ${rootedpath}`));
             break Touch_event;
           }
         }
@@ -52,10 +53,10 @@ async touchFile(file, optionsInput = {}) {
       Caso_js_o_test_js: {
         Paso_0_descartar_si_no_es_entry_o_test: {
           if ((!isEntry) && (!event.isJsTest)) {
-            console.log(`[-] Touch event dismissed from not entry or test: ${filepath}`);
+            console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from not entry or test: ${rootedpath}`));
             break Processing_entry;
           } else {
-            console.log(`[*] Touch event triggered from: ${filepath}`);
+            console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 triggered touch event from: ${rootedpath}`));
           }
         }
         Paso_1_compilar_distribuibles: {
@@ -112,7 +113,7 @@ async touchFile(file, optionsInput = {}) {
             // Los features de los eventos acumulados:
             ...(event.testFeatures),
             // Los features del dev/settings.js#features:
-            ...(this.devbin.settings.data.features || [])
+            ...(this.devbin.settings.data?.features || [])
           ]));
         }
         Run_case_tests: {
