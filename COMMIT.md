@@ -1,1 +1,1 @@
-Pasando test mínimo 307 de ModulerV6.prototype.settings.sectionsMap funcionando en el ModulerV6.prototype.import
+El sectionsMap del dev/settings.js pasa a publicable y reusable en producción opcionalmente + test
