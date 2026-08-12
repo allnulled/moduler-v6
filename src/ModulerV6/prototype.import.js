@@ -13,10 +13,20 @@ import(...signature) {
     factory: _factory = null,
   } = parameters;
   Resolve_as_section: {
-    if (_id) {
-      // Si tiene id, devuelve el id por huevos:
-      this.assert(this.section.has(_id), `No section named «${_id}» on «ModulerV6.prototype.import»`);
-      return this.section.get(_id);
+    // Si no tiene id, aquí no entra:
+    if (!_id) break Resolve_as_section;
+    // Si está cargada la sección, la devuelve:
+    As_loaded_section: {
+      if(this.section.has(_id)) {
+        return this.section.get(_id);
+      }
+    }
+    // Si está mapeada la sección, la carga y la devuelve:
+    As_mapped_section: {
+      const uniqueFailure = {};
+      const sectionByMap = this._importSectionByMap(_id, uniqueFailure);
+      this.assert(sectionByMap !== uniqueFailure, `No section named «${_id}» on «ModulerV6.prototype.import»`);
+      return sectionByMap;
     }
   }
   Resolve_as_file: {

@@ -1,1 +1,1 @@
-fix en runtime y moduler.isLoaded + compiler de js con soporte de comentarios para markdown + autogeneración del md en dist + tests
+Pasando test mínimo 307 de ModulerV6.prototype.settings.sectionsMap funcionando en el ModulerV6.prototype.import

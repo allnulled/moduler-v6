@@ -18,6 +18,7 @@ class ModulerV6 {
   /*="./static.defaultGrammars.js"*/
   /*="./static.symbols.js"*/
   /*="./static.getEnvironmentDirectory.js"*/
+  /*="./static.create.js"*/
   /*="./prototype._formatImportParameters.js"*/
   /*="./prototype._formatExportParameters.js"*/
   /*="./prototype._joinPaths.js"*/
@@ -30,6 +31,7 @@ class ModulerV6 {
   /*="./prototype._createAsyncFunction.js"*/
   /*="./prototype._importFile.js"*/
   /*="./prototype._importFactory.js"*/
+  /*="./prototype._importSectionByMap.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.createAssertFunction.js"*/
   /*="./prototype.setBasedir.js"*/

@@ -8,7 +8,8 @@ async load(forceReload = false) {
     return this.data;
   }
   try {
-    return this.data = await this.moduler.import("@/dist/www/dev/settings.dist.js");
+    const settings = await this.moduler.import("@/dist/www/dev/settings.dist.js");
+    return this.data = typeof settings === "function" ? await settings.call(this) : settings;
   } catch (error) {
     console.log("[!] Could not load settings because:", error);
   }
