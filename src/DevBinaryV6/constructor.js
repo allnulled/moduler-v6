@@ -11,4 +11,5 @@ constructor(basedir, parent = null) {
   /*="./prototype.shadowCommands.js"*/
   /*="./prototype.shadowFileEvents.js"*/
   /*="./prototype.tester.js"*/
+  /*="./prototype.files.js"*/
 }

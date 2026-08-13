@@ -1,1 +1,1 @@
-El sectionsMap del dev/settings.js pasa a publicable y reusable en producción opcionalmente + test
+los html se copian del src al dist también + test

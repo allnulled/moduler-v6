@@ -16,6 +16,7 @@ class DevBinaryV6 {
   /*="./static.Formatters.js"*/
   /*="./static.Settings.js"*/
   /*="./static.Tester.js"*/
+  /*="./static.Files.js"*/
   /*="./prototype.cronometer.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.command.js"*/
