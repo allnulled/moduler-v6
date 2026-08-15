@@ -1,6 +1,36 @@
 {
   "tree": {
     "@/src/www/t-403/ExampleT403.entry.js": {
+      "196-229": {
+        "syntax": "Moduler Import",
+        "type": "$moduler.import(",
+        "text": "$moduler.import(\"./Satelital3.js\"",
+        "inner": "\"./Satelital3.js\"",
+        "outer": "$moduler.import(\"./Satelital3.js\"",
+        "dependenciesOf": [
+          "./Satelital3.js"
+        ]
+      },
+      "160-193": {
+        "syntax": "Moduler Import",
+        "type": "$moduler.import(",
+        "text": "$moduler.import(\"./Satelital2.js\"",
+        "inner": "\"./Satelital2.js\"",
+        "outer": "$moduler.import(\"./Satelital2.js\"",
+        "dependenciesOf": [
+          "./Satelital2.js"
+        ]
+      },
+      "124-157": {
+        "syntax": "Moduler Import",
+        "type": "$moduler.import(",
+        "text": "$moduler.import(\"./Satelital1.js\"",
+        "inner": "\"./Satelital1.js\"",
+        "outer": "$moduler.import(\"./Satelital1.js\"",
+        "dependenciesOf": [
+          "./Satelital1.js"
+        ]
+      },
       "82-120": {
         "syntax": "Inject Source",
         "inner": "\"./Module3.js\"",

@@ -1,0 +1,1 @@
+$moduler.import("./value1.js");

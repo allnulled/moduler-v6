@@ -6,7 +6,7 @@
 async _compileAsModulerImport(compilationFile, compilationProcess, { token, tokenIndex }) {
   if (compilationProcess.to !== "data") {
     this._trace("_compileAsModulerImport", arguments);
-    return false;
+    // return false;
   }
   this._traceIn("_compileAsModulerImport", arguments);
   let parameters, namedParameters = {}, targetPaths = [];

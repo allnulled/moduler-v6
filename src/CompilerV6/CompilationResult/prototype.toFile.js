@@ -11,7 +11,6 @@ toFile(file, options = {}) {
   const fileCss = this.compiler.constructor._changeFileExtension(fileNormalization, ".css");
   const fileMd = this.compiler.constructor._changeFileExtension(fileNormalization, ".md");
   const promises = [];
-  console.log(this);
   if (this.js || true) {
     const outputJs = (options.mode === "beautified" && this.beautifiedJs) ? this.beautifiedJs.code : (options.mode === "minified" && this.minifiedJs) ? this.minifiedJs.code : this.js;
     promises.push(require("fs").promises.writeFile(fileJs, outputJs, "utf8"));
