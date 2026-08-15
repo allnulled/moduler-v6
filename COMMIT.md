@@ -1,1 +1,1 @@
-tipo en guia de malentendidos
+tanto el $compiler.inject.source como el moduler.{import,export} se reportan recursivamente en el rels.json - esto es que hay documentación de dependencias recursiva

@@ -7,7 +7,7 @@ _getPreferredOutput(compilationFile, compilationProcess) {
   this._trace("_getPreferredOutput", arguments);
   return {
     file: compilationFile.resource,
-    report: compilationProcess.to === "data" ? compilationFile.report : false,
+    report: compilationFile.report || false, // @ANTES: compilationProcess.to === "data" ? compilationFile.report : false,
     ...compilationFile.compilation,
   };
 }

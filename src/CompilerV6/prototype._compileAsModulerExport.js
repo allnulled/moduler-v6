@@ -51,6 +51,7 @@ async _compileAsModulerExport(compilationFile, compilationProcess, { token, toke
         const targetCompilation = await subcompiler._compileRecursively({
           resource: subcompiler.fullpathOf(targetPath),
           isRoot: false,
+          parentCompilation: compilationFile.parentCompilation || compilationFile,
         }, compilationProcess);
         Inject_in_compilation_text: {
           // @OK: no code injection on moduler.export
