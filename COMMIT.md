@@ -1,1 +1,1 @@
-guía de malentendidos y buenas prácticas de DevBinaryV6
+tipo en guia de malentendidos

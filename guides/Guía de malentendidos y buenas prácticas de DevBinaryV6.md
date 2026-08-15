@@ -6,7 +6,6 @@ Se habla de `DevBinaryV6` porque son problemas compartidos con `CompilerV6` y/o 
 
 ## Índice
 
-[Guía de malentendidos y buenas prácticas de DevBinaryV6](#guía-de-malentendidos-y-buenas-prácticas-de-devbinaryv6)
 - [Guía de malentendidos y buenas prácticas de DevBinaryV6](#guía-de-malentendidos-y-buenas-prácticas-de-devbinaryv6)
   - [Índice](#índice)
   - [Caso 1. El inject.source no cambia el basedir, solo import y export](#caso-1-el-injectsource-no-cambia-el-basedir-solo-import-y-export)

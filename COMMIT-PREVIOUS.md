@@ -1,0 +1,1 @@
+guía de malentendidos y buenas prácticas de DevBinaryV6
