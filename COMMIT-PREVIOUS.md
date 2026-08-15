@@ -1,1 +1,1 @@
-test 103 de firmas de import export e inject source con rutas enraizadas en lugar de relativas + sectionsMap puede heredarse del dev/settings ahora test 401 + puede editar ficheros html en src y se pasan al dist test 402 + test 403 en proceso para generacion del rels.json por cada dist compilado
+se genera un rels.json pero no con todo el árbol, solo el árbol inmediato, test en 403 para pasar así

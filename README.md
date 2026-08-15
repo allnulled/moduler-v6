@@ -90,3 +90,7 @@ En el proyecto se incluyen 3 ficheros distribuibles:
    - Se explican los métodos clave de la API para la resolución de rutas
    - Se explican las variables clave de la API para la resolución de rutas
    - Se dan algunos consejos extra
+- [Guía de malentendidos y buenas prácticas de DevBinaryV6](./guides/Gu%C3%ADa%20de%20malentendidos%20y%20buenas%20pr%C3%A1cticas%20de%20DevBinaryV6.md)
+   - Se explican varios casos donde puede haber confusiones
+   - Se explica la lógica detrás de ellos
+   - Se explica una solución a cada uno de ellos si la hay
