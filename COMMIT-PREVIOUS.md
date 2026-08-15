@@ -1,1 +1,0 @@
-se genera un rels.json pero no con todo el árbol, solo el árbol inmediato, test en 403 para pasar así
