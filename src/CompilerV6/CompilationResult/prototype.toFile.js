@@ -11,13 +11,17 @@ toFile(file, options = {}) {
   const fileCss = this.compiler.constructor._changeFileExtension(fileNormalization, ".css");
   const fileMd = this.compiler.constructor._changeFileExtension(fileNormalization, ".md");
   const promises = [];
-  if (this.js) {
+  console.log(this);
+  if (this.js || true) {
     const outputJs = (options.mode === "beautified" && this.beautifiedJs) ? this.beautifiedJs.code : (options.mode === "minified" && this.minifiedJs) ? this.minifiedJs.code : this.js;
     promises.push(require("fs").promises.writeFile(fileJs, outputJs, "utf8"));
+    console.log(`[*] Saving compilation.js (${options.mode || "raw code"}) at: ` + fileJs);
   } else if (this.css) {
     promises.push(require("fs").promises.writeFile(fileCss, this.css, "utf8"));
+    console.log("[*] Saving compilation.css at: " + fileCss);
   } else if (this.md) {
     promises.push(require("fs").promises.writeFile(fileMd, this.md, "utf8"));
+    console.log("[*] Saving compilation.md at: " + fileCss);
   }
   return Promise.all(promises);
 }

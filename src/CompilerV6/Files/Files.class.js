@@ -1,5 +1,5 @@
 /**
- * @name DevBinaryV6.Files.Files.class
+ * @name CompilerV6.Files
  * @type 
  * @description 
  */
@@ -9,4 +9,6 @@ class Files {
   /*="./prototype.trify.js"*/
   /*="./prototype.deleteFile.js"*/
   /*="./prototype.hasFile.js"*/
+  /*="./prototype.writeFile.js"*/
+  /*="./prototype.readFile.js"*/
 }

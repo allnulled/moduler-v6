@@ -1,5 +1,5 @@
 /**
- * @name DevBinaryV6.Files.prototype.deleteFile
+ * @name CompilerV6.Files.prototype.deleteFile
  * @type 
  * @description 
  */

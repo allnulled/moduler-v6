@@ -103,6 +103,9 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
   }
   Inject_in_report_object: {
     if (compilationProcess.to !== "data") {
+      // break Inject_in_report_object;
+    }
+    if((!compilationFile?.report?.tree) || (!targetCompilation)) {
       break Inject_in_report_object;
     }
     this._reportFileToken(compilationFile, targetPath, token);

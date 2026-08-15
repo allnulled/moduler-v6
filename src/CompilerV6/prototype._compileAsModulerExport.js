@@ -6,8 +6,9 @@
 async _compileAsModulerExport(compilationFile, compilationProcess, { token, tokenIndex }) {
   if (compilationProcess.to !== "data") {
     this._trace("_compileAsModulerExport", arguments);
-    return false;
+    // return false;
   }
+  // @ATENCIÓN: lo que ocurre en el to:data es horrible, porque... (ves al Compile_all_targets):
   this._traceIn("_compileAsModulerExport", arguments);
   let parameters, namedParameters = {}, targetPaths = [];
   const {
@@ -44,6 +45,7 @@ async _compileAsModulerExport(compilationFile, compilationProcess, { token, toke
       token.dependenciesOf = targetPaths;
     }
     Compile_all_targets: {
+      // @ATENCIÓN: porque en este bucle, compilas recursivamente los módulos apuntados por import y export, en cada caso
       for(let indexTarget=0; indexTarget<targetPaths.length; indexTarget++) {
         const targetPath = targetPaths[indexTarget];
         const targetCompilation = await subcompiler._compileRecursively({

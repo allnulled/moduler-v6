@@ -13,6 +13,6 @@ async load(forceReload = false) {
     return this.data;
   }
   const settingsModule = require(settingsPath);
-  const settings = await settingsModule.call(this.devbin);
+  const settings = typeof settingsModule === "function" ? await settingsModule.call(this.devbin) : settingsModule;
   return this.data = Object.assign({}, settings);
 }

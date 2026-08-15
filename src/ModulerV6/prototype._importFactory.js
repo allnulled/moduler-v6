@@ -4,19 +4,24 @@
  * @description 
  */
 _importFactory(factory, dependencies = []) {
-  let originalHolder = {};
+  let originalHolder = {}, output;
   const moduleHolder = {
     get exports() {
       return originalHolder;
     },
-    set exports(output) {
-      originalHolder = output;
+    set exports(anotherOutput) {
+      originalHolder = anotherOutput;
     }
   };
-  const result = factory(dependencies, {
+  output = factory(dependencies, {
     module: moduleHolder,
     exports: moduleHolder.exports,
     $moduler: this,
   });
-  return typeof result === "undefined" ? originalHolder : result;
+  if(typeof output === "undefined") {
+    if(Object.keys(originalHolder).length) {
+      output = originalHolder;
+    }
+  }
+  return output;
 }

@@ -1,0 +1,1 @@
+const property3 = 3;

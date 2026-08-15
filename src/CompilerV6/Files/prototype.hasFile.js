@@ -1,5 +1,5 @@
 /**
- * @name DevBinaryV6.Files.prototype.hasFile
+ * @name CompilerV6.Files.prototype.hasFile
  * @type 
  * @description 
  */

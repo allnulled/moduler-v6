@@ -9,6 +9,7 @@ class CompilerV6 {
   /*="./static.AssertionError.js"*/
   /*="./static.Logger.js"*/
   /*="./static.Moduler.js"*/
+  /*="./static.Files.js"*/
   /*="./CompilationProcess/CompilationProcess.js"*/
   /*="./CompilationFile/CompilationFile.js"*/
   /*="./CompilationResult/CompilationResult.js"*/

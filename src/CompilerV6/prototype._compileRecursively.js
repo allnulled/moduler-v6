@@ -39,7 +39,7 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
           chars: beautifiedCode.length,
           originalSize: originalSize,
           size: this.constructor.getStringSize(beautifiedCode),
-          sizeRelationOf: ((beautifiedCode.length / output.js.length) * 100).toFixed(2) + "%",
+          sizeRelationOf: ((beautifiedCode.length / (output.js.length || 1)) * 100).toFixed(2) + "%",
           time: ((((new Date()) - startedAt) / 1000).toFixed(3) + "s"),
         };
       }
@@ -51,15 +51,26 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
           chars: minifiedCode.length,
           originalSize: originalSize,
           size: this.constructor.getStringSize(minifiedCode),
-          sizeRelationOf: ((minifiedCode.length / output.js.length) * 100).toFixed(2) + "%",
+          sizeRelationOf: ((minifiedCode.length / (output.js.length || 1)) * 100).toFixed(2) + "%",
           time: ((((new Date()) - startedAt) / 1000).toFixed(3) + "s"),
         };
       }
     }
   }
-  Bundle_as_CompilationResult_if_file_is_root:
+
+  If_file_is_root:
   if (fileParameters.isRoot) {
-    output = new this.constructor.CompilationResult(output, this);
+    Bundle_as_CompilationResult: {
+      output = new this.constructor.CompilationResult(output, this);
+    }
+    If_file_is_entry: {
+      if(compilationFile.resource.endsWith(".entry.js")) {
+        Generate_rels_json_file: {
+          const relsFile = this.normalizationOf(this.rootdirOf(compilationFile.resource).replace(/^\@\/src\//g, "@/dist/").replace(/\.entry\.js$/g, ".rels.json"));
+          await this.files.writeFile.try(relsFile, JSON.stringify(compilationFile.report, null, 2), "utf8");
+        }
+      }
+    }
   }
   this._traceOut("_compileRecursively", arguments);
   return output;

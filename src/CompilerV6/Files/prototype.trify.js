@@ -1,5 +1,5 @@
 /**
- * @name DevBinaryV6.Files.prototype.trify
+ * @name CompilerV6.Files.prototype.trify
  * @type 
  * @description 
  */
