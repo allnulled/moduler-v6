@@ -5,7 +5,7 @@
  */
 async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex }) {
   this._traceIn("_compileAsInjects", arguments);
-  let parameters, targetPath, targetCompilation;
+  let parameters, targetPath, targetCompilation, wasPrepended = false;
   const {
     tokenization,
     source,
@@ -38,67 +38,59 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
     targetCompilation = await this._compileRecursively({
       resource: targetPath,
       isRoot: false,
+      parentCompilation: compilationFile,
     }, compilationProcess);
   }
   Inject_in_compilation_text: {
     if (compilationFile.resource.endsWith(".js")) {
       // Cuando desde un JS se hace @injects...
       let replacement = "";
-      if (targetPath.endsWith("js")) {
-        // ...a un .js
+      if (targetPath.endsWith(".js")) { // ...a un .js
         // @CHATGPT: hablo de este caso exactamente. Tendría que poder hacer lo mismo que _compileAsInjectSource, pero antes estaba esto bloqueando porque era una feature confusa, ahora ya he visto que sí tiene sentido permitir una sintaxis de inyección de código mediante comentario y diferente a las sintaxis de plantillaje genéricas.
         throw new Error("Syntax of «@injects» should not be used to import «js» files from «js» files. Use another syntax instead, like «$v6.injects.source» or «commented template injection» on «CompilerV6.prototype._compileAsInjects»");
-        replacement = targetCompilation.js;
-      } else if (targetPath.endsWith("css")) {
-        // ...a un .css
+      } else if (targetPath.endsWith(".css")) { // ...a un .css
         compilationFile.compilation.css += "\n" + targetCompilation.css;
-      } else if (targetPath.endsWith("md")) {
-        // ...a un .md
-        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
-      } else {
-        // ...a otro formato
+      } else if (targetPath.endsWith(".md")) { // ...a un .md
+        // @OK
+      } else {// ...a otro formato
         throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`)
       }
       compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], replacement);
     } else if (compilationFile.resource.endsWith(".css")) {
       let replacement = "";
       // Cuando desde un CSS se hace @injects...
-      if (targetPath.endsWith("js")) {
-        // ...a un .js
+      if (targetPath.endsWith(".js")) { // ...a un .js
         throw new Error("Syntax of «@injects» can't be used to import «js» files from «css» files. Use another syntax instead.");
         replacement = targetCompilation.js;
-      } else if (targetPath.endsWith("css")) {
-        // ...a un .css
+      } else if (targetPath.endsWith(".css")) { // ...a un .css
         compilationFile.compilation.css += "\n" + targetCompilation.css;
-      } else if (targetPath.endsWith("md")) {
-        // ...a un .md
-        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
-      } else {
-        // ...a otro formato
+      } else if (targetPath.endsWith(".md")) { // ...a un .md
+        // @OK
+      } else { // ...a otro formato
         throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`)
       }
       compilationFile.compilation.css = this._replaceTextRange(compilationFile.compilation.css, token.location[0], token.location[1], replacement);
     } else if (compilationFile.resource.endsWith(".md")) {
       // Cuando desde un MD se hace @injects...
       let replacement = "";
-      if (targetPath.endsWith("js")) {
-        // ...a un .js
+      if (targetPath.endsWith(".js")) { // ...a un .js
         throw new Error("Syntax of «@injects» can't be used to import «js» files from «md» files. Use another syntax instead.");
-        replacement = targetCompilation.js;
-      } else if (targetPath.endsWith("css")) {
-        // ...a un .css
+      } else if (targetPath.endsWith(".css")) { // ...a un .css
         throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
-        compilationFile.compilation.css += "\n" + targetCompilation.css;
-      } else if (targetPath.endsWith("md")) {
-        // ...a un .md
-        compilationFile.compilation.md += "\n\n" + targetCompilation.md;
-      } else {
-        // ...a otro formato
+      } else if (targetPath.endsWith(".md")) { // ...a un .md
+        // @OK
+        compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1]-1, "\n\n" + targetCompilation.md);
+        wasPrepended = true;
+      } else { // ...a otro formato
         throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`)
       }
-      compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1], replacement);
     } else {
       throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${compilationFile.extension}»`);
+    }
+  }
+  Append_markdown: {
+    if(!wasPrepended) {
+      this._prependToParentCompilationFile(compilationFile, "\n\n" + targetCompilation.md, "md", true);
     }
   }
   Inject_in_report_object: {

@@ -10,6 +10,23 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, modul
   assert(typeof relsJson === "object", "Can generate rels.json from entry in src to dist through touch (2)");
   assert(typeof relsJson.tree === "object", "Can generate rels.json from entry in src to dist through touch (3)");
   assert(typeof relsJson.tree["@/src/www/t-403/ExampleT403.entry.js"] === "object", "Can generate rels.json from entry in src to dist through touch (4)");
+
+  [
+    "@/src/www/t-403/ExampleT403.entry.js",
+    "@/src/www/t-403/Satelital3.js",
+    "@/src/www/t-403/Satelital2.js",
+    "@/src/www/t-403/Satelital1.js",
+    "@/src/www/t-403/value1.js",
+    "@/src/www/t-403/header.js",
+    "@/src/www/t-403/Module3.js",
+    "@/src/www/t-403/Module2.js",
+    "@/src/www/t-403/Module1.js",
+    "@/src/www/t-403/Module1.property3.js",
+    "@/src/www/t-403/Module1.property2.js",
+    "@/src/www/t-403/Module1.property1.js",
+  ].forEach((rootedPath, i) => {
+    assert(rootedPath in relsJson.tree, `Can generate rels.json from entry in src to dist through touch (${i + 100})`);
+  });
   
   compilerV6._logger.log("Test 403 ok");
 };

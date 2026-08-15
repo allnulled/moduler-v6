@@ -89,6 +89,7 @@ class CompilerV6 {
   /*="./prototype._renderSourceAsTemplate.js"*/
   /*="./prototype._renderTemplate.js"*/
   /*="./prototype._removeInitialSpace.js"*/
+  /*="./prototype._unifyCompilationMarkdown.js"*/
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/
   /*="./prototype.fullpathOf.js"*/

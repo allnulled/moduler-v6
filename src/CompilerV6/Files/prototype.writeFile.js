@@ -4,7 +4,8 @@
  * @description 
  */
 writeFile = Object.assign((file, contents, encoding = "utf8") => {
-  return require("fs").promises.writeFile(file, contents, encoding);
+  const absolutePath = this.compiler.normalizationOf(file);
+  return require("fs").promises.writeFile(absolutePath, contents, encoding);
 }, {
   try: (...args) => this.trify(this.writeFile, ...args),
 });

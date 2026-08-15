@@ -13,5 +13,6 @@ static get _defaultFileData() {
     report: {
       tree: {}
     },
+    mdUnification: [],
   }
 };

@@ -6,7 +6,9 @@ const settings = {
   debugSuccess: 0,
   separateTests: 0,
   testSpeed: 0,
-  ignoredTestFiles: [] || [
+  ignoredTestFiles:
+    [""] ||
+  [
     // "--000.Inyectar el framework en los tests.js",
     "001.Compilar recursivamente sintaxis más simple.js",
     "002.Compilar ficheros js, css y md desde ficheros js mediante inject source.js",
@@ -28,9 +30,9 @@ const settings = {
     "109.Importa secciones usando almohadilla y el parámetro dependencies del moduler.import y moduler.export.js",
     "110.ModulerV6 tiene acceso al Runtime.js",
     "111.Usa el instr si puede según Settings en moduler.import, moduler.export.js",
-    "112.En md permite inyecciones.js",
-    "!113.El parser de js soporta inyecciones md en forma de bloque, línea tabulable y apéndice.js",
-    "!114.En js permite md en forma de bloque, línea tabulable y apéndice.js",
+    "!112.En md permite inyecciones.js",
+    "113.Al compilar js soporta inyecciones md en forma de bloque, línea tabulable y apéndice.js",
+    "114.En js permite md en forma de bloque, línea tabulable y apéndice.js",
     "200.DevBinary tiene las firmas esperadas.js",
     "201.DevBinary puede parsear y formatear argumentos tipo consola.js",
     "202.DevBinary permite crear proyecto nuevo y lanzar comandos.js",
@@ -82,7 +84,7 @@ const main = async function () {
         }
       };
       try {
-        console.log(`\x1b[36m  · STARTED test ${filename}: ${index + 1}/${filenames.length} \x1b[0m`);
+        console.log(`\x1b[36m  · STARTED test [${index + 1}/${filenames.length}]: ${filename}\x1b[0m`);
         const callback = require(filepath);
         const result = await callback({
           ...injection,
@@ -90,10 +92,10 @@ const main = async function () {
           assert: customTestAssertFunction,
         });
         if (settings.debugSuccess) {
-          console.log(`\x1b[32m  · PASSED test ${filename}: ${index + 1}/${filenames.length} \x1b[0m`);
+          console.log(`\x1b[32m  · PASSED test [${index + 1}/${filenames.length}]: ${filename}\x1b[0m`);
         }
       } catch (error) {
-        console.log(`\x1b[31m❌ · FAILED test ${filename}: ${index + 1}/${filenames.length} \x1b[0m`);
+        console.log(`\x1b[31m❌ · FAILED test [${index + 1}/${filenames.length}]: ${filename}\x1b[0m`);
         console.log(error);
         errors.push({file:path.basename(filepath), error});
         if(!settings.bulletproof) {

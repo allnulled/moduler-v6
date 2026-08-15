@@ -61,7 +61,7 @@ En el proyecto se incluyen 3 ficheros distribuibles:
 ## Documentación complementaria
 
 - [Fundamentos de ModulerV6 y CompilerV6](./guides/Fundamentos%20de%20ModulerV6%20y%20CompilerV6.md)
-   - Se explican las firmas básicas de modulación:
+   - Se explican las formas básicas de modulación:
       - `$compiler.inject.source`
       - `$compiler.inject.string`
       - `/*@injects:"./file.js"*/`
@@ -78,8 +78,8 @@ En el proyecto se incluyen 3 ficheros distribuibles:
       - siempre llaman a [`DevBinary.Utils.prototype.touchFile`](./src/DevBinaryV6/Utils/prototype.touchFile.js)
 - [Guía de comandos de devbin](./guides/Gu%C3%ADa%20de%20comandos%20de%20devbin.md)
    - Se explica el uso de `devbin` por consola
-   - Se explica la *DevModulerV6/ShadowCommands API*
-   - Se explican los comandos sombra que lleva por defecto `DevModulerV6`
+   - Se explica la API de *DevBinaryV6 ShadowCommands API*
+   - Se explican los comandos sombra que lleva por defecto `DevBinaryV6`
 - [Guía rápida del moduler-v6-starter](./guides/Gu%C3%ADa%20r%C3%A1pida%20del%20moduler-v6-starter.md)
    - Se explica el desarrollo con `moduler-v6-starter`
       - Proyecto basado en `devbin`, `ModulerV6`, `CompilerV6` y `DevBinaryV6`

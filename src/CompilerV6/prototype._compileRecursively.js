@@ -63,12 +63,11 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
     Bundle_as_CompilationResult: {
       output = new this.constructor.CompilationResult(output, this);
     }
-    If_file_is_entry: {
-      if(compilationFile.resource.endsWith(".entry.js")) {
-        Generate_rels_json_file: {
-          const relsFile = this.normalizationOf(this.rootdirOf(compilationFile.resource).replace(/^\@\/src\//g, "@/dist/").replace(/\.entry\.js$/g, ".rels.json"));
-          await this.files.writeFile.try(relsFile, JSON.stringify(compilationFile.report, null, 2), "utf8");
-        }
+    And_file_is_entry:
+    if (compilationFile.resource.endsWith(".entry.js")) {
+      Generate_rels_json_file: {
+        const relsFile = this.normalizationOf(this.rootdirOf(compilationFile.resource).replace(/^\@\/src\//g, "@/dist/").replace(/\.entry\.js$/g, ".rels.json"));
+        await this.files.writeFile.try(relsFile, JSON.stringify(compilationFile.report, null, 2), "utf8");
       }
     }
   }

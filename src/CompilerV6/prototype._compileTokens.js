@@ -53,6 +53,9 @@ async _compileTokens(compilationFile, compilationProcess) {
       await methodCallback.call(this, compilationFile, compilationProcess, { token, tokenIndex, state, });
     }
   }
+  Unify_markdown: {
+    this._unifyCompilationMarkdown(compilationFile);
+  }
   this._traceOut("_compileTokens", arguments);
   return compilationFile.compilation;
 }

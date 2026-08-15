@@ -20,7 +20,7 @@ toFile(file, options = {}) {
     console.log("[*] Saving compilation.css at: " + fileCss);
   } else if (this.md) {
     promises.push(require("fs").promises.writeFile(fileMd, this.md, "utf8"));
-    console.log("[*] Saving compilation.md at: " + fileCss);
+    console.log("[*] Saving compilation.md at: " + fileMd);
   }
   return Promise.all(promises);
 }

@@ -12,9 +12,13 @@ async _compileAsPrecisedTabulationMarkdownComment(compilationFile, compilationPr
     state.tabule(0, precisionNumber);
   } else {
     let output = "";
-    output += "\n";
-    output += state.tabule(0, precisionNumber);
+    // output += "\n";
+    // output += state.tabule(0, precisionNumber);
     output += this._removeInitialSpace(innerText);
-    this._prependToParentCompilationFile(compilationFile, output, "md");
+    this._prependToParentCompilationFile(compilationFile, {
+      prefix: "\n",
+      tabulation: 0, //"." + precisionNumber,
+      body: output
+    }, "md");
   }
 }
