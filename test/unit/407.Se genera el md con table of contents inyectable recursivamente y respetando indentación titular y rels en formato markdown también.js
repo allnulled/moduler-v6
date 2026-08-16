@@ -12,21 +12,25 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modu
 
   //console.log(mdContent);
   assert(mdContent.includes(`- [Class ExampleT407](#class-examplet407)
-  - [Index](#index)
-  - [Introduction](#introduction)
-  - [Main idea](#main-idea)
-    - [Subidea 1](#subidea-1)
-    - [Subidea 2](#subidea-2)
-    - [Subidea 3](#subidea-3)
-  - [Conclusion](#conclusion)
+  - [Table of contents](#table-of-contents)
+  - [Relations](#relations)
   - [Class Group1](#class-group1)
-    - [Index](#index)
+    - [Table of contents](#table-of-contents)
+    - [Relations](#relations)
     - [Group1.create](#group1create)`), "Can generate table of contents when compiling entry.js files recursively (2)");
   
   assert(mdContent.includes(`- [Class Group1](#class-group1)
-  - [Index](#index)
+  - [Table of contents](#table-of-contents)
+  - [Relations](#relations)
   - [Group1.create](#group1create)`), "Can generate table of contents when compiling entry.js files recursively (3)");
 
+  assert(mdContent.includes(`- **@/src/www/t-407/ExampleT407.entry.js** uses **2 files**
+  1. *@/src/www/t-407/Group1.entry.js* with **@Injects**
+  2. *@/src/www/t-407/ExampleT407.md* with **@Injects**
+- **@/src/www/t-407/Group1.entry.js** uses **1 files**
+  1. *@/src/www/t-407/Group1.part1.js* with **Inject Source**
+- **@/src/www/t-407/Group1.part1.js** *free*
+- **@/src/www/t-407/ExampleT407.md** *free*`), "Can generate relations when compiling entry.js files (not recursively) (3)");
 
   compilerV6._logger.log("Test 407 ok");
 };

@@ -132,3 +132,11 @@ Hay varias sintaxis que inyectan contenido al `md` en la compilación.
    - Pero TypeScript es un tooling muy caro de integrar en muuuuchos aspectos, incluyendo potencial de JavaScript
    - Yo, no lo meto, bueno, de hecho, mucho de todo esto es, "porque TypeScript..."
 - Meter un `{{ Table of contents }}` y un `{{ Relations }}` por cada entry es clave para tener en la documentación un vistazo rápido efectivo
+   - Lo suyo es llamar a cada sección de este tipo, así mismo:
+      - `## Table of contents`
+      - `## Relations`
+   - Y dejarlas en el primer nivel también es lo suyo, que la indentación titular se ocupe
+- Vale, esto es importante, en el primer nivel del entry, SOLO va el título, lo demás debería ir dentro
+   - La otra opción es no ponerle título dentro
+      - sino dejar que el título del entry lo marquen desde fuera
+      - no lo he explorado, es una opción, te ahorras 1 nivel de indentación que aportaría claridad

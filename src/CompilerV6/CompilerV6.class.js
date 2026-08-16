@@ -75,6 +75,7 @@ class CompilerV6 {
   /*="./prototype._compileAsInlineMarkdownComment.js"*/
   /*="./prototype._compileAsUnspacedInlineMarkdownComment.js"*/
   /*="./prototype._extractMarkdownTableOfContents.js"*/
+  /*="./prototype._extractMarkdownRelations.js"*/
   /*="./prototype._toMarkdownLink.js"*/
 
   /*="./prototype._initializeLogger.js"*/

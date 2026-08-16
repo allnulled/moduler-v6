@@ -31,11 +31,14 @@ _unifyCompilationMarkdown(compilationFile, compilationProcess) {
     }).join("");
   }
   Inject_table_of_contents: {
-    const pos = output.indexOf("{{ Table of contents }}");
-    if(pos === -1) break Inject_table_of_contents;
-    // @TODO: un ._extractMarkdownTableOfContents
+    if(!output.includes("{{ Table of contents }}")) break Inject_table_of_contents;
     const toc = this._extractMarkdownTableOfContents(output, true);
     output = output.replace("{{ Table of contents }}", toc);
+  }
+  Inject_relations: {
+    if(!output.includes("{{ Relations }}")) break Inject_relations;
+    const rels = this._extractMarkdownRelations(compilationFile);
+    output = output.replace("{{ Relations }}", rels);
   }
   Export_unification: {
     compilationFile.compilation.md += output;

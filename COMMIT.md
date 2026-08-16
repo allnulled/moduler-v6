@@ -1,1 +1,1 @@
-el markdown soporta inyectar table of contents por cada entry + test en 407 + guía de documentación
+el markdown soporta inyectar relations por cada entry + test en 407

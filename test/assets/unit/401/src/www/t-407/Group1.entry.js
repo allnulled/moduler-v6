@@ -3,9 +3,13 @@
  * 
  * Clase Group1.
  * 
- * ## Index
+ * ## Table of contents
  * 
  * {{ Table of contents }}
+ * 
+ * ## Relations
+ * 
+ * {{ Relations }}
  * 
  * ## Group1.create
  * 

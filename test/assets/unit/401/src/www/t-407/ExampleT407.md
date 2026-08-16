@@ -1,29 +1,11 @@
 # Class ExampleT407
 
-## Index
+Documentación de clase ExampleT407.
+
+## Table of contents
 
 {{ Table of contents }}
 
-## Introduction
+## Relations
 
-Some text.
-
-## Main idea
-
-Main idea.
-
-### Subidea 1
-
-Subidea 1.
-
-### Subidea 2
-
-Subidea 2.
-
-### Subidea 3
-
-Subidea 3.
-
-## Conclusion
-
-Some conclusion.
+{{ Relations }}
