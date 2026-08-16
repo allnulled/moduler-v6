@@ -21,9 +21,10 @@ _prependToParentCompilationFile(compilationFile, content, extension = "md", bett
   }
   compilationFile.mdUnification[method](mdItemMetadata);
   // @RECURSIVIDAD: sí, es recursivo esto, no está muy bien, pero tú, si tira, ha tirao!
-  if (compilationFile.parentCompilation) {
-    this._prependToParentCompilationFile(compilationFile.parentCompilation, content, extension, betterAppend);
-  }
+  // if (compilationFile.parentCompilation) {
+  //   this._prependToParentCompilationFile(compilationFile.parentCompilation, content, extension, betterAppend);
+  // }
+  // 
   return;
   // @ANTES:
   // if (compilationFile.parentCompilation) {

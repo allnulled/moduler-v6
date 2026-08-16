@@ -76,11 +76,13 @@ async compileDistribuiblesOf(filepath, event) {
     }
     if (compilation.css) {
       await require("fs").promises.writeFile(distCss, compilation.css, "utf8");
+      if(!event.processedEntries[compilation.file]) event.processedEntries[compilation.file] = {};
       event.processedEntries[compilation.file].distCss = distCss;
       report.css = distCss;
     }
     if (compilation.md) {
       await require("fs").promises.writeFile(distMd, compilation.md, "utf8");
+      if(!event.processedEntries[compilation.file]) event.processedEntries[compilation.file] = {};
       event.processedEntries[compilation.file].distMd = distMd;
       report.md = distMd;
     }

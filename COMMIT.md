@@ -1,1 +1,1 @@
-markdown genera indentación de títulos incremental por cada entry.js + test 406
+el markdown soporta inyectar table of contents por cada entry + test en 407 + guía de documentación

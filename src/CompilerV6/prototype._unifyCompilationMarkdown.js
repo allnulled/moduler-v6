@@ -30,7 +30,19 @@ _unifyCompilationMarkdown(compilationFile, compilationProcess) {
       return finalText;
     }).join("");
   }
+  Inject_table_of_contents: {
+    const pos = output.indexOf("{{ Table of contents }}");
+    if(pos === -1) break Inject_table_of_contents;
+    // @TODO: un ._extractMarkdownTableOfContents
+    const toc = this._extractMarkdownTableOfContents(output, true);
+    output = output.replace("{{ Table of contents }}", toc);
+  }
   Export_unification: {
     compilationFile.compilation.md += output;
+  }
+  Export_unification_to_parent_compilation: {
+    if (compilationFile.parentCompilation) {
+      this._prependToParentCompilationFile(compilationFile.parentCompilation, output, "md", false);
+    }
   }
 }

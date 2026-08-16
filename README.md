@@ -94,3 +94,7 @@ En el proyecto se incluyen 3 ficheros distribuibles:
    - Se explican varios casos donde puede haber confusiones
    - Se explica la lógica detrás de ellos
    - Se explica una solución a cada uno de ellos si la hay
+- [Guía de documentación con CompilerV6](Gu%C3%ADa%20de%20documentaci%C3%B3n%20con%20CompilerV6.md)
+   - Se explican las facilidades en el framework para documentar
+   - Se explica el método general de documentar
+   - Se explican tips para documentar en armonía

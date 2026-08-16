@@ -1,0 +1,40 @@
+{
+  "tree": {
+    "@/src/www/t-407/ExampleT407.entry.js": {
+      "32-64": {
+        "syntax": "@Injects",
+        "inner": "\"./Group1.entry.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./Group1.entry.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-407/Group1.entry.js",
+          "rootpath": "@/src/www/t-407/Group1.entry.js"
+        }
+      },
+      "0-31": {
+        "syntax": "@Injects",
+        "inner": "\"./ExampleT407.md\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./ExampleT407.md",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-407/ExampleT407.md",
+          "rootpath": "@/src/www/t-407/ExampleT407.md"
+        }
+      }
+    },
+    "@/src/www/t-407/Group1.entry.js": {
+      "144-185": {
+        "syntax": "Inject Source",
+        "inner": "\"Group1.part1.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "Group1.part1.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-407/Group1.part1.js",
+          "rootpath": "@/src/www/t-407/Group1.part1.js"
+        }
+      }
+    },
+    "@/src/www/t-407/Group1.part1.js": {},
+    "@/src/www/t-407/ExampleT407.md": {}
+  }
+}

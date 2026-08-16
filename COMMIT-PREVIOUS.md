@@ -1,1 +1,1 @@
-markdown soporta tabulación progresiva por comentarios + test en 404 y 405
+markdown genera indentación de títulos incremental por cada entry.js + test 406
