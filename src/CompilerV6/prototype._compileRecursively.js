@@ -19,6 +19,12 @@ async _compileRecursively(fileParameters = {}, processParameters = {}) {
     const id = this.rootdirOf(compilationFile.resource);
     compilationFile.report.tree[id] = compilationFile.report.tree[id] || {};
   }
+  Update_md_title_indentation: {
+    compilationFile.titleIndentation = compilationFile.parentCompilation?.titleIndentation || 0;
+    if(compilationFile.resource.endsWith(".entry.js")) {
+      compilationFile.titleIndentation++;
+    }
+  }
   Compile_inner_files_recursively_with_subcompiler: {
     subcompiler = this._cloneForFile(compilationFile.resource, this);
     compilationFile.subcompiler = subcompiler;

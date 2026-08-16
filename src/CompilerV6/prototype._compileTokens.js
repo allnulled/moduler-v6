@@ -34,16 +34,7 @@ async _compileTokens(compilationFile, compilationProcess) {
     "Inline Markdown Comment": this._compileAsInlineMarkdownComment,
     "Unspaced Inline Markdown Comment": this._compileAsUnspacedInlineMarkdownComment,
   };
-  const state = {
-    tabulationIndex: 0,
-    tabulationSymbol: "   ",
-    tabule(mov = 0, precised = undefined) {
-      this.tabulationIndex += mov;
-      if(typeof precised === "number") this.tabulationIndex = precised;
-      if(this.tabulationIndex < 0) this.tabulationIndex = 0;
-      return this.tabulationSymbol.repeat(this.tabulationIndex);
-    }
-  };
+  const state = {};
   Iterating_tokens_backwardly:
   for (let tokenIndex = tokens.length - 1; tokenIndex >= 0; tokenIndex--) {
     const token = tokens[tokenIndex];
@@ -54,7 +45,7 @@ async _compileTokens(compilationFile, compilationProcess) {
     }
   }
   Unify_markdown: {
-    this._unifyCompilationMarkdown(compilationFile);
+    this._unifyCompilationMarkdown(compilationFile, compilationProcess);
   }
   this._traceOut("_compileTokens", arguments);
   return compilationFile.compilation;

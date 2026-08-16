@@ -5,9 +5,24 @@
  */
 _prependToParentCompilationFile(compilationFile, content, extension = "md", betterAppend = false) {
   const method = betterAppend ? "unshift" : "push";
-  compilationFile.mdUnification[method](content);
+  /*
+  const mdItemMetadata = typeof content === "object" ? {
+    ...content,
+    titleIndentation: content.titleIndentation || compilationFile.titleIndentation,
+  } : content;
+  //*/
+  let mdItemMetadata = content;
+  Set_title_indentation: {
+    if(typeof content === "object") {
+      if(!("titleIndentation" in content)) {
+        content.titleIndentation = compilationFile.titleIndentation;
+      }
+    }
+  }
+  compilationFile.mdUnification[method](mdItemMetadata);
+  // @RECURSIVIDAD: sí, es recursivo esto, no está muy bien, pero tú, si tira, ha tirao!
   if (compilationFile.parentCompilation) {
-    compilationFile.parentCompilation.mdUnification[method](content);
+    this._prependToParentCompilationFile(compilationFile.parentCompilation, content, extension, betterAppend);
   }
   return;
   // @ANTES:

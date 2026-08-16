@@ -1,0 +1,1 @@
+static Subapi3 = /*@injects:"./Subapi3/Subapi3.class.js"*/

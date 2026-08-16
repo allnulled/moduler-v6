@@ -35,7 +35,7 @@ async _compileAsRequires(compilationFile, compilationProcess, { token, tokenInde
     targetCompilation = await this._compileRecursively({
       resource: targetPath,
       isRoot: false,
-      parentCompilation: compilationFile.parentCompilation || compilationFile,
+      parentCompilation: compilationFile, // compilationFile.parentCompilation || compilationFile,,
     }, compilationProcess);
   }
   Inject_in_compilation_text: {

@@ -1,0 +1,1 @@
+static Subapi2 = /*@injects:"./Subapi2/Subapi2.entry.js"*/

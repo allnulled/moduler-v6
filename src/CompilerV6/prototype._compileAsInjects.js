@@ -38,7 +38,7 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
     targetCompilation = await this._compileRecursively({
       resource: targetPath,
       isRoot: false,
-      parentCompilation: compilationFile,
+      parentCompilation: compilationFile, // compilationFile.parentCompilation || compilationFile,,
     }, compilationProcess);
   }
   Inject_in_compilation_text: {
@@ -78,8 +78,14 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
       } else if (targetPath.endsWith(".css")) { // ...a un .css
         throw new Error("Syntax of «@injects» can't be used to import «css» files from «md» files. Use another syntax instead.");
       } else if (targetPath.endsWith(".md")) { // ...a un .md
-        // @OK
-        compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1]-1, "\n\n" + targetCompilation.md);
+        // @ANTES
+        // compilationFile.compilation.md = this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1]-1, "\n\n" + targetCompilation.md);
+        // @AHORA
+        this._prependToParentCompilationFile(compilationFile, {
+          prefix: "\n\n",
+          tabulation: 0,
+          body: this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1]-1, targetCompilation.md),
+        }, "md", false);
         wasPrepended = true;
       } else { // ...a otro formato
         throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`)
@@ -90,7 +96,11 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
   }
   Append_markdown: {
     if(!wasPrepended) {
-      this._prependToParentCompilationFile(compilationFile, "\n\n" + targetCompilation.md, "md", true);
+      this._prependToParentCompilationFile(compilationFile, {
+        prefix: "\n\n",
+        tabulation: 0,
+        body: targetCompilation.md,
+      }, "md", false);
     }
   }
   Inject_in_report_object: {

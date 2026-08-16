@@ -1,0 +1,1 @@
+static Command1 = /*@injects:"./Command1/Command1.entry.js"*/;
