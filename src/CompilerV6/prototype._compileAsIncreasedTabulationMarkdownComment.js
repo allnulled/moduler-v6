@@ -7,8 +7,12 @@ async _compileAsIncreasedTabulationMarkdownComment(compilationFile, compilationP
   const increasionMatch = token.inner.match(/^(\+)+/g);
   const increasionText = (increasionMatch || [""])[0];
   const increasionNumber = increasionText.length+1;
-  let output = "\n";
-  output += state.tabule(increasionNumber);
+  let output = "";
+  // output += state.tabule(increasionNumber);
   output += this._removeInitialSpace(token.inner.substr(increasionNumber + 1));
-  this._prependToParentCompilationFile(compilationFile, output, "md");
+  this._prependToParentCompilationFile(compilationFile, {
+    prefix: "\n",
+    tabulation: 1,
+    body: output
+  }, "md");
 }

@@ -10,6 +10,7 @@ const settings = {
     [""] ||
   [
     // "--000.Inyectar el framework en los tests.js",
+    "000.Inyectar el framework en los tests.js",
     "001.Compilar recursivamente sintaxis más simple.js",
     "002.Compilar ficheros js, css y md desde ficheros js mediante inject source.js",
     "003.Bloquear inyecciones según sintaxis de fichero original.js",
@@ -30,9 +31,8 @@ const settings = {
     "109.Importa secciones usando almohadilla y el parámetro dependencies del moduler.import y moduler.export.js",
     "110.ModulerV6 tiene acceso al Runtime.js",
     "111.Usa el instr si puede según Settings en moduler.import, moduler.export.js",
-    "!112.En md permite inyecciones.js",
+    "112.En md permite inyecciones.js",
     "113.Al compilar js soporta inyecciones md en forma de bloque, línea tabulable y apéndice.js",
-    "114.En js permite md en forma de bloque, línea tabulable y apéndice.js",
     "200.DevBinary tiene las firmas esperadas.js",
     "201.DevBinary puede parsear y formatear argumentos tipo consola.js",
     "202.DevBinary permite crear proyecto nuevo y lanzar comandos.js",
@@ -43,6 +43,11 @@ const settings = {
     "304.ModulerV6 puede correr módulos como formulario.js",
     "305.Puede usar globOf del DevBinaryV6.Utils y otras utilidades.js",
     "306.Puede usar Settings del DevBinaryV6.Settings.js",
+    "401.Puede usar sectionsMap de Settings del dev para importar según sección copy.js",
+    "402.Puede editar ficheros html en src y pasarse al dist.js",
+    "403.Se genera el rels como json al compilar un entry.js",
+    "404.Se genera el md con indentación de listas correcta.js",
+    "405.Se genera el md en los casos básicos de inyección.js",
     // "--ZZZ.Cerrar todo.js",
   ]
 };

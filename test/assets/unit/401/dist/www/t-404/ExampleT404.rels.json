@@ -1,5 +1,28 @@
 {
   "tree": {
-    "@/src/www/t-404/ExampleT404.entry.js": {}
+    "@/src/www/t-404/ExampleT404.entry.js": {
+      "255-295": {
+        "syntax": "@Injects",
+        "inner": "\"./prototype.initialize.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./prototype.initialize.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/prototype.initialize.js",
+          "rootpath": "@/src/www/t-404/prototype.initialize.js"
+        }
+      },
+      "221-252": {
+        "syntax": "@Injects",
+        "inner": "\"./constructor.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./constructor.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/constructor.js",
+          "rootpath": "@/src/www/t-404/constructor.js"
+        }
+      }
+    },
+    "@/src/www/t-404/prototype.initialize.js": {},
+    "@/src/www/t-404/constructor.js": {}
   }
 }
