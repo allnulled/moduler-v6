@@ -61,7 +61,8 @@ _createDefaultInjectedFile(file, targetId) {
     out = prefixes + middle + suffixes;
     return out;
   })();
-  const headerComment = `/**\n   * @file ${targetRootdir}\n   * @type ${targetType}\n   */`;
+  const tokenComment1 = ['/','*','*'].join('');
+  const headerComment = `${tokenComment1}\n   * @file ${targetRootdir}\n   * @type ${targetType}\n   */`;
   return require("fs").promises.writeFile(file, `${name} {
   ${headerComment}
 }`, "utf8").catch(error => {

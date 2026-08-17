@@ -5,6 +5,7 @@
  */
 async touchFile(file, optionsInput = {}) {
   this.assert(typeof file === "string", `Parameter «--file» must be string and not «${typeof file}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+  let outputFile = false;
   const fs = require("fs");
   const path = require("path");
   const filepath = this.devbin.compiler.fullpathOf(file);
@@ -39,10 +40,10 @@ async touchFile(file, optionsInput = {}) {
       Paso_previo_2_caso_src_html: {
         if (event.isHtml) {
           if (event.isSrcWww) {
-            const outputFile = `@/dist/www/${rootPath.replace("@/src/www/", "")}`;
+            outputFile = `@/dist/www/${rootPath.replace("@/src/www/", "")}`;
             await this.copyFile(rootPath, outputFile);
           } else if (event.isSrc) {
-            const outputFile = `@/dist/src/${rootPath.replace("@/src/", "")}`;
+            outputFile = `@/dist/src/${rootPath.replace("@/src/", "")}`;
             await this.copyFile(rootPath, outputFile);
           } else {
             console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from an *.html not under «@/src/»: ${rootedpath}`));
@@ -97,6 +98,17 @@ async touchFile(file, optionsInput = {}) {
     Triggering_onTouch_file: {
       const onTouchFile = path.join(path.dirname(filepath), "e.onTouch.js");
       await this.triggerCallbackFromFile(onTouchFile, { file: filepath, event });
+    }
+    Triggering_onDistributeDirectory_file: {
+      const onDistributeDirectoryFile = path.join(path.dirname(filepath), "e.onDistributeDirectory.js");
+      const result = await this.triggerCallbackFromFile(onDistributeDirectoryFile, { file: filepath, event });
+      if(!outputFile) break Triggering_onDistributeDirectory_file;
+      if(result === true) {
+        const origin = path.dirname(this.devbin.compiler.normalizationOf(rootPath));
+        // @ATENCIÓN: al basarse en outputFile ya se entiende si está en src o en src/www
+        const destination = path.dirname(this.devbin.compiler.normalizationOf(outputFile));
+        require("fs").promises.cp(origin, destination, { recursive: true });
+      }
     }
     Propagating_touch_up: {
       Paso_4_propagar_evento_arriba: {

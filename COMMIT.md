@@ -1,1 +1,1 @@
-compatibilidad de compilación con moduler import json + devbin test como comando de demo en el ensure core y se llama al terminar el touch + scopes en el dev controllers
+evento onDistributeDirectory para pasar automáticamente un directorio de src a dist + starter vaciado y cambiado lib por external y cambiado ensureCore para que exporte los 3 y el refrescador al src y opcionalmente se compilen al dist + refrescador entry usa el src desde el dist para no duplicar reflejar el directorio

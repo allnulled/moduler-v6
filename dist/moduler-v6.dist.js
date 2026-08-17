@@ -544,27 +544,27 @@
         }
         static isBrowser=typeof window !== "undefined";
         static nativeGrammars={
-            InjectSource: [ "$compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            InjectSource: [ "$" + "compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Inject Source",
                     inner: token.inner,
                     location: token.location
                 };
             } ],
-            InjectString: [ "$compiler.inject.string(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            InjectString: [ "$" + "compiler.inject.string(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Inject String",
                     inner: token.inner,
                     location: token.location
                 };
             } ],
-            InjectTemplate: [ "$compiler.inject.template(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            InjectTemplate: [ "$" + "compiler.inject.template(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Inject Template",
                     ...token
                 };
             } ],
-            ImportJs: [ "$moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            ImportJs: [ "$" + "moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Import",
                     ...token
@@ -572,7 +572,7 @@
             }, {
                 allowInside: true
             } ],
-            ExportJs: [ "$moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            ExportJs: [ "$" + "moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Export",
                     ...token
@@ -580,7 +580,7 @@
             }, {
                 allowInside: true
             } ],
-            SectionGet: [ "$moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            SectionGet: [ "$" + "moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Section Get",
                     ...token
@@ -588,7 +588,7 @@
             }, {
                 allowInside: true
             } ],
-            SectionSet: [ "$moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            SectionSet: [ "$" + "moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Section Set",
                     ...token
@@ -596,7 +596,7 @@
             }, {
                 allowInside: true
             } ],
-            SectionOverwrite: [ "$moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            SectionOverwrite: [ "$" + "moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Section Overwrite",
                     ...token
@@ -604,7 +604,7 @@
             }, {
                 allowInside: true
             } ],
-            SectionExpand: [ "$moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            SectionExpand: [ "$" + "moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Section Expand",
                     ...token
@@ -612,7 +612,7 @@
             }, {
                 allowInside: true
             } ],
-            SectionFill: [ "$moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            SectionFill: [ "$" + "moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Section Fill",
                     ...token
@@ -620,7 +620,7 @@
             }, {
                 allowInside: true
             } ],
-            SectionHas: [ "$moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            SectionHas: [ "$" + "moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Section Has",
                     ...token
@@ -628,7 +628,7 @@
             }, {
                 allowInside: true
             } ],
-            SectionInitialize: [ "$moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+            SectionInitialize: [ "$" + "moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                 return {
                     syntax: "Moduler Section Initialize",
                     ...token
@@ -636,19 +636,19 @@
             }, {
                 allowInside: true
             } ],
-            EmbeddedFormFieldOpener: [ "/*=¿", "*/", function(token) {
+            EmbeddedFormFieldOpener: [ "/" + "*=¿", "*/", function(token) {
                 return {
                     syntax: "Embedded Form Field Opener",
                     ...token
                 };
             }, {} ],
-            EmbeddedFormFieldCloser: [ "/*?*/", "", function(token) {
+            EmbeddedFormFieldCloser: [ "/" + "*?*/", "", function(token) {
                 return {
                     syntax: "Embedded Form Field Closer",
                     ...token
                 };
             }, {} ],
-            MultilineCommentValueInjection: [ "/*%=", "*/", function(token) {
+            MultilineCommentValueInjection: [ "/" + "*%=", "*/", function(token) {
                 return {
                     syntax: "Multiline Comment Value Injection",
                     ...token
@@ -656,7 +656,7 @@
             }, {
                 includeAppendix: [ '"template"', "0", "() {}" ]
             } ],
-            MultilineCommentCodeInjection: [ "/*%", "*/", function(token) {
+            MultilineCommentCodeInjection: [ "/" + "*%", "*/", function(token) {
                 return {
                     syntax: "Multiline Comment Code Injection",
                     ...token
@@ -664,26 +664,26 @@
             }, {
                 includeAppendix: [ '"template"', "0", "() {}" ]
             } ],
-            AtRequires: [ "/*@requires:", "*/", function(token) {
+            AtRequires: [ "/" + "*@requires:", "*/", function(token) {
                 return {
                     syntax: "@Requires",
                     ...token
                 };
             } ],
-            AtInjects: [ "/*@injects:", "*/", function(token) {
+            AtInjects: [ "/" + "*@injects:", "*/", function(token) {
                 return {
                     syntax: "@Injects",
                     inner: token.inner,
                     location: token.location
                 };
             } ],
-            MultilineMarkdownComment: [ "/**", "*/", function(token) {
+            MultilineMarkdownComment: [ "/" + "**", "*/", function(token) {
                 return {
                     syntax: "Multiline Markdown Comment",
                     ...token
                 };
             } ],
-            NewParagraphMarkdownComment: [ "///@@:", "\n", function(token) {
+            NewParagraphMarkdownComment: [ "/" + "//@@:", "\n", function(token) {
                 return {
                     syntax: "New Paragraph Markdown Comment",
                     ...token
@@ -691,7 +691,7 @@
             }, {
                 enderCanBeEOF: true
             } ],
-            NewLineMarkdownComment: [ "///@:", "\n", function(token) {
+            NewLineMarkdownComment: [ "/" + "//@:", "\n", function(token) {
                 return {
                     syntax: "New Line Markdown Comment",
                     ...token
@@ -699,7 +699,7 @@
             }, {
                 enderCanBeEOF: true
             } ],
-            PrecisedTabulationMarkdownComment: [ "///@~", "\n", function(token) {
+            PrecisedTabulationMarkdownComment: [ "/" + "//@~", "\n", function(token) {
                 return {
                     syntax: "Precised Tabulation Markdown Comment",
                     ...token
@@ -707,7 +707,7 @@
             }, {
                 enderCanBeEOF: true
             } ],
-            IncreasedTabulationMarkdownComment: [ "///@+", "\n", function(token) {
+            IncreasedTabulationMarkdownComment: [ "/" + "//@+", "\n", function(token) {
                 return {
                     syntax: "Increased Tabulation Markdown Comment",
                     ...token
@@ -715,7 +715,7 @@
             }, {
                 enderCanBeEOF: true
             } ],
-            DecreasedTabulationMarkdownComment: [ "///@-", "\n", function(token) {
+            DecreasedTabulationMarkdownComment: [ "/" + "//@-", "\n", function(token) {
                 return {
                     syntax: "Decreased Tabulation Markdown Comment",
                     ...token
@@ -723,7 +723,7 @@
             }, {
                 enderCanBeEOF: true
             } ],
-            InlineMarkdownComment: [ "///@&:", "\n", function(token) {
+            InlineMarkdownComment: [ "/" + "//@&:", "\n", function(token) {
                 return {
                     syntax: "Inline Markdown Comment",
                     ...token
@@ -731,7 +731,7 @@
             }, {
                 enderCanBeEOF: true
             } ],
-            UnspacedInlineMarkdownComment: [ "///@&&:", "\n", function(token) {
+            UnspacedInlineMarkdownComment: [ "/" + "//@&&:", "\n", function(token) {
                 return {
                     syntax: "Unspaced Inline Markdown Comment",
                     ...token

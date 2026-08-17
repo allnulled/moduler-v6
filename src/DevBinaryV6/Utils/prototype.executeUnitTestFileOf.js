@@ -9,6 +9,7 @@ executeUnitTestFileOf(filepath, event) {
   } else {
     // console.log(`[*] Executing unit test file of: ${event.testFabrication.unitFile}`);
     delete require.cache[event.testFabrication.unitFile];
+    if(!event.testFabrication.unitFile) return -2;
     return require(event.testFabrication.unitFile);
   }
 }

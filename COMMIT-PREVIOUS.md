@@ -1,1 +1,1 @@
-el markdown soporta inyectar relations por cada entry + test en 407
+compatibilidad de compilación con moduler import json + devbin test como comando de demo en el ensure core y se llama al terminar el touch + scopes en el dev controllers

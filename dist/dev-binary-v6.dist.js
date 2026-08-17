@@ -560,27 +560,27 @@
                 }
                 static isBrowser=typeof window !== "undefined";
                 static nativeGrammars={
-                    InjectSource: [ "$compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    InjectSource: [ "$" + "compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Inject Source",
                             inner: token.inner,
                             location: token.location
                         };
                     } ],
-                    InjectString: [ "$compiler.inject.string(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    InjectString: [ "$" + "compiler.inject.string(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Inject String",
                             inner: token.inner,
                             location: token.location
                         };
                     } ],
-                    InjectTemplate: [ "$compiler.inject.template(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    InjectTemplate: [ "$" + "compiler.inject.template(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Inject Template",
                             ...token
                         };
                     } ],
-                    ImportJs: [ "$moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    ImportJs: [ "$" + "moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Import",
                             ...token
@@ -588,7 +588,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    ExportJs: [ "$moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    ExportJs: [ "$" + "moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Export",
                             ...token
@@ -596,7 +596,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    SectionGet: [ "$moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    SectionGet: [ "$" + "moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Section Get",
                             ...token
@@ -604,7 +604,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    SectionSet: [ "$moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    SectionSet: [ "$" + "moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Section Set",
                             ...token
@@ -612,7 +612,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    SectionOverwrite: [ "$moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    SectionOverwrite: [ "$" + "moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Section Overwrite",
                             ...token
@@ -620,7 +620,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    SectionExpand: [ "$moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    SectionExpand: [ "$" + "moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Section Expand",
                             ...token
@@ -628,7 +628,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    SectionFill: [ "$moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    SectionFill: [ "$" + "moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Section Fill",
                             ...token
@@ -636,7 +636,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    SectionHas: [ "$moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    SectionHas: [ "$" + "moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Section Has",
                             ...token
@@ -644,7 +644,7 @@
                     }, {
                         allowInside: true
                     } ],
-                    SectionInitialize: [ "$moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
+                    SectionInitialize: [ "$" + "moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function(token) {
                         return {
                             syntax: "Moduler Section Initialize",
                             ...token
@@ -652,19 +652,19 @@
                     }, {
                         allowInside: true
                     } ],
-                    EmbeddedFormFieldOpener: [ "/*=¿", "*/", function(token) {
+                    EmbeddedFormFieldOpener: [ "/" + "*=¿", "*/", function(token) {
                         return {
                             syntax: "Embedded Form Field Opener",
                             ...token
                         };
                     }, {} ],
-                    EmbeddedFormFieldCloser: [ "/*?*/", "", function(token) {
+                    EmbeddedFormFieldCloser: [ "/" + "*?*/", "", function(token) {
                         return {
                             syntax: "Embedded Form Field Closer",
                             ...token
                         };
                     }, {} ],
-                    MultilineCommentValueInjection: [ "/*%=", "*/", function(token) {
+                    MultilineCommentValueInjection: [ "/" + "*%=", "*/", function(token) {
                         return {
                             syntax: "Multiline Comment Value Injection",
                             ...token
@@ -672,7 +672,7 @@
                     }, {
                         includeAppendix: [ '"template"', "0", "() {}" ]
                     } ],
-                    MultilineCommentCodeInjection: [ "/*%", "*/", function(token) {
+                    MultilineCommentCodeInjection: [ "/" + "*%", "*/", function(token) {
                         return {
                             syntax: "Multiline Comment Code Injection",
                             ...token
@@ -680,26 +680,26 @@
                     }, {
                         includeAppendix: [ '"template"', "0", "() {}" ]
                     } ],
-                    AtRequires: [ "/*@requires:", "*/", function(token) {
+                    AtRequires: [ "/" + "*@requires:", "*/", function(token) {
                         return {
                             syntax: "@Requires",
                             ...token
                         };
                     } ],
-                    AtInjects: [ "/*@injects:", "*/", function(token) {
+                    AtInjects: [ "/" + "*@injects:", "*/", function(token) {
                         return {
                             syntax: "@Injects",
                             inner: token.inner,
                             location: token.location
                         };
                     } ],
-                    MultilineMarkdownComment: [ "/**", "*/", function(token) {
+                    MultilineMarkdownComment: [ "/" + "**", "*/", function(token) {
                         return {
                             syntax: "Multiline Markdown Comment",
                             ...token
                         };
                     } ],
-                    NewParagraphMarkdownComment: [ "///@@:", "\n", function(token) {
+                    NewParagraphMarkdownComment: [ "/" + "//@@:", "\n", function(token) {
                         return {
                             syntax: "New Paragraph Markdown Comment",
                             ...token
@@ -707,7 +707,7 @@
                     }, {
                         enderCanBeEOF: true
                     } ],
-                    NewLineMarkdownComment: [ "///@:", "\n", function(token) {
+                    NewLineMarkdownComment: [ "/" + "//@:", "\n", function(token) {
                         return {
                             syntax: "New Line Markdown Comment",
                             ...token
@@ -715,7 +715,7 @@
                     }, {
                         enderCanBeEOF: true
                     } ],
-                    PrecisedTabulationMarkdownComment: [ "///@~", "\n", function(token) {
+                    PrecisedTabulationMarkdownComment: [ "/" + "//@~", "\n", function(token) {
                         return {
                             syntax: "Precised Tabulation Markdown Comment",
                             ...token
@@ -723,7 +723,7 @@
                     }, {
                         enderCanBeEOF: true
                     } ],
-                    IncreasedTabulationMarkdownComment: [ "///@+", "\n", function(token) {
+                    IncreasedTabulationMarkdownComment: [ "/" + "//@+", "\n", function(token) {
                         return {
                             syntax: "Increased Tabulation Markdown Comment",
                             ...token
@@ -731,7 +731,7 @@
                     }, {
                         enderCanBeEOF: true
                     } ],
-                    DecreasedTabulationMarkdownComment: [ "///@-", "\n", function(token) {
+                    DecreasedTabulationMarkdownComment: [ "/" + "//@-", "\n", function(token) {
                         return {
                             syntax: "Decreased Tabulation Markdown Comment",
                             ...token
@@ -739,7 +739,7 @@
                     }, {
                         enderCanBeEOF: true
                     } ],
-                    InlineMarkdownComment: [ "///@&:", "\n", function(token) {
+                    InlineMarkdownComment: [ "/" + "//@&:", "\n", function(token) {
                         return {
                             syntax: "Inline Markdown Comment",
                             ...token
@@ -747,7 +747,7 @@
                     }, {
                         enderCanBeEOF: true
                     } ],
-                    UnspacedInlineMarkdownComment: [ "///@&&:", "\n", function(token) {
+                    UnspacedInlineMarkdownComment: [ "/" + "//@&&:", "\n", function(token) {
                         return {
                             syntax: "Unspaced Inline Markdown Comment",
                             ...token
@@ -2903,7 +2903,8 @@
                     out = prefixes + middle + suffixes;
                     return out;
                 })();
-                const headerComment = `/**\n   * @file ${targetRootdir}\n   * @type ${targetType}\n   */`;
+                const tokenComment1 = [ "/", "*", "*" ].join("");
+                const headerComment = `${tokenComment1}\n   * @file ${targetRootdir}\n   * @type ${targetType}\n   */`;
                 return require("fs").promises.writeFile(file, `${name} {\n  ${headerComment}\n}`, "utf8").catch(error => {
                     console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
                 });
@@ -2926,12 +2927,14 @@
                 if (!tokens.length) {
                     return templateSource;
                 }
+                const tokenType1 = [ "/", "*", "%" ].join("");
+                const tokenType2 = [ "/", "*", "%", "=" ].join("");
                 const args = Object.assign({}, argsBrute);
                 const code = [ "const __out=[];\nconst print = function(...x) {\n  return __out.push(...x);\n};" ];
                 let cursor = 0;
                 for (const token of tokens) {
                     if (cursor < token.location[0]) code.push(`__out.push(${JSON.stringify(templateSource.slice(cursor, token.location[0]))});`);
-                    if (token.type === "/*%") code.push(token.inner); else if (token.type === "/*%=") code.push(`__out.push(await (${token.inner}));`);
+                    if (token.type === tokenType1) code.push(token.inner); else if (token.type === tokenType2) code.push(`__out.push(await (${token.inner}));`);
                     cursor = token.location[1] + 0;
                 }
                 if (cursor < templateSource.length) code.push(`__out.push(${JSON.stringify(templateSource.slice(cursor))});`);
@@ -3383,6 +3386,7 @@
                     console.log(`[*] No test for browser file: ${filepath}`);
                 } else {
                     delete require.cache[event.testFabrication.unitFile];
+                    if (!event.testFabrication.unitFile) return -2;
                     return require(event.testFabrication.unitFile);
                 }
             }
@@ -3436,6 +3440,7 @@
             }
             async touchFile(file, optionsInput = {}) {
                 this.assert(typeof file === "string", `Parameter «--file» must be string and not «${typeof file}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+                let outputFile = false;
                 const fs = require("fs");
                 const path = require("path");
                 const filepath = this.devbin.compiler.fullpathOf(file);
@@ -3468,10 +3473,10 @@
                         Paso_previo_2_caso_src_html: {
                             if (event.isHtml) {
                                 if (event.isSrcWww) {
-                                    const outputFile = `@/dist/www/${rootPath.replace("@/src/www/", "")}`;
+                                    outputFile = `@/dist/www/${rootPath.replace("@/src/www/", "")}`;
                                     await this.copyFile(rootPath, outputFile);
                                 } else if (event.isSrc) {
-                                    const outputFile = `@/dist/src/${rootPath.replace("@/src/", "")}`;
+                                    outputFile = `@/dist/src/${rootPath.replace("@/src/", "")}`;
                                     await this.copyFile(rootPath, outputFile);
                                 } else {
                                     console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from an *.html not under «@/src/»: ${rootedpath}`));
@@ -3539,6 +3544,21 @@
                             file: filepath,
                             event: event
                         });
+                    }
+                    Triggering_onDistributeDirectory_file: {
+                        const onDistributeDirectoryFile = path.join(path.dirname(filepath), "e.onDistributeDirectory.js");
+                        const result = await this.triggerCallbackFromFile(onDistributeDirectoryFile, {
+                            file: filepath,
+                            event: event
+                        });
+                        if (!outputFile) break Triggering_onDistributeDirectory_file;
+                        if (result === true) {
+                            const origin = path.dirname(this.devbin.compiler.normalizationOf(rootPath));
+                            const destination = path.dirname(this.devbin.compiler.normalizationOf(outputFile));
+                            require("fs").promises.cp(origin, destination, {
+                                recursive: true
+                            });
+                        }
                     }
                     Propagating_touch_up: {
                         Paso_4_propagar_evento_arriba: {
@@ -3659,16 +3679,18 @@
                 await createDirectory(`${targetDir}/dev/coverage`);
                 await createDirectory(`${targetDir}/dev/files`);
                 await createDirectory(`${targetDir}/src`);
+                await createDirectory(`${targetDir}/src/external`);
                 await createDirectory(`${targetDir}/src/www`);
                 await createDirectory(`${targetDir}/src/www/dev`);
+                await createDirectory(`${targetDir}/src/www/external`);
                 await createDirectory(`${targetDir}/dist`);
                 await createDirectory(`${targetDir}/dist/src`);
                 await createDirectory(`${targetDir}/dist/www`);
                 await createDirectory(`${targetDir}/dist/www/coverage`);
-                await createDirectory(`${targetDir}/dist/www/lib`);
+                await createDirectory(`${targetDir}/dist/www/external`);
                 await createDirectory(`${targetDir}/dist/www/dev`);
                 await createDirectory(`${targetDir}/dist/www/dev/settings`);
-                await createDirectory(`${targetDir}/dist/src/lib`);
+                await createDirectory(`${targetDir}/dist/src/external`);
                 await createDirectory(`${targetDir}/test`);
                 await createDirectory(`${targetDir}/test/feature`);
                 await createDirectory(`${targetDir}/test/integrity`);
@@ -3678,22 +3700,25 @@
                 await createDirectory(`${targetDir}/docs`);
                 await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
                 if (!await utils._existsFile(`${targetDir}/.gitignore`)) await saveFile(`${targetDir}/.gitignore`, "node_modules", "utf8");
-                await saveFile(`${targetDir}/dev/bin/help/command.js`, 'module.exports = async function() {\n  throw new Error("Command «help» is not coded yet");\n};', "utf8");
-                await saveFile(`${targetDir}/dev/run.js`, "#!/usr/bin/env node\n\nmodule.exports = require(`${__dirname}/bin.js`).selfDispatch();", "utf8");
-                await saveFile(`${targetDir}/dev/bin.js`, "require(`${__dirname}/../dist/src/lib/dev-binary-v6.dist.js`);\n\nmodule.exports = DevBinaryV6.create(`${__dirname}/..`);", "utf8");
-                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/index.html`, `${targetDir}/dist/www/index.html`);
-                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.js`, `${targetDir}/dist/www/app.js`);
-                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.css`, `${targetDir}/dist/www/app.css`);
+                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/devbin-help.js`, `${targetDir}/dev/bin/help/command.js`);
+                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/dev-bin.js`, `${targetDir}/dev/bin.js`);
+                Al_run_hay_que_darle_permisos: {
+                    await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/dev-run.js`, `${targetDir}/dev/run.js`);
+                    await fs.promises.chmod(`${targetDir}/dev/run.js`, "755");
+                }
+                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/index.html`, `${targetDir}/src/www/index.html`);
+                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.js`, `${targetDir}/src/www/app.entry.js`);
+                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.css`, `${targetDir}/src/www/app.entry.css`);
                 await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/settings.js`, `${targetDir}/dev/settings.js`);
                 await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/devbin-test.js`, `${targetDir}/dev/bin/test/command.js`);
                 await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/www-settings.js`, `${targetDir}/src/www/dev/settings.entry.js`);
-                await duplicateFile(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
-                await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/src/lib/moduler-v6.dist.js`);
-                await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/www/lib/moduler-v6.dist.js`);
-                await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/dist/src/lib/compiler-v6.dist.js`);
-                await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/dist/src/lib/dev-binary-v6.dist.js`);
-                await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/dist/src/lib/refrescador.dist.js`);
-                await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/dist/src/lib/refrescador`, {
+                await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
+                await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/external/moduler-v6.entry.js`);
+                await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/www/external/moduler-v6.entry.js`);
+                await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/external/compiler-v6.entry.js`);
+                await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/external/dev-binary-v6.entry.js`);
+                await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/external/refrescador.entry.js`);
+                await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/src/external/refrescador`, {
                     recursive: true
                 });
                 return {
@@ -3828,7 +3853,7 @@
                 return this.devbin.constructor.Refrescador.run({
                     watch: targetDirs,
                     bulletproof: false,
-                    ignore: [ "**/node_modules/**/*", "**/dist/**/*", "**/*.dist.*", "**/logs/**/*", "**/test/unit/**/*" ],
+                    ignore: [ "**/node_modules/" + "**/*", "**/dist/" + "**/*", "**/*.dist.*", "**/logs/" + "**/*", "**/test/unit/" + "**/*" ],
                     port: port,
                     debounce: 0,
                     extensions: [ "js", "css", "html", "md" ],

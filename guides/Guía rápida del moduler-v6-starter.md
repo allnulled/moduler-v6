@@ -94,11 +94,10 @@ De ahí:
       - la única condición que piden es que la carpeta donde van exista y tengas permisos suficientes para crearlo
       - aquí es donde los prefijos, sufijos e infijos del método `CompilerV6.prototype._createDefaultInjectedFile` tienen sentido:
          - porque con cierto nombre de fichero ya nos generará una plantilla específica
-         - `prototype.` (prefijo solo) = miembro prototipo de clase
-         - `static.` (prefijo solo) = miembro estático de clase
-         - `async.` | `.async` | `.async` = método asíncrono
-         - `sync.` | `.sync` | `.sync` = método síncrono
-         - `.class` (sufijo solo) = clase
+         - `prototype.*.js` (prefijo solo) = miembro prototipo de clase
+         - `static.*.js` (prefijo solo) = miembro estático de clase
+         - `*.class.js` (sufijo solo) = clase
+         - `*.entry.js` = entrada
          - es posible combinar `prototype.` o `static.` con `.class` y la plantilla seguirá adaptándose al caso concreto
 
 ## La propagación
@@ -274,6 +273,13 @@ Estos son los ficheros de eventos inyectables del `{touch,loop}`:
    - tipicamente, aquí vas a querer:
       - exportar el `*.dist.js` con `DevBinaryV6.Utils.prototype.copyFile`
       - quizás hacer alguna tarea extra
+- `@/src/**/e.onDistributeDirectory.js`
+   - evento inyectable
+   - se ejecutará después de ejecutar el test unitario del `entry`
+      - cuando ya se ha compilado el distribuible correspondiente
+   - debes hacer `module.exports` de una `Function`
+   - la función recibe el contexto en el primer parámetro
+   - la función debe devolver `true` y se entenderá que el directorio debe ser copiado a `@/dist/www/` o `@/dist/src/`
 - `@/src/**/e.onTouch.js`
    - evento inyectable
    - se ejecutará antes de propagar el evento touch al directorio superior
@@ -373,6 +379,14 @@ Los ficheros de desarrollo son ficheros que tienen un uso especial en el devtime
 - `@/dist/www/dev/settings.dist.js`
    - fichero de configuraciones para el runtime web
    - debería hacer los imports necesarios 
+   - entre ellos, se espera que importe a `@/dist/www/dev/settings/publicable.json`
+      - este fichero se genera desde el *touch* de `@/dev/settings.js` con las propiedades publicables especificadas en `DevBinaryV6.Utils.prototype.publicableSettingsIds`
+      - por defecto las propiedades publicables son: 
+         - `env`
+         - `instrumentalize`
+         - `traceExternalSources`
+         - `sectionsMap`
+      - pero puedes
 - `@/dist/www/dev/settings/publicable.json`
    - fichero de configuraciones para el runtime web, heredadas de las configuraciones del devtime, y publicables
    - este fichero se autogenera al guardar el `@/dev/settings.js` con el método `DevBinaryV6.Utils.prototype.exportDevSettings`
