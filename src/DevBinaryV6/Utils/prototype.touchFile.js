@@ -81,7 +81,7 @@ async touchFile(file, optionsInput = {}) {
         Triggering_onTestFeature_file: {
           const onTestFeatureFile = path.join(path.dirname(filepath), "e.onTestFeature.js");
           const featuresAdded = await this.triggerCallbackFromFile(onTestFeatureFile, { file: filepath, event, });
-          if(typeof featuresAdded !== "number") {
+          if (typeof featuresAdded !== "number") {
             this.assert(Array.isArray(featuresAdded), `File «e.onTestFeature.js» must return array about file «${onTestFeatureFile}» on «DevBinaryV6.Utils.prototype.touchFile»`);
             event.testFeatures.push(...featuresAdded);
           }
@@ -106,19 +106,23 @@ async touchFile(file, optionsInput = {}) {
         });
       }
     }
-    On_root_execute_tests: {
-      if (event.isRoot) {
-        Run_feature_tests: {
-          await this.devbin.tester.runDirectory("@/test/feature", file => this.matchesFileWithSimpleSelector(path.basename(file), [
-            // Los features de los eventos acumulados:
-            ...(event.testFeatures),
-            // Los features del dev/settings.js#features:
-            ...(this.devbin.settings.data?.features || [])
-          ]));
-        }
-        Run_case_tests: {
-          await this.devbin.tester.runDirectory("@/test/case", file => file.endsWith(".js"));
-        }
+    On_root: {
+      if (!event.isRoot) break On_root;
+      Run_feature_tests: {
+        await this.devbin.tester.runDirectory("@/test/feature", file => this.matchesFileWithSimpleSelector(path.basename(file), [
+          // Los features de los eventos acumulados:
+          ...(event.testFeatures),
+          // Los features del dev/settings.js#features:
+          ...(this.devbin.settings.data?.features || [])
+        ]));
+      }
+      Run_case_tests: {
+        await this.devbin.tester.runDirectory("@/test/case", file => file.endsWith(".js"));
+      }
+      Run_devbin_test_command: {
+        if(!await this.devbin.compiler.files.hasFile("@/dev/bin/test/command.js")) break Run_devbin_test_command;
+        const output = await this.devbin.command(["test", "--origin", filepath]);
+        if(output) console.log(output);
       }
     }
   }

@@ -17,6 +17,8 @@ _tokenizeText(compilationFile, compilationProcess) {
     out = this._parser.forCss.parse(compilationFile.source);
   } else if(compilationFile.extension === "md") {
     out = this._parser.forMd.parse(compilationFile.source);
+  } else if(compilationFile.extension === "json") {
+    out = {formatted:[]};
   } else {
     throw new Error(`File extension cannot be tokenized: «${compilationFile.resource}»`);
   }

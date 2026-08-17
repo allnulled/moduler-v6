@@ -25,5 +25,6 @@ class DevBinaryV6Utils {
   /*="./prototype.exportDevSettings.js"*/
   /*="./prototype.copyFile.js"*/
   /*="./prototype.matchesFileWithSimpleSelector.js"*/
+  /*="./prototype.publicableSettingsIds.js"*/
   /*="./constructor.js"*/
 }

@@ -7,6 +7,13 @@ _fetchCompilable(compilationFile, compilationProcess) {
   this.assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.prototype._fetchCompilable»");
   this.assert(typeof compilationFile.resource === "string", "Parameter «compilationFile.resource» must be string on «CompilerV6.prototype._fetchCompilable»");
   // console.log(compilationFile.resource);
+  if(compilationFile.resource.endsWith(".json")) {
+    compilationFile.extension = "json";
+    return this._readPath(compilationFile.resource).then(source => {
+      compilationFile.source = "";
+      return compilationFile.compilation.json = "";
+    });
+  }
   this.assert((/\.(js|css|md)$/g).test(compilationFile.resource), `Parameter «compilationFile.resource» now «${compilationFile.resource}» must match with valid extension on «CompilerV6.prototype._fetchCompilable»`);
   Sacar_la_extension_del_fichero: {
     compilationFile.extension = compilationFile.resource.match(/\.(js|css|md)$/g)[0].substr(1);

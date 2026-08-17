@@ -38,7 +38,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
     main: "dist/main.dist.js",
     scripts: {
       dev: "./dev/run.js loop",
-      test: "echo 'no tests now'"
+      test: "./dev/run.js test'"
     },
     dependencies: currentPackageJson.dependencies,
     devDependencies: currentPackageJson.devDependencies,
@@ -101,9 +101,12 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectory(`${targetDir}/dev`);
   await createDirectory(`${targetDir}/dev/bin`);
   await createDirectory(`${targetDir}/dev/bin/help`);
+  await createDirectory(`${targetDir}/dev/bin/test`);
   await createDirectory(`${targetDir}/dev/coverage`);
   await createDirectory(`${targetDir}/dev/files`);
   await createDirectory(`${targetDir}/src`);
+  await createDirectory(`${targetDir}/src/www`);
+  await createDirectory(`${targetDir}/src/www/dev`);
   await createDirectory(`${targetDir}/dist`);
   await createDirectory(`${targetDir}/dist/src`);
   await createDirectory(`${targetDir}/dist/www`);
@@ -131,6 +134,8 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.js`, `${targetDir}/dist/www/app.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/app.css`, `${targetDir}/dist/www/app.css`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/settings.js`, `${targetDir}/dev/settings.js`);
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/devbin-test.js`, `${targetDir}/dev/bin/test/command.js`);
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/www-settings.js`, `${targetDir}/src/www/dev/settings.entry.js`);
   await duplicateFile(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
   // @ATENCIÓN: Devolver a IfNotExists al terminar
   // await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
