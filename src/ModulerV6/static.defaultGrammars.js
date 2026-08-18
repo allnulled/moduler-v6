@@ -65,6 +65,10 @@ static defaultGrammars = {
     this.nativeGrammars.AtInjects,
     /////////////////// this.nativeGrammars.JavadocComment,
   ],
+  forHtml: [
+    this.nativeGrammars.InjectSource,
+    this.nativeGrammars.AtInjects,
+  ],
   forCssOnRuntime: [
     this.nativeGrammars.AtRequires,
   ],

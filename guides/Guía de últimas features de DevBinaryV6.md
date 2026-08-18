@@ -31,3 +31,6 @@ A continuación la lista, cronológicamente invertida.
    - [x] en el `Runtime.load`
    - [x] si `@/dist/www/settings.dist.js` no existe, ya no peta
    - [x] porque se importa usando el prefijo `!` precisamente
+- [x] 22:40pm Los ficheros html permiten @injects y $compiler.inject.source
+   - [x] ahora puedes tener aplicaciones html con todo dentro
+   - [x] escapa los cierres de html tag peligrosos en el caso de js y css respectivamente

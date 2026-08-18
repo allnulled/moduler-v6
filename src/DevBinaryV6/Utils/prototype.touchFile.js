@@ -41,14 +41,16 @@ async touchFile(file, optionsInput = {}) {
         if (event.isHtml) {
           if (event.isSrcWww) {
             outputFile = `@/dist/www/${rootPath.replace("@/src/www/", "")}`;
-            await this.copyFile(rootPath, outputFile);
           } else if (event.isSrc) {
             outputFile = `@/dist/src/${rootPath.replace("@/src/", "")}`;
-            await this.copyFile(rootPath, outputFile);
           } else {
             console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from an *.html not under «@/src/»: ${rootedpath}`));
             break Touch_event;
           }
+          const outputCompilation = await this.devbin.compiler.compile(filepath);
+          const outputHtml = outputCompilation.html;
+          const outputFullpath = this.devbin.moduler.normalizationOf(outputFile);
+          await require("fs").promises.writeFile(outputFullpath, outputHtml, "utf8");
         }
       }
       Caso_js_o_test_js: {

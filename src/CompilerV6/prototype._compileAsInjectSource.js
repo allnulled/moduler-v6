@@ -45,7 +45,7 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
         const existsFile = await this._existsFile(targetPath);
         if (!existsFile) {
           const path = require("path");
-          const targetId = this.rootdirOf(targetPath).replace(/\.js$/g, "");
+          const targetId = this.rootdirOf(targetPath).replace(/\.(js|css|html)$/g, "");
           await this._createDefaultInjectedFile(targetPath, targetId);
         }
       }
@@ -59,12 +59,28 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
     }
   }
   Inject_in_compilation_text: {
-    this.assert(compilationFile.extension === "js", `Syntax of «$compiler.inject.source» should only be available on «js» files and not on «${compilationFile.extension}»`);
-    this.assert(targetPath.endsWith(".js"), `Syntax of «$compiler.inject.source» on file «${compilationFile.resource}» is trying to import foraneous extension format file «${targetPath}» on «CompilerV6.prototype._compileAsInjectSource»`);
-    if (!targetCaches.js) targetCaches.js = targetCompilation.js;
-    targetCaches.css = targetCaches.css || targetCompilation?.css;
-    targetCaches.md = targetCaches.md || targetCompilation?.md;
-    compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], targetCaches.js);
+    const isFromHtml = compilationFile.extension === "html";
+    if(isFromHtml) {
+      const targetIsJs = targetPath.endsWith(".js");
+      const targetIsCss = targetPath.endsWith(".css");
+      this.assert(targetIsJs || targetIsCss, `Syntax of «$compiler.inject.source» from html files can only inject «js,css» files and not when importing «${targetPath}» from «${compilationFile.resource}»`);
+      if (!targetCaches.js) targetCaches.js = targetCompilation.js;
+      targetCaches.css = targetCaches.css || targetCompilation?.css;
+      targetCaches.md = targetCaches.md || targetCompilation?.md;
+      let newContent = targetCompilation[targetIsJs ? "js" : "css"];
+      Escape_html_tags_in_this_case: {
+        if(targetIsJs) newContent = newContent.replace(/(\< *)\/( *script *\>)/g, (match, g1, g2) => `${g1}\\/${g2}`);
+        if(targetIsCss) newContent = newContent.replace(/(\< *)\/( *style *\>)/g, (match, g1, g2) => `${g1}\\/${g2}`);
+      }
+      compilationFile.compilation.html = this._replaceTextRange(compilationFile.compilation.html, token.location[0], token.location[1], newContent);
+    } else {
+      this.assert(compilationFile.extension === "js", `Syntax of «$compiler.inject.source» can only inject files from «js,html» files and not on «${compilationFile.extension}» when importing «${targetPath}» from «${compilationFile.resource}»`);
+      this.assert(targetPath.endsWith(".js"), `Syntax of «$compiler.inject.source» is trying to import foraneous extension format file «${targetPath}» from «${compilationFile.resource}» on «CompilerV6.prototype._compileAsInjectSource»`);
+      if (!targetCaches.js) targetCaches.js = targetCompilation.js;
+      targetCaches.css = targetCaches.css || targetCompilation?.css;
+      targetCaches.md = targetCaches.md || targetCompilation?.md;
+      compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], targetCaches.js);
+    }
     Esto_tiene_que_hacerse_desde_dentro_del_compileRecursively: {
       // compilationFile.compilation.css += targetCaches.css;
       // compilationFile.compilation.md += targetCaches.md;

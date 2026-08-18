@@ -14,9 +14,9 @@ _fetchCompilable(compilationFile, compilationProcess) {
       return compilationFile.compilation.json = "";
     });
   }
-  this.assert((/\.(js|css|md)$/g).test(compilationFile.resource), `Parameter «compilationFile.resource» now «${compilationFile.resource}» must match with valid extension on «CompilerV6.prototype._fetchCompilable»`);
+  this.assert((/\.(js|css|md|html)$/g).test(compilationFile.resource), `Parameter «compilationFile.resource» now «${compilationFile.resource}» must match with valid extension on «CompilerV6.prototype._fetchCompilable»`);
   Sacar_la_extension_del_fichero: {
-    compilationFile.extension = compilationFile.resource.match(/\.(js|css|md)$/g)[0].substr(1);
+    compilationFile.extension = compilationFile.resource.match(/\.(js|css|md|html)$/g)[0].substr(1);
   }
   Propagar_la_extension_al_proceso_si_es_la_primera: {
     if(typeof compilationProcess.extension === "undefined") {

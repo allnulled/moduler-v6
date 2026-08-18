@@ -91,6 +91,14 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
       } else { // ...a otro formato
         throw new Error(`Syntax of «@injects» on «${targetPath}» is trying to import foraneous file extension.`)
       }
+    } else if(compilationFile.resource.endsWith(".html")) {
+      if(targetPath.endsWith(".js")) {
+        return this._compileAsInjectSource(...arguments);
+      } else if(targetPath.endsWith(".css")) {
+        return this._compileAsInjectSource(...arguments);
+      } else {
+        throw new Error("Syntax of «@injects» can only be used to import «js,css» files from «html» files.");
+      }
     } else {
       throw new Error(`Syntax of «@injects» should only be available on «css,md» files and not on «${compilationFile.extension}»`);
     }
