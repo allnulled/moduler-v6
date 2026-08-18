@@ -4,6 +4,7 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, modul
 
   const localModuler = ModulerV6.create(`${__dirname}/../assets/unit/401`);
   await localModuler.settings.load();
+  await devBinaryV6.utils.ensureCoreFrom(`${__dirname}/../assets/unit/401`, { allowDirtyDirectory: true });
   const SomeSection = await localModuler.import("#SomeSection");
   const SomeSectionFromDev = await localModuler.import("#SomeSectionFromDev");
   assert(typeof SomeSection === "number", "Can use moduler.settings.data.sectionsMap to find modules by section (point 1)");

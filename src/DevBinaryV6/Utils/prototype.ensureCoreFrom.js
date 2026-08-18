@@ -59,6 +59,10 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
       }
       return await fs.promises.writeFile(file, contents, "utf8");
     },
+    _saveFileIfNotExists: async function(file, contents) {
+      if(await utils._existsFile(file)) return -1;
+      return await fs.promises.writeFile(file, contents, "utf8");
+    },
     _duplicateFile: async function (src, dst) {
       if (parameters.dontOverride && await utils._existsFile(dst)) {
         return -1;
@@ -94,40 +98,42 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
 
 
   const createDirectory = parameters.ignoreErrors ? utils.trify(utils._createDirectory) : utils._createDirectory;
+  const createDirectoryIfNotExists = utils.trify(utils._createDirectory);
   const saveFile = parameters.ignoreErrors ? utils.trify(utils._saveFile) : utils._saveFile;
+  const saveFileIfNotExists = utils._saveFileIfNotExists;
   const duplicateFile = parameters.ignoreErrors ? utils.trify(utils._duplicateFile) : utils._duplicateFile;
   const duplicateDirectory = parameters.ignoreErrors ? utils.trify(utils._duplicateDirectory) : utils._duplicateDirectory;
   const duplicateFileIfNotExists = utils.trify(utils._initializeDuplicatedFile);
 
-  await createDirectory(`${targetDir}/dev`);
-  await createDirectory(`${targetDir}/dev/bin`);
-  await createDirectory(`${targetDir}/dev/bin/help`);
-  await createDirectory(`${targetDir}/dev/bin/test`);
-  await createDirectory(`${targetDir}/dev/coverage`);
-  await createDirectory(`${targetDir}/dev/files`);
-  await createDirectory(`${targetDir}/src`);
-  await createDirectory(`${targetDir}/src/external`);
-  await createDirectory(`${targetDir}/src/www`);
-  await createDirectory(`${targetDir}/src/www/dev`);
-  await createDirectory(`${targetDir}/src/www/external`);
-  await createDirectory(`${targetDir}/dist`);
-  await createDirectory(`${targetDir}/dist/src`);
-  await createDirectory(`${targetDir}/dist/www`);
-  await createDirectory(`${targetDir}/dist/www/coverage`);
-  await createDirectory(`${targetDir}/dist/www/external`);
-  await createDirectory(`${targetDir}/dist/www/dev`);
-  await createDirectory(`${targetDir}/dist/www/dev/settings`);
-  await createDirectory(`${targetDir}/dist/src/external`);
-  await createDirectory(`${targetDir}/test`);
-  await createDirectory(`${targetDir}/test/feature`);
-  await createDirectory(`${targetDir}/test/integrity`);
-  await createDirectory(`${targetDir}/test/unit`);
-  await createDirectory(`${targetDir}/test/unit/src`);
-  await createDirectory(`${targetDir}/test/case`);
-  await createDirectory(`${targetDir}/test/speed`);
-  await createDirectory(`${targetDir}/docs`);
+  await createDirectoryIfNotExists(`${targetDir}/dev`);
+  await createDirectoryIfNotExists(`${targetDir}/dev/bin`);
+  await createDirectoryIfNotExists(`${targetDir}/dev/bin/help`);
+  await createDirectoryIfNotExists(`${targetDir}/dev/bin/test`);
+  await createDirectoryIfNotExists(`${targetDir}/dev/coverage`);
+  await createDirectoryIfNotExists(`${targetDir}/dev/files`);
+  await createDirectoryIfNotExists(`${targetDir}/src`);
+  await createDirectoryIfNotExists(`${targetDir}/src/external`);
+  await createDirectoryIfNotExists(`${targetDir}/src/www`);
+  await createDirectoryIfNotExists(`${targetDir}/src/www/dev`);
+  await createDirectoryIfNotExists(`${targetDir}/src/www/external`);
+  await createDirectoryIfNotExists(`${targetDir}/dist`);
+  await createDirectoryIfNotExists(`${targetDir}/dist/src`);
+  await createDirectoryIfNotExists(`${targetDir}/dist/www`);
+  await createDirectoryIfNotExists(`${targetDir}/dist/www/coverage`);
+  await createDirectoryIfNotExists(`${targetDir}/dist/www/external`);
+  await createDirectoryIfNotExists(`${targetDir}/dist/www/dev`);
+  await createDirectoryIfNotExists(`${targetDir}/dist/www/dev/settings`);
+  await createDirectoryIfNotExists(`${targetDir}/dist/src/external`);
+  await createDirectoryIfNotExists(`${targetDir}/test`);
+  await createDirectoryIfNotExists(`${targetDir}/test/feature`);
+  await createDirectoryIfNotExists(`${targetDir}/test/integrity`);
+  await createDirectoryIfNotExists(`${targetDir}/test/unit`);
+  await createDirectoryIfNotExists(`${targetDir}/test/unit/src`);
+  await createDirectoryIfNotExists(`${targetDir}/test/case`);
+  await createDirectoryIfNotExists(`${targetDir}/test/speed`);
+  await createDirectoryIfNotExists(`${targetDir}/docs`);
   
-  await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
+  await saveFileIfNotExists(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
   if(!await utils._existsFile(`${targetDir}/.gitignore`)) await saveFile(`${targetDir}/.gitignore`, "node_modules", "utf8");
   
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/devbin-help.js`, `${targetDir}/dev/bin/help/command.js`);

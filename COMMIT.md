@@ -1,1 +1,1 @@
-typo en los links de las guias del readme
+bug que no cargaba refrescador en el DevBinaryV6 + el e.onTestFeature.js pasa a ser e.onTest.js y permite especificar tests de integrity speed y feature + mejorado ensureCoreFrom para no pisar directorios ni ficheros

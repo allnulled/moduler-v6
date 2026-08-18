@@ -1,1 +1,1 @@
-símbolo para hacer imports con try + test + changelog en una guia de features + refrescador intenta cargarse desde api y entry con 2 rutas, inmediata y src external
+typo en los links de las guias del readme

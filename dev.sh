@@ -13,6 +13,9 @@ cd "$DIR2"
     -i "**/dist/**/*" \
     -i "**/trash/**/*" \
     -i "**/src-tmp/**/*" \
+    -i "**/refrescador/**/*" \
+    -i "**/src/external/**/*.entry.js" \
+    -i "**/src/www/external/**/*.entry.js" \
     -i "**/*.{dist,ign}.*" \
     -i "**/logs/**/*" \
     -i "**/test/assets/unit/{202,203,204}/**/*" \

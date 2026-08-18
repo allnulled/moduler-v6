@@ -79,12 +79,17 @@ async touchFile(file, optionsInput = {}) {
           const onDistributeFile = path.join(path.dirname(filepath), "e.onDistribute.js");
           await this.triggerCallbackFromFile(onDistributeFile, { file: filepath, event, });
         }
-        Triggering_onTestFeature_file: {
-          const onTestFeatureFile = path.join(path.dirname(filepath), "e.onTestFeature.js");
-          const featuresAdded = await this.triggerCallbackFromFile(onTestFeatureFile, { file: filepath, event, });
-          if (typeof featuresAdded !== "number") {
-            this.assert(Array.isArray(featuresAdded), `File «e.onTestFeature.js» must return array about file «${onTestFeatureFile}» on «DevBinaryV6.Utils.prototype.touchFile»`);
-            event.testFeatures.push(...featuresAdded);
+        Triggering_onTest_file: {
+          const onTestFile = path.join(path.dirname(filepath), "e.onTest.js");
+          const testsAdded = await this.triggerCallbackFromFile(onTestFile, { file: filepath, event, });
+          if (typeof testsAdded !== "number") {
+            this.assert(typeof testsAdded === "object", `File «e.onTest.js» must return object about file «${onTestFile}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+            Object.keys(testsAdded).forEach(prop => {
+              this.assert(["feature","integrity","speed"].includes(prop), `File «e.onTest.js» on «${onTestFile}» cannot return object with unknown property «${prop}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+            });
+            if("feature" in testsAdded) event.testFeatures.push(...testsAdded.feature);
+            if("integrity" in testsAdded) event.testIntegrity.push(...testsAdded.integrity);
+            if("speed" in testsAdded) event.testSpeed.push(...testsAdded.speed);
           }
         }
       }
@@ -120,15 +125,33 @@ async touchFile(file, optionsInput = {}) {
     }
     On_root: {
       if (!event.isRoot) break On_root;
+      Run_integrity_tests: {
+        await this.devbin.tester.runDirectory("@/test/integrity", {
+          title: "integrity",
+          filename: "integrity.js",
+          filter: file => this.matchesFileWithSimpleSelector(path.basename(file), [
+            ...(event.testIntegrity), // Los integrity de los eventos acumulados:
+            ...(this.devbin.settings.data?.test?.integrity || []), // Los integrity del dev/settings.js#test/integrity:
+          ]),
+        });
+      }
+      Run_speed_tests: {
+        await this.devbin.tester.runDirectory("@/test/speed", {
+          title: "speed",
+          filename: "speed.js",
+          filter: file => this.matchesFileWithSimpleSelector(path.basename(file), [
+            ...(event.testSpeed), // Los speeds de los eventos acumulados:
+            ...(this.devbin.settings.data?.test?.speed || []), // Los speeds del dev/settings.js#test/speeds:
+          ]),
+        });
+      }
       Run_feature_tests: {
         await this.devbin.tester.runDirectory("@/test/feature", {
           title: "feature",
           filename: "feature.js",
           filter: file => this.matchesFileWithSimpleSelector(path.basename(file), [
-            // Los features de los eventos acumulados:
-            ...(event.testFeatures),
-            // Los features del dev/settings.js#features:
-            ...(this.devbin.settings.data?.test?.features || [])
+            ...(event.testFeatures), // Los features de los eventos acumulados:
+            ...(this.devbin.settings.data?.test?.features || []), // Los features del dev/settings.js#test/features:
           ]),
         });
       }
