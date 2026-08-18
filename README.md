@@ -94,10 +94,10 @@ En el proyecto se incluyen 3 ficheros distribuibles:
    - Se explican varios casos donde puede haber confusiones
    - Se explica la lógica detrás de ellos
    - Se explica una solución a cada uno de ellos si la hay
-- [Guía de documentación con CompilerV6](Gu%C3%ADa%20de%20documentaci%C3%B3n%20con%20CompilerV6.md)
+- [Guía de documentación con CompilerV6](./guides/Gu%C3%ADa%20de%20documentaci%C3%B3n%20con%20CompilerV6.md)
    - Se explican las facilidades en el framework para documentar
    - Se explica el método general de documentar
    - Se explican tips para documentar en armonía
-- [Guía de últimas features de DevBinaryV6](Gu%C3%ADa%20de%20%C3%BAltimas%20features%20de%20DevBinaryV6.md)
+- [Guía de últimas features de DevBinaryV6](./guides/Gu%C3%ADa%20de%20%C3%BAltimas%20features%20de%20DevBinaryV6.md)
    - Se explican las últimas features implementadas en los 3: `ModulerV6`, `CompilerV6` y `DevBinaryV6`.
    - Sería en `CHANGELOG.md` del proyecto, en realidad, después de la base
