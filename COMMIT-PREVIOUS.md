@@ -1,1 +1,1 @@
-bug que no cargaba refrescador en el DevBinaryV6 + el e.onTestFeature.js pasa a ser e.onTest.js y permite especificar tests de integrity speed y feature + mejorado ensureCoreFrom para no pisar directorios ni ficheros
+el touchFile también acepta que los html tengan inyecciones con las 2 sintaxis anteriores

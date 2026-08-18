@@ -1,1 +1,1 @@
-el touchFile también acepta que los html tengan inyecciones con las 2 sintaxis anteriores
+evitada recursion de touchFile con e.onTouch.js que hacen un touch con ignoreOnTouchEvent

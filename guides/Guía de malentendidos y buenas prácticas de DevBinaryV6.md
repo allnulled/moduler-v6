@@ -16,6 +16,7 @@ Se habla de `DevBinaryV6` porque son problemas compartidos con `CompilerV6` y/o 
     - [Caso confuso](#caso-confuso)
     - [El workaround](#el-workaround)
     - [La conclusión](#la-conclusión)
+  - [Caso 2. Propagar un touch desde un e.onTouch.js](#caso-2-propagar-un-touch-desde-un-eontouchjs)
 
 ## Caso 1. El inject.source no cambia el basedir, solo import y export
 
@@ -167,3 +168,31 @@ Este error es humano, pero el framework es correcto aquí, y lo que hará será 
             - y fácilmente caiga en desuso
             - y conlleve retro-incompatibilidades futuras
    - pero de momento, se queda.
+
+## Caso 2. Propagar un touch desde un e.onTouch.js
+
+- El fichero `e.onTouch.js` permite ejecutar algo después de compilar un fichero del `@/src/`
+- Es fácil, que quieras hacer un `touch` desde un `e.onTouch.js` u otros eventos que se llaman en el `touchFile` como:
+   - `e.onTouch.js`
+   - `e.onTest.js`
+   - `e.onDistribute.js`
+   - `e.onDistributeDirectory.js`
+- El punto crítico es que `touchFile` hace `await` de todos estos eventos
+   - esto implica que, si en estos eventos, haces otro `touch` y lo esperas con `await`, entra en bucle y no acaba nunca ningún evento `touch` al final
+- Si, por ejemplo, queremos que de un cambio en `app.css` se pase al `dist` el `index.html` también
+   - porque estamos inyectando el `css` con un `$compiler.inject.source` en el `html`
+   - lo único que hay que hacer es crear un `e.onTouch.js` en el directorio
+   - luego ponerle:
+   ```js
+   module.exports = function(info) {
+     return info.devbin.utils.touchFile(`@/src/www/path/to/my/dir/index.html`, {
+       ignoreOnTouchEvent: true, //este flag es importante para que no entre en recursividad
+     });
+   };
+   ```
+   - el evento `touch` sobre el `html` se ocupará de compilar su contenido y pegarlo en el `dist`
+- Ten en cuenta que, de no hacerlo, entra en bucle infinito, porque:
+   - el `touchFile` ya está haciendo `await` del `triggerCallbackFromFile` antes de ejecutar tu `e.onTouch.js`
+   - y al `triggerCallbackFromFile` le haces que llame al `touchFile` otra vez
+      - si le pasas este flag, no hay problema, porque no hay más llamadas al `e.onTouch.js`
+      - pero si no le pasas este flag, el `e.onTouch.js` vuelve a llamar al `touchFile`, que volverá a llamar al mismo `e.onTouch.js`, que... etc.

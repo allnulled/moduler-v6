@@ -10,7 +10,7 @@ async triggerCallbackFromFile(file, injection = {}, dontThrow = false) {
   const callback = require(file);
   this.assert(typeof callback === "function", `File «${file}» should export a function on «DevBinaryV6.Utils.prototype.triggerCallbackFromFile»`);
   return await callback.call(this, {
-    devbin: this,
+    devbin: this.devbin,
     ...injection,
   });
 }

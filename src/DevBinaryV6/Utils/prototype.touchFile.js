@@ -14,6 +14,7 @@ async touchFile(file, optionsInput = {}) {
   const event = this.constructor.defaultTouchFileOptions({
     type: "TouchFileEvent",
     propagateUp: true,
+    ignoreOnTouchEvent: false,
     processedEntries: {},
     isRoot: false,
     ...optionsInput,
@@ -103,6 +104,7 @@ async touchFile(file, optionsInput = {}) {
       }
     }
     Triggering_onTouch_file: {
+      if(event.ignoreOnTouchEvent) break Triggering_onTouch_file;
       const onTouchFile = path.join(path.dirname(filepath), "e.onTouch.js");
       await this.triggerCallbackFromFile(onTouchFile, { file: filepath, event });
     }
