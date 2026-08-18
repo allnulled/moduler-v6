@@ -4,7 +4,9 @@
  * @description 
  */
 _importFactory(factory, dependencies = []) {
-  let originalHolder = {}, output;
+  let output = undefined;
+  let firstHolder = {};
+  let originalHolder = firstHolder;
   const moduleHolder = {
     get exports() {
       return originalHolder;
@@ -13,14 +15,32 @@ _importFactory(factory, dependencies = []) {
       originalHolder = anotherOutput;
     }
   };
-  output = factory(dependencies, {
+  const syncResult = factory(dependencies, {
     module: moduleHolder,
     exports: moduleHolder.exports,
     $moduler: this,
   });
-  if(typeof output === "undefined") {
-    if(Object.keys(originalHolder).length) {
-      output = originalHolder;
+  if(syncResult instanceof Promise) {
+    return syncResult.then(result => {
+      output = undefined;
+      const returnsUndefined = () => typeof result === "undefined";
+      const isSameEmptyObject = () => (moduleHolder.exports === firstHolder) && ((Object.keys(firstHolder).length === 0));
+      if(!returnsUndefined()) {
+        output = moduleHolder.exports = result;
+      } else if(!isSameEmptyObject()) {
+        output = moduleHolder.exports;
+      }
+      return output;
+    });
+  } else {
+    output = undefined;
+    const result = syncResult;
+    const returnsUndefined = () => typeof result === "undefined";
+    const isSameEmptyObject = () => (moduleHolder.exports === firstHolder) && ((Object.keys(firstHolder).length === 0));
+    if(!returnsUndefined()) {
+      output = moduleHolder.exports = result;
+    } else if(!isSameEmptyObject()) {
+      output = moduleHolder.exports;
     }
   }
   return output;

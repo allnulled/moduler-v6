@@ -11,6 +11,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
     ignoreErrors: false,
     allowDirtyDirectory: false,
     dontOverride: false,
+    installDependencies: false,
   }, parametersInput, {
     from: basedirInput,
   });
@@ -123,6 +124,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectory(`${targetDir}/test/unit`);
   await createDirectory(`${targetDir}/test/unit/src`);
   await createDirectory(`${targetDir}/test/case`);
+  await createDirectory(`${targetDir}/test/speed`);
   await createDirectory(`${targetDir}/docs`);
   
   await saveFile(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
@@ -141,6 +143,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/settings.js`, `${targetDir}/dev/settings.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/devbin-test.js`, `${targetDir}/dev/bin/test/command.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/www-settings.js`, `${targetDir}/src/www/dev/settings.entry.js`);
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/www-settings.js`, `${targetDir}/dist/www/dev/settings.dist.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
 
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/external/moduler-v6.entry.js`);  
@@ -149,6 +152,8 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/external/dev-binary-v6.entry.js`);
   await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/external/refrescador.entry.js`);
   await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/src/external/refrescador`, { recursive: true });
+
+  if(parameters.installDependencies) await this.installNpmDependencies([], targetDir);
 
   return { targetDir };
 

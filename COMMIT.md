@@ -1,1 +1,1 @@
-evento onDistributeDirectory para pasar automáticamente un directorio de src a dist + starter vaciado y cambiado lib por external y cambiado ensureCore para que exporte los 3 y el refrescador al src y opcionalmente se compilen al dist + refrescador entry usa el src desde el dist para no duplicar reflejar el directorio
+símbolo para hacer imports con try + test + changelog en una guia de features + refrescador intenta cargarse desde api y entry con 2 rutas, inmediata y src external

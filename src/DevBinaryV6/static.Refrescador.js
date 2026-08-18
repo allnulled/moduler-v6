@@ -3,4 +3,11 @@
  * @type 
  * @description 
  */
-static Refrescador = require(`${__dirname}/refrescador/refrescador.api.dist.js`);
+static Refrescador = (function() {
+  // @REFRESCADOR: Primero intenta la ruta relativa inmediata, y si no, busca la del src/external/refrescador, y ahí sí, y si no, peta.
+  try {
+    require(require("path").resolve(`${__dirname}/refrescador/refrescador.api.dist.js`));
+  } catch (error) {
+    require(require("path").resolve(`${__dirname}/../../../src/external/refrescador/refrescador.api.dist.js`));
+  }
+})();

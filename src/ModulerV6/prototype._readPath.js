@@ -3,16 +3,14 @@
  * @type 
  * @description 
  */
-_readPath(url) {
+_readPath(url, options = {}) {
   return (this.runtime.isBrowser ? this._readUrl(url) : this._readFile(url)).then(it => {
     if(this.settings.data?.traceExternalSources) {
-      console.log("[*] Read from external source:");
+      console.log(`[*] Read from external source «${url}»:`);
       console.log("--------------------:");
       console.log(it);
       console.log("--------------------/");
     }
     return it;
-  }).catch(error => {
-    throw error;
   });
 }

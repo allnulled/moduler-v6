@@ -98,3 +98,6 @@ En el proyecto se incluyen 3 ficheros distribuibles:
    - Se explican las facilidades en el framework para documentar
    - Se explica el método general de documentar
    - Se explican tips para documentar en armonía
+- [Guía de últimas features de DevBinaryV6](Gu%C3%ADa%20de%20%C3%BAltimas%20features%20de%20DevBinaryV6.md)
+   - Se explican las últimas features implementadas en los 3: `ModulerV6`, `CompilerV6` y `DevBinaryV6`.
+   - Sería en `CHANGELOG.md` del proyecto, en realidad, después de la base

@@ -4,6 +4,7 @@ class ModulerV6 {
    * @type class
    * @description ...
    */
+  
   /*="./static.createResolvable.js"*/
   /*="./static.onLoaded.js"*/
   /*="./static.Runtime.js"*/
@@ -12,6 +13,7 @@ class ModulerV6 {
   /*="./static.SectionsManager.js"*/
   /*="./static.Settings.js"*/
   /*="./static.Parser.js"*/
+  
   /*="./static.assert.js"*/
   /*="./static.isBrowser.js"*/
   /*="./static.nativeGrammars.js"*/
@@ -19,6 +21,7 @@ class ModulerV6 {
   /*="./static.symbols.js"*/
   /*="./static.getEnvironmentDirectory.js"*/
   /*="./static.create.js"*/
+  
   /*="./prototype._formatImportParameters.js"*/
   /*="./prototype._formatExportParameters.js"*/
   /*="./prototype._joinPaths.js"*/
@@ -32,6 +35,8 @@ class ModulerV6 {
   /*="./prototype._importFile.js"*/
   /*="./prototype._importFactory.js"*/
   /*="./prototype._importSectionByMap.js"*/
+  /*="./prototype._removeSymbolsFromFilepath.js"*/
+
   /*="./prototype.assert.js"*/
   /*="./prototype.createAssertFunction.js"*/
   /*="./prototype.setBasedir.js"*/
@@ -44,9 +49,11 @@ class ModulerV6 {
   /*="./prototype.evaluateSource.js"*/
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
+  
   /*="./static.globalSectionsManagerInstance.js"*/
   /*="./prototype.section.js"*/
   /*="./constructor.js"*/
   /*="./static.globalInstance.js"*/
   /*="./static.isLoaded.js"*/
+  
 }

@@ -102,8 +102,8 @@ async touchFile(file, optionsInput = {}) {
     Triggering_onDistributeDirectory_file: {
       const onDistributeDirectoryFile = path.join(path.dirname(filepath), "e.onDistributeDirectory.js");
       const result = await this.triggerCallbackFromFile(onDistributeDirectoryFile, { file: filepath, event });
-      if(!outputFile) break Triggering_onDistributeDirectory_file;
-      if(result === true) {
+      if (!outputFile) break Triggering_onDistributeDirectory_file;
+      if (result === true) {
         const origin = path.dirname(this.devbin.compiler.normalizationOf(rootPath));
         // @ATENCIÓN: al basarse en outputFile ya se entiende si está en src o en src/www
         const destination = path.dirname(this.devbin.compiler.normalizationOf(outputFile));
@@ -121,20 +121,28 @@ async touchFile(file, optionsInput = {}) {
     On_root: {
       if (!event.isRoot) break On_root;
       Run_feature_tests: {
-        await this.devbin.tester.runDirectory("@/test/feature", file => this.matchesFileWithSimpleSelector(path.basename(file), [
-          // Los features de los eventos acumulados:
-          ...(event.testFeatures),
-          // Los features del dev/settings.js#features:
-          ...(this.devbin.settings.data?.features || [])
-        ]));
+        await this.devbin.tester.runDirectory("@/test/feature", {
+          title: "feature",
+          filename: "feature.js",
+          filter: file => this.matchesFileWithSimpleSelector(path.basename(file), [
+            // Los features de los eventos acumulados:
+            ...(event.testFeatures),
+            // Los features del dev/settings.js#features:
+            ...(this.devbin.settings.data?.test?.features || [])
+          ]),
+        });
       }
       Run_case_tests: {
-        await this.devbin.tester.runDirectory("@/test/case", file => file.endsWith(".js"));
+        await this.devbin.tester.runDirectory("@/test/case", {
+          title: "case",
+          filename: "case.js",
+          filter: file => true,
+        });
       }
       Run_devbin_test_command: {
-        if(!await this.devbin.compiler.files.hasFile("@/dev/bin/test/command.js")) break Run_devbin_test_command;
+        if (!await this.devbin.compiler.files.hasFile("@/dev/bin/test/command.js")) break Run_devbin_test_command;
         const output = await this.devbin.command(["test", "--origin", filepath]);
-        if(output) console.log(output);
+        if (output) console.log(output);
       }
     }
   }

@@ -1,10 +1,10 @@
-# ModulerV6: paper de concepción
+# Fundamentos de ModulerV6 y CompilerV6
 
 En este paper se habla sobre ModulerV6 y CompilerV6 y sus fundamentos teóricos y prácticos.
 
 ## Índice
 
-- [ModulerV6: paper de concepción](#modulerv6-paper-de-concepción)
+- [Fundamentos de ModulerV6 y CompilerV6](#fundamentos-de-modulerv6-y-compilerv6)
   - [Índice](#índice)
   - [Explicación práctica](#explicación-práctica)
     - [Ejemplos práticos](#ejemplos-práticos)
@@ -237,7 +237,6 @@ Hay que:
 - **importar** el fichero que te interese (según quieras solo `ModulerV6` o `CompilerV6` entero) en el proceso que te interese
    - aunque `CompilerV6` está pensado para el devtime y node.js, e incluye a `ModulerV6` dentro
    - en cambio `ModulerV6` está pensado para el runtime
-   - ambos usan también `` está pensado para el runtime
 
 #### ¿Cómo se instala?
 

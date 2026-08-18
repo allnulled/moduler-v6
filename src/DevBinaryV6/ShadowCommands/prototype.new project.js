@@ -11,7 +11,13 @@
       default: false,
       alias: ["-f"],
       description: "Empty directory from which to start the new project"
-    }
+    },
+    installDependencies: {
+      onFormat: devbin.constructor.Formatters.asBoolean,
+      default: false,
+      alias: ["-i"],
+      description: "Runs «npm install» once all files are ensured"
+    },
   }, args);
   
   this.assert(typeof parameters.from === "string", `Parameter «--from» is required as string on «DevBinaryV6.ShadowCommands.prototype['new project']»`);

@@ -3,15 +3,22 @@
  * @type 
  * @description 
  */
-_joinPaths(subpaths, origin = false) {
-  this.assert(Array.isArray(subpaths), `Parameter «subpaths» must be array on «ModulerV6.prototype._joinPaths»`);
-  this.assert(subpaths.length !== 0, `Parameter «subpaths.length» cannot be 0 on «ModulerV6.prototype._joinPaths»`);
-  let out = "";
+_joinPaths(subpathsInput, origin = false) {
+  this.assert(Array.isArray(subpathsInput), `Parameter «subpaths» must be array on «ModulerV6.prototype._joinPaths»`);
+  this.assert(subpathsInput.length !== 0, `Parameter «subpaths.length» cannot be 0 on «ModulerV6.prototype._joinPaths»`);
+  let out = "", activatedOptions = {};
+  const subpaths = [].concat(subpathsInput);
+  Correct_filesymbols: {
+    this.assert(typeof subpaths[0] === "string", `Parameter «subpaths[0]» must be string but «${typeof subpaths[0]}» was found instead on «ModulerV6.prototype._joinPaths»`);
+    const [_subpath, _activatedOptions] = this._removeSymbolsFromFilepath(subpaths[0], true);
+    subpaths[0] = _subpath;
+    activatedOptions = _activatedOptions;
+  }
   Join_paths_overwritting_when_required:
   for(let index=0; index<subpaths.length; index++) {
     const subpath = subpaths[index];
     this.assert(typeof subpath === "string", `Parameter «subpaths[${index}]» must be string too on «ModulerV6.prototype._joinPaths»`);
-    this.assert(typeof subpath !== "", `Parameter «subpaths[${index}]» cannot be empty string on «ModulerV6.prototype._joinPaths»`);
+    this.assert(subpath !== "", `Parameter «subpaths[${index}]» cannot be empty string on «ModulerV6.prototype._joinPaths»`);
     if(subpath.includes("://")) {
       // @case Ruta por protocolo
       this.assert(subpath.match(this.constructor.symbols.REGEX_FOR_PROTOCOL_BASED_PATH), `Paths can only have «://» at the begining, and preceded only by a protocol id, if any in the case of «${subpath}» on «ModulerV6.prototype._joinPaths»`);
@@ -68,6 +75,9 @@ _joinPaths(subpaths, origin = false) {
       }
     }
     out = newParts.join("/");
+  }
+  if(activatedOptions.justTry) {
+    out = `!${out}`;
   }
   return out;
 }

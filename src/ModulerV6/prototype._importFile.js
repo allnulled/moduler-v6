@@ -3,9 +3,9 @@
  * @type 
  * @description 
  */
-_importFile(filepathBrute) {
-  let originalHolder = {};
+_importFile(filepathInput) {
   let filepath, filepathMask, isInstr, isJson;
+  const [filepathBrute, activeOptions] = this._removeSymbolsFromFilepath(filepathInput, true);
   isJson = filepathBrute.endsWith(".json");
   Normalize_file: {
     filepath = filepathMask = this.normalizationOf(filepathBrute);
@@ -33,28 +33,41 @@ _importFile(filepathBrute) {
   console.log("[*] ModulerV6 imports: " + this.rootdirOf(filepath));
   Evaluate_file_and_export_results: {
     if (isJson) {
-      return this.modules[filepathMask] = this._readPath(filepathBrute).then(content => {
-        return JSON.parse(content);
-      });
+      return this.modules[filepathMask] = this._readPath(filepathBrute)
+        .catch(error => {
+          if(activeOptions.justTry) return undefined;
+          throw error;
+        })
+        .then(content => {
+          if(typeof content === "undefined") return undefined;
+          return JSON.parse(content);
+        });
     }
+    let firstHolder = {};
+    let originalHolder = firstHolder;
     const moduleHolder = {
       get exports() {
         return originalHolder;
       },
-      set exports(output) {
-        originalHolder = output;
+      set exports(value) {
+        originalHolder = value;
       }
     };
     return this.evaluateFile(filepath, {
       module: moduleHolder,
       exports: moduleHolder.exports,
       $moduler: this.cloneForFile(filepath),
+    }, {
+      onMissingResource: activeOptions.justTry === true ? () => undefined : false,
     }).then(result => {
       let output = undefined;
-      if (typeof result === "undefined") {
-        output = moduleHolder.exports;
-      } else {
+      // @ATENCIÓN: sí, parece que esta lógica es necesaria
+      const returnsUndefined = () => typeof result === "undefined";
+      const isSameEmptyObject = () => (moduleHolder.exports === firstHolder) && ((Object.keys(firstHolder).length === 0));
+      if(!returnsUndefined()) {
         output = moduleHolder.exports = result;
+      } else if(!isSameEmptyObject()) {
+        output = moduleHolder.exports;
       }
       return this.modules[filepathMask] = output;
     });

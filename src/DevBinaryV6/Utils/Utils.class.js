@@ -26,5 +26,6 @@ class DevBinaryV6Utils {
   /*="./prototype.copyFile.js"*/
   /*="./prototype.matchesFileWithSimpleSelector.js"*/
   /*="./prototype.publicableSettingsIds.js"*/
+  /*="./prototype.installNpmDependencies.js"*/
   /*="./constructor.js"*/
 }

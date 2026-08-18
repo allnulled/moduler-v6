@@ -46,15 +46,23 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
     // assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-1.dist.js`), "File should exist already (832195-4)");
     // assert(require("fs").existsSync(`${__dirname}/../assets/unit/202/src/parts/part-2.dist.js`), "File should exist already (832195-5)");
   }
-  devBinaryV6.compiler.setRootdir(`${__dirname}/../assets/unit/202`);
-  devBinaryV6.compiler.setBasedir(`${__dirname}/../assets/unit/202`);
-  Test_conflictivo_del_devbin_loop: {
-    break Test_conflictivo_del_devbin_loop;
-    const output = await devBinaryV6.command(["loop", "--port", "5006"]);
-    await Promise.all([
-      output.server.server.close(),
-      output.server.watcher.close(),
-    ]);
+  Changing_basedir: {
+    const { rootdir: currentRootdir, basedir: currentBasedir } = devBinaryV6.compiler;
+    try {
+      devBinaryV6.compiler.setRootdir(`${__dirname}/../assets/unit/202`);
+      devBinaryV6.compiler.setBasedir(`${__dirname}/../assets/unit/202`);
+      Test_conflictivo_del_devbin_loop: {
+        break Test_conflictivo_del_devbin_loop;
+        const output = await devBinaryV6.command(["loop", "--port", "5006"]);
+        await Promise.all([
+          output.server.server.close(),
+          output.server.watcher.close(),
+        ]);
+      }
+    } finally {
+      devBinaryV6.compiler.setRootdir(currentBasedir);
+      devBinaryV6.compiler.setBasedir(currentRootdir);
+    }
   }
 
   compilerV6._logger.log("Test 202 ok");

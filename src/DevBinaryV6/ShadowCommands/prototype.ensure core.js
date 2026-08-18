@@ -17,7 +17,13 @@ async "ensure core"(args, devbin) {
       default: false,
       alias: ["-r"],
       description: "Overwrites all core files if used"
-    }
+    },
+    installDependencies: {
+      onFormat: devbin.constructor.Formatters.asBoolean,
+      default: false,
+      alias: ["-i"],
+      description: "Runs «npm install» once all files are ensured"
+    },
   }, args);
   
   this.assert(typeof parameters.from === "string", `Parameter «--from» is required as string on «DevBinaryV6.ShadowCommands.prototype['ensure core']»`);

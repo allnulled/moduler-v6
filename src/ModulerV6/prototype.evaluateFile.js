@@ -3,6 +3,13 @@
  * @type 
  * @description 
  */
-evaluateFile(file, injections = {}) {
-  return this._readPath(file).then(source => this.evaluateSource(source, injections, file));
+evaluateFile(file, injections = {}, options = {}) {
+  return this._readPath(file, options)
+    .catch(error => {
+      if(options.onMissingResource) return options.onMissingResource(error);
+      throw error;
+    })
+    .then(source => {
+      return this.evaluateSource(source, injections, file);
+    });
 }

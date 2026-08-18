@@ -1,6 +1,7 @@
-module.exports = (async function() {
+module.exports = $moduler.import([
+  "@/dist/www/dev/settings/publicable.json"
+], async function([publicable]) {
   return {
-    env: "dev",
-    instrumentalize: []
+    ...publicable,
   };
-})();
+});

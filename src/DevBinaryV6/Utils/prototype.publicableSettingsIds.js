@@ -8,4 +8,5 @@ publicableSettingsIds = [
   "instrumentalize",
   "traceExternalSources",
   "sectionsMap",
+  "test",
 ];

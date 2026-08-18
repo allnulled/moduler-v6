@@ -13,10 +13,12 @@ En este documento se explicarán:
   - [Índice](#índice)
   - [Introducción](#introducción)
   - [Métodos de resolución de rutas](#métodos-de-resolución-de-rutas)
-  - [Variables](#variables)
+  - [Variables de resolución de rutas](#variables-de-resolución-de-rutas)
+  - [Otras features relacionadas](#otras-features-relacionadas)
+    - [Los imports y exports del ModulerV6 permite ignorar ficheros que no se encuentran](#los-imports-y-exports-del-modulerv6-permite-ignorar-ficheros-que-no-se-encuentran)
   - [Consejos relacionados](#consejos-relacionados)
     - [Cuidado con las rutas relativas en módulos importados](#cuidado-con-las-rutas-relativas-en-módulos-importados)
-    - [Casos de uso para cada ruta](#casos-de-uso-para-cada-ruta)
+    - [Casos de uso para cada tipo de ruta](#casos-de-uso-para-cada-tipo-de-ruta)
     - [Patrones que se van creando](#patrones-que-se-van-creando)
 
 ## Introducción
@@ -73,12 +75,26 @@ Este documento pretende esclarecer este contexto.
    - `DevBinaryV6` no tiene métodos de resolución de rutas
    - Puedes usar `DevBinaryV6.prototype.{compiler,moduler}` para conseguir acceso a los anteriores
 
-## Variables
+## Variables de resolución de rutas
 
 - `ModulerV6.prototype.rootdir`
 - `ModulerV6.prototype.basedir`
 
 Principalmente. Ahora mismo, y temporalmente, también son relevantes `CompilerV6.prototype.{rootdir,basedir}`.
+
+## Otras features relacionadas
+
+A continuación se mencionan features que pueden tener relación.
+
+### Los imports y exports del ModulerV6 permite ignorar ficheros que no se encuentran
+
+- Una feature relacionada, lateralmente, con las rutas, es el prefijo de rutas `!`
+   - que permite ignorar si un fichero no existe
+   - y devolver `undefined` en lugar de interrumpir la ejecución
+   - pero esto solo afecta a `ModulerV6.prototype.{import,export}`
+      - sin embargo, (algunos, deberían todos), contemplan que ese `!` esté o no al principio de la ruta
+      - es compatible con todos los tipos de ruta, en principio: `./` `../` `@/` y demás.
+      - estos métodos ya entienden (deberían) que ese `!` no es parte de la ruta
 
 ## Consejos relacionados
 
@@ -132,7 +148,7 @@ A continuación algunos consejos relacionados con las rutas en el momento de cod
       - El `$moduler` solo en superficie
       - Dentro de funciones, mejor `ModulerV6.globalInstance`
 
-### Casos de uso para cada ruta
+### Casos de uso para cada tipo de ruta
 
 Aunque parezca que es una decisión libre usar una ruta relativa o enraizada o absoluta, en el flujo de fabricación del código ves que no lo es tanto. Sí, va a funcionar en cualquier caso, pero en algunos tiene más sentido una vía que otra.
 
