@@ -1,1 +1,1 @@
-bindToRefrescador + includeScript.try + includeStyle.try + isGithubIo + isLoaded llama a bindToRefrescador + getEnvironmentDirectory adaptado para autodetect de github pages + apps del starter con 1 ejemplo que en local va
+Pruebas con github pages

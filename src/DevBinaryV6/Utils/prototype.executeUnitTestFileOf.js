@@ -5,7 +5,7 @@
  */
 executeUnitTestFileOf(filepath, event) {
   if(event.isSrcWww) {
-    console.log(`[*] No test for browser file: ${filepath}`);
+    console.log(`[*] DevBinaryV6 ignored test for browser file: ${filepath}`);
   } else {
     // console.log(`[*] Executing unit test file of: ${event.testFabrication.unitFile}`);
     delete require.cache[event.testFabrication.unitFile];

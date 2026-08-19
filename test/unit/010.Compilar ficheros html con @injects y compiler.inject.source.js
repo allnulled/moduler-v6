@@ -2,6 +2,7 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
 
   const output = await compilerV6.compile("test/assets/unit/010/main.html", { to:"source" });
   
+  await require("fs").promises.writeFile(compilerV6.normalizationOf("@/test/assets/unit/010/main.dist.html"), output.html);
   assert(typeof output.html === "string", "Can compile html files with @injects and $compiler.inject.source syntax (1)");
   assert(output.html.includes("Hello from atomized js!"), "Can compile html files with @injects and $compiler.inject.source syntax (2)");
   assert(output.html.includes("Hello from atomized css!"), "Can compile html files with @injects and $compiler.inject.source syntax (3)");

@@ -14,17 +14,19 @@ class ModulerV6 {
   /*="./static.Settings.js"*/
   /*="./static.Parser.js"*/
   
-  /*="./static.assert.js"*/
-  /*="./static.isBrowser.js"*/
   /*="./static.nativeGrammars.js"*/
   /*="./static.defaultGrammars.js"*/
-  /*="./static.symbols.js"*/
-  /*="./static.getEnvironmentDirectory.js"*/
-  /*="./static.isGithubIo.js"*/
-  /*="./static.bindToRefrescador.js"*/
+
+  /*="./static.assert.js"*/
   /*="./static.trify.js"*/
   /*="./static.includeScript.js"*/
   /*="./static.includeStyle.js"*/
+  /*="./static.isBrowser.js"*/
+  /*="./static.isGithubIo.js"*/
+  /*="./static.symbols.js"*/
+  /*="./static.getEnvironmentDirectory.js"*/
+  /*="./static.bindToRefrescador.js"*/
+  /*="./static.updateAllHtmlLinks.js"*/
   /*="./static.create.js"*/
   
   /*="./prototype._formatImportParameters.js"*/
@@ -41,8 +43,9 @@ class ModulerV6 {
   /*="./prototype._importFactory.js"*/
   /*="./prototype._importSectionByMap.js"*/
   /*="./prototype._removeSymbolsFromFilepath.js"*/
-
+  
   /*="./prototype.assert.js"*/
+  /*="./prototype.trify.js"*/
   /*="./prototype.createAssertFunction.js"*/
   /*="./prototype.setBasedir.js"*/
   /*="./prototype.setRootdir.js"*/

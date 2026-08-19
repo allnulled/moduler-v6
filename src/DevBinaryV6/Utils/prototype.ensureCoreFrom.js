@@ -132,6 +132,9 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectoryIfNotExists(`${targetDir}/test/case`);
   await createDirectoryIfNotExists(`${targetDir}/test/speed`);
   await createDirectoryIfNotExists(`${targetDir}/docs`);
+  await createDirectoryIfNotExists(`${targetDir}/docs/dist`);
+  await createDirectoryIfNotExists(`${targetDir}/docs/dist/www`);
+  await createDirectoryIfNotExists(`${targetDir}/docs/dist/www/external`);
   
   await saveFileIfNotExists(`${targetDir}/package.json`, JSON.stringify(initialPackageJson, null, 2), "utf8");
   if(!await utils._existsFile(`${targetDir}/.gitignore`)) await saveFile(`${targetDir}/.gitignore`, "node_modules", "utf8");
@@ -152,8 +155,10 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/www-settings.js`, `${targetDir}/dist/www/dev/settings.dist.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
 
-  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/external/moduler-v6.entry.js`);  
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/www/external/moduler-v6.entry.js`);
+  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/www/external/moduler-v6.dist.js`);
+  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/docs/dist/www/external/moduler-v6.dist.js`);
+  await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/external/moduler-v6.entry.js`);  
   await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/external/compiler-v6.entry.js`);
   await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/external/dev-binary-v6.entry.js`);
   await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/external/refrescador.entry.js`);

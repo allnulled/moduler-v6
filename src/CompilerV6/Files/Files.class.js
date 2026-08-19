@@ -15,5 +15,6 @@ class Files {
   /*="./prototype.makeDirectory.js"*/
   /*="./prototype.readFile.js"*/
   /*="./prototype.copyDirectory.js"*/
+  /*="./prototype.copyFile.js"*/
   /*="./prototype.ensureDirectory.js"*/
 }

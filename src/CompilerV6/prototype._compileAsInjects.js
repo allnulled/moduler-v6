@@ -85,7 +85,7 @@ async _compileAsInjects(compilationFile, compilationProcess, { token, tokenIndex
         this._prependToParentCompilationFile(compilationFile, {
           prefix: "\n\n",
           tabulation: 0,
-          body: this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1]-1, targetCompilation.md),
+          body: this._replaceTextRange(compilationFile.compilation.md, token.location[0], token.location[1]-0, targetCompilation.md),
         }, "md", false);
         wasPrepended = true;
       } else { // ...a otro formato

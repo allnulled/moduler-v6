@@ -24,8 +24,7 @@ Párrafo principal.
 1. [main.md](#main-md)
 2. [Índice](#indice)
 
-## Parte 1
-/*@injects:"./part2.md"*/
+## Parte 1/*@injects:"./part2.md"*/
 /*@injects:"./part3.md"*/
 
 # Table of contents
@@ -34,8 +33,7 @@ Párrafo principal.
 2. [Índice](#indice)
 
 /*@injects:"./part1.md"*/
-## Parte 2
-/*@injects:"./part3.md"*/
+## Parte 2/*@injects:"./part3.md"*/
 
 # Table of contents
 
@@ -45,7 +43,6 @@ Párrafo principal.
 /*@injects:"./part1.md"*/
 /*@injects:"./part2.md"*/
 ## Parte 3
-
 Aquí pongo otra cosa.
 
 # Table of contents
@@ -53,8 +50,7 @@ Aquí pongo otra cosa.
 1. [main.md](#main-md)
 2. [Índice](#indice)
 
-## Parte 1
-/*@injects:"./part2.md"*/
+## Parte 1/*@injects:"./part2.md"*/
 /*@injects:"./part3.md"*/
 
 # Table of contents
@@ -63,8 +59,7 @@ Aquí pongo otra cosa.
 2. [Índice](#indice)
 
 /*@injects:"./part1.md"*/
-## Parte 2
-/*@injects:"./part3.md"*/
+## Parte 2/*@injects:"./part3.md"*/
 
 # Table of contents
 

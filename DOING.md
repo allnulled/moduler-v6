@@ -22,6 +22,7 @@ Ahora:
    - [ ] se tienen que poder omitir los script tags para bindearlo con el refrescador
       - [ ] ModulerV6 sabiendo el entorno debe saber también resolver esos 2 scripts y poder omitirlos del index.html si importas ModulerV6
       - [ ] ModulerV6 sabiendo el entorno debe saber también resolver esos 2 scripts y poder omitirlos del index.html si importas ModulerV6
+   - [ ] Iterar con npm run up hasta que funcione en github pages (?)
 
 Luego:
 

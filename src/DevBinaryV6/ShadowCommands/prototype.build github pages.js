@@ -3,6 +3,9 @@
  * @type 
  * @description 
  */
-"build github pages"(args, devbin) {
-  return devbin.compiler.files.copyDirectory("@/dist/www", "@/docs/dist/www");
+async "build github pages"(args, devbin) {
+  await devbin.compiler.files.copyDirectory("@/dist/www", "@/docs/dist/www");
+  await devbin.compiler.files.copyFile.try("@/dist/www/index.html", "@/docs/dist/www/index.html");
+  await devbin.compiler.files.copyFile.try("@/dist/www/app.dist.js", "@/docs/dist/www/app.dist.js");
+  await devbin.compiler.files.copyFile.try("@/dist/www/app.dist.css", "@/docs/dist/www/app.dist.css");
 }

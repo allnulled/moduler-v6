@@ -3,11 +3,10 @@
  * @type 
  * @description 
  */
-static bindToRefrescador() {
+static async bindToRefrescador() {
   if(!this.isBrowser) return -2;
   if(this.isGithubIo()) return -3;
-  return Promise.all([
-    this.includeScript.try("/socket-io.client.js"),
-    this.includeScript.try("/client.js"),
-  ]);
+  await this.includeScript.try("/socket.io-client.js");
+  await this.includeScript.try("/client.js");
+  return "bound successfully";
 }

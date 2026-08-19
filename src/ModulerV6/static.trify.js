@@ -3,7 +3,7 @@
  * @type 
  * @description 
  */
-async trify(callback, ...args) {
+static async trify(callback, ...args) {
   try {
     return await callback(...args);
   } catch (error) {

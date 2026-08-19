@@ -4,7 +4,7 @@
  * @description 
  */
 async command(args = []) {
-  let commandParameters, commandSubpath, commandCallback, commandType, commandId;
+  let commandParameters, commandSubpath, commandCallback, commandType, commandId, commandName;
   Extract_command_parameters: {
     if (Array.isArray(args)) {
       commandParameters = this.utils.parseCliArgs(args);
@@ -17,6 +17,7 @@ async command(args = []) {
   }
   Extract_command_id: {
     commandId = commandParameters._.join("/");
+    commandName = commandParameters._.join(" ");
   }
   Define_path_from_command: {
     commandSubpath = this.compiler.normalizationOf(`@/dev/bin/${commandId}/command.js`);
@@ -38,9 +39,8 @@ async command(args = []) {
         commandCallback = require(commandSubpath);
       } else {
         commandType = "hook";
-        const possibleHookId = commandParameters._.join(" ");
-        if (possibleHookId in this.shadowCommands) {
-          commandCallback = this.shadowCommands[possibleHookId];
+        if (commandName in this.shadowCommands) {
+          commandCallback = this.shadowCommands[commandName];
           break Load_command_callback_from_file_or_shadowCommands;
         }
         const errorMessage = `Error of «devbin command not found» for parameters «${commandId}»`;
@@ -50,9 +50,10 @@ async command(args = []) {
   }
   Execute_command_callback: {
     try {
+      console.log(`[*] DevBinaryV6 executing command: ${commandName}`);
       return await commandCallback.call(this.shadowCommands, commandParameters, this, commandType, commandSubpath);
     } catch (error) {
-      console.error(`[!] The «devbin ${commandId}» command threw an error:`, error);
+      console.error(`[!] The «devbin ${commandName}» command threw an error:`, error);
       throw error;
     }
   }

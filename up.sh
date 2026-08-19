@@ -19,9 +19,9 @@ if [[ "$r" =~ ^[Yy]$ ]]; then
     : > COMMIT.md
     cd ../moduler-v6-starter
 
-    # Fabricamos el github pages:
+    # Fabricamos el github pages: (el del starter)
     devbin build github pages
-    
+
     git add .
     git commit -F ../moduler-v6/COMMIT-PREVIOUS.md
     git push
