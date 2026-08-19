@@ -1,1 +1,1 @@
-mas pruebas con github pages (4)
+bases de la guia de aplicaciones con ModulerV6 para Github Pages
