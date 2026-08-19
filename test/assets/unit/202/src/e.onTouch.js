@@ -1,1 +1,0 @@
-module.exports = () => require("fs").writeFileSync(`${__dirname}/ontouch-fired.txt`, "yes", "utf8");

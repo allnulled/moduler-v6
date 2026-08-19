@@ -1,1 +1,0 @@
-$compiler.inject.source("./m2.js")
