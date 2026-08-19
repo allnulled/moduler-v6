@@ -3,9 +3,6 @@
 # Limpiamos tests:
 node up-cleaner.js
 
-# Fabricamos el github pages:
-devbin build github pages
-
 # Preguntamos por el commit:
 cat COMMIT.md
 
@@ -21,6 +18,10 @@ if [[ "$r" =~ ^[Yy]$ ]]; then
     cp COMMIT.md COMMIT-PREVIOUS.md
     : > COMMIT.md
     cd ../moduler-v6-starter
+
+    # Fabricamos el github pages:
+    devbin build github pages
+    
     git add .
     git commit -F ../moduler-v6/COMMIT-PREVIOUS.md
     git push
