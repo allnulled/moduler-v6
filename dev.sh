@@ -18,7 +18,7 @@ cd "$DIR2"
     -i "**/src/www/external/**/*.entry.js" \
     -i "**/*.{dist,ign}.*" \
     -i "**/logs/**/*" \
-    -i "**/test/assets/unit/{202,203,204}/**/*" \
+    -i "**/test/assets/unit/{202,203,204,205}/**/*" \
     -p "3004" \
     -d 0 \
     -e "sh" \

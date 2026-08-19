@@ -3,7 +3,7 @@
  * @type 
  * @description 
  */
-async _compileAsInjectSource(compilationFile, compilationProcess, { token, tokenIndex }) {
+async _compileAsInjectSource(compilationFile, compilationProcess, { token, tokenIndex }, options = {}) {
   this._traceIn("_compileAsInjectSource", arguments);
   let parameters, targetPath, targetCompilation, targetCaches = {};
   const {
@@ -79,7 +79,11 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
       if (!targetCaches.js) targetCaches.js = targetCompilation.js;
       targetCaches.css = targetCaches.css || targetCompilation?.css;
       targetCaches.md = targetCaches.md || targetCompilation?.md;
-      compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], targetCaches.js);
+      let outputJs = targetCaches.js;
+      if(options?.modifySource) {
+        outputJs = options.modifySource(outputJs);
+      }
+      compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], outputJs);
     }
     Esto_tiene_que_hacerse_desde_dentro_del_compileRecursively: {
       // compilationFile.compilation.css += targetCaches.css;

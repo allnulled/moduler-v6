@@ -101,3 +101,5 @@ En el proyecto se incluyen 3 ficheros distribuibles:
 - [Guía de últimas features de DevBinaryV6](./guides/Gu%C3%ADa%20de%20%C3%BAltimas%20features%20de%20DevBinaryV6.md)
    - Se explican las últimas features implementadas en los 3: `ModulerV6`, `CompilerV6` y `DevBinaryV6`.
    - Sería en `CHANGELOG.md` del proyecto, en realidad, después de la base
+- [Guía de aplicaciones con ModulerV6 para Github Pages.md](./guides/Gu%C3%ADa%20de%20aplicaciones%20con%20ModulerV6%20para%20Github%20Pages.md)
+   - Se explican las features y prácticas para subir aplicaciones estáticas a Github Pages

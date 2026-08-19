@@ -59,6 +59,7 @@ class CompilerV6 {
   /*="./prototype._compileAsInjectSource.js"*/
   /*="./prototype._compileAsInjectString.js"*/
   /*="./prototype._compileAsInjectTemplate.js"*/
+  /*="./prototype._compileAsInjectModule.js"*/
   /*="./prototype._compileAsMultilineCommentCodeInjection.js"*/
   /*="./prototype._compileAsMultilineCommentValueInjection.js"*/
   /*="./prototype._compileAsModulerImport.js"*/

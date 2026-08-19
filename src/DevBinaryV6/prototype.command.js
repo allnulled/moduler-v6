@@ -4,19 +4,22 @@
  * @description 
  */
 async command(args = []) {
-  let commandParameters, commandSubpath, commandCallback, commandType;
-  Format_input: {
+  let commandParameters, commandSubpath, commandCallback, commandType, commandId;
+  Extract_command_parameters: {
     if (Array.isArray(args)) {
       commandParameters = this.utils.parseCliArgs(args);
-      break Format_input;
+      break Extract_command_parameters;
     } else if (typeof args === "object") {
       commandParameters = args;
-      break Format_input;
+      break Extract_command_parameters;
     }
     throw new Error(`Parameter «args» must be array or object but «${typeof args}» was found instead on «DevBinary.prototype.command»`);
   }
+  Extract_command_id: {
+    commandId = commandParameters._.join("/");
+  }
   Define_path_from_command: {
-    commandSubpath = this.compiler.normalizationOf(`./dev/bin/${commandParameters._.join("/")}/command.js`);
+    commandSubpath = this.compiler.normalizationOf(`@/dev/bin/${commandId}/command.js`);
   }
   Load_command_callback_from_file_or_shadowCommands: {
     let isReadable = undefined;
@@ -40,14 +43,17 @@ async command(args = []) {
           commandCallback = this.shadowCommands[possibleHookId];
           break Load_command_callback_from_file_or_shadowCommands;
         }
-        const errorMessage = `Error of «devbin command not found» for parameters «${commandParameters._.join("/")}»`;
-        console.error(errorMessage);
-        return new Error(errorMessage);
-        // throw new Error(`Could not find any command «${commandParameters._.join("/")}/command.js» at «${commandSubpath}» or any hook «${commandParameters._.join(" ")}» on «DevBinaryV6.prototype.command»`);
+        const errorMessage = `Error of «devbin command not found» for parameters «${commandId}»`;
+        throw new Error(errorMessage);
       }
     }
   }
   Execute_command_callback: {
-    return await commandCallback.call(this.shadowCommands, commandParameters, this, commandType, commandSubpath);
+    try {
+      return await commandCallback.call(this.shadowCommands, commandParameters, this, commandType, commandSubpath);
+    } catch (error) {
+      console.error(`[!] The «devbin ${commandId}» command threw an error:`, error);
+      throw error;
+    }
   }
 }
