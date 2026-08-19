@@ -1,0 +1,1 @@
+module.exports = ({file}) => require("fs").appendFileSync(`${__dirname}/ondistribute-fired.txt`, file + "\n", "utf8");

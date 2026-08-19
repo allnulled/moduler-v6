@@ -1,0 +1,52 @@
+{
+  "tree": {
+    "@/src/main.entry.js": {
+      "39-76": {
+        "syntax": "Inject Source",
+        "inner": "\"./part-2.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./part-2.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/202/src/part-2.js",
+          "rootpath": "@/src/part-2.js"
+        }
+      },
+      "0-37": {
+        "syntax": "Inject Source",
+        "inner": "\"./part-1.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./part-1.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/202/src/part-1.js",
+          "rootpath": "@/src/part-1.js"
+        }
+      }
+    },
+    "@/src/part-2.js": {},
+    "@/src/part-1.js": {
+      "0-49": {
+        "syntax": "Inject Source",
+        "inner": "\"./parts/part-1.entry.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./parts/part-1.entry.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/202/src/parts/part-1.entry.js",
+          "rootpath": "@/src/parts/part-1.entry.js"
+        }
+      }
+    },
+    "@/src/parts/part-1.entry.js": {
+      "0-33": {
+        "syntax": "Inject Source",
+        "inner": "\"./m1.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./m1.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/202/src/parts/m1.js",
+          "rootpath": "@/src/parts/m1.js"
+        }
+      }
+    },
+    "@/src/parts/m1.js": {}
+  }
+}
