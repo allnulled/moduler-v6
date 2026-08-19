@@ -20,6 +20,11 @@ class ModulerV6 {
   /*="./static.defaultGrammars.js"*/
   /*="./static.symbols.js"*/
   /*="./static.getEnvironmentDirectory.js"*/
+  /*="./static.isGithubIo.js"*/
+  /*="./static.bindToRefrescador.js"*/
+  /*="./static.trify.js"*/
+  /*="./static.includeScript.js"*/
+  /*="./static.includeStyle.js"*/
   /*="./static.create.js"*/
   
   /*="./prototype._formatImportParameters.js"*/

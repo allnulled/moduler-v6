@@ -12,10 +12,6 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
   await devbin1.command(["build", "github", "pages"]);
 
   assert("Hello" === await fs2.readFile(`${__dirname}/../assets/unit/205/docs/dist/www/hello.txt`), "Can create github pages directory «docs» by «devbin build github pages» command (2)");
-
-  Al_final_se_borra_para_no_meter_mas_ruido_en_el_proyecto: {
-    await fs2.deleteDirectory(`${__dirname}/../assets/unit/205`);
-  }
   
   compilerV6._logger.log("Test 205 ok");
 };

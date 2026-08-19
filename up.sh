@@ -1,7 +1,12 @@
 #!/usr/bin/bash
 
+# Limpiamos tests:
 node up-cleaner.js
 
+# Fabricamos el github pages:
+devbin build github pages
+
+# Preguntamos por el commit:
 cat COMMIT.md
 
 echo ''

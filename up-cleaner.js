@@ -28,6 +28,7 @@ const utils = {
 module.exports = (async function upCleaner() {
   await utils.vaciarDirectorio(`${__dirname}/test/assets/unit/202`);
   await utils.vaciarDirectorio(`${__dirname}/test/assets/unit/204`);
+  await utils.vaciarDirectorio(`${__dirname}/test/assets/unit/205`);
   await utils.vaciarDirectorio(`${__dirname}/src-tmp`);
   await utils.crearFichero(`${__dirname}/src-tmp/not-empty.txt`, "no esta vacio el dir");
 })();

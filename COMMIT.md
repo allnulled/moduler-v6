@@ -1,1 +1,1 @@
-comando para devbin build github pages + CompilerV6 permite $compiler.inject.module ahora + DevBinaryV6.prototype.command lanza error que antes se callaba
+bindToRefrescador + includeScript.try + includeStyle.try + isGithubIo + isLoaded llama a bindToRefrescador + getEnvironmentDirectory adaptado para autodetect de github pages + apps del starter con 1 ejemplo que en local va
