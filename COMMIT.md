@@ -1,1 +1,1 @@
-los minify y beautify pueden lanzar error pero se ignora + el touchFile y compileDistribuibles tienen un trackeo de los pasos que ha hecho + guia de programación de funciones 
+typo en readme

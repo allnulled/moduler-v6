@@ -103,6 +103,6 @@ En el proyecto se incluyen 3 ficheros distribuibles:
    - Sería en `CHANGELOG.md` del proyecto, en realidad, después de la base
 - [Guía de aplicaciones con ModulerV6 para Github Pages.md](./guides/Gu%C3%ADa%20de%20aplicaciones%20con%20ModulerV6%20para%20Github%20Pages.md)
    - Se explican las features y prácticas para subir aplicaciones estáticas a Github Pages
-- [Guía de programación de funciones para DevBinaryV6](./guides/#Gu%C3%ADa%20de%20programaci%C3%B3n%20de%20funciones%20para%20DevBinaryV6.md)
+- [Guía de programación de funciones para DevBinaryV6](./guides/Gu%C3%ADa%20de%20programaci%C3%B3n%20de%20funciones%20para%20DevBinaryV6.md)
    - Se explican normas para codificar funciones
    - No es solo del DevBinaryV6, es JavaScript en general
