@@ -4,7 +4,12 @@
  * @description 
  */
 static beautifyJs(code) {
-  return require("prettier").format(code, {
-    parser: "babel"
-  });
+  try {
+    return require("prettier").format(code, {
+      parser: "babel"
+    });
+  } catch (error) {
+    console.error(`[!] ERROR DESDE EL BEAUTIFIER:`, error);
+    return code;
+  }
 }

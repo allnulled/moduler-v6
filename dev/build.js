@@ -31,6 +31,13 @@ const ensureFileSync = function (file) {
     throw error;
   }
 };
+const trify = (callback, fallback) => {
+  try {
+    return callback();
+  } catch(error) {
+    return fallback;
+  };
+};
 let fileCounter = 0;
 const reduceTemplate = function (file, dir) {
   const filepath = path.resolve(dir, file);
@@ -68,7 +75,7 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
   Transformaciones: {
     const transformationsStart = new Date();
     const [beautifiedDistV6, compressedDistV6] = await Promise.all([
-      minify({ [src2Absolute]: sourceV6 }, {
+      trify(() => minify({ [src2Absolute]: sourceV6 }, {
         compress: false,
         mangle: false,
         toplevel: true,
@@ -76,8 +83,8 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
           comments: false, // Esta es la única cambiada
           beautify: true
         }
-      }),
-      minify({ [src2Absolute]: sourceV6 }, {
+      })),
+      trify(() => minify({ [src2Absolute]: sourceV6 }, {
         compress: true,
         mangle: true,
         toplevel: true,
@@ -85,7 +92,7 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
           comments: false,
           beautify: false,
         }
-      }),
+      })),
     ]);
     const transformationTiming = (((new Date()) - transformationsStart) / 1000);
     transformationsTiming += transformationTiming;

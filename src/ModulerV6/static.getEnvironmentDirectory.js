@@ -4,6 +4,7 @@
  * @description 
  */
 static getEnvironmentDirectory() {
+  this.tracer.trace("ModulerV6.static.getEnvironmentDirectory");
   if (this.isBrowser) {
     Apply_github_io_configurations_if_so: {
       const projectName = this.isGithubIo();

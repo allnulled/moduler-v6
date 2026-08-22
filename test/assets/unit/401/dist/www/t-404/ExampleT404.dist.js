@@ -1,4 +1,4 @@
-module.exports = class ExampleT404 {
-    constructor(base, options = {}) {}
-    initialize() {}
+module.exports = class {
+  constructor(base, options = {}) {}
+  initialize() {}
 };

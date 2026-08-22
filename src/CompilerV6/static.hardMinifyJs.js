@@ -3,16 +3,21 @@
  * @type 
  * @description 
  */
-static hardMinifyJs(code) {
-  return require("terser").minify(code, {
-    compress: {
-      defaults: true,
-      passes: 5,
-      unsafe: true,
-      toplevel: true
-    },
-    mangle: {
-      toplevel: true
-    },
-  });
+static async hardMinifyJs(code) {
+  try {
+    return await require("terser").minify(code, {
+      compress: {
+        defaults: true,
+        passes: 5,
+        unsafe: true,
+        toplevel: true
+      },
+      mangle: {
+        toplevel: true
+      },
+    });
+  } catch (error) {
+    console.log(`[!] ERROR EN EL HARD-MINIFIER:`, error);
+    return { code };
+  }
 }

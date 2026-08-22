@@ -5,6 +5,8 @@ class ModulerV6 {
    * @description ...
    */
   
+  /*="./static.Tracer.js"*/
+  /*="./static.tracer.js"*/
   /*="./static.createResolvable.js"*/
   /*="./static.onLoaded.js"*/
   /*="./static.Runtime.js"*/
@@ -19,6 +21,9 @@ class ModulerV6 {
 
   /*="./static.assert.js"*/
   /*="./static.trify.js"*/
+  /*="./static._alphabet.js"*/
+  /*="./static._getRandomString.js"*/
+  /*="./static._getRandomCharacter.js"*/
   /*="./static.includeScript.js"*/
   /*="./static.includeStyle.js"*/
   /*="./static.isBrowser.js"*/
@@ -29,6 +34,7 @@ class ModulerV6 {
   /*="./static.updateAllHtmlLinks.js"*/
   /*="./static.create.js"*/
   
+  /*="./prototype.tracer.js"*/
   /*="./prototype._formatImportParameters.js"*/
   /*="./prototype._formatExportParameters.js"*/
   /*="./prototype._joinPaths.js"*/

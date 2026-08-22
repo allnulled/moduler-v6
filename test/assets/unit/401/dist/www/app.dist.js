@@ -1,3 +1,3 @@
 window.addEventListener("load", async function() {
-    console.log("[*] Page loaded");
+  console.log("[*] Page loaded");
 });
