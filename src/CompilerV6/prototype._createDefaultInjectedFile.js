@@ -4,7 +4,8 @@
  * @description 
  */
 _createDefaultInjectedFile(file, targetId) {
-  const filename = require("path").basename(file).replace(/\.js$/g,"");
+  const path = require("path");
+  const filename = path.basename(file).replace(/\.js$/g,"");
   let name, targetType, targetIsClass = false, targetRootdir;
   targetType = "any";
   targetRootdir = this.rootdirOf(file);
@@ -61,8 +62,16 @@ _createDefaultInjectedFile(file, targetId) {
     out = prefixes + middle + suffixes;
     return out;
   })();
-  const tokenComment1 = ['/','*','*'].join('');
-  const headerComment = `${tokenComment1}\n   * @file ${targetRootdir}\n   * @type ${targetType}\n   */`;
+  const opener = ['/','*','*'].join('');
+  const closer = ['*','/'].join('');
+  let headerComment = "";
+  headerComment += `${opener}\n`;
+  const nameByFile = targetRootdir.replace(/^\@\/src\/candidate\//g, "").replace(/^\@\/src\//g, "").replace(/\.js$/g, "").replace(/\//g, ".");
+  const basenameByFile = path.basename(targetRootdir).replace(/\.js$/g, "");
+  headerComment += `   * # ${basenameByFile}\n`;
+  headerComment += `   * - section: ${nameByFile}\n`;
+  headerComment += `   * - file:    ${targetRootdir}\n`;
+  headerComment += `   ${closer}`;
   return require("fs").promises.writeFile(file, `${name} {
   ${headerComment}
 }`, "utf8").catch(error => {

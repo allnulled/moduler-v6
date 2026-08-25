@@ -1,5 +1,5 @@
 module.exports = class ExampleT406 {
-  /**
+  /**@:
    * # Class ExampleT406
    * 
    * - Clase para test/demo de documentación markdown escalable

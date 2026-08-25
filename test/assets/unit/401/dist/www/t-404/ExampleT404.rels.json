@@ -1,7 +1,7 @@
 {
   "tree": {
     "@/src/www/t-404/ExampleT404.entry.js": {
-      "255-295": {
+      "257-297": {
         "syntax": "@Injects",
         "inner": "\"./prototype.initialize.js\"",
         "referenceOf": {
@@ -11,7 +11,7 @@
           "rootpath": "@/src/www/t-404/prototype.initialize.js"
         }
       },
-      "221-252": {
+      "223-254": {
         "syntax": "@Injects",
         "inner": "\"./constructor.js\"",
         "referenceOf": {

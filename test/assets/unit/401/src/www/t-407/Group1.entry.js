@@ -1,4 +1,4 @@
-/**
+/**@:
  * # Class Group1
  * 
  * Clase Group1.

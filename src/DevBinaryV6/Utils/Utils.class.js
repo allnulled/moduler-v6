@@ -27,5 +27,7 @@ class DevBinaryV6Utils {
   /*="./prototype.matchesFileWithSimpleSelector.js"*/
   /*="./prototype.publicableSettingsIds.js"*/
   /*="./prototype.installNpmDependencies.js"*/
+  /*="./prototype.synchronizeSplittableClass.js"*/
+  /*="./prototype.getMemberFragmentCodeFor.js"*/
   /*="./constructor.js"*/
 }

@@ -6,6 +6,16 @@ const execAsync = promisify(exec);
 const rootdir = path.resolve(`${__dirname}/..`);
 const rootrel = (subpath) => path.resolve(rootdir, subpath);
 const { minify } = require("terser");
+const beautify = async (code,file) => {
+  try {
+    return await require("prettier").format(code, {
+      parser: "babel"
+    });
+  } catch (error) {
+    console.log(`[!] Failed to beaeutify/minify file «${file}» because:`, error);
+    return code;
+  }
+};
 const settings = {
   disableBeautifierAndMinifier: 0,
   printInjections: 1,
@@ -75,6 +85,8 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
   Transformaciones: {
     const transformationsStart = new Date();
     const [beautifiedDistV6, compressedDistV6] = await Promise.all([
+      trify(() => beautify(sourceV6)),
+      /*
       trify(() => minify({ [src2Absolute]: sourceV6 }, {
         compress: false,
         mangle: false,
@@ -84,6 +96,7 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
           beautify: true
         }
       })),
+      //*/
       trify(() => minify({ [src2Absolute]: sourceV6 }, {
         compress: true,
         mangle: true,
@@ -93,12 +106,13 @@ const compileFile = async function ({ src: src1, dist, distMin }) {
           beautify: false,
         }
       })),
+      //*/
     ]);
     const transformationTiming = (((new Date()) - transformationsStart) / 1000);
     transformationsTiming += transformationTiming;
     console.log(`[*] Took ${transformationTiming.toFixed(2)} secs to beautify and minify (minify takes more time usually)`);
     await Promise.all([
-      fs.promises.writeFile(rootrel(dist), beautifiedDistV6.code, "utf8"),
+      fs.promises.writeFile(rootrel(dist), beautifiedDistV6, "utf8"),
       fs.promises.writeFile(rootrel(distMin), compressedDistV6.code, "utf8"),
     ]);
   }

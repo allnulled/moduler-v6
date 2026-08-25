@@ -1,4 +1,4 @@
-/**
+/**@:
  * Esto es un bloque de markdown.
  * 
  * Al principio tiene un salto de línea.

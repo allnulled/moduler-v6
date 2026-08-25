@@ -69,7 +69,7 @@ static nativeGrammars = {
   // JavadocComment: ["/"+"**", "*/", function (token) {return { syntax: "Javadoc Comment", ...token, };}, {allowInside:true}],
   
   // Markdown related syntaxes:
-  MultilineMarkdownComment: ["/"+"**", "*/", function(token) {
+  MultilineMarkdownComment: ["/"+"**@:", "*/", function(token) {
     return { syntax: "Multiline Markdown Comment", ...token };
   }],
   NewParagraphMarkdownComment: ["/"+"//@@:", "\n", function(token) {

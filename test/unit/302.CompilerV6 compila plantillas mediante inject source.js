@@ -3,12 +3,12 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, devBi
   const assert = compilerV6.createAssertFunction();
   
   Test_basico: {
-    const compilation1 = await compilerV6.compile(`${__dirname}/../assets/unit/302/main.js`, { beautify: false, minify: false });
+    const compilation1 = await compilerV6.compile(`${__dirname}/../assets/unit/302/main.js`, { beautify: false, minify: false, enableTemplates: true, });
     assert(compilation1.js === "750 === 550 + 200", "Can compile template syntax on devtime by compiler-v6 (basic test)");
   }
 
   Test_avanzado: {
-    const compilation2 = await compilerV6.compile(`${__dirname}/../assets/unit/302/main2.js`, { beautify: false, minify: false });
+    const compilation2 = await compilerV6.compile(`${__dirname}/../assets/unit/302/main2.js`, { beautify: false, minify: false, enableTemplates: true, });
     assert(compilation2.js === "ok".repeat(4), "Can compile template syntax on devtime by compiler-v6 (advanced test)");
   }
 

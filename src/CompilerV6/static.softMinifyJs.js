@@ -5,6 +5,8 @@
  */
 static async softMinifyJs(code) {
   try {
+    const out = await this.beautifyJs(code);
+    return {code:out};
     return await require("terser").minify(code, {
       compress: {
         sequences: true,

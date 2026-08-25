@@ -1,7 +1,7 @@
 {
   "tree": {
     "@/src/www/t-406/ExampleT406.entry.js": {
-      "295-329": {
+      "297-331": {
         "syntax": "@Injects",
         "inner": "\"./static.Subapi3.js\"",
         "referenceOf": {
@@ -11,7 +11,7 @@
           "rootpath": "@/src/www/t-406/static.Subapi3.js"
         }
       },
-      "258-292": {
+      "260-294": {
         "syntax": "@Injects",
         "inner": "\"./static.Subapi2.js\"",
         "referenceOf": {
@@ -21,7 +21,7 @@
           "rootpath": "@/src/www/t-406/static.Subapi2.js"
         }
       },
-      "221-255": {
+      "223-257": {
         "syntax": "@Injects",
         "inner": "\"./static.Subapi1.js\"",
         "referenceOf": {
@@ -95,7 +95,7 @@
       }
     },
     "@/src/www/t-406/Subapi1/Subapi1.class.js": {
-      "119-154": {
+      "121-156": {
         "syntax": "@Injects",
         "inner": "\"./static.Command1.js\"",
         "referenceOf": {
@@ -119,7 +119,7 @@
       }
     },
     "@/src/www/t-406/Subapi1/Command1/Command1.entry.js": {
-      "53-89": {
+      "55-91": {
         "syntax": "@Injects",
         "inner": "\"./static.property1.js\"",
         "referenceOf": {

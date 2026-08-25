@@ -14,6 +14,7 @@ class ModulerV6 {
   /*="./static.CssManager.js"*/
   /*="./static.SectionsManager.js"*/
   /*="./static.Settings.js"*/
+  /*="./static.Toolkit.js"*/
   /*="./static.Parser.js"*/
   
   /*="./static.nativeGrammars.js"*/
@@ -59,6 +60,7 @@ class ModulerV6 {
   /*="./prototype.basedirOf.js"*/
   /*="./prototype.rootdirOf.js"*/
   /*="./prototype.cloneForFile.js"*/
+  
   /*="./prototype.evaluateFile.js"*/
   /*="./prototype.evaluateSource.js"*/
   /*="./prototype.import.js"*/

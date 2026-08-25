@@ -16,4 +16,5 @@ constructor(basedirArg = null, cloneOf = null) {
   /*="./prototype.css.js"*/
   /*="./prototype.settings.js"*/
   /*="./prototype.runtime.js"*/
+  /*="./prototype.toolkit.js"*/
 }

@@ -31,11 +31,13 @@ async touchFile(file, optionsInput = {}) {
         ...optionsInput,
       });
       this.assert(optionsInput.uncacheInjections === event.uncacheInjections, "Las inyections 2");
+      event.filename = path.basename(filepath);
       event.isHtml = filepath.endsWith(".html");
       event.isJsEntry = filepath.endsWith(".entry.js");
       event.isCssEntry = filepath.endsWith(".entry.css");
       event.isMdEntry = filepath.endsWith(".entry.md");
       event.isJsTest = filepath.endsWith(".test.js");
+      event.isSplittableClass = event.filename.startsWith("splittable.") && event.filename.endsWith(".class.js");
       event.isSrcWww = rootPath.startsWith("@/src/www/");
       event.isSrc = rootPath.startsWith("@/src/");
       isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
@@ -45,14 +47,20 @@ async touchFile(file, optionsInput = {}) {
     Touch_event: {
       currentStep.push("3. run touch event");
       Processing_entry: {
-        Paso_previo_1_caso_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
+        Caso_previo_1_splittable_class: {
+          if(event.isSplittableClass) {
+            await this.synchronizeSplittableClass(filepath, event);
+            break Touch_event;
+          }
+        }
+        Caso_previo_2_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
           if (filepath === this.devbin.compiler.fullpathOf("@/dev/settings.js")) {
             currentStep.push("3.1. exporting dev/settings");
             await this.exportDevSettings(filepath);
             break Touch_event;
           }
         }
-        Paso_previo_2_caso_src_html: {
+        Caso_previo_3_caso_src_html: {
           if (event.isHtml) {
             currentStep.push("3.2. found html file");
             if (event.isSrcWww) {
@@ -212,7 +220,7 @@ async touchFile(file, optionsInput = {}) {
     }
     return event;
   } catch (error) {
-    console.log(`[!] Error on method «touchFile» on step «${currentStep.reverse().join(" < ")}»`, error);
+    console.log(`[!] Error on method «touchFile» on step «${currentStep.reverse()[0]}»`, error);
     throw error;
   }
 }

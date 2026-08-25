@@ -10,6 +10,7 @@ async _renderSourceAsTemplate(compilationFile, compilationProcess) {
   if(compilationProcess.disableTemplates) {
     return "ok:2:disabled templates";
   }
+  if(!compilationProcess.enableTemplates) return false;
   compilationFile.compilation.js = compilationFile.source = await this._renderTemplate(compilationFile.source, {
     compilationFile,
     compilationProcess,

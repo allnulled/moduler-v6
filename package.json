@@ -10,6 +10,7 @@
     "devbin": "./dist/dev-binary-v6.bin.dist.js"
   },
   "dependencies": {
+    "@babel/parser": "^7.29.8",
     "acorn": "^8.17.0",
     "buffer-from": "^1.1.2",
     "commander": "^2.20.3",

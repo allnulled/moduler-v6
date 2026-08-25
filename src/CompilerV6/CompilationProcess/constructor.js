@@ -23,6 +23,9 @@ constructor(compilationFile, compilationProcess, compiler) {
     if (typeof this.isRoot === "undefined") {
       this.isRoot = compilationFile.isRoot;
     }
+    if(typeof this.enableTemplates === "undefined") {
+      this.enableTemplates = false;
+    }
     this.compiler.assert(typeof this.resource === "string", "Parameter «compilationProcess.resource» must be string on «CompilerV6.CompilationProcess.constructor»");
     this.compiler.assert(typeof this.isRoot === "boolean", "Parameter «compilationProcess.isRoot» must be boolean on «CompilerV6.CompilationProcess.constructor»");
     this.compiler._traceOut("CompilationProcess.constructor", arguments);

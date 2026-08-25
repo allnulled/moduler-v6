@@ -110,7 +110,7 @@ async compileDistribuiblesOf(filepath, event) {
       return report;
     }
   } catch (error) {
-    console.log(`[!] Error on method «compileDistribuiblesOf» on step «${currentStep.reverse().join(" < ")}»`, error);
+    console.log(`[!] Error on method «compileDistribuiblesOf» on step «${currentStep.reverse().join(" < ")}» of file «${filepath}»`, error);
     throw error;
   }
 }
