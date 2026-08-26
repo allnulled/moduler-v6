@@ -53,14 +53,20 @@ async touchFile(file, optionsInput = {}) {
             break Touch_event;
           }
         }
-        Caso_previo_2_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
+        Caso_previo_2_splittable_method: {
+          const result = await this.synchronizeSplittableMethod(filepath, event);
+          if(result) {
+            break Touch_event;
+          }
+        }
+        Caso_previo_3_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
           if (filepath === this.devbin.compiler.fullpathOf("@/dev/settings.js")) {
             currentStep.push("3.1. exporting dev/settings");
             await this.exportDevSettings(filepath);
             break Touch_event;
           }
         }
-        Caso_previo_3_caso_src_html: {
+        Caso_previo_4_caso_src_html: {
           if (event.isHtml) {
             currentStep.push("3.2. found html file");
             if (event.isSrcWww) {

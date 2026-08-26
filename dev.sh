@@ -19,6 +19,7 @@ cd "$DIR2"
     -i "**/*.{dist,ign}.*" \
     -i "**/logs/**/*" \
     -i "**/test/assets/unit/{202,203,204,205}/**/*" \
+    -i "**/dev/unlistened.json" \
     -p "3004" \
     -d 0 \
     -e "sh" \

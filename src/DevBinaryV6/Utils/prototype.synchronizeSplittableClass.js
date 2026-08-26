@@ -200,7 +200,8 @@ async synchronizeSplittableClass(filepath, event) {
     // ------------------------------------------------------------
     // 7. Escribir la clase reconstruida
     // ------------------------------------------------------------
-    reconstructedClass = await this.devbin.compiler.constructor.beautifyJs(reconstructedClass);
+    // @MEJOR: mejor sin el beautifier que me descuajeringa las cosas.
+    // reconstructedClass = await this.devbin.compiler.constructor.beautifyJs(reconstructedClass);
     await fs.writeFile(filepath, reconstructedClass, "utf8");
     return {
       filepath,
@@ -213,7 +214,7 @@ async synchronizeSplittableClass(filepath, event) {
       }))
     };
   } catch (error) {
-    // throw error;
+    throw error;
   } finally {
     // ------------------------------------------------------------
     // 8. Desmutear el directorio porque los cambios han terminado

@@ -1,4 +1,4 @@
-# 2026/08/25, martes
+# 2026/08/19, miércoles
 
 Mientras tanto, paralelamente...:
 
@@ -8,5 +8,6 @@ Mientras tanto, paralelamente...:
    - [ ] La Database por sobre de Filesystem y JSONL
    - [ ] Los Types por sobre de Database
 
-# 2026/08/19, miércoles
 
+
+# 2026/08/25, martes

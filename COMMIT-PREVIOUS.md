@@ -1,1 +1,1 @@
-typo en readme
+ModulerV6.Toolkit y su prototype.toolkit con normalizeParams y normalizeOptions para las apis internas del starter + refrescador usa dev/unlistened.json para saber en vivo los patrones glob a ignorar + DevBinaryV6.prototype tiene mute y unmuteTouchListenerOf para meter y sacar del unlistened.json + touchFile tiene nueva ruta con ficheros splittable.*.class.js donde se pueden editar los campos de los métodos rápidamente + evaluateSource inyecta a mano require y __dirname

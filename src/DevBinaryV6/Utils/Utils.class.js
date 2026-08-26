@@ -29,5 +29,6 @@ class DevBinaryV6Utils {
   /*="./prototype.installNpmDependencies.js"*/
   /*="./prototype.synchronizeSplittableClass.js"*/
   /*="./prototype.getMemberFragmentCodeFor.js"*/
+  /*="./prototype.synchronizeSplittableMethod.js"*/
   /*="./constructor.js"*/
 }

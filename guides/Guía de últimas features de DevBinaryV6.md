@@ -7,7 +7,7 @@ A continuación se explican las últimas features implementadas en las 3 APIs: `
 - [Guía de últimas features de DevBinaryV6](#guía-de-últimas-features-de-devbinaryv6)
   - [Índice](#índice)
   - [Lista de features](#lista-de-features)
-    - [26-08-2026, martes](#26-08-2026-martes)
+    - [26-08-2026, miércoles](#26-08-2026-miércoles)
     - [25-08-2026, martes](#25-08-2026-martes)
     - [19-08-2026](#19-08-2026)
     - [18-08-2026](#18-08-2026)
@@ -16,9 +16,20 @@ A continuación se explican las últimas features implementadas en las 3 APIs: `
 
 A continuación la lista, cronológicamente invertida.
 
-### 26-08-2026, martes
+### 26-08-2026, miércoles
 
-- [ ] Seguimos con el starter, fs.
+- Mensaje de commit 1:
+   - `el evento touch ahora actualiza los splittable.*.class.js que encajen con el nombre del target y el miembro en el splittable`
+
+- [x] FEATURE: el touch también tiene ahora una ruta por la cual actualiza los miembros de los `splittable.*.class.js`
+   - [x] permite que los miembros que ya existen del `splittable.*.class.js` se actualicen si se hace un `touch` a ellos
+   - [x] simplemente tienen que darse las condiciones:
+      - [x] tiene que hacerse un touch al `{static,prototype}.<name>.js` (no al `splittable.*.js`, esta operación es la que lo actualiza)
+      - [x] tiene que coincidir el nombre del fichero con el nombre del miembro (propiedad o método, estático o prototipo) de la clase:
+         - [x] el fichero que inicia esta ruta es el `{static,prototype}.<name>.js`
+         - [x] y actualiza al `splittable.*.js`
+      - [x] la clase del `splittable` tiene que tener ese método definido como prototype o static
+   - [x] en tanto que esto se dé, el contenido del fichero será incrustado en el miembro correspondiente del `splittable.*.class.js`
 
 ### 25-08-2026, martes
 
