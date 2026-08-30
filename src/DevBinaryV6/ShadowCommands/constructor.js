@@ -4,5 +4,5 @@
  * @description 
  */
 constructor(devbin) {
-  this.devbin = devbin;
+  /*="./prototype.devbin.js"*/
 }

@@ -3,7 +3,7 @@
  * @type 
  * @description 
  */
-async assertThrows(callback, message, checker = () => true) {
+async assertThrows(callback, message, errorChecker = () => true) {
   const localError = new Error("Should have thrown: " + message);
   try {
     await callback();
@@ -12,7 +12,7 @@ async assertThrows(callback, message, checker = () => true) {
     if(err === localError) {
       throw new this.constructor.AssertionError(`Should have thrown: ${err.name}: ${err.message} | ${err.stack}`);
     }
-    if (!checker(err)) {
+    if (!errorChecker(err)) {
       throw new this.constructor.AssertionError(`Should have thrown but not specific error: ${err.name}: ${err.message} | ${err.stack}`);
     }
     this._notifyAssertion(message);

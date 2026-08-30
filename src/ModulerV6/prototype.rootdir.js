@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.rootdir = cloneOf ? cloneOf.rootdir : basedir;
+this.rootdir = cloneOf ? cloneOf.rootdir : this.basedir;

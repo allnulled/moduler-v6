@@ -1,0 +1,20 @@
+{
+  "tree": {
+    "@/src/ikk/module1.entry.js": {
+      "17-60": {
+        "syntax": "Inject Module",
+        "type": "$compiler.inject.module(",
+        "text": "$compiler.inject.module(\"./node-module1.js\"",
+        "inner": "\"./node-module1.js\"",
+        "outer": "$compiler.inject.module(\"./node-module1.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./node-module1.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/410/src/ikk/node-module1.js",
+          "rootpath": "@/src/ikk/node-module1.js"
+        }
+      }
+    },
+    "@/src/ikk/node-module1.js": {}
+  }
+}

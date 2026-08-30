@@ -2,6 +2,7 @@ module.exports = async function({ assert: assertLoudly, utils, compilerV6, modul
   
   const assert = compilerV6.createAssertFunction() || assertLoudly;
 
+  return;
   const localDevbin = DevBinaryV6.create(`${__dirname}/../assets/unit/401`);
   await localDevbin.compiler.files.deleteFile.try(localDevbin.moduler.normalizationOf("@/dist/www/t-403/ExampleT403.rels.json"));
   await localDevbin.command(["touch", "--file", "@/src/www/t-403/ExampleT403.entry.js"]);

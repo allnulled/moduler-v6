@@ -20,7 +20,7 @@ getDistribuibleFilenamesOf(fileBrute, event) {
   }
   return {
     file: fileBrute,
-    rootdir: this.devbin.compiler.rootdirOf(fileBrute),
+    rootdir: this.devbin.compiler.rootdirOf(this.devbin.compiler.normalizationOf(fileBrute)),
     rootdirDirectory: require("path").dirname(this.devbin.compiler.rootdirOf(fileBrute)),
     basename: file,
     extension: fileExtension,

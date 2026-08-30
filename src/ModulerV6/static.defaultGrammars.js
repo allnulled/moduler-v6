@@ -10,6 +10,7 @@ static defaultGrammars = {
     this.nativeGrammars.InjectSource,
     this.nativeGrammars.InjectString,
     this.nativeGrammars.InjectTemplate,
+    this.nativeGrammars.InjectModules,
     this.nativeGrammars.InjectModule,
     this.nativeGrammars.ImportJs,
     this.nativeGrammars.ExportJs,

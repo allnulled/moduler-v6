@@ -13,6 +13,7 @@ class Files {
   /*="./prototype.hasDirectory.js"*/
   /*="./prototype.writeFile.js"*/
   /*="./prototype.makeDirectory.js"*/
+  /*="./prototype.readDirectory.js"*/
   /*="./prototype.readFile.js"*/
   /*="./prototype.copyDirectory.js"*/
   /*="./prototype.copyFile.js"*/

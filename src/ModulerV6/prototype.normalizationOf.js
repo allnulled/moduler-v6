@@ -5,5 +5,5 @@
  */
 normalizationOf(subpath) {
   this.assert(typeof subpath === "string", `Parameter «subpath» must be string on «ModulerV6.prototype.normalizationOf»`);
-  return this._joinPaths([subpath], "normalizationOf");
+  return this._joinPaths((subpath.startsWith("./") && this.basedir) ? [this.basedir, subpath] : [subpath], "normalizationOf");
 }

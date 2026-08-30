@@ -9,6 +9,7 @@ constructor(basedirArg = null, cloneOf = null) {
   this.assert(typeof cloneOf === "object", `Parameter «cloneOf» must be object or null not «${typeof cloneOf}» on «ModulerV6.constructor»`);
   /*="./prototype.basedir.js"*/
   /*="./prototype.rootdir.js"*/
+  /*="./prototype.reserves.js"*/
   /*="./prototype.modules.js"*/
   /*="./prototype.compiler.js"*/
   /*="./prototype.grammars.js"*/

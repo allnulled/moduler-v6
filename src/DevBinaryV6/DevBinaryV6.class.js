@@ -23,6 +23,7 @@ class DevBinaryV6 {
   /*="./prototype.cloneForFile.js"*/
   /*="./prototype.muteTouchListenerOf.js"*/
   /*="./prototype.unmuteTouchListenerOf.js"*/
+  /*="./prototype.files.js"*/
   /*="./static.globalInstance.js"*/
   /*="./constructor.js"*/
 }

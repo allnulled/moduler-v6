@@ -7,10 +7,10 @@ const settings = {
   separateTests: 0,
   testSpeed: 0,
   ignoredTestFiles:
-    [""] ||
+  [""] ||
   [
     // "--000.Inyectar el framework en los tests.js",
-    "000.Inyectar el framework en los tests.js",
+    // "000.Inyectar el framework en los tests.js",
     "001.Compilar recursivamente sintaxis más simple.js",
     "002.Compilar ficheros js, css y md desde ficheros js mediante inject source.js",
     "003.Bloquear inyecciones según sintaxis de fichero original.js",
@@ -20,6 +20,8 @@ const settings = {
     "007.Compilar ficheros como strings con inject.string.js",
     "008.Resolver rutas de forma común entre ModulerV6 y CompilerV6.js",
     "009.Compilar ficheros js con @injects.js",
+    "010.Compilar ficheros html con @injects y compiler.inject.source.js",
+    "011.Compilar ficheros js con inject.module.js",
     "100.Formateo de firmas de import y export - los métodos concretos de formateo.js",
     "101.Métodos de ruta: rootdirOf, normalizationOf, basedirOf.js",
     "103.Modular ficheros js, css y md con ModulerV6.js",
@@ -37,17 +39,24 @@ const settings = {
     "201.DevBinary puede parsear y formatear argumentos tipo consola.js",
     "202.DevBinary permite crear proyecto nuevo y lanzar comandos.js",
     "204.DevBinary permite implementarse en un proyecto iniciado con devbin ensure core.js",
+    "205.DevBinary permite comando devbin build github pages.js",
     "301.Parser soporta sintaxis de js embedible.js",
     "302.CompilerV6 compila plantillas mediante inject source.js",
     "303.Parser soporta sintaxis de formularios embedibles.js",
     "304.ModulerV6 puede correr módulos como formulario.js",
     "305.Puede usar globOf del DevBinaryV6.Utils y otras utilidades.js",
     "306.Puede usar Settings del DevBinaryV6.Settings.js",
-    "401.Puede usar sectionsMap de Settings del dev para importar según sección copy.js",
+    "307.ModulerV6 puede importar módulos con try.js",
+    "401.Puede usar sectionsMap de Settings del dev para importar según sección.js",
     "402.Puede editar ficheros html en src y pasarse al dist.js",
     "403.Se genera el rels como json al compilar un entry.js",
     "404.Se genera el md con indentación de listas correcta.js",
     "405.Se genera el md en los casos básicos de inyección.js",
+    "406.Se genera el md con indentación de títulos correcta.js",
+    "407.Se genera el md con table of contents inyectable recursivamente y respetando indentación titular y rels en formato markdown también.js",
+    "408.ModulerV6 puede normalizar objetos correctamente.js",
+    "409.DevBinaryV6 permite comando devbin bundle node module.js",
+    "410.DevBinaryV6 permite inject.module y se comporta como se espera.js",
     // "--ZZZ.Cerrar todo.js",
   ]
 };
@@ -115,6 +124,13 @@ const main = async function () {
       console.log(`\x1b[31m❌ Report errors of ${errors.length}/${filenames.length} failed tests:\x1b[0m`, errors.reverse());
     } else {
       console.log("\x1b[32m · All tests successfully passed\x1b[0m");
+    }
+    Generate_unit_test_error_report: {
+      const jsonErrors = JSON.stringify(errors, null, 4);
+      const jsTests = await Promise.all(errors.map(error => require("fs").promises.readFile(`${__dirname}/unit/${error.file}`, "utf8").then(out => {
+        return `// ${error.file}\n\n${out}\n\n`
+      })));
+      await require("fs").promises.writeFile(`${__dirname}/errors.txt`, `${jsonErrors}\n\n${jsTests.join("")}`, "utf8");
     }
   }
   Tests_de_velocidad: {

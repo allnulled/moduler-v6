@@ -1,0 +1,28 @@
+{
+  "tree": {
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/ExampleT404.entry.js": {
+      "257-297": {
+        "syntax": "@Injects",
+        "inner": "\"./prototype.initialize.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./prototype.initialize.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/prototype.initialize.js",
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/prototype.initialize.js"
+        }
+      },
+      "223-254": {
+        "syntax": "@Injects",
+        "inner": "\"./constructor.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./constructor.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/constructor.js",
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/constructor.js"
+        }
+      }
+    },
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/prototype.initialize.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-404/constructor.js": {}
+  }
+}

@@ -1,6 +1,7 @@
 class Toolkit {
   /*="./static.create.js"*/
   /*="./constructor.js"*/
-  /*="./prototype.normalizeParams.js"*/
+  /*="./prototype.normalizeParameters.js"*/
   /*="./prototype.normalizeOptions.js"*/
+  /*="./prototype.normalizeObject.js"*/
 }

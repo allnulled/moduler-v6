@@ -8,7 +8,7 @@ async _renderTemplate(templateSource, argsBrute = {}) {
   if (!tokens.length) {
     return templateSource;
   }
-  console.log(tokens, argsBrute.compilationFile);
+  console.log(`[*] Rendering template of ${tokens.length} tokens from: ${argsBrute.compilationFile.resource}`);
   const tokenType1 = ['/','*','%'].join("");
   const tokenType2 = ['/','*','%','='].join("");
   const args = Object.assign({}, argsBrute);

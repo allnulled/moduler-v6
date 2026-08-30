@@ -10,7 +10,10 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
 
   assert(typeof output.js === "string", "Can compile js files with $compiler.inject.module syntax (1)");
   assert(output.js.includes("// This is an injected header"), "Can compile js files with $compiler.inject.module syntax (2)");
-  assert(output.js.includes("const module = {"), "Can compile js files with $compiler.inject.module syntax (3)");
+  assert(output.js.includes("@/test/assets/unit/011/ambivalent-module-1.js"), "Can compile js files with $compiler.inject.module syntax (3.0)");
+  assert(output.js.includes("@/test/assets/unit/011/a.js"), "Can compile js files with $compiler.inject.module syntax (3.a)");
+  assert(output.js.includes("@/test/assets/unit/011/b.js"), "Can compile js files with $compiler.inject.module syntax (3.b)");
+  assert(output.js.includes("@/test/assets/unit/011/c.js"), "Can compile js files with $compiler.inject.module syntax (3.c)");
   
   await compilerV6.files.writeFile("@/test/assets/unit/011/bundle.dist.js", await compilerV6.constructor.beautifyJs(output.js));
 

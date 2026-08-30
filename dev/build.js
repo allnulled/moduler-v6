@@ -5,14 +5,34 @@ const { promisify } = require("util");
 const execAsync = promisify(exec);
 const rootdir = path.resolve(`${__dirname}/..`);
 const rootrel = (subpath) => path.resolve(rootdir, subpath);
-const { minify } = require("terser");
+const { minify: minifyTerser } = require("terser");
+const minify = async input => {
+  try {
+    // console.log("[*] Waiting for terser...");
+    return { code: input[Object.keys(input)[0]] };
+    const tmp1 = new Date();
+    const output = await minifyTerser(code).then(out => {
+      console.log(`[*] Terser took: ${(new Date()) - tmp1} milliseconds`);
+      return out;
+    });
+    return output;
+  } catch (error) {
+    console.log(`[!] Failed to minify with terser file «${file}» because:`, error);
+  }
+}
 const beautify = async (code,file) => {
   try {
+    // console.log("[*] Waiting for prettier...");
+    return code;
+    const tmp1 = new Date();
     return await require("prettier").format(code, {
       parser: "babel"
+    }).then(out => {
+      console.log(`[*] Prettier took: ${(new Date()) - tmp1} milliseconds`);
+      return out;
     });
   } catch (error) {
-    console.log(`[!] Failed to beaeutify/minify file «${file}» because:`, error);
+    console.log(`[!] Failed to beaeutify/minify with prettier file «${file}» because:`, error);
     return code;
   }
 };
@@ -49,8 +69,10 @@ const trify = (callback, fallback) => {
   };
 };
 let fileCounter = 0;
+const filesCache = {};
 const reduceTemplate = function (file, dir) {
   const filepath = path.resolve(dir, file);
+  if(filepath in filesCache) return filesCache[filepath];
   const dirpath = path.dirname(filepath);
   fileCounter++;
   if (settings.printInjections) {
@@ -69,6 +91,7 @@ const reduceTemplate = function (file, dir) {
       throw new Error("Yei: no good, eh?");
     }
   });
+  filesCache[filepath] = source;
   return source;
 };
 let transformationsTiming = 0;

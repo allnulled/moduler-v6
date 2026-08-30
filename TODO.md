@@ -1,0 +1,2 @@
+- [ ] ARREGLAR BUG DE paths relativos:
+   - [ ] se produce cuando haces un compiler.compile y en el target haces un $moduler.import("./");

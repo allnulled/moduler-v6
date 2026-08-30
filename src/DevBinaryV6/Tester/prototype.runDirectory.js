@@ -29,7 +29,7 @@ async runDirectory(dirInput, options = {}) {
     return isNotIgnored && passesFilter;
   });
   const ansiTool = this.devbin.compiler.constructor.ansi.colors;
-  console.log(`[*] DevBinaryV6 found ${testFiles.length} tests` + (title ? ` for «${title}»` : ""));
+  console.log(ansiTool.style("blackBright").text(`[*] DevBinaryV6 found ${testFiles.length} tests` + (title ? ` for «${title}»` : "")));
   const errors = [];
   const crono = this.devbin.constructor.Cronometer();
   for (let index = 0; index < testFiles.length; index++) {

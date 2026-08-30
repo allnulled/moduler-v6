@@ -16,4 +16,4 @@
  * Static method.
  * 
  */
-$compiler.inject.source("Group1.part1.js")
+$compiler.inject.source("./Group1.part1.js")

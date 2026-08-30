@@ -3,5 +3,4 @@
  * @type 
  * @description 
  */
-this.moduler = new ModulerV6(basedir);
-this.moduler.compiler = this;
+this.moduler = new ModulerV6(basedir, parent);

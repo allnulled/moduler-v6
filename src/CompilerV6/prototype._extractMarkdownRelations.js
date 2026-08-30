@@ -18,7 +18,7 @@ _extractMarkdownRelations(compilationFile) {
       const tokenId = tokens[indexToken];
       const token = file[tokenId];
       const bestId = (() => {
-        if(!token.referenceOf?.rootpath) {
+        if(!token.referenceOf.rootpath) {
           return token.inner;
         } else {
           return token.referenceOf.rootpath;

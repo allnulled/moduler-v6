@@ -11,9 +11,13 @@ async synchronizeSplittableMethod(filepath, event) {
   const parser = require("@babel/parser");
   const directory = path.dirname(filepath);
   const methodFilename = path.basename(filepath);
+  const $ = this.devbin.compiler.constructor.ansi.colors;
   let output = 0;
   let _error = false;
+  let classFiles = undefined;
   try {
+    // Chutar si viene de splittable anterior:
+    if(event.isSynchronizingSplittable) return 0;
     // ------------------------------------------------------------
     // 0. Mutear el directorio por si se vienen cambios
     // ------------------------------------------------------------
@@ -130,13 +134,28 @@ async synchronizeSplittableMethod(filepath, event) {
       // ----------------------------------------------------------
       // 4.7. Sustituir exclusivamente el método
       // ----------------------------------------------------------
-      const reconstructedSource = source.slice(0, targetMethod.start) + methodSource + source.slice(targetMethod.end);
+      const reconstructedSource = source.slice(0, targetMethod.start) + this.getClassMemberFragmentCodeFor(methodSource) + source.slice(targetMethod.end);
       // ----------------------------------------------------------
       // 4.8. Escribir splittable class
       // ----------------------------------------------------------
+      console.log($.style("blackBright").text(`[*] DevBinaryV6 is updating splittable class: ${this.devbin.moduler.rootdirOf(splittableClassFile)}`));
+      // @ATENCIÓN: ESTE ES EL QUE CREA LA RECURSIVIDAD:
       await fs.writeFile(splittableClassFile, reconstructedSource, "utf8");
     }
-    output = true;
+    classFiles = splittableClassFiles.map(file => {
+      return path.join(path.dirname(file), path.basename(file).replace(/^splittable\./g, ""));
+    });
+    /*
+    for(let index=0; index<classFiles.length; index++) {
+      const classFile = classFiles[index];
+      await this.touchFile(classFile, {
+        propagateUp: false,
+        processedEntries: event.processedEntries || {},
+        isSynchronizingSplittable: true,
+      });
+    }
+    //*/
+    output = classFiles;
   } catch (error) {
     console.log("Error synchronizing splittable method:", error);
     _error = error;

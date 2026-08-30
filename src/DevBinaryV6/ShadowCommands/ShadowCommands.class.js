@@ -10,6 +10,7 @@ class DevBinaryV6ShadowCommands {
   /*="./prototype.ensure core.js"*/
   /*="./prototype.print root.js"*/
   /*="./prototype.build github pages.js"*/
+  /*="./prototype.bundle node module.js"*/
   /*="./prototype.loop.js"*/
   /*="./prototype.touch.js"*/
 }

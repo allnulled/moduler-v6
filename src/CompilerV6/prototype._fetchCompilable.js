@@ -4,6 +4,7 @@
  * @description 
  */
 _fetchCompilable(compilationFile, compilationProcess) {
+  this._trace("_fetchCompilable", arguments);
   this.assert(typeof compilationFile === "object", "Parameter «compilationFile» must be object on «CompilerV6.prototype._fetchCompilable»");
   this.assert(typeof compilationFile.resource === "string", "Parameter «compilationFile.resource» must be string on «CompilerV6.prototype._fetchCompilable»");
   // console.log(compilationFile.resource);

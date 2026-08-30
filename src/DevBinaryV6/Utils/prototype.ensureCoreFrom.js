@@ -111,6 +111,8 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await createDirectoryIfNotExists(`${targetDir}/dev/bin/test`);
   await createDirectoryIfNotExists(`${targetDir}/dev/coverage`);
   await createDirectoryIfNotExists(`${targetDir}/dev/files`);
+  await createDirectoryIfNotExists(`${targetDir}/dev/settings`);
+  await createDirectoryIfNotExists(`${targetDir}/dev/events`);
   await createDirectoryIfNotExists(`${targetDir}/src`);
   await createDirectoryIfNotExists(`${targetDir}/src/external`);
   await createDirectoryIfNotExists(`${targetDir}/src/www`);
@@ -154,6 +156,8 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/www-settings.js`, `${targetDir}/src/www/dev/settings.entry.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/www-settings.js`, `${targetDir}/dist/www/dev/settings.dist.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/controllers.js`, `${targetDir}/dev/controllers.js`);
+  await saveFileIfNotExists(`${targetDir}/dev/listened.json`, "[]");
+  await saveFileIfNotExists(`${targetDir}/dev/unlistened.json`, "[]");
 
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/src/www/external/moduler-v6.entry.js`);
   await duplicateFile(`${__dirname}/moduler-v6.dist.js`, `${targetDir}/dist/www/external/moduler-v6.dist.js`);

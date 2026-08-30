@@ -1,0 +1,48 @@
+{
+  "tree": {
+    "@/src/ikk/module2.entry.js": {
+      "147-191": {
+        "syntax": "Inject Module",
+        "type": "$compiler.inject.module(",
+        "text": "$compiler.inject.module(\"./node-module2c.js\"",
+        "inner": "\"./node-module2c.js\"",
+        "outer": "$compiler.inject.module(\"./node-module2c.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./node-module2c.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/410/src/ikk/node-module2c.js",
+          "rootpath": "@/src/ikk/node-module2c.js"
+        }
+      },
+      "95-139": {
+        "syntax": "Inject Module",
+        "type": "$compiler.inject.module(",
+        "text": "$compiler.inject.module(\"./node-module2b.js\"",
+        "inner": "\"./node-module2b.js\"",
+        "outer": "$compiler.inject.module(\"./node-module2b.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./node-module2b.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/410/src/ikk/node-module2b.js",
+          "rootpath": "@/src/ikk/node-module2b.js"
+        }
+      },
+      "43-87": {
+        "syntax": "Inject Module",
+        "type": "$compiler.inject.module(",
+        "text": "$compiler.inject.module(\"./node-module2a.js\"",
+        "inner": "\"./node-module2a.js\"",
+        "outer": "$compiler.inject.module(\"./node-module2a.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./node-module2a.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/410/src/ikk/node-module2a.js",
+          "rootpath": "@/src/ikk/node-module2a.js"
+        }
+      }
+    },
+    "@/src/ikk/node-module2c.js": {},
+    "@/src/ikk/node-module2b.js": {},
+    "@/src/ikk/node-module2a.js": {}
+  }
+}

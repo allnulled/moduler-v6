@@ -6,8 +6,8 @@ module.exports = async function({ assert, utils, injection }) {
   injection.ModulerV6 = injection.DevBinaryV6.ModulerV6;
   injection.modulerV6 = injection.devBinaryV6.moduler;
   let settingsProfile;
-  settingsProfile = "clean";
   settingsProfile = "debug";
+  settingsProfile = "clean";
   const profiles = {
     debug: () => {
       // Restart logger

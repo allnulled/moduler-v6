@@ -3,8 +3,10 @@
  * @type 
  * @description 
  */
-async touchFile(file, optionsInput = {}) {
-  this.assert(typeof file === "string", `Parameter «--file» must be string and not «${typeof file}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+async touchFile(fileBrute, optionsInput = {}) {
+  this.assert(typeof fileBrute === "string", `Parameter «--file» must be string and not «${typeof fileBrute}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+  const file = this.devbin.moduler.normalizationOf(fileBrute);
+  console.log("[*] Touched file: " + this.devbin.moduler.rootdirOf(file));
   const currentStep = [];
   try {
     let outputFile = false;
@@ -14,14 +16,15 @@ async touchFile(file, optionsInput = {}) {
       currentStep.push("1. initialize dependencies");
       fs = require("fs");
       path = require("path");
-      filepath = this.devbin.compiler.fullpathOf(file);
+      filepath = this.devbin.compiler.normalizationOf(file);
       rootPath = this.devbin.moduler.rootdirOf(filepath);
     }
     // this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${rootPath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
     let event;
     let isEntry;
+    let isProcessable;
     Initialize_event: {
-      currentStep.push("1. initialize event for: " + rootPath);
+      currentStep.push("2. initialize event for: " + rootPath);
       event = this.constructor.defaultTouchFileOptions({
         type: "TouchFileEvent",
         propagateUp: true,
@@ -40,7 +43,10 @@ async touchFile(file, optionsInput = {}) {
       event.isSplittableClass = event.filename.startsWith("splittable.") && event.filename.endsWith(".class.js");
       event.isSrcWww = rootPath.startsWith("@/src/www/");
       event.isSrc = rootPath.startsWith("@/src/");
+      event.isInTestDir = rootPath.startsWith("@/test/");
+      event.isRunnableTest = event.isInTestDir && rootPath.endsWith(".run.js");
       isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
+      isProcessable = isEntry || event.isJsTest;
     }
     // console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(event.uncacheInjections));
 
@@ -89,7 +95,18 @@ async touchFile(file, optionsInput = {}) {
         }
         Caso_js_o_test_js: {
           Paso_0_descartar_si_no_es_entry_o_test: {
-            if ((!isEntry) && (!event.isJsTest)) {
+            if (!isProcessable) {
+              if(event.isRunnableTest) {
+                delete require.cache[filepath];
+                const module = require(filepath);
+                if(module instanceof Promise) {
+                  await module;
+                }
+                if(typeof module === "function") {
+                  module.call({ devbin: this.devbin, event });
+                }
+                return event;
+              }
               currentStep.push("3.3.a. is not entry nor test");
               console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from not entry or test: ${rootPath}`));
               break Processing_entry;
@@ -220,7 +237,7 @@ async touchFile(file, optionsInput = {}) {
           if (!await this.devbin.compiler.files.hasFile("@/dev/bin/test/command.js")) break Run_devbin_test_command;
           currentStep.push(`7.4. run «devbin test --origin ${filepath}»`);
           const output = await this.devbin.command(["test", "--origin", filepath]);
-          if (output) console.log(output);
+          // if (output) console.log(output);
         }
       }
     }

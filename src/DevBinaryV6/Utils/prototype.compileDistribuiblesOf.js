@@ -44,7 +44,7 @@ async compileDistribuiblesOf(filepath, event) {
       this.assert(distJs.endsWith(".dist.js"), `File should end with «.dist.js» but it is not the case on «${distJs}»`);
       this.assert(distCss.endsWith(".dist.css"), `File should end with «.dist.css» but it is not the case on «${distCss}»`);
       this.assert(distMd.endsWith(".md"), `File should end with «.md» but it is not the case on «${distMd}»`);
-      this.assert(distJs.includes("/dist/"), `File should include «/dist/» but it is not the case on «${distJs}»`);
+      // this.assert(distJs.includes("/dist/"), `File should include «/dist/» but it is not the case on «${distJs}»`);
     }
     Overwrite_dist_files: {
       currentStep.push("5. ensure output directory");

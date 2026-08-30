@@ -3,7 +3,7 @@
  * @type 
  * @description 
  */
-async _getDataForTokenCompilation(input, options = {}) {
+_getDataForTokenCompilation(input, options = {}) {
   this._traceIn("_getDataForTokenCompilation", arguments);
   this.assert(typeof input === "object", "Parameter «input» must be object on «CompilerV6.prototype._getDataForTokenCompilation»");
   // this.assert(typeof input.compilationFile === "object", "Parameter «input.compilationFile» must be object on «CompilerV6.prototype._getDataForTokenCompilation»");

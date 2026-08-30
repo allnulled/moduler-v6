@@ -3,4 +3,5 @@
  * @type 
  * @description 
  */
-this.utils = parent ? parent.utils : new this.constructor.Utils(this);
+this.utils = new this.constructor.Utils(this);
+// this.utils = parent ? parent.utils : new this.constructor.Utils(this);

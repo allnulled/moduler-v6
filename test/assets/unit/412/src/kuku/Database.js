@@ -1,0 +1,1 @@
+module.exports = class Database { static version = "1.0.2" };

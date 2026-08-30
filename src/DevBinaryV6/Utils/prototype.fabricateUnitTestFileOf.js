@@ -12,10 +12,18 @@ async fabricateUnitTestFileOf(filepath, event) {
     // Si no tiene distribution.js no hay test
     return -3;
   }
+  // @NOTA: Porque he perdido algo de tiempo con esto
+  // Sí, es sin el / del final, porque se refiere a un directorio, así que la barra se entiende por el paso anterior, donde ha extraído 1 directorio
+  // Este caso de esta forma subre los casos de @/src/fichero-inmediato.js
+  if(!event.distribution.names.rootdirDirectory.startsWith("@/src")) {
+    // Si no es del src, ignorar
+    return -4;
+  }
   const path = require("path");
   const fs = require("fs");
-  const testunitFile = path.resolve(event.distribution.names.rootdirDirectory.replace(/^\@\/src/g, this.devbin.compiler.fullpathOf("@/test/unit/src")), event.distribution.names.test);
-  const devBinaryV6Filepath = this.devbin.compiler.fullpathOf("@/dev/bin.js");
+  const testunitDir = event.distribution.names.rootdirDirectory.replace("@/src", this.devbin.compiler.normalizationOf("@/test/unit/src"));
+  const testunitFile = path.resolve(testunitDir, event.distribution.names.test);
+  const devBinaryV6Filepath = this.devbin.compiler.normalizationOf("@/dev/bin.js");
   const devBinaryV6RelativeFilepath = path.relative(path.dirname(testunitFile), devBinaryV6Filepath);
   const relativeTarget = path.relative(path.dirname(testunitFile), event.distribution.js);
   const testunitContent = `const devbin = require(__dirname + ${JSON.stringify("/" + devBinaryV6RelativeFilepath)});\nconst target = require(__dirname + ${JSON.stringify("/" + relativeTarget)});\n\nmodule.exports = (async function () {
@@ -23,7 +31,6 @@ async fabricateUnitTestFileOf(filepath, event) {
   devbin.assert(true, "Test is empty right now");
 
 })();`
-  const testunitDir = path.dirname(testunitFile);
   if(!await this.existsFile(testunitFile)) {
     await fs.promises.mkdir(testunitDir, { recursive: true });
     await fs.promises.writeFile(testunitFile, testunitContent, "utf8");

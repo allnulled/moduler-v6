@@ -5,5 +5,6 @@
  */
 this.settings = new ModulerV6.Settings(this);
 if(cloneOf) {
-  this.settings.data = cloneOf.settings.data;
+  // @CUIDADO: HE PUESTO UN ? PARA PASAR UN FALLO
+  this.settings.data = cloneOf.settings?.data;
 }

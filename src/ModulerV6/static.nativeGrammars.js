@@ -18,6 +18,9 @@ static nativeGrammars = {
   InjectModule: ["$"+"compiler.inject.module(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Inject Module", ...token, };
   }],
+  InjectModules: ["$"+"compiler.inject.modules(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Inject Modules", ...token, };
+  }],
   ImportJs: ["$"+"moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Moduler Import", ...token, };
   }, {allowInside:true}],

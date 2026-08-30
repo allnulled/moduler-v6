@@ -4,10 +4,14 @@
  * @description 
  */
 async executeUnitTestFileOf(filepath, event) {
+  const $ = this.devbin.compiler.constructor.ansi.colors;
   if(event.isSrcWww) {
-    console.log(`[*] DevBinaryV6 ignored test for browser file: ${filepath}`);
+    console.log($.style("blackBright").text(`[*] DevBinaryV6 ignored test for browser file: ${filepath}`));
+  } else if(!event.testFabrication.unitFile) {
+    console.log($.style("blackBright").text(`[*] DevBinaryV6 missed test for file: ${filepath}`));
   } else {
-    console.log(`[*] Executing unit test file of: ${event.testFabrication.unitFile}`);
+    const unitRootpath = this.devbin.moduler.rootdirOf(event.testFabrication.unitFile);
+    console.log($.style("cyan").text(`[*] DevBinary is executing unit test file of: ${unitRootpath}`));
     let testUnitFile = undefined;
     Get_unit_test_filepath: {
       if(event.testFabrication.unitFile) {
@@ -19,14 +23,14 @@ async executeUnitTestFileOf(filepath, event) {
       }
     }
     delete require.cache[testUnitFile];
-    const $ = this.devbin.compiler.constructor.ansi.colors;
     try {
       const testCallback = await require(testUnitFile);
       if(typeof testCallback === "function") {
         await testCallback.call({ devbin: this.devbin, filepath, event });
       }
+      console.log($.style("greenBright").text(`[*] DevBinary has successfully passed unit test file of: ${unitRootpath}`));
     } catch (error) {
-      console.log($.style("red,bold").text(`[!] Unit test error on file «${testUnitFile}»:`));
+      console.log($.style("red,bold").text(`[!] DevBinary has failed unit test with error on file «${testUnitFile}»:`));
       console.log(error);
     }
   }

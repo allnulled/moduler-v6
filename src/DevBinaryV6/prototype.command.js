@@ -24,7 +24,7 @@ async command(args = []) {
   }
   Load_command_callback_from_file_or_shadowCommands: {
     let isReadable = undefined;
-    First_file: {
+    First_try_with_file: {
       try {
         // Check if its readable:
         await require("fs").promises.readFile(commandSubpath, "utf8");
@@ -33,7 +33,7 @@ async command(args = []) {
         isReadable = false;
       }
     }
-    Second_hook: {
+    Second_try_with_hook: {
       if (isReadable) {
         commandType = "file";
         commandCallback = require(commandSubpath);
@@ -50,7 +50,7 @@ async command(args = []) {
   }
   Execute_command_callback: {
     try {
-      console.log(`[*] DevBinaryV6 executing command: ${commandName}`);
+      console.log(this.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 executing command: ${commandName}`));
       return await commandCallback.call(this.shadowCommands, commandParameters, this, commandType, commandSubpath);
     } catch (error) {
       console.error(`[!] The «devbin ${commandName}» command threw an error:`, error);

@@ -1,0 +1,17 @@
+{
+  "tree": {
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-405/ExampleT405.entry.js": {
+      "173-214": {
+        "syntax": "Inject Source",
+        "inner": "\"./propiedad1.js\"",
+        "referenceOf": {
+          "type": "file",
+          "entry": "./propiedad1.js",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-405/propiedad1.js",
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-405/propiedad1.js"
+        }
+      }
+    },
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-405/propiedad1.js": {}
+  }
+}

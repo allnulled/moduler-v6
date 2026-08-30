@@ -3,4 +3,5 @@
  * @type 
  * @description 
  */
-this.tester = parent ? parent.tester : new this.constructor.Tester(this);
+this.tester = new this.constructor.Tester(this);
+// this.tester = parent ? parent.tester : new this.constructor.Tester(this);

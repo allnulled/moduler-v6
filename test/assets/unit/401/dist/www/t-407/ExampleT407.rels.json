@@ -23,12 +23,12 @@
       }
     },
     "@/src/www/t-407/Group1.entry.js": {
-      "201-242": {
+      "201-244": {
         "syntax": "Inject Source",
-        "inner": "\"Group1.part1.js\"",
+        "inner": "\"./Group1.part1.js\"",
         "referenceOf": {
           "type": "file",
-          "entry": "Group1.part1.js",
+          "entry": "./Group1.part1.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-407/Group1.part1.js",
           "rootpath": "@/src/www/t-407/Group1.part1.js"
         }

@@ -1,6 +1,6 @@
 {
   "tree": {
-    "@/src/www/t-403/ExampleT403.entry.js": {
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/ExampleT403.entry.js": {
       "196-229": {
         "syntax": "Moduler Import",
         "type": "$moduler.import(",
@@ -38,7 +38,7 @@
           "type": "file",
           "entry": "./Module3.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module3.js",
-          "rootpath": "@/src/www/t-403/Module3.js"
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module3.js"
         }
       },
       "41-79": {
@@ -48,7 +48,7 @@
           "type": "file",
           "entry": "./Module2.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module2.js",
-          "rootpath": "@/src/www/t-403/Module2.js"
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module2.js"
         }
       },
       "0-38": {
@@ -58,13 +58,13 @@
           "type": "file",
           "entry": "./Module1.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.js",
-          "rootpath": "@/src/www/t-403/Module1.js"
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.js"
         }
       }
     },
-    "@/src/www/t-403/Satelital3.js": {},
-    "@/src/www/t-403/Satelital2.js": {},
-    "@/src/www/t-403/Satelital1.js": {
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Satelital3.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Satelital2.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Satelital1.js": {
       "39-68": {
         "syntax": "Moduler Import",
         "type": "$moduler.import(",
@@ -82,15 +82,15 @@
           "type": "file",
           "entry": "./header.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/header.js",
-          "rootpath": "@/src/www/t-403/header.js"
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/header.js"
         }
       }
     },
-    "@/src/www/t-403/value1.js": {},
-    "@/src/www/t-403/header.js": {},
-    "@/src/www/t-403/Module3.js": {},
-    "@/src/www/t-403/Module2.js": {},
-    "@/src/www/t-403/Module1.js": {
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/value1.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/header.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module3.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module2.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.js": {
       "206-254": {
         "syntax": "Inject Source",
         "inner": "\"./Module1.property3.js\"",
@@ -98,7 +98,7 @@
           "type": "file",
           "entry": "./Module1.property3.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property3.js",
-          "rootpath": "@/src/www/t-403/Module1.property3.js"
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property3.js"
         }
       },
       "151-199": {
@@ -108,7 +108,7 @@
           "type": "file",
           "entry": "./Module1.property2.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property2.js",
-          "rootpath": "@/src/www/t-403/Module1.property2.js"
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property2.js"
         }
       },
       "96-144": {
@@ -118,12 +118,12 @@
           "type": "file",
           "entry": "./Module1.property1.js",
           "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property1.js",
-          "rootpath": "@/src/www/t-403/Module1.property1.js"
+          "rootpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property1.js"
         }
       }
     },
-    "@/src/www/t-403/Module1.property3.js": {},
-    "@/src/www/t-403/Module1.property2.js": {},
-    "@/src/www/t-403/Module1.property1.js": {}
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property3.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property2.js": {},
+    "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-403/Module1.property1.js": {}
   }
 }

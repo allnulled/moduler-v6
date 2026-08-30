@@ -5,7 +5,4 @@
  */
 setBasedir(basedir) {
   this.basedir = this.normalizationOf(basedir);
-  if(this.compiler) {
-    this.compiler.basedir = this.basedir;
-  }
 }

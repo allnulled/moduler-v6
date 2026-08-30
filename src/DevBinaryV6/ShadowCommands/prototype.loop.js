@@ -18,18 +18,27 @@ async loop(args) {
   ];
   const devControllersFile = `${targetRoot}/dev/controllers.js`;
   const devControllers = await this.devbin.utils.existsFile(devControllersFile) ? [devControllersFile] : [];
+  Run_setup_callback_file_first: {
+    await this.devbin.utils.triggerCallbackFromFile(`@/dev/e.onStartLoop.js`, { devbin: this.devbin, rootdir: targetRoot, });
+  }
   return this.devbin.constructor.Refrescador.run({
     watch: targetDirs,
     bulletproof: false,
-    ignore: [
+    ignoreFiles: [
       "**/node_modules/"+"**/*",
       "**/dist/"+"**/*",
       "**/*.dist.*",
       "**/logs/"+"**/*",
-      "**/test/unit/"+"**/*",
-      "dev/unlistened.json",
+      "**/test/"+"**/*.js",
+      "**/dev/listened.json",
+      "**/dev/unlistened.json",
     ],
-    port,
+    ignoreCallback: `${targetRoot}/dev/unlistened.json`,
+    listenFiles: [
+      // "**/test/"+"**/*.run.js",
+    ],
+    listenCallback: `${targetRoot}/dev/listened.json`,
+    port: port,
     debounce: 0,
     extensions: [
       "js",
@@ -43,7 +52,6 @@ async loop(args) {
     message: "El tiempo de refrescar ha llegado",
     messageFile: "TODO.md",
     payload: 'console.log("📟 Evento de refrescar activado");',
-    ignoreCallback: `${targetRoot}/dev/unlistened.json`,
     // executeCallback: ["file/from/cwd/target.js",],
     // payloadFile: 'browser-payload.js',
     serve: this.devbin.compiler.fullpathOf("@/dist/www"),

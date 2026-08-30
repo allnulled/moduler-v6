@@ -48,6 +48,7 @@ class CompilerV6 {
   /*="./prototype._fetchCompilable.js"*/
   /*="./prototype._tryToReadFile.js"*/
   /*="./prototype._prependToParentCompilationFile.js"*/
+  /*="./prototype._wrapAsModuleInjection.js"*/
   
   /*="./prototype._compileAsModulerSectionGet.js"*/
   /*="./prototype._compileAsModulerSectionSet.js"*/
@@ -60,6 +61,7 @@ class CompilerV6 {
   /*="./prototype._compileAsInjectString.js"*/
   /*="./prototype._compileAsInjectTemplate.js"*/
   /*="./prototype._compileAsInjectModule.js"*/
+  /*="./prototype._compileAsInjectModules.js"*/
   /*="./prototype._compileAsMultilineCommentCodeInjection.js"*/
   /*="./prototype._compileAsMultilineCommentValueInjection.js"*/
   /*="./prototype._compileAsModulerImport.js"*/
@@ -101,4 +103,10 @@ class CompilerV6 {
   /*="./prototype.setBasedir.js"*/
   /*="./prototype.setRootdir.js"*/
   /*="./prototype.log.js"*/
+
+  /*="./get.rootdir.js"*/
+  /*="./get.basedir.js"*/
+  /*="./set.rootdir.js"*/
+  /*="./set.basedir.js"*/
+
 }

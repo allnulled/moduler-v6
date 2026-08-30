@@ -10,6 +10,7 @@ class DevBinaryV6Utils {
   /*="./prototype.assert.js"*/
   /*="./prototype.parseCliArgs.js"*/
   /*="./prototype.formatCliArgs.js"*/
+  /*="./prototype.normalizeCliPropertyName.js"*/
   /*="./prototype.compileDistribuiblesOf.js"*/
   /*="./prototype.getDistribuibleFilenamesOf.js"*/
   /*="./prototype.fabricateUnitTestFileOf.js"*/
@@ -28,7 +29,11 @@ class DevBinaryV6Utils {
   /*="./prototype.publicableSettingsIds.js"*/
   /*="./prototype.installNpmDependencies.js"*/
   /*="./prototype.synchronizeSplittableClass.js"*/
+  /*="./prototype.neutralizeIndentation.js"*/
   /*="./prototype.getMemberFragmentCodeFor.js"*/
+  /*="./prototype.countSubstringOcurrencesAtStart.js"*/
+  /*="./prototype.getClassMemberFragmentCodeFor.js"*/
   /*="./prototype.synchronizeSplittableMethod.js"*/
+  /*="./prototype.readJsonOrReturn.js"*/
   /*="./constructor.js"*/
 }

@@ -11,6 +11,7 @@ async _compileTokens(compilationFile, compilationProcess) {
     "Inject String": this._compileAsInjectString,
     "Inject Template": this._compileAsInjectTemplate,
     "Inject Module": this._compileAsInjectModule,
+    "Inject Modules": this._compileAsInjectModules,
     "Multiline Comment Code Injection": this._compileAsMultilineCommentCodeInjection,
     "Multiline Comment Value Injection": this._compileAsMultilineCommentValueInjection,
     "Moduler Import": this._compileAsModulerImport,

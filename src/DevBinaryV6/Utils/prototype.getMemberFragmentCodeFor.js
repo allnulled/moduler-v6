@@ -4,6 +4,9 @@
  * @description 
  */
 getMemberFragmentCodeFor(content, member) {
-  console.log(member);
-  return content;
+  let output = content;
+  Deindent_source: {
+    output = this.neutralizeIndentation(output);
+  }
+  return output;
 }

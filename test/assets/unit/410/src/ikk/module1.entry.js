@@ -1,0 +1,1 @@
+module.exports = $compiler.inject.module("./node-module1.js");

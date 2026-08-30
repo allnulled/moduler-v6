@@ -10,7 +10,10 @@ async synchronizeSplittableClass(filepath, event) {
   const path = require("path");
   const parser = require("@babel/parser");
   const classDirectory = path.dirname(filepath);
+  const $ = this.devbin.compiler.constructor.ansi.colors;
   try {
+    // Chutar si está sincronizando por el origen:
+    if(event.isSynchronizingSplittable) return -1;
     // ------------------------------------------------------------
     // 0. Mutear el directorio por si se vienen cambios
     // ------------------------------------------------------------
@@ -64,9 +67,9 @@ async synchronizeSplittableClass(filepath, event) {
     const classNode = classes[0];
     const className = classNode.id?.name || "AnonymousClass";
     // ------------------------------------------------------------
-    // Directorio donde vivirán los fragmentos
+    // 3. 
     // ------------------------------------------------------------
-    await fs.mkdir(classDirectory, { recursive: true });
+    console.log($.style("blackBright").text(`[*] DevBinaryV6 ignored test for browser file: ${filepath}`));
     // ------------------------------------------------------------
     // 4. Extraer miembros
     // ------------------------------------------------------------
@@ -161,10 +164,7 @@ async synchronizeSplittableClass(filepath, event) {
     // ------------------------------------------------------------
     let reconstructedClass = `class ${className} {\n\n`;
     for (const member of members) {
-      const targetFile = path.join(
-        classDirectory,
-        member.filename
-      );
+      const targetFile = path.join(classDirectory, member.filename);
       let content;
       // --------------------------------------------------------
       // Si el fichero de origen contiene el miembro, lo usamos
@@ -172,6 +172,7 @@ async synchronizeSplittableClass(filepath, event) {
       // --------------------------------------------------------
       if (member.content !== null) {
         content = member.content;
+        console.log($.style("blackBright").text(`[*] DevBinaryV6 is updating splittable member: ${this.devbin.moduler.rootdirOf(targetFile)}`));
         await fs.writeFile(targetFile, this.getMemberFragmentCodeFor(content, member), "utf8");
       }
       // --------------------------------------------------------
@@ -193,7 +194,7 @@ async synchronizeSplittableClass(filepath, event) {
       // Añadir el miembro a la clase reconstruida
       // --------------------------------------------------------
       if (content.trim()) {
-        reconstructedClass += content.trimEnd() + "\n\n";
+        reconstructedClass += this.getClassMemberFragmentCodeFor(content.trimEnd()) + "\n\n";
       }
     }
     reconstructedClass += "}\n";
@@ -202,6 +203,7 @@ async synchronizeSplittableClass(filepath, event) {
     // ------------------------------------------------------------
     // @MEJOR: mejor sin el beautifier que me descuajeringa las cosas.
     // reconstructedClass = await this.devbin.compiler.constructor.beautifyJs(reconstructedClass);
+    console.log($.style("blackBright").text(`[*] DevBinaryV6 is updating splittable class: ${this.devbin.moduler.rootdirOf(filepath)}`));
     await fs.writeFile(filepath, reconstructedClass, "utf8");
     return {
       filepath,

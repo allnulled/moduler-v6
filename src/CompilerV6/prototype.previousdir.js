@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.previousdir = parent ? parent.basedir : basedir;
+this.previousdir = parent ? parent.basedir : null;

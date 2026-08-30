@@ -3,7 +3,8 @@
  * @type 
  * @description 
  */
-async triggerCallbackFromFile(file, injection = {}, dontThrow = false) {
+async triggerCallbackFromFile(fileBrute, injection = {}, dontThrow = false) {
+  const file = this.devbin.moduler.normalizationOf(fileBrute);
   if(!await this.existsFile(file)) {
     return -1;
   }

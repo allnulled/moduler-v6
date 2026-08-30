@@ -5,7 +5,4 @@
  */
 setRootdir(rootdir) {
   this.rootdir = this.normalizationOf(rootdir);
-  if(this.compiler) {
-    this.compiler.rootdir = this.rootdir;
-  }
 }

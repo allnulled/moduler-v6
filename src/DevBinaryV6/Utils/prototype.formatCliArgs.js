@@ -26,19 +26,26 @@ formatCliArgs(definition = false, argsBrute = process.argv) {
     this.assert(typeof argsBrute === "object", "Parameter «args» must be object on «DevBinary.Utils.prototype.formatCliArgs»");
     this.assert(argsBrute !== null, "Parameter «args» cannot be null on «DevBinary.Utils.prototype.formatCliArgs»");
   }
-  let args, result, usedKeys;
+  let output, args, usedKeys;
+  // Inicializamos argumentos con parseo normal:
   Initialize_args: {
     args = Array.isArray(argsBrute) ? this.parseCliArgs(argsBrute) : argsBrute;
   }
-  result = {};
+  // Inicializamos posicionales en el outputado
   Initialize_positionals: {
-    result._ = args ? args._ : [];
+    output = {};
+    output._ = args ? args._ : [];
   }
-  usedKeys = new Set(["_"]);
+  // Inicializamos claves usadas
+  Inicialize_keys: {
+    usedKeys = new Set(["_"]);
+  }
+  // Iteramos definiciones para ir cargando el resultado
   Iterating_definition_entries:
   for (const [name, config] of Object.entries(definition)) {
     const longKey = "--" + name;
     const aliases = config.alias || [];
+    const aliasesMap = Object.fromEntries(aliases.map(alias => [alias, name]));
     const sources = [];
     if (longKey in args) {
       sources.push({
@@ -47,11 +54,11 @@ formatCliArgs(definition = false, argsBrute = process.argv) {
       });
     }
     Iterating_aliases:
-    for (const alias of aliases) {
-      if (alias in args) {
+    for (const [key, value] of Object.entries(args)) {
+      if (this.normalizeCliPropertyName(key, aliasesMap) === name) {
         sources.push({
-          key: alias,
-          value: args[alias]
+          key,
+          value
         });
       }
     }
@@ -60,12 +67,15 @@ formatCliArgs(definition = false, argsBrute = process.argv) {
       throw new Error(`Option "${name}" was specified multiple times (${sources.map(v => v.key).join(", ")}).`);
     }
     if (sources.length === 0) {
-      if("default" in config) {
-        result[name] = config.default;
+      if ("default" in config) {
+        output[name] = config.default;
       }
       continue Iterating_definition_entries;
     }
-    usedKeys.add(longKey);
+    // @ANTES:
+    // usedKeys.add(longKey);
+    // @AHORA:
+    usedKeys.add(sources[0].key);
     for (const alias of aliases) {
       usedKeys.add(alias);
     }
@@ -73,7 +83,7 @@ formatCliArgs(definition = false, argsBrute = process.argv) {
     if (typeof config.onFormat === "function") {
       value = config.onFormat.call(this, [...value]);
     }
-    result[name] = value;
+    output[name] = value;
   }
   // Detectar opciones desconocidas
   Iterating_keys:
@@ -84,7 +94,7 @@ formatCliArgs(definition = false, argsBrute = process.argv) {
     if (key.startsWith("-")) {
       throw new Error(`Unknown option "${key}".`);
     }
-    result[key] = args[key];
+    output[key] = args[key];
   }
-  return result;
+  return output;
 }
