@@ -6,18 +6,18 @@
  * donde cada miembro de la clase puede vivir en su propio fichero.
  */
 async synchronizeSplittableClass(filepath, event) {
+  if(!event.isSplittableClass) return false;
   const fs = require("fs").promises;
   const path = require("path");
   const parser = require("@babel/parser");
   const classDirectory = path.dirname(filepath);
   const $ = this.devbin.compiler.constructor.ansi.colors;
+  let mutedir;
   try {
-    // Chutar si está sincronizando por el origen:
-    if(event.isSynchronizingSplittable) return -1;
     // ------------------------------------------------------------
     // 0. Mutear el directorio por si se vienen cambios
     // ------------------------------------------------------------
-    await this.devbin.muteTouchListenerOf(`${classDirectory}/**/*`);
+    mutedir = await this.devbin.utils.addTouchMutedirTo(classDirectory);
     // ------------------------------------------------------------
     // 1. Leer filepath
     // ------------------------------------------------------------
@@ -221,6 +221,6 @@ async synchronizeSplittableClass(filepath, event) {
     // ------------------------------------------------------------
     // 8. Desmutear el directorio porque los cambios han terminado
     // ------------------------------------------------------------
-    await this.devbin.unmuteTouchListenerOf(`${classDirectory}/**/*`);
+    if(mutedir) await mutedir.cancel();
   }
 }

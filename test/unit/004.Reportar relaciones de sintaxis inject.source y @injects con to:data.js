@@ -14,8 +14,6 @@ module.exports = async function ({ assert, utils, compilerV6 }) {
   console.log(subcompiler.basedir);
   //*/
 
-  //compilerV6._die(output.report);
-
   compilerV6.assert(typeof output.report === "object", "Can compile with {to:'data'} and return an object on .report (-1)");
   compilerV6.assert(typeof output.report.tree === "object", "Can compile with {to:'data'} and return an object on .report.tree (-2)");
   compilerV6.assert(Object.keys(output.report.tree).length !== 0, "Can compile with {to:'data'} and return an object on .report.tree with multiple keys in it (-5)");

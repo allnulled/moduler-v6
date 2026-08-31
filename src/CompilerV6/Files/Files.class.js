@@ -18,4 +18,5 @@ class Files {
   /*="./prototype.copyDirectory.js"*/
   /*="./prototype.copyFile.js"*/
   /*="./prototype.ensureDirectory.js"*/
+  /*="./prototype.getDirectoryOf.js"*/
 }

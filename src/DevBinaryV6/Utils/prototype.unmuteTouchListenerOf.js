@@ -4,9 +4,9 @@
  * @description 
  */
 async unmuteTouchListenerOf(filepattern) {
-  const unlistenedFile = this.moduler.normalizationOf("@/dev/unlistened.json");
+  const unlistenedFile = this.devbin.moduler.normalizationOf("@/dev/unlistened.json");
   try {
-    let unlistenedList = await this.utils.readJsonOrReturn(unlistenedFile, []);
+    let unlistenedList = await this.devbin.utils.readJsonOrReturn(unlistenedFile, []);
     const pos = unlistenedList.indexOf(filepattern);
     if(pos !== -1) {
       unlistenedList.splice(pos, 1);

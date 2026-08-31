@@ -6,6 +6,7 @@
  * splittable que puedan contenerlo.
  */
 async synchronizeSplittableMethod(filepath, event) {
+  if(!event.currentSplittableClasses.length) return false;
   const fs = require("fs").promises;
   const path = require("path");
   const parser = require("@babel/parser");
@@ -15,38 +16,35 @@ async synchronizeSplittableMethod(filepath, event) {
   let output = 0;
   let _error = false;
   let classFiles = undefined;
+  let mutedir;
   try {
-    // Chutar si viene de splittable anterior:
-    if(event.isSynchronizingSplittable) return 0;
     // ------------------------------------------------------------
     // 0. Mutear el directorio por si se vienen cambios
     // ------------------------------------------------------------
-    await this.devbin.muteTouchListenerOf(`${directory}/**/*`);
+    mutedir = await this.devbin.utils.addTouchMutedirTo(directory);
     // ------------------------------------------------------------
     // 1. Determinar el tipo y nombre del miembro desde filepath
     // ------------------------------------------------------------
     const methodMatch = methodFilename.match(/^(static|prototype)\.(.+)\.js$/);
     if (!methodMatch) {
-      // Dismissed por
-      return output = false;
+      // Dismissed por no ser ni prototype ni static
+      return false;
     }
     const methodKind = methodMatch[1];
     const methodName = methodMatch[2];
     const isStatic = methodKind === "static";
     // ------------------------------------------------------------
+    // 3. Buscar los splittable class del directorio
+    // ------------------------------------------------------------
+    const splittableClassFiles = event.currentSplittableClasses.map(file => path.resolve(directory, file));
+    if (!splittableClassFiles.length) {
+      // Dismissed por no tener splittable classes
+      return false;
+    }
+    // ------------------------------------------------------------
     // 2. Leer el contenido del método
     // ------------------------------------------------------------
     const methodSource = await fs.readFile(filepath, "utf8");
-    // ------------------------------------------------------------
-    // 3. Buscar los splittable class del directorio
-    // ------------------------------------------------------------
-    const entries = await fs.readdir(directory);
-    const splittableClassFiles = entries
-      .filter(entry => entry.startsWith("splittable.") && entry.endsWith(".class.js"))
-      .map(entry => path.join(directory, entry));
-    if (!splittableClassFiles.length) {
-      return output = false;
-    }
     // ------------------------------------------------------------
     // 4. Iterar sobre los splittable class encontrados
     // ------------------------------------------------------------
@@ -97,6 +95,8 @@ async synchronizeSplittableMethod(filepath, event) {
       // 4.4. La clase debe ser única
       // ----------------------------------------------------------
       if (classes.length !== 1) {
+        console.log("synchronizeSplittableMethod", ast);
+        this.devbin.compiler._die(ast, "synchronizeSplittableMethod");
         throw new Error(`synchronizeSplittableMethod(): se esperaba exactamente una clase en "${splittableClassFile}", pero se encontraron ${classes.length}.`);
       }
       const classNode = classes[0];
@@ -163,7 +163,7 @@ async synchronizeSplittableMethod(filepath, event) {
     // ------------------------------------------------------------
     // 5. Desmutear el directorio porque los cambios han terminado
     // ------------------------------------------------------------
-    await this.devbin.unmuteTouchListenerOf(`${directory}/**/*`);
+    if(mutedir) await mutedir.cancel();
     if(_error) throw _error;
     return output;
   }

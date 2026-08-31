@@ -35,5 +35,7 @@ class DevBinaryV6Utils {
   /*="./prototype.getClassMemberFragmentCodeFor.js"*/
   /*="./prototype.synchronizeSplittableMethod.js"*/
   /*="./prototype.readJsonOrReturn.js"*/
+  /*="./prototype.addTouchMutedirTo.js"*/
+  /*="./prototype.getSplittableClassesFrom.js"*/
   /*="./constructor.js"*/
 }

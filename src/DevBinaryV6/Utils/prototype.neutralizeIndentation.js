@@ -6,7 +6,10 @@
 neutralizeIndentation(input) {
   const lines = input.split(/\n/g);
   // omite primera línea al contar
-  const minIndentation = Math.min(...lines.concat([]).splice(1).map(line => this.countSubstringOcurrencesAtStart(line, "  ")));
+  let allLines = lines.concat([]);
+  if(allLines.length) allLines.shift();
+  if(!allLines.length) return input;
+  const minIndentation = Math.min(...allLines.map(line => this.countSubstringOcurrencesAtStart(line, "  ")));
   const removableIndentation = "  ".repeat(minIndentation);
   // omite primera línea al reemplazar
   const output = lines.map((line, index) => {

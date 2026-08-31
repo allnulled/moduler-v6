@@ -6,6 +6,7 @@ class DevBinaryV6 {
    */
   /*="./static.create.js"*/
   /*="./static.fromRootDirectoryOf.js"*/
+  /*="./static.Console.js"*/
   /*="./static.Refrescador.js"*/
   /*="./static.CompilerV6.js"*/
   /*="./static.Cronometer.js"*/
@@ -16,13 +17,12 @@ class DevBinaryV6 {
   /*="./static.Formatters.js"*/
   /*="./static.Settings.js"*/
   /*="./static.Tester.js"*/
+  /*="./static.System.js"*/
   /*="./prototype.cronometer.js"*/
   /*="./prototype.assert.js"*/
   /*="./prototype.command.js"*/
   /*="./prototype.selfDispatch.js"*/
   /*="./prototype.cloneForFile.js"*/
-  /*="./prototype.muteTouchListenerOf.js"*/
-  /*="./prototype.unmuteTouchListenerOf.js"*/
   /*="./prototype.files.js"*/
   /*="./static.globalInstance.js"*/
   /*="./constructor.js"*/

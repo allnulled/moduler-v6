@@ -6,17 +6,18 @@
 async touchFile(fileBrute, optionsInput = {}) {
   this.assert(typeof fileBrute === "string", `Parameter «--file» must be string and not «${typeof fileBrute}» on «DevBinaryV6.Utils.prototype.touchFile»`);
   const file = this.devbin.moduler.normalizationOf(fileBrute);
-  console.log("[*] Touched file: " + this.devbin.moduler.rootdirOf(file));
+  this.devbin.console.setProfile("underline").print("[*] Touched file: " + this.devbin.moduler.rootdirOf(file));
   const currentStep = [];
   try {
     let outputFile = false;
     currentStep.push("0. begin with: " + file);
-    let fs, path, filepath, rootPath;
+    let fs, path, filepath, rootPath, filedir;
     Initialize_dependencies: {
       currentStep.push("1. initialize dependencies");
       fs = require("fs");
       path = require("path");
       filepath = this.devbin.compiler.normalizationOf(file);
+      filedir = this.devbin.files.getDirectoryOf(filepath);
       rootPath = this.devbin.moduler.rootdirOf(filepath);
     }
     // this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${rootPath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
@@ -41,6 +42,7 @@ async touchFile(fileBrute, optionsInput = {}) {
       event.isMdEntry = filepath.endsWith(".entry.md");
       event.isJsTest = filepath.endsWith(".test.js");
       event.isSplittableClass = event.filename.startsWith("splittable.") && event.filename.endsWith(".class.js");
+      event.currentSplittableClasses = await this.getSplittableClassesFrom(filedir);
       event.isSrcWww = rootPath.startsWith("@/src/www/");
       event.isSrc = rootPath.startsWith("@/src/");
       event.isInTestDir = rootPath.startsWith("@/test/");
@@ -50,29 +52,39 @@ async touchFile(fileBrute, optionsInput = {}) {
     }
     // console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(event.uncacheInjections));
 
-    Touch_event: {
+    Evento_touch: {
       currentStep.push("3. run touch event");
-      Processing_entry: {
-        Caso_previo_1_splittable_class: {
-          if(event.isSplittableClass) {
-            await this.synchronizeSplittableClass(filepath, event);
-            break Touch_event;
+      Procesando_entrada: {
+        Caso_previo_1_mutedir: {
+          const mutedirPath = require("path").resolve(filedir, ".mutedir");
+          if(await this.devbin.compiler.files.hasFile(mutedirPath)) {
+            this.devbin.console.setProfile("blackBright").print(`[*] DevBinaryV6 ignores touch event because .mutedir was found`);
+            break Evento_touch;
           }
         }
-        Caso_previo_2_splittable_method: {
+        Caso_previo_2_splittable_class: {
+          if(!event.isSplittableClass) break Caso_previo_2_splittable_class;
+          const result = await this.synchronizeSplittableClass(filepath, event);
+          if(result) {
+            break Evento_touch;
+          }
+        }
+        Caso_previo_3_splittable_method: {
+          if(event.isSplittableClass) break Caso_previo_3_splittable_method;
+          if(!event.currentSplittableClasses.length) break Caso_previo_3_splittable_method;
           const result = await this.synchronizeSplittableMethod(filepath, event);
           if(result) {
-            break Touch_event;
+            break Evento_touch;
           }
         }
-        Caso_previo_3_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
+        Caso_previo_4_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
           if (filepath === this.devbin.compiler.fullpathOf("@/dev/settings.js")) {
             currentStep.push("3.1. exporting dev/settings");
             await this.exportDevSettings(filepath);
-            break Touch_event;
+            break Evento_touch;
           }
         }
-        Caso_previo_4_caso_src_html: {
+        Caso_previo_5_caso_src_html: {
           if (event.isHtml) {
             currentStep.push("3.2. found html file");
             if (event.isSrcWww) {
@@ -84,7 +96,7 @@ async touchFile(fileBrute, optionsInput = {}) {
             } else {
               currentStep.push("3.2.c. html is not src/**/*.html");
               console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from an *.html not under «@/src/»: ${rootPath}`));
-              break Touch_event;
+              break Evento_touch;
             }
             currentStep.push("3.2.{a,b}. compiling html file");
             const outputCompilation = await this.devbin.compiler.compile(filepath);
@@ -109,7 +121,7 @@ async touchFile(fileBrute, optionsInput = {}) {
               }
               currentStep.push("3.3.a. is not entry nor test");
               console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from not entry or test: ${rootPath}`));
-              break Processing_entry;
+              break Procesando_entrada;
             } else {
               currentStep.push("3.3.b. is entry or test");
               console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 triggered touch event from: ${rootPath}`));
@@ -158,7 +170,7 @@ async touchFile(fileBrute, optionsInput = {}) {
         if (event.isJsTest) {
           currentStep.push("4. run file because it is a test");
           await this.executeUnitTestFileOf(filepath, { testFabrication: { unitFile: filepath } });
-          break Touch_event;
+          break Evento_touch;
         }
       }
       Triggering_onTouch_file: {

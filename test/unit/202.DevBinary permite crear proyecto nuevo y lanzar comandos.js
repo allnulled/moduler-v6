@@ -39,7 +39,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, devB
   } catch (error) {
     console.log(subdev.moduler.normalizationOf("./src/parts/part-1.entry.js")); // Incluso aquí lo está pintando bien, pero el command no lo resuelve conforme el nuevo basedir
     console.log(error);
-    subdev.compiler._die("OKKK");
+    // subdev.compiler._die("OKKK");
   }
 
   Test_de_que_se_compila_y_crea_el_test_de_un_entry_superior: {

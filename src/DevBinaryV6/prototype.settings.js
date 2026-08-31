@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.settings = new this.constructor.Settings(this);
+this.settings = parent ? parent.settings : new this.constructor.Settings(this);

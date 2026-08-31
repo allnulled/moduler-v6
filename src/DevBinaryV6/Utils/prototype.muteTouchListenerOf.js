@@ -4,9 +4,9 @@
  * @description 
  */
 async muteTouchListenerOf(filepattern) {
-  const unlistenedFile = this.moduler.normalizationOf("@/dev/unlistened.json");
+  const unlistenedFile = this.devbin.moduler.normalizationOf("@/dev/unlistened.json");
   try {
-    let unlistenedList = await this.utils.readJsonOrReturn(unlistenedFile, []);
+    let unlistenedList = await this.devbin.utils.readJsonOrReturn(unlistenedFile, []);
     if(!unlistenedList.includes(filepattern)) {
       unlistenedList.push(filepattern);
     }
