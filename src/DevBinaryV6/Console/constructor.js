@@ -3,7 +3,8 @@
  * @type 
  * @description 
  */
-constructor(devbin) {
+constructor({ devbin, parent = {}, profile = null }) {
   this.devbin = devbin;
-  this.profile = null;
+  Object.assign(this, parent);
+  this.profile = profile;
 }

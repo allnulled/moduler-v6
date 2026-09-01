@@ -22,7 +22,6 @@ async touchFile(fileBrute, optionsInput = {}) {
     }
     // this.assert(this.devbin.compiler.rootdirOf(filepath).startsWith("@/src"), `Parameter «--file» must start with «${this.devbin.compiler.rootdir}» but it is «${rootPath}» on «DevBinaryV6.Utils.prototype.touchFile»`);
     let event;
-    let isEntry;
     let isProcessable;
     Initialize_event: {
       currentStep.push("2. initialize event for: " + rootPath);
@@ -47,8 +46,9 @@ async touchFile(fileBrute, optionsInput = {}) {
       event.isSrc = rootPath.startsWith("@/src/");
       event.isInTestDir = rootPath.startsWith("@/test/");
       event.isRunnableTest = event.isInTestDir && rootPath.endsWith(".run.js");
-      isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
-      isProcessable = isEntry || event.isJsTest;
+      event.isTestItself = event.isInTestDir && event.isJsTest;
+      event.isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
+      isProcessable = event.isEntry;
     }
     // console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(event.uncacheInjections));
 
@@ -57,23 +57,23 @@ async touchFile(fileBrute, optionsInput = {}) {
       Procesando_entrada: {
         Caso_previo_1_mutedir: {
           const mutedirPath = require("path").resolve(filedir, ".mutedir");
-          if(await this.devbin.compiler.files.hasFile(mutedirPath)) {
+          if (await this.devbin.compiler.files.hasFile(mutedirPath)) {
             this.devbin.console.setProfile("blackBright").print(`[*] DevBinaryV6 ignores touch event because .mutedir was found`);
             break Evento_touch;
           }
         }
         Caso_previo_2_splittable_class: {
-          if(!event.isSplittableClass) break Caso_previo_2_splittable_class;
+          if (!event.isSplittableClass) break Caso_previo_2_splittable_class;
           const result = await this.synchronizeSplittableClass(filepath, event);
-          if(result) {
+          if (result) {
             break Evento_touch;
           }
         }
         Caso_previo_3_splittable_method: {
-          if(event.isSplittableClass) break Caso_previo_3_splittable_method;
-          if(!event.currentSplittableClasses.length) break Caso_previo_3_splittable_method;
+          if (event.isSplittableClass) break Caso_previo_3_splittable_method;
+          if (!event.currentSplittableClasses.length) break Caso_previo_3_splittable_method;
           const result = await this.synchronizeSplittableMethod(filepath, event);
-          if(result) {
+          if (result) {
             break Evento_touch;
           }
         }
@@ -105,20 +105,21 @@ async touchFile(fileBrute, optionsInput = {}) {
             await require("fs").promises.writeFile(outputFullpath, outputHtml, "utf8");
           }
         }
+        Caso_previo_6_test_de_test_dir: {
+          if (event.isTestItself) {
+            // caso a: empieza en "@/test/" y acaba en ".test.js"
+            await this.devbin.utils.resolveFunction(this.devbin.utils.requireAgain(filepath), { event });
+            return event;
+          }
+          if (event.isRunnableTest) {
+            // caso b: empieza en "@/test/" y acaba en ".run.js"
+            await this.devbin.utils.resolveFunction(this.devbin.utils.requireAgain(filepath), { event });
+            return event;
+          }
+        }
         Caso_js_o_test_js: {
           Paso_0_descartar_si_no_es_entry_o_test: {
             if (!isProcessable) {
-              if(event.isRunnableTest) {
-                delete require.cache[filepath];
-                const module = require(filepath);
-                if(module instanceof Promise) {
-                  await module;
-                }
-                if(typeof module === "function") {
-                  module.call({ devbin: this.devbin, event });
-                }
-                return event;
-              }
               currentStep.push("3.3.a. is not entry nor test");
               console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[-] DevBinaryV6 dismissed touch event from not entry or test: ${rootPath}`));
               break Procesando_entrada;
@@ -166,11 +167,24 @@ async touchFile(fileBrute, optionsInput = {}) {
           }
         }
       }
+      /*
       Processing_test: {
         if (event.isJsTest) {
           currentStep.push("4. run file because it is a test");
           await this.executeUnitTestFileOf(filepath, { testFabrication: { unitFile: filepath } });
           break Evento_touch;
+        }
+      }
+      //*/
+      Triggering_onVersionate_file: {
+        currentStep.push("4. run e.onVersionate.js");
+        const onVersionateFile = path.join(path.dirname(filepath), "e.onVersionate.js");
+        try {
+          const versionDefinitions = await this.triggerCallbackFromFile(onVersionateFile, { file: filepath, event, onVersionateFile });
+          if(versionDefinitions) await this.versionateEntry(versionDefinitions, { file: filepath, event, onVersionateFile });
+        } catch (error) {
+          console.log(error);
+          console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright,italic").text(`[!] DevBinaryV6 found errors loading «e.onVersionate.js» as object at «${this.devbin.moduler.rootdirOf(onVersionateFile)}» but it just ignored it`));
         }
       }
       Triggering_onTouch_file: {

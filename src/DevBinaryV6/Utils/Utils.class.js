@@ -37,5 +37,8 @@ class DevBinaryV6Utils {
   /*="./prototype.readJsonOrReturn.js"*/
   /*="./prototype.addTouchMutedirTo.js"*/
   /*="./prototype.getSplittableClassesFrom.js"*/
+  /*="./prototype.requireAgain.js"*/
+  /*="./prototype.resolveFunction.js"*/
+  /*="./prototype.versionateEntry.js"*/
   /*="./constructor.js"*/
 }

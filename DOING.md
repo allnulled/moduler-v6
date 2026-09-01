@@ -1,3 +1,84 @@
+# 2026/09/01, martes
+
+- [x] BUG: los `@/test/**/*` dejan de estar en ignore
+   - [x] cuando CTRL+S un `@/test/**/*.test.js`, ahora se ejecuta con delete require.cache previo.
+- [x] FEATURE: los `e.onVersionate.js`
+   - [x] de estar en un touchFile y haber un e.onVersionate.js y haber entries en el dir y coincidir nombre de fichero con clave en objeto retornado
+      - [x] crea un fichero en "@/dist/${subpath}/v/${id}.${version}.dist.js" con la versión especificada
+      - [x] el e.onVersionate.js solo tiene que hacer un module.exports = function que retorne un objeto cuyas claves coincidan con el nombre de la entry
+      - [x] y el touchFile ya se ocupa de sobreescribir la versión automáticamente
+
+# 2026/08/31, lunes
+
+- [ ] BUG: el setProfile cambia la instancia
+   - [ ] Pues no. Tiene que crear una instancia, que luego será borrada en por el collector
+- [ ] FEATURE: /starter/ El Checker.createCheck.
+   - [ ] con los check(x,label).{is,has}.not?|its etc.
+- [ ] FEATURE: /starter/ El Asserter.createAssert.
+   - [ ] con el assert(condition, message|data)
+   - [ ] que el assert se entienda con el checker, para poder hacer:
+   ```js
+   const it = assert.check(100);
+   it.is.number();
+   it.is.lessThan(200);
+   it.is.greaterThan(50);
+   it.is.not.string();
+   it.is.not.function();
+   it.is.not.object();
+   it.is.not.array();
+   it.is.not.undefined();
+   ```
+- [ ] FEATURE: /starter/ El ErrorHandler.from.
+   - [ ] que el errorHandler se entienda con el AssertionError
+   ```js
+   // El que tengo claro de momento de todos es este:
+   ErrorHandler.from(error)
+   .silence()
+   .print(0 /* silencia: evitar mejor */)
+   .print(1) // printa normal
+   .print(2) // debug en profundidad
+   .print(3) // warn: error de severidad local
+   .print(3) // global: error de severidad global
+   .print(4) // critical: 
+   .debug() // 
+   .warn()
+   .rethrow(); // Hace un print pero más profundo
+   // Todos estos, están en duda, porque no sé si valen la pena
+   ErrorHandler.classes.register(class AssertionError extends Error {
+      constructor(message) {
+         super(message);
+         this.name = "AssertionError";
+      }
+   });
+   // O lo que sería lo mismo:
+   ErrorHandler.classes.register(ErrorHandler.createErrorClassByName("assertion error"));
+   ErrorHandler.classes.register(ErrorHandler.createErrorClassByName("type error"));
+   ErrorHandler.classes.register(ErrorHandler.createErrorClassByName("syntax error"));
+   ErrorHandler.classes.register(ErrorHandler.createErrorClassByName("timeout error"));
+   ErrorHandler.classes.register(ErrorHandler.createErrorClassByName("async operation error"));
+   ErrorHandler.classes.register(ErrorHandler.createErrorClassByName("validation error"));
+   ErrorHandler.classes.registerErrorName(ErrorHandler.createErrorClassByName("validation error"));
+   ErrorHandler.from(error).severity(0).rethrow();
+   ErrorHandler.from(error).severity(1).rethrow(); // shortcut de debug
+   ErrorHandler.from(error).severity(2).rethrow(); // shortcut de debug
+   ErrorHandler.from(error).severity(3).rethrow(); // shortcut de debug
+   ErrorHandler.from(error).switchByClass([
+      "Error de inicialización": ErrorHandler.classes.InitializationError,
+      "Error de aserción": ErrorHandler.classes.AssertionError,
+      "Error de discriminación": ErrorHandler.classes.DiscriminationError,
+      "Error de tipo": ErrorHandler.classes.TypeError,
+      "Error no identificado": null,
+   ]);
+   ErrorHandler.from(error).switchByFunction([
+      ["Error de inicialización", it => it instanceof ErrorHandler.classes.InitializationError],
+      ["Error de aserción", it => it instanceof ErrorHandler.classes.AssertionError],
+      ["Error de discriminación", it => it instanceof ErrorHandler.classes.DiscriminationError],
+      ["Error de tipo", it => it instanceof ErrorHandler.classes.TypeError],
+      ["Error no identificado", null],
+   ]);
+   ```
+- [ ] FEATURE: /starter/ El Tracer.createTrace
+
 # 2026/08/27, miércoles
 
 - [x] FEATURE: comando «devbin bundle node module --of picomatch --to "@/src/www/external/picomatch/picomatch.entry.js"»

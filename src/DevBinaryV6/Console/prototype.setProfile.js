@@ -4,6 +4,5 @@
  * @description 
  */
 setProfile(profile) {
-  this.profile = profile;
-  return this;
+  return this.constructor.create({ parent: this, profile });
 }

@@ -7,6 +7,8 @@ A continuación se explican las últimas features implementadas en las 3 APIs: `
 - [Guía de últimas features de DevBinaryV6](#guía-de-últimas-features-de-devbinaryv6)
   - [Índice](#índice)
   - [Lista de features](#lista-de-features)
+    - [01-09-2026, lunes](#01-09-2026-lunes)
+    - [31-08-2026, lunes](#31-08-2026-lunes)
     - [26-08-2026, miércoles](#26-08-2026-miércoles)
     - [25-08-2026, martes](#25-08-2026-martes)
     - [19-08-2026](#19-08-2026)
@@ -15,6 +17,97 @@ A continuación se explican las últimas features implementadas en las 3 APIs: `
 ## Lista de features
 
 A continuación la lista, cronológicamente invertida.
+
+### 01-09-2026, lunes
+
+- RESUMEN:
+   - Feature 1: desbloqueo del listener en `@/test/unit/**/*.test.js`
+   - Feature 2: una API de `Shadow Touchables` basada en `@/dev/touchable/**/touchable.js`
+   - Feature 3: una API de `File Commands` basada en `@/dev/filecom/**/filecom.js`
+
+- [ ] FEATURE: desbloqueo del listener en `@/test/unit/**/*.test.js`
+   - [ ] Que al guardar un `.test.js`, al menos, se ejecute
+      - [ ] No hace falta que se compile
+      - [ ] Sí que mire si hay `.mutedir` o no
+   - [ ] Hacer que el `fabricateUnitTest` use el `.mutedir`
+      - [ ] Así quitamos el ignore del `@/test/unit/` del loop
+      - [ ] Para que en el desarrollo siga valiendo
+      - [ ] Pero nos saltaremos el paso de buildear y todo esto en el `@/test/unit/`
+         - [ ] Si quieres, lo metes a mano
+         - [ ] Pero si es un `.test.js` sí, ejecutar
+   - [ ] Y quedará de mirar el caso donde:
+      - [ ] Estoy editando un js interno del `.test.js`
+      - [ ] Pero no el `.test.js`
+         - [ ] Querría que se ejecutaran todos los `.test.js` encontrados en capa 0 de inmediatez automáticamente
+         - [ ] Esto sería buscar para arriba
+      - [ ] La regla que se quedaría es:
+         - [ ] En `@/test/unit/**` creas un nuevo nodo del árbol creando un `*.test.js`
+         - [ ] Y todos los `**/*.js` de dentro **o mismo directorio**:
+            - [ ] Ejecutarán este y los otros `*.test.js` que coexistan al hacer tú CTRL+S
+         - [ ] Lo cual parece muy adecuado
+- [ ] FEATURE: una Shadow Touchables API
+   - [ ] De esta forma puedes incorporar rápidamente tus propios flujos para:
+      - [ ] `@/src/**/*.subtype.class.js`
+      - [ ] `@/src/**/e.*.js`
+      - [ ] `@/src/**/*.{typ1,typ2,typ3}`
+      - [ ] o lógicas de matching asíncronas full personalizadas
+         - [ ] basándote en el `file` y el `devbin` solamente
+      - [ ] Que afecten al loop pero independientes del `touchFile`
+      - [ ] Dentro tú puedes hacer `touchFile` igualmente, y `addMutedirTo` y todo.
+   - [ ] En `@/dev/touchable/<Identificador del listener>/touchable.js`
+   - [ ] Devuelves un `module.exports = async function`
+   - [ ] Luego dentro `return [{ filter, callback, configuration }]`
+   - [ ] Se ejecutarán **todos** los `callback` en donde:
+      - [ ] El `await filter({ file, devbin })` no devuelve `undefined`
+      - [ ] Y después ya no se volverá al flujo normal del `touchFile`
+- [ ] FEATURE: una Filecom API
+   - [ ] De esta forma puedes ejecutar comandos desde el loop metiéndole de input el contenido de un fichero y usarlo libremente como más te convenga
+   - [ ] En `@/dev/filecom/<Nombre de la operación>/{in,out,filecom.js,README.md}`
+      - [ ] Dejas un `filecom.js` con un `module.exports = async function`
+      - [ ] Recibes: `function({ input: { type, text, file }, output: { type, text, file }})`
+      - [ ] Haces para escribir en el output: `output.text = "La salida";`
+      - [ ] Se ha inyectado un cortocircuito en el `touchFile` para que:
+         - [ ] Si la ruta es `@/dev/filecom/*/in/**/*`
+            - [ ] Se llame a ese `filecom.js`
+               - [ ] con la ruta y el contenido del fichero tocado
+               - [ ] o con la ruta del directorio construido (en cuyo caso `output.text` === null y no servirá de nada dejar texto en el `.text`)
+   - [ ] Esto ha sido motivado por la AST Transformer API
+      - [ ] Los `@/dev/filecom/transform class methods into private function standard/in/**/*.class.js`
+         - [ ] Serían leídos, parseados y transformados automáticamente a API de Private Function Standard
+         - [ ] Podríamos codificar normal, y hacer el paso a privatización automático
+         - [ ] PERO sin contaminar el splittable porfa
+         - [ ] PERO sin contaminar el touchFile tampoco más ya, porfa
+         - [ ] Usamos la filecom
+         - [ ] Intentamos seguir quitándole `ignores` al refrescador
+
+### 31-08-2026, lunes
+
+- Mensaje de commit 1 defragmentado:
+   1. `Consola en el DevBinaryV6 para imprimir con estilos más directo`
+      - En `@/src/DevBinaryV6/Console/Console.class.js` está
+      - En `@/src/DevBinaryV6/prototype.console.js` se pasa al `DevBinaryV6.prototype`
+   2. `System en el Dev también para callbacks al salir abrupto`
+      - En `@/src/DevBinaryV6/System/Process/static.1.js` está
+   3. `métodos de mutear el touch de un directorio entero con .mutedir`
+      - En `@/src/DevBinaryV6/Utils/prototype.addTouchMutedirTo.js` está
+      - Es diferente approach que convive con:
+         - `@/src/DevBinaryV6/Utils/prototype.{muteTouchListenerOf,unmuteTouchListenerOf}.js`
+         - El `addTouchMutedirTo` devuelve un {cancel()} y los `{muteTouchListenerOf,unmuteTouchListenerOf}` se comunican por semáforos del SO vía fichero
+   4. `métodos de sincronización, si, de clase a metodo y viceversa cuando usando splittable classes con pequeño apaño de timeout pero documentado que no parece que haya mucho que rascar en eso, en el metodo addTouchMutedirTo`
+      - En `@/src/DevBinaryV6/Utils/prototype.synchronizeSplittableMethod.js`
+      - Y en `@/src/DevBinaryV6/Utils/prototype.synchronizeSplittableClass.js
+- Por otro lado, estamos intentando meter los primeros patrones de desarrollo en `moduler-v6-starter`
+   - Por lo cual, el `moduler-v6` va desacelerando
+   - Buscamos transversalidad en las features
+      - No interesan mil features inmantenibles
+      - Interesan features de pocas líneas que sean
+         - universales
+            - que cubran pasos comunes en el proceso de solución/implementación
+         - muy transversales
+            - que cubra los máximos casos posibles
+         - bastante usables
+            - que sea rápida de recordar, acceder, personalizar, usar...
+
 
 ### 26-08-2026, miércoles
 

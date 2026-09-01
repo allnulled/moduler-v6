@@ -3,4 +3,4 @@
  * @type 
  * @description 
  */
-this.console = parent ? parent.console : this.constructor.Console.create(this);
+this.console = parent ? parent.console : this.constructor.Console.create({ devbin: this });

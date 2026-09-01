@@ -49,7 +49,7 @@ async "bundle node module"(args, devbin) {
   let bundle, source, outputs;
 
   Bundle_entry: {
-    console.log(`[*] Bundling node module «${info.name}» from: ${this.devbin.moduler.rootdirOf(info.files.main)}`);
+    this.devbin.console.setProfile("blackBright").print(`[*] DevBinaryV6 bundles node module «${info.name}» from: ${this.devbin.moduler.rootdirOf(info.files.main)}`);
     bundle = await esbuild.build({
       entryPoints: [info.files.main],
       bundle: true,
@@ -57,7 +57,7 @@ async "bundle node module"(args, devbin) {
       format: "iife",
       write: false,
     });
-    console.log(`[*] Bundled node module «${info.name}» successfully`);
+    this.devbin.console.setProfile("blackBright").print(`[*] DevBinaryV6 bundled node module «${info.name}» successfully`);
   }
 
   Get_source_and_init_output: {
@@ -79,7 +79,7 @@ async "bundle node module"(args, devbin) {
     for (let index = 0; index < outputs.length; index++) {
       const outputBrute = outputs[index];
       const output = this.devbin.moduler.normalizationOf(outputBrute);
-      console.log(`[*] Exporting node module «${info.name}» to (${index + 1}/${outputs.length}): ${this.devbin.moduler.rootdirOf(output)}`);
+      this.devbin.console.setProfile("blackBright").print(`[*] DevBinaryV6 exports node module «${info.name}» to: ${this.devbin.moduler.rootdirOf(output)}`);
       await this.devbin.utils.ensureDirectoryOf(output);
       await fs.promises.writeFile(output, source, "utf8");
     }

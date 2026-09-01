@@ -18,10 +18,12 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modu
     // SE NECESITA EL AWAIT PORQUE LOS COMPILE.INJECT.MODULES SIEMPRE DEVUELVEN UNA PROMISE:
     const production1 = devbinOne.moduler.normalizationOf("@/dist/kuku/example1.dist.js");
     const output = await require(production1);
+    /*
     console.log(output);
     console.log("");
     console.log(await require("fs").promises.readFile(production1, "utf8"));
     console.log("");
+    //*/
     
   }
 

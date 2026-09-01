@@ -3,6 +3,7 @@
  * @type 
  * @description 
  */
-ensureDirectory(dir) {
-  return require("fs").promises.mkdir(dir, { recursive: true }).catch(error => -2);
+ensureDirectory(dirBrute) {
+  const dir = this.compiler.moduler.normalizationOf(dirBrute);
+  return require("fs").promises.mkdir(dir, { recursive: true });
 };
