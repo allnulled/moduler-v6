@@ -1,3 +1,20 @@
+# 2026/09/02, miércoles
+
+- [ ] La API de los Filecom
+   - [ ] que consiste en comandos cuya entrada es 1 fichero que haces *touch* en 1 carpeta concreta y te saca la salida en otra carpeta concreta.
+      - [ ] para programas cuya entrada pueda basarse en 1 fichero/texto
+      - [ ] de uso puntual (o no) pero sobre todo que
+      - [ ] preferirías que no se perdieran en el tiempo
+      - [ ] típicos programitas que te ves repitiendo a menudo
+      - [ ] con esta API puedes taxonomizarlos fácilmente y acumularlos para ocasiones futuras
+   - [ ] puedes ampliarlos con más `@/dev/filecom/**/command.js`
+   - [ ] puedes llamarlos (desde el loop) simplemente
+      - [ ] guardando ficheros en `@/dev/filecom/${ruta a comando}/in/` y
+      - [ ] típicamente construir la salida en su `./out/${input}`
+   - [ ] 
+- [ ] starter:
+   - [ ] diseño de lenguaje de types
+
 # 2026/09/01, martes
 
 - [x] BUG: los `@/test/**/*` dejan de estar en ignore

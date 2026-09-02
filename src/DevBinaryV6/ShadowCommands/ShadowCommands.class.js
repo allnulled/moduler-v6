@@ -13,4 +13,6 @@ class DevBinaryV6ShadowCommands {
   /*="./prototype.bundle node module.js"*/
   /*="./prototype.loop.js"*/
   /*="./prototype.touch.js"*/
+  
+  /*="./prototype.filecom.js"*/
 }

@@ -1,1 +1,1 @@
-Consola en el DevBinaryV6 para imprimir con estilos más directo + System en el Dev también para callbacks al salir abrupto + métodos de mutear el touch de un directorio entero con .mutedir + métodos de sincronización, si, de clase a metodo y viceversa cuando usando splittable classes con pequeño apaño de timeout pero documentado que no parece que haya mucho que rascar en eso, en el metodo addTouchMutedirTo
+desbloqueado el ignore sobre @/test/ + habilitado e.onVersionate.js para trackear versiones + en proceso otras piezas
