@@ -3,8 +3,8 @@
  * @type 
  * @description 
  */
-constructor({ devbin, parent = {}, profile = null }) {
+constructor({ devbin, cloneOf = {}, profile = null }) {
   this.devbin = devbin;
-  Object.assign(this, parent);
+  Object.assign(this, cloneOf);
   this.profile = profile;
 }

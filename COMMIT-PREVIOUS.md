@@ -1,1 +1,1 @@
-desbloqueado el ignore sobre @/test/ + habilitado e.onVersionate.js para trackear versiones + en proceso otras piezas
+comando para devbin filecom desde consola ya disponible

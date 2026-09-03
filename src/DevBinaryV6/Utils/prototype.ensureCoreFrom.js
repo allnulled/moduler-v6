@@ -166,6 +166,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   await duplicateFile(`${__dirname}/compiler-v6.dist.js`, `${targetDir}/src/external/compiler-v6.entry.js`);
   await duplicateFile(`${__dirname}/dev-binary-v6.dist.js`, `${targetDir}/src/external/dev-binary-v6.entry.js`);
   await duplicateFile(`${__dirname}/refrescador.dist.js`, `${targetDir}/src/external/refrescador.entry.js`);
+  await duplicateFile(`${__dirname}/../src/lib/colors.js`, `${targetDir}/src/external/colors.entry.js`);
   await duplicateDirectory(`${__dirname}/refrescador`, `${targetDir}/src/external/refrescador`, { recursive: true });
 
   if(parameters.installDependencies) await this.installNpmDependencies([], targetDir);

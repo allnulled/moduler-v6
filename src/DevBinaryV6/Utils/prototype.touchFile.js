@@ -269,7 +269,8 @@ async touchFile(fileBrute, optionsInput = {}) {
     }
     return event;
   } catch (error) {
-    console.log(`[!] Error on method «touchFile» on step «${currentStep.reverse()[0]}»`, error);
+    // console.log(`[!] Error on method «touchFile» on step «${currentStep.reverse()[0]}»`, error);
+    this.devbin.console.setProfile("redBright").print(`[!] Error on method «touchFile» on step «${currentStep.reverse()[0]}»`);
     throw error;
   }
 }

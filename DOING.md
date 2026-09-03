@@ -1,17 +1,29 @@
+# 2026/09/03, viernes
+
+- [ ] Veremos.
+
+# 2026/09/03, jueves
+
+- [x] BUG: en DevBinaryV6.Console.prototype.setProfile usaba la misma instancia de Console
+   - [x] pero si 2 métodos llaman a setProfile + print con diferentes al mismo tiempo, podría haber race condition, raro, pero bueno
+   - [x] ahora crea una instancia nueva al vuelo
+   - [x] pensado para hacer print y ya
+- [x] FEATURE: mejorado colors para que sea compatible con browser (en Chrome al menos) solamente el prototype.style
+- [x] En curso varias APIs pero del starter
+
 # 2026/09/02, miércoles
 
-- [ ] La API de los Filecom
-   - [ ] que consiste en comandos cuya entrada es 1 fichero que haces *touch* en 1 carpeta concreta y te saca la salida en otra carpeta concreta.
-      - [ ] para programas cuya entrada pueda basarse en 1 fichero/texto
-      - [ ] de uso puntual (o no) pero sobre todo que
-      - [ ] preferirías que no se perdieran en el tiempo
-      - [ ] típicos programitas que te ves repitiendo a menudo
-      - [ ] con esta API puedes taxonomizarlos fácilmente y acumularlos para ocasiones futuras
-   - [ ] puedes ampliarlos con más `@/dev/filecom/**/command.js`
-   - [ ] puedes llamarlos (desde el loop) simplemente
-      - [ ] guardando ficheros en `@/dev/filecom/${ruta a comando}/in/` y
-      - [ ] típicamente construir la salida en su `./out/${input}`
-   - [ ] 
+- [x] La API de los Filecom
+   - [x] que consiste en comandos cuya entrada es 1 fichero que haces *touch* en 1 carpeta concreta y te saca la salida en otra carpeta concreta.
+      - [x] para programas cuya entrada pueda basarse en 1 fichero/texto
+      - [x] de uso puntual (o no) pero sobre todo que
+      - [x] preferirías que no se perdieran en el tiempo
+      - [x] típicos programitas que te ves repitiendo a menudo
+      - [x] con esta API puedes taxonomizarlos fácilmente y acumularlos para ocasiones futuras
+   - [x] puedes ampliarlos con más `@/dev/filecom/**/command.js`
+   - [x] puedes llamarlos (desde el loop) simplemente
+      - [x] guardando ficheros en `@/dev/filecom/${ruta a comando}/in/` y
+      - [x] típicamente construir la salida en su `./out/${input}`
 - [ ] starter:
    - [ ] diseño de lenguaje de types
 
@@ -27,8 +39,30 @@
 
 # 2026/08/31, lunes
 
-- [ ] BUG: el setProfile cambia la instancia
-   - [ ] Pues no. Tiene que crear una instancia, que luego será borrada en por el collector
+- [x] BUG: el setProfile cambia la instancia
+   - [x] Pues no. Tiene que crear una instancia, que luego será borrada en por el collector
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----
+
+De aquí para abajo, está en REVISABLE:
+
 - [ ] FEATURE: /starter/ El Checker.createCheck.
    - [ ] con los check(x,label).{is,has}.not?|its etc.
 - [ ] FEATURE: /starter/ El Asserter.createAssert.

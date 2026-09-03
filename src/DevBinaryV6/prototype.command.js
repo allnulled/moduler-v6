@@ -53,7 +53,7 @@ async command(args = []) {
       console.log(this.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 executing command: ${commandName}`));
       return await commandCallback.call(this.shadowCommands, commandParameters, this, commandType, commandSubpath);
     } catch (error) {
-      console.error(`[!] The «devbin ${commandName}» command threw an error:`, error);
+      this.console.setProfile("redBright").print(`[!] Error on «devbin ${commandName}» command`);
       throw error;
     }
   }

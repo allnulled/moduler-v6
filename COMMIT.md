@@ -1,1 +1,1 @@
-comando para devbin filecom desde consola ya disponible
+arreglado bug de Console.setProfile que usaba un parámetro de la misma instancia y habria race condition + mejorado colors para compatible con chrome browser + colors en ensure core

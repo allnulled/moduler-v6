@@ -6,7 +6,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modu
 
   Es_un_test_muy_llamativo: {
     // Pero en principio funciona bien, así que:
-    break Es_un_test_muy_llamativo;
+    // break Es_un_test_muy_llamativo;
     devBinaryV6.console.setProfile("blackBright").print("Hooooooooooola en negro brillante");
     devBinaryV6.console.setProfile("greenBright").print("Hooooooooooola en verde brillante");
     devBinaryV6.console.setProfile("cyanBright").print("Hooooooooooola en cian brillante");
