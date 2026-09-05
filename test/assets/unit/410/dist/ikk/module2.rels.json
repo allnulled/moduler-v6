@@ -4,7 +4,6 @@
       "147-191": {
         "syntax": "Inject Module",
         "type": "$compiler.inject.module(",
-        "text": "$compiler.inject.module(\"./node-module2c.js\"",
         "inner": "\"./node-module2c.js\"",
         "outer": "$compiler.inject.module(\"./node-module2c.js\"",
         "referenceOf": {
@@ -17,7 +16,6 @@
       "95-139": {
         "syntax": "Inject Module",
         "type": "$compiler.inject.module(",
-        "text": "$compiler.inject.module(\"./node-module2b.js\"",
         "inner": "\"./node-module2b.js\"",
         "outer": "$compiler.inject.module(\"./node-module2b.js\"",
         "referenceOf": {
@@ -30,7 +28,6 @@
       "43-87": {
         "syntax": "Inject Module",
         "type": "$compiler.inject.module(",
-        "text": "$compiler.inject.module(\"./node-module2a.js\"",
         "inner": "\"./node-module2a.js\"",
         "outer": "$compiler.inject.module(\"./node-module2a.js\"",
         "referenceOf": {

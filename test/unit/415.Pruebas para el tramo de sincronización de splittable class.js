@@ -4,5 +4,5 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modu
 
   
 
-  compilerV6._logger.log("Test 414 ok");
+  compilerV6._logger.log("Test 415 ok");
 };

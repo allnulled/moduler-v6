@@ -15,6 +15,6 @@ neutralizeIndentation(input) {
   const output = lines.map((line, index) => {
     return ((!removableIndentation.length) || (index === 0)) ? line : line.replace(removableIndentation, "");
   }).join("\n");
-  console.log(input, output);
+  // console.log(input, output);
   return output;
 }

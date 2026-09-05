@@ -6,6 +6,25 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6 }) {
 
   const output = await subcompiler.compile("./main.js", { to: "data" });
 
+  Pruebas: {
+    break Pruebas;
+    let test1, test2;
+    Prueba_1: {
+      const content = await subcompiler.files.readFile("@/test/assets/unit/107/main.js");
+      const ast = subcompiler.moduler.parser.forJs.parse(content);
+      test1 = ast;
+      break Prueba_1;
+      compilerV6._die(ast);
+    }
+    Prueba_2: {
+      const content = await subcompiler.files.readFile("@/test/assets/unit/107/main.js");
+      const ast = subcompiler.moduler.parser.forJs.parse('entonces $compiler.inject.source("some file", ["more", "files"], "more text")');
+      test2 = ast;
+      break Prueba_2;
+      compilerV6._die(ast);
+    }
+  }
+
   assert("@/test/assets/unit/107/main.js" in output.report.tree, "Dependencies static analysis is not working as expected (1)");
   assert("@/test/assets/unit/107/example-2.js" in output.report.tree, "Dependencies static analysis is not working as expected (2)");
   assert("@/test/assets/unit/107/example-4.js" in output.report.tree, "Dependencies static analysis is not working as expected (3)");

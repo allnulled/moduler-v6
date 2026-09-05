@@ -5,8 +5,15 @@
  */
 _formatImportParameters(signature) {
   this.assert(Array.isArray(signature), "Parameter «signature» must be array on «ModulerV6.prototype._formatImportParameters»");
-  this.assert(signature.length !== 0, "ModulerV6.prototype.import cannot have 0 arguments");
-  if(signature.length === 1) {
+  // this.assert(signature.length !== 0, "ModulerV6.prototype.import cannot have 0 arguments");
+  if(signature.length === 0) {
+    return {
+      id: null,
+      file: null,
+      dependencies: [],
+      factory: null
+    };
+  } else if(signature.length === 1) {
     if(typeof signature[0] === "string") {
       // By file or id
       const isId = signature[0].startsWith("#");

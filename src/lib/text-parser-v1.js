@@ -32,10 +32,10 @@
           };
         }
         this.assert(typeof grammar === "object", `Grammar «${index}» must be object`);
-        this.assert(typeof grammar[0] === "string", `Item «0» in grammar «${index}» must be string`);
-        this.assert(typeof grammar[1] === "string" || typeof grammar[1] === "object", `Item «1» in grammar «${index}» must be string or object`);
-        this.assert(typeof grammar[2] === "function", `Item «2» in grammar «${index}» must be function`);
-        this.assert(typeof grammar[3] === "object", `Item «3» in grammar «${index}» must be object`);
+        this.assert(typeof grammar[0] === "string", `Grammar «start», at position «0», on grammar «${index}» must be string`);
+        this.assert(typeof grammar[1] === "string" || typeof grammar[1] === "object" || typeof grammar[1] === "function", `Grammar «end», at position «1», on grammar «${index}» must be string, object or function`);
+        this.assert(typeof grammar[2] === "function", `Grammar «formatter», at position «2», on grammar «${index}» must be function`);
+        this.assert(typeof grammar[3] === "object", `Grammar «settings», at position «3», on grammar «${index}» must be object`);
         if (("allowInside" in grammar[3]) && (typeof grammar[3].allowInside !== "undefined")) {
           this.assert(typeof grammar[3].allowInside === "boolean", `Property «allowInside» in item «3» in grammar «${index}» must be boolean or none`);
         }
@@ -71,7 +71,7 @@
       return state.output.push({
         type: starter,
         location: [state.position, lastPosition],
-        text: text.substring(state.position, lastPosition),
+        // text: text.substring(state.position, lastPosition),
         inner: text.substring(countingFrom, currentPosition),
         outer: text.substring(state.position, lastPosition),
       });
@@ -131,7 +131,6 @@
             let wasEnded = false;
             while ((countingFrom + offset) < text.length) {
               const currentPosition = countingFrom + offset;
-              // @TODO: meterse dentro de los strings y escapar paréntesis internos
               if (text[currentPosition] === "(") {
                 openedParenthesys++;
               } else if (text[currentPosition] === ")") {
@@ -145,6 +144,16 @@
               offset++;
             }
             if (!wasEnded) throw new Error(`Unclosed starter of grammar «${starter}» reached end of text but the first parenthesys was not closed on grammar index «${index}»`);
+          } else if(typeof ender === "function") {
+            // @MUST: call to parser._pushToken with: { state:Object, starter:String, currentPosition:Number, countingFrom:Number, text:String, enderLength:Number=1, extraOffset:Number=0 }
+            ender({
+              parser: this,
+              starter,
+              countingFrom,
+              state,
+              text,
+              grammar,
+            });
           } else {
             throw new Error(`Ender (2nd argument) of grammar «${starter}» at grammar index «${index}» has not valid type: «${typeof ender}»`);
           }

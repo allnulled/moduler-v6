@@ -1,6 +1,12 @@
 # 2026/09/03, viernes
 
-- [ ] Veremos.
+- [x] BUG: `touchFile` no estaba pasando por el mismo try-catch al ejecutar el unit test cuando guardabas el src que cuando guardabas el test/unit:
+   - [x] ahora las 2 vías pasan por el mismo try-catch
+- [ ] BUG: caso de `$moduler.import("ok", ["ok2", "ok3"] Problema.con(parser, aqui))`
+   - [ ] que solo pille hasta antes de "Problema.con"
+      - [ ] función de `_findStringOrArrayEnd`
+      - [ ] función de `_findStringEnd`
+      - [ ] función de `_hydrateParameters`
 
 # 2026/09/03, jueves
 

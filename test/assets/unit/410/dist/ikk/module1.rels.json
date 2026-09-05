@@ -4,7 +4,6 @@
       "17-60": {
         "syntax": "Inject Module",
         "type": "$compiler.inject.module(",
-        "text": "$compiler.inject.module(\"./node-module1.js\"",
         "inner": "\"./node-module1.js\"",
         "outer": "$compiler.inject.module(\"./node-module1.js\"",
         "referenceOf": {

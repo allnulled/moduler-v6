@@ -10,7 +10,7 @@ static removeNullPropertiesFromObject(obj) {
     if(val !== null) {
       output[prop] = val;
     } else {
-      console.log("Removed: " + prop, val);
+      // console.log("Removed: " + prop, val);
     }
   }
   return output;

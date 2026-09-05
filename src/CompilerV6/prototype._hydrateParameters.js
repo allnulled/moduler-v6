@@ -5,6 +5,11 @@
  */
 _hydrateParameters(parametersSource) {
   this._trace("_hydrateParameters", arguments);
-  // @ATTENTION: Diu-a-fondiskiuts
-  return (new Function(`return [${parametersSource}]`)).call();
+  // console.log(parametersSource);
+  try {
+    // @ATTENTION: Diu-a-fondiskiuts
+    return (new Function(`return [${parametersSource}]`)).call();
+  } catch (error) {
+    return [`[#ERROR]=${error.name}:${error.message}`];
+  }
 }

@@ -19,9 +19,9 @@ async versionateEntry(versions, { file: fileBrute, onVersionateFile }) {
   const outputFile = `@/dist/src/${subpath}/v/${id}.${currentVersion}.dist.js`;
   const inputFile = `@/dist/src/${subpath}/${id}.dist.js`;
   const outputDir = require("path").dirname(outputFile);
-  console.log(outputDir);
-  console.log(outputFile);
-  console.log(inputFile);
+  // console.log(outputDir);
+  // console.log(outputFile);
+  // console.log(inputFile);
   await this.devbin.files.ensureDirectory(outputDir);
   await this.devbin.files.copyFile(inputFile, outputFile);
 }

@@ -108,7 +108,7 @@ async touchFile(fileBrute, optionsInput = {}) {
         Caso_previo_6_test_de_test_dir: {
           if (event.isTestItself) {
             // caso a: empieza en "@/test/" y acaba en ".test.js"
-            await this.devbin.utils.resolveFunction(this.devbin.utils.requireAgain(filepath), { event });
+            await this.executeUnitTestFileOf(filepath, { ...event, testFabrication: { unitFile: filepath }});
             return event;
           }
           if (event.isRunnableTest) {
@@ -181,7 +181,7 @@ async touchFile(fileBrute, optionsInput = {}) {
         const onVersionateFile = path.join(path.dirname(filepath), "e.onVersionate.js");
         try {
           const versionDefinitions = await this.triggerCallbackFromFile(onVersionateFile, { file: filepath, event, onVersionateFile });
-          if(versionDefinitions) await this.versionateEntry(versionDefinitions, { file: filepath, event, onVersionateFile });
+          if (versionDefinitions) await this.versionateEntry(versionDefinitions, { file: filepath, event, onVersionateFile });
         } catch (error) {
           console.log(error);
           console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright,italic").text(`[!] DevBinaryV6 found errors loading «e.onVersionate.js» as object at «${this.devbin.moduler.rootdirOf(onVersionateFile)}» but it just ignored it`));

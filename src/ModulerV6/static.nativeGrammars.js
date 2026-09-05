@@ -21,34 +21,34 @@ static nativeGrammars = {
   InjectModules: ["$"+"compiler.inject.modules(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Inject Modules", ...token, };
   }],
-  ImportJs: ["$"+"moduler.import(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  ImportJs: ["$"+"moduler.import(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Import", ...token, };
-  }, {allowInside:true}],
-  ExportJs: ["$"+"moduler.export(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  }, {}],
+  ExportJs: ["$"+"moduler.export(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Export", ...token, };
-  }, {allowInside:true}],
+  }, {}],
   //*
-  SectionGet: ["$"+"moduler.section.get(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  SectionGet: ["$"+"moduler.section.get(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Section Get", ...token, };
-  }, {allowInside:true}],
-  SectionSet: ["$"+"moduler.section.set(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  }, {}],
+  SectionSet: ["$"+"moduler.section.set(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Section Set", ...token, };
-  }, {allowInside:true}],
-  SectionOverwrite: ["$"+"moduler.section.overwrite(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  }, {}],
+  SectionOverwrite: ["$"+"moduler.section.overwrite(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Section Overwrite", ...token, };
-  }, {allowInside:true}],
-  SectionExpand: ["$"+"moduler.section.expand(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  }, {}],
+  SectionExpand: ["$"+"moduler.section.expand(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Section Expand", ...token, };
-  }, {allowInside:true}],
-  SectionFill: ["$"+"moduler.section.fill(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  }, {}],
+  SectionFill: ["$"+"moduler.section.fill(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Section Fill", ...token, };
-  }, {allowInside:true}],
-  SectionHas: ["$"+"moduler.section.has(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  }, {}],
+  SectionHas: ["$"+"moduler.section.has(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Section Has", ...token, };
-  }, {allowInside:true}],
-  SectionInitialize: ["$"+"moduler.section.initialize(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+  }, {}],
+  SectionInitialize: ["$"+"moduler.section.initialize(", this.ParserUtils.stringOrArrayOfStringsContinuation, function (token) {
     return { syntax: "Moduler Section Initialize", ...token, };
-  }, {allowInside:true}],
+  }, {}],
   //*/
   EmbeddedFormFieldOpener: ["/"+"*=¿", "*/", function (token) {
     return { syntax: "Embedded Form Field Opener", ...token, };

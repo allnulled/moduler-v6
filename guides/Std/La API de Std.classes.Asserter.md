@@ -1,4 +1,4 @@
-# API de Std.Asserter
+# La API de Std.classes.Asserter
 
 - Sobre el `Asserter`:
    - Uno de los usos es enviar condiciones booleanas a errores en el flujo común

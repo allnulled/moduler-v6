@@ -16,6 +16,7 @@ class ModulerV6 {
   /*="./static.Settings.js"*/
   /*="./static.Toolkit.js"*/
   /*="./static.Parser.js"*/
+  /*="./static.ParserUtils.js"*/
   
   /*="./static.nativeGrammars.js"*/
   /*="./static.defaultGrammars.js"*/
@@ -50,6 +51,8 @@ class ModulerV6 {
   /*="./prototype._importFactory.js"*/
   /*="./prototype._importSectionByMap.js"*/
   /*="./prototype._removeSymbolsFromFilepath.js"*/
+  /*="./prototype._findStringEnd.js"*/
+  /*="./prototype._findStringOrArrayEnd.js"*/
   
   /*="./prototype.assert.js"*/
   /*="./prototype.trify.js"*/

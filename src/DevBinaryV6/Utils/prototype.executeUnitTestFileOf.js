@@ -28,9 +28,9 @@ async executeUnitTestFileOf(filepath, event) {
       if(typeof testCallback === "function") {
         await testCallback.call({ devbin: this.devbin, filepath, event });
       }
-      console.log($.style("greenBright").text(`[*] DevBinary has successfully passed unit test file of: ${unitRootpath}`));
+      console.log($.style("greenBright,underline").text(`[*] DevBinary has successfully passed unit test file of: ${unitRootpath}`));
     } catch (error) {
-      console.log($.style("red,bold").text(`[!] DevBinary has failed unit test with error on file «${testUnitFile}»:`));
+      console.log($.style("red,underline").text(`[!] DevBinary has failed unit test with error on file «${filepath}»:`));
       console.log(error);
     }
   }
