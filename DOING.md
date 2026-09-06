@@ -1,13 +1,16 @@
 # 2026/09/04, domingo
 
-- [ ] BUG: markdown hace cosa rara recursiva
-   - [ ] reproducir bug
-   - [ ] parchear
-   - [ ] commit
-- [ ] BUG: test repetido
-   - [ ] reproducir bug
-   - [ ] parchear
-   - [ ] commit
+- [ ] BUGx2: con $compiler.inject.modules:
+   - [ ] no se crea el fichero cuando lo va a buscar, como en $compiler.inject.source
+   - [ ] las rutas locales no las pilla bien, las rootdir sí
+- [x] BUG: markdown hace cosa rara recursiva
+   - [x] reproducir bug
+   - [x] parchear
+   - [x] commit
+- [x] BUG: test repetido
+   - [x] reproducir bug
+   - [x] parchear
+   - [x] commit
 
 # 2026/09/03, sábado
 

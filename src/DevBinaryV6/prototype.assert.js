@@ -4,5 +4,5 @@
  * @description 
  */
 assert(...args) {
-  return this.moduler.assert(...args);
+  return ModulerV6.assert(...args);
 }

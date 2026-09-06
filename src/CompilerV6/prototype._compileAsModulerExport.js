@@ -34,6 +34,7 @@ async _compileAsModulerExport(compilationFile, compilationProcess, { token, toke
     Handle_errors_evaluating_parameters: {
       // @OK: no compilation or path guessing if parameters can not be evaluated
       console.error(`The load of inner parameters of token type «$moduler.export» on file «${compilationFile.resource}» could not be retrieved maybe because of runtime code that cannot be solved on compilation-time on «ModulerV6.prototype._compileAsModulerExport»`);
+      console.error(tokenization);
       console.error(parameters);
     }
   } else {

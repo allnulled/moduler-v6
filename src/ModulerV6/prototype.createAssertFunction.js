@@ -4,5 +4,5 @@
  * @description 
  */
 createAssertFunction() {
-  return (...args) => this.assert(...args);
+  return (...args) => ModulerV6.assert(...args);
 }

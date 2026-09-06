@@ -10,6 +10,9 @@ _hydrateParameters(parametersSource) {
     // @ATTENTION: Diu-a-fondiskiuts
     return (new Function(`return [${parametersSource}]`)).call();
   } catch (error) {
-    return [`[#ERROR]=${error.name}:${error.message}`];
+    console.error("[!] Parameters could not be hydrated due to some error on function compilation");
+    console.error("[!] Source that started the error:");
+    console.error(parametersSource);
+    throw error;
   }
 }

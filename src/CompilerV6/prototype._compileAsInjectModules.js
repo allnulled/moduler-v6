@@ -16,14 +16,15 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
   this.moduler.assert(isArray || isObject, `Syntax «$compiler.inject.modules» only accepts array or object as first parameter but «${typeof collection}» was found instead`);
   Compile_modules: {
     subcode1 = "";
-    subcompiler = this._cloneForFile(compilationFile.resource);
+    subcompiler = this._cloneForFile(compilationFile.resource, this);
     const targetPaths = isArray ? [].concat(collection) : Object.values(collection);
     const targetKeys = Object.keys(collection);
     const compilationPromises = [];
     const compilationPairs = [];
     Compile:
     for(let indexTargets=0; indexTargets<targetPaths.length; indexTargets++) {
-      const file = targetPaths[indexTargets];
+      const fileBrute = targetPaths[indexTargets];
+      const file = subcompiler.normalizationOf(fileBrute);
       const targetCompilation = subcompiler._compileRecursively({
         resource: file,
         isRoot: false,

@@ -4,5 +4,5 @@
  * @description 
  */
 assert(condition, message) {
-  return this.constructor.assert(condition, message);
+  return ModulerV6.assert(condition, message);
 }

@@ -1,1 +1,1 @@
-parcheado bug de md recursivo, era un mal uso, estaba usando el md generado como entrada, el mismo nombre del fichero pero en md es un fichero de salida, no de entrada, o cambiarlo, o es correcto así e incorrecto usarlo.
+bug solved de unit test ejecutandose 2 veces, pasaba porque si guardas un entry con el mismo nombre que el directorio, lo triggea por la propia, y luego por el propagateUp + mejor reporte del touch y los tests con coloritos
