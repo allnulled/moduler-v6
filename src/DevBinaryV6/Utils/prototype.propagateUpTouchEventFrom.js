@@ -14,6 +14,8 @@ async propagateUpTouchEventFrom(filepath, event = {}) {
   let firstFile = undefined;
   Propagate_to_directory_main_entry: {
     const possibleMainEntry = `${currentDirectory}/${currentDirectoryName}.entry.js`;
+    // Esta línea es para que no se duplique el trigger al unit test cuando guardas el entry:
+    if(possibleMainEntry === filepath) break Propagate_to_directory_main_entry;
     if(await this.existsFile(possibleMainEntry)) {
       await this.touchFile(possibleMainEntry, {
         propagateUp: false,

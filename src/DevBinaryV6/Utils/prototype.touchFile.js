@@ -5,8 +5,9 @@
  */
 async touchFile(fileBrute, optionsInput = {}) {
   this.assert(typeof fileBrute === "string", `Parameter «--file» must be string and not «${typeof fileBrute}» on «DevBinaryV6.Utils.prototype.touchFile»`);
+  const $ = this.devbin.compiler.constructor.ansi.colors;
   const file = this.devbin.moduler.normalizationOf(fileBrute);
-  this.devbin.console.setProfile("underline").print("[*] Touched file: " + this.devbin.moduler.rootdirOf(file));
+  console.log($.style("yellow").text("[*] Touched:") + " " + $.style("underline").text(" " + this.devbin.moduler.rootdirOf(file) + " "));
   const currentStep = [];
   try {
     let outputFile = false;

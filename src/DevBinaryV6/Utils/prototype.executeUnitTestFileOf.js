@@ -11,7 +11,7 @@ async executeUnitTestFileOf(filepath, event) {
     console.log($.style("blackBright").text(`[*] DevBinaryV6 missed test for file: ${filepath}`));
   } else {
     const unitRootpath = this.devbin.moduler.rootdirOf(event.testFabrication.unitFile);
-    console.log($.style("cyan").text(`[*] DevBinary is executing unit test file of: ${unitRootpath}`));
+    console.log($.style("cyan").text(`[*] Started unit test on:`) + " " + $.style("").text(unitRootpath));
     let testUnitFile = undefined;
     Get_unit_test_filepath: {
       if(event.testFabrication.unitFile) {
@@ -28,9 +28,9 @@ async executeUnitTestFileOf(filepath, event) {
       if(typeof testCallback === "function") {
         await testCallback.call({ devbin: this.devbin, filepath, event });
       }
-      console.log($.style("greenBright,underline").text(`[*] DevBinary has successfully passed unit test file of: ${unitRootpath}`));
+      console.log($.style("bgGreen,black,underline").text(`[*] Passed unit test on:`) + " " + $.style("").text(unitRootpath));
     } catch (error) {
-      console.log($.style("red,underline").text(`[!] DevBinary has failed unit test with error on file «${filepath}»:`));
+      console.log($.style("bgRed,black,underline").text(`[!] Failed unit test on:`) + " " + $.style("underline").text(unitRootpath));
       console.log(error);
     }
   }
