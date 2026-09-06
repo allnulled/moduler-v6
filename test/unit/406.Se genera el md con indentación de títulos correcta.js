@@ -4,6 +4,7 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modu
 
   const localDevbin = DevBinaryV6.create(`${__dirname}/../assets/unit/401`);
   await localDevbin.compiler.files.deleteFile.try(localDevbin.moduler.normalizationOf("@/dist/www/t-406/ExampleT406.md"));
+  await localDevbin.compiler.files.deleteFile.try(localDevbin.moduler.normalizationOf("@/src/www/t-406/.mutedir"));
   await localDevbin.command(["touch", "--file", "@/src/www/t-406/ExampleT406.entry.js"]);
   assert(await localDevbin.compiler.files.hasFile(localDevbin.moduler.normalizationOf("@/dist/www/t-406/ExampleT406.md")), "Can generate md with well-tabulated titles from entry in src to dist through touch (1)");
   const mdContent = await localDevbin.compiler.files.readFile("@/dist/www/t-406/ExampleT406.md");

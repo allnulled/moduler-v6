@@ -1,12 +1,27 @@
+# 2026/09/04, domingo
+
+- [ ] BUG: markdown hace cosa rara recursiva
+   - [ ] reproducir bug
+   - [ ] parchear
+   - [ ] commit
+- [ ] BUG: test repetido
+   - [ ] reproducir bug
+   - [ ] parchear
+   - [ ] commit
+
+# 2026/09/03, sábado
+
+- [x] BUG: caso de `$moduler.import("ok", ["ok2", "ok3"] Problema.con(parser, aqui))`
+   - [x] que solo pille hasta antes de "Problema.con"
+      - [x] función de `_findStringOrArrayEnd`
+      - [x] función de `_findStringEnd`
+      - [x] función de `_hydrateParameters`
+      - [x] función de `format{Im,Ex}portParameters`
+
 # 2026/09/03, viernes
 
 - [x] BUG: `touchFile` no estaba pasando por el mismo try-catch al ejecutar el unit test cuando guardabas el src que cuando guardabas el test/unit:
    - [x] ahora las 2 vías pasan por el mismo try-catch
-- [ ] BUG: caso de `$moduler.import("ok", ["ok2", "ok3"] Problema.con(parser, aqui))`
-   - [ ] que solo pille hasta antes de "Problema.con"
-      - [ ] función de `_findStringOrArrayEnd`
-      - [ ] función de `_findStringEnd`
-      - [ ] función de `_hydrateParameters`
 
 # 2026/09/03, jueves
 
