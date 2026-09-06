@@ -11,30 +11,34 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modu
   const mdContent = await localDevbin.compiler.files.readFile("@/dist/www/t-407/ExampleT407.md");
   assert(typeof mdContent === "string", "Can inject table of contents when compiling entry.js files recursively (1)");
 
-  assert(mdContent.includes(`- [Class ExampleT407](#class-examplet407)
+  assert(mdContent.includes(`### Table of contents
+
+- [Ejemplo de ExampleT407](#ejemplo-de-examplet407)
+  - [Table of contents](#table-of-contents)
+  - [Relations](#relations)
+  - [Class Group1](#class-group1)
     - [Table of contents](#table-of-contents)
     - [Relations](#relations)
-    - [Class Group1](#class-group1)
-    - [Table of contents](#table-of-contents)
-    - [Relations](#relations)
-    - [Group1.create](#group1create)`), "Can generate table of contents when compiling entry.js files recursively (2)");
+    - [Group1.create](#group1create)`), "Can generate {{ Table of contents }} token when compiling entry.js files recursively (2)");
 
-  assert(mdContent.includes(`- [Class Group1](#class-group1)
-      - [Table of contents](#table-of-contents)
-      - [Relations](#relations)
-      - [Group1.create](#group1create)`), "Can generate table of contents when compiling entry.js files recursively (3)");
+  assert(mdContent.includes(`### Relations
 
-  En_cuarentena_este_test_ahora_mismo: {
-    // @PETANDO:
-    // break En_cuarentena_este_test_ahora_mismo;
-    // compilerV6._die(mdContent);
-    assert(mdContent.includes(`- **@/src/www/t-407/ExampleT407.entry.js** uses **2 files**
+- **@/src/www/t-407/ExampleT407.entry.js** uses **2 files**
   1. *@/src/www/t-407/Group1.entry.js* with **@Injects**
-  2. *@/src/www/t-407/ExampleT407.md* with **@Injects**
+  2. *@/src/www/t-407/ExampleT407.intro.md* with **@Injects**
 - **@/src/www/t-407/Group1.entry.js** uses **1 files**
   1. *@/src/www/t-407/Group1.part1.js* with **Inject Source**
 - **@/src/www/t-407/Group1.part1.js** *free*
-- **@/src/www/t-407/ExampleT407.md** *free*`), "Can generate relations when compiling entry.js files (not recursively) (3)");
+- **@/src/www/t-407/ExampleT407.intro.md** *free*`), "Can generate {{ Relations }} token when compiling entry.js files recursively (3)");
+
+  En_cuarentena_este_test_ahora_mismo: {
+    assert(mdContent.includes(`- **@/src/www/t-407/ExampleT407.entry.js** uses **2 files**
+  1. *@/src/www/t-407/Group1.entry.js* with **@Injects**
+  2. *@/src/www/t-407/ExampleT407.intro.md* with **@Injects**
+- **@/src/www/t-407/Group1.entry.js** uses **1 files**
+  1. *@/src/www/t-407/Group1.part1.js* with **Inject Source**
+- **@/src/www/t-407/Group1.part1.js** *free*
+- **@/src/www/t-407/ExampleT407.intro.md** *free*`), "Can generate {{ Relations }} when compiling entry.js files (not recursively) (4)");
   }
 
   compilerV6._logger.log("Test 407 ok");

@@ -1,7 +1,7 @@
 {
   "tree": {
     "@/src/www/t-407/ExampleT407.entry.js": {
-      "32-64": {
+      "38-70": {
         "syntax": "@Injects",
         "inner": "\"./Group1.entry.js\"",
         "referenceOf": {
@@ -11,14 +11,14 @@
           "rootpath": "@/src/www/t-407/Group1.entry.js"
         }
       },
-      "0-31": {
+      "0-37": {
         "syntax": "@Injects",
-        "inner": "\"./ExampleT407.md\"",
+        "inner": "\"./ExampleT407.intro.md\"",
         "referenceOf": {
           "type": "file",
-          "entry": "./ExampleT407.md",
-          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-407/ExampleT407.md",
-          "rootpath": "@/src/www/t-407/ExampleT407.md"
+          "entry": "./ExampleT407.intro.md",
+          "fullpath": "/home/carlos/Escritorio/Programas/moduler-v6/test/assets/unit/401/src/www/t-407/ExampleT407.intro.md",
+          "rootpath": "@/src/www/t-407/ExampleT407.intro.md"
         }
       }
     },
@@ -35,6 +35,6 @@
       }
     },
     "@/src/www/t-407/Group1.part1.js": {},
-    "@/src/www/t-407/ExampleT407.md": {}
+    "@/src/www/t-407/ExampleT407.intro.md": {}
   }
 }

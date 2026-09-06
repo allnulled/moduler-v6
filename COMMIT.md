@@ -1,1 +1,1 @@
-recuperados los sleeping tests del markdown, estaban bloqueados por el .mutedir + re-localizado bug del markdown, ejemplo en el 407 que está fallando ahora mismo
+parcheado bug de md recursivo, era un mal uso, estaba usando el md generado como entrada, el mismo nombre del fichero pero en md es un fichero de salida, no de entrada, o cambiarlo, o es correcto así e incorrecto usarlo.
