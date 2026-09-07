@@ -18,7 +18,7 @@ cd "$DIR2"
     -i "**/src/www/external/**/*.entry.js" \
     -i "**/*.{dist,ign}.*" \
     -i "**/logs/**/*" \
-    -i "**/test/assets/unit/{202,203,204,205,401,407,410,412}/**/*" \
+    -i "**/test/assets/unit/{202,203,204,205,401,407,410,412,418}/**/*" \
     -i "**/test/errors.txt" \
     -i "**/dev/unlistened.json" \
     -i "**/dev/listened.json" \

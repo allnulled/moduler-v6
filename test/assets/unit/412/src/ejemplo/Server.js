@@ -1,0 +1,1 @@
+module.exports = class Server { static version = "1.0.1" };

@@ -16,6 +16,7 @@ reserveFile(file) {
   }
   const _module = { exports: {} };
   return {
+    $moduler: this.cloneForFile(filepath),
     module: _module,
     exports: _module.exports,
     file: filepath,

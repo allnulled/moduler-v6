@@ -10,6 +10,7 @@ async loop(args) {
   const settingsControllers = this.devbin.settings.data?.loop?.controllers || [];
   const targetDirs = [
     require("path").resolve(targetRoot, "src"),
+    require("path").resolve(targetRoot, "dev/filecom"),
     require("path").resolve(targetRoot, "dev/settings.js"),
     require("path").resolve(targetRoot, "test/unit/src"),
     require("path").resolve(targetRoot, "test/feature"),
@@ -33,6 +34,7 @@ async loop(args) {
       // "**/test/unit/"+"**/*.js",
       "**/dev/listened.json",
       "**/dev/unlistened.json",
+      "**/dev/filecom/*/out/**",
       "**/.mutedir",
     ],
     ignoreCallback: `${targetRoot}/dev/unlistened.json`,
@@ -47,6 +49,7 @@ async loop(args) {
       "css",
       "html",
       "md",
+      "txt",
     ],
     execute: [
       'dev/run.js touch --file @{refrescador.file}',

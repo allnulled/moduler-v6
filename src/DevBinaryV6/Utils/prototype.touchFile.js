@@ -118,6 +118,14 @@ async touchFile(fileBrute, optionsInput = {}) {
             return event;
           }
         }
+        Caso_previo_7_filecom: {
+          const matches = rootPath.match(/\@\/dev\/filecom\/([^\/]+)\/in\//);
+          if(matches && (matches.length === 2)) {
+            const outputFile = rootPath.replace(`@/dev/filecom/${matches[1]}/in/`, `@/dev/filecom/${matches[1]}/out/`).replace(/\.md/g, ".json");
+            await this.devbin.command(["filecom", "--command", matches[1], "--in", rootPath, "--out", outputFile]);
+            return event;
+          }
+        }
         Caso_js_o_test_js: {
           Paso_0_descartar_si_no_es_entry_o_test: {
             if (!isProcessable) {
@@ -143,6 +151,9 @@ async touchFile(fileBrute, optionsInput = {}) {
           }
           Paso_3_ejecutar_test_unitario: {
             currentStep.push("3.6. run unit test");
+            const onUnitTestFile = path.join(path.dirname(filepath), "e.onUnitTestFile.js");
+            const result = await this.triggerCallbackFromFile(onUnitTestFile, { file: filepath, event, });
+            if(result === false) break Paso_3_ejecutar_test_unitario;
             Object.assign(event, {
               testExecution: await this.executeUnitTestFileOf(filepath, event),
             });

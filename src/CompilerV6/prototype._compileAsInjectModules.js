@@ -6,7 +6,7 @@
 async _compileAsInjectModules(compilationFile, compilationProcess, { token, tokenIndex }) {
   // @TODO: CHATGPT, estyo en esta funcionalidad.
   let out = "";
-  let subcompiler = undefined;
+  let subcompilerForAll = this._cloneForFile(compilationFile.resource, this);
   let subcode1 = "";
   let subcode2 = "";
   const parameters = this._getDataForTokenCompilation({ token });
@@ -14,9 +14,13 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
   const isArray = Array.isArray(collection);
   const isObject = (!isArray) && (typeof collection === "object");
   this.moduler.assert(isArray || isObject, `Syntax «$compiler.inject.modules» only accepts array or object as first parameter but «${typeof collection}» was found instead`);
+  // console.log("[SUBCOMPILER ON INJECT MODULES]");
+  // console.log(this.basedir);
+  // console.log(subcompilerForAll.basedir);
+  // console.log(this.rootdir);
+  // console.log(subcompilerForAll.rootdir);
   Compile_modules: {
     subcode1 = "";
-    subcompiler = this._cloneForFile(compilationFile.resource, this);
     const targetPaths = isArray ? [].concat(collection) : Object.values(collection);
     const targetKeys = Object.keys(collection);
     const compilationPromises = [];
@@ -24,8 +28,12 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
     Compile:
     for(let indexTargets=0; indexTargets<targetPaths.length; indexTargets++) {
       const fileBrute = targetPaths[indexTargets];
-      const file = subcompiler.normalizationOf(fileBrute);
-      const targetCompilation = subcompiler._compileRecursively({
+      const file = this.normalizationOf(fileBrute);
+      const subcompilerForTarget = subcompilerForAll._cloneForFile(file, this);
+      // console.log("[SUBCOMPILER ON INJECT MODULES BUT FOR TARGET]");
+      // console.log(subcompilerForTarget.basedir);
+      // console.log(subcompilerForTarget.rootdir);
+      const targetCompilation = subcompilerForTarget._compileRecursively({
         resource: file,
         isRoot: false,
         parentCompilation: compilationFile,
@@ -34,7 +42,7 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
       compilationPairs.push({
         index: indexTargets,
         file: file,
-        rootpath: subcompiler.rootdirOf(file),
+        rootpath: subcompilerForTarget.rootdirOf(file),
       });
     }
     const compilations = await Promise.all(compilationPromises);
@@ -60,7 +68,12 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
   }
   Generate_output: {
     out += `$moduler.lockFiles([\n`;
-    out += Object.values(collection).map(key => JSON.stringify(subcompiler.moduler.rootdirOf(key))).join(",\n  ");
+    out += Object.values(collection).map(key => {
+      const rootpath1 = subcompilerForAll.moduler.rootdirOf(key);
+      const rootdist1 = subcompilerForAll.moduler._getDistRootpathFromSrc(rootpath1);
+      const rootjson1 = JSON.stringify(rootdist1);
+      return rootjson1;
+    }).join(",\n  ");
     out += `\n]).until(Promise.fromCollection(${subcode1}))`;
   }
   compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], out, token);

@@ -1,0 +1,1 @@
+module.exports = class Utils { static version = "1.0.3" };

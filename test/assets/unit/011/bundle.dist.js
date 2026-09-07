@@ -1,7 +1,7 @@
 // This is an injected header;
 module.exports = {
   AmbivalentModule0: "ok",
-  AmbivalentModule1: function ({ module, exports }) {
+  AmbivalentModule1: function ({ module, exports, $moduler }) {
     return $moduler.releaseFile(
       "@/test/assets/unit/011/ambivalent-module-1.js",
       arguments[0],

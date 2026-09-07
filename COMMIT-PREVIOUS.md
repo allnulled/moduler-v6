@@ -1,1 +1,1 @@
-bug solved de unit test ejecutandose 2 veces, pasaba porque si guardas un entry con el mismo nombre que el directorio, lo triggea por la propia, y luego por el propagateUp + mejor reporte del touch y los tests con coloritos
+guia de modulación avanzada 1 empezada

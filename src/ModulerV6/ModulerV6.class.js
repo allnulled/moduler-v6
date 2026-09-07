@@ -53,6 +53,7 @@ class ModulerV6 {
   /*="./prototype._removeSymbolsFromFilepath.js"*/
   /*="./prototype._findStringEnd.js"*/
   /*="./prototype._findStringOrArrayEnd.js"*/
+  /*="./prototype._getDistRootpathFromSrc.js"*/
   
   /*="./prototype.assert.js"*/
   /*="./prototype.trify.js"*/
