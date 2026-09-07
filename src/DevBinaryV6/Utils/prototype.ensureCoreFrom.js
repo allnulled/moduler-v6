@@ -142,6 +142,7 @@ async ensureCoreFrom(basedirInput, parametersInput = {}) {
   if(!await utils._existsFile(`${targetDir}/.gitignore`)) await saveFile(`${targetDir}/.gitignore`, "node_modules", "utf8");
   
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/devbin-help.js`, `${targetDir}/dev/bin/help/command.js`);
+  await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/e.onFileChange.js`, `${targetDir}/dev/events/e.onFileChange.js`);
   await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/dev-bin.js`, `${targetDir}/dev/bin.js`);
   Al_run_hay_que_darle_permisos: {
     await duplicateFileIfNotExists(`${__dirname}/../src/DevBinaryV6/Utils/core/dev-run.js`, `${targetDir}/dev/run.js`);

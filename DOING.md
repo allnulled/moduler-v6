@@ -1,16 +1,33 @@
 # 2026/09/04, domingo
 
-- [ ] BUGx2: con $compiler.inject.modules:
-   - [ ] no se crea el fichero cuando lo va a buscar, como en $compiler.inject.source
-   - [ ] las rutas locales no las pilla bien, las rootdir sí
+- [x] COMMIT:
+
+> secciones como dependencias del moduler.import daba problemas porque se interpretaba como filepath + test en 421 + refrescador (creo) esparcía procesos por el so pero ahora usa executeCallback que en principio no debe
+
+- [x] BUG: había un malentendido con las secciones en `import` como dependencias
+   - [x] lo usaba como apéndice de fichero, ahora lo respeta
+   - [x] test en 421
+- [x] BUG/FEATURE: antes el refrescador lanzaba un comando de consola
+   - [x] iba bien, pero al hacer ps -A ves todo de procesos node
+   - [x] se ha pasado el execute a executeCallback para reaprovechar el mismo proceso (veremos, esto también)
+- [x] BUG: con $compiler.inject.modules:
+   - [x] las rutas locales no las pilla bien, las rootdir sí
+   - [x] compiler.inject.modules no debería poder pillar rutas locales porque es ambiguo, porque en un...
+      - [x] solucionado
+      - [x] se reemplazan las `@/src/**/*.entry.js` por su `@/dist/**/*.dist.js` en el _importFile
+      - [x] se crea un moduler especifico para cada módulo, con su ruta especifica, cambiando los src a dist si escaece
+      - [x] también el wrapAsModuleInjection transforma los path de src+entry.js a dist+dist.js
+         - [x] entonces conseguimos compatibilidad con las rutas de otros módulos, el sistema de secciones, y el cacheo
 - [x] BUG: markdown hace cosa rara recursiva
    - [x] reproducir bug
    - [x] parchear
    - [x] commit
+   - [x] ERA un falso error
 - [x] BUG: test repetido
    - [x] reproducir bug
    - [x] parchear
    - [x] commit
+   - [x] FUE breve
 
 # 2026/09/03, sábado
 

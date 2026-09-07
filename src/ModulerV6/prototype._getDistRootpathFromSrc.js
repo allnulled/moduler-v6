@@ -11,11 +11,12 @@ _getDistRootpathFromSrc(filepath, normalized = false) {
       rootpath = rootpath.replace("@/src/www/", "@/dist/www/");
     } else if (rootpath.startsWith("@/src/")) {
       rootpath = rootpath.replace("@/src/", "@/dist/src/");
+    } else {
+      // return filepath;
     }
   }
   Fix_suffix: {
     rootpath = rootpath.replace(/\.entry\.js$/g, ".dist.js");
   }
-  if (normalized) this.normalizationOf(rootpath);
-  return rootpath;
+  return normalized ? this.normalizationOf(rootpath) : rootpath;
 }

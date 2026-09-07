@@ -45,8 +45,10 @@ async _compileAsModulerImport(compilationFile, compilationProcess, { token, toke
       token.dependenciesOf = targetPaths;
     }
     Compile_all_targets: {
+      Iterating_targets:
       for(let indexTarget=0; indexTarget<targetPaths.length; indexTarget++) {
         const targetPath = targetPaths[indexTarget];
+        if(targetPath.startsWith("#")) continue Iterating_targets;
         const targetCompilation = await subcompiler._compileRecursively({
           resource: subcompiler.fullpathOf(targetPath),
           isRoot: false,

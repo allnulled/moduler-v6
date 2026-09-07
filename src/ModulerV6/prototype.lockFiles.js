@@ -8,7 +8,8 @@ lockFiles(list) {
     until: function(promise) {
       return promise.then(output => {
         // @AQUI hay que resolver los módulos con el crédito de lockFiles
-        console.log(`[*] Unlocked files: ${list.join(", ")}`, output);
+        console.log(`[*] Unlocked files: ${list.join(", ")}`);
+        // console.log(output);
         return output;
       });
     }

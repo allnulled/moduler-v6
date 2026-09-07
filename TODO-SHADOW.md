@@ -1,3 +1,35 @@
+- [ ] BUG: el $moduler.import(["#Section"]) no está funcionando
+   - [ ] se queja porque lo usa como apendice normal del basedir
+   - [ ] vemos...
+- [ ] BUG silencioso: están abriéndose un montón de procesos de node en el sistema
+   - [ ] igual lleva tiempo
+   - [ ] diría que es el execute de refrescador
+      - [ ] se puede cambiar por executeCallback, está pensado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------
+
+
 1. [x] Que el touch pase los html del src al dist (copy simple de momento, pero que el index no tenga que editarlo en el dist)
 2. [x] Que se puedan generar los rels en el dist en formato json
    - [x] al lado de cada `*.dist.js` su `*.rels.json`

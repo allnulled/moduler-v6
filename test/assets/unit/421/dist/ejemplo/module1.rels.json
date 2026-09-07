@@ -1,0 +1,20 @@
+{
+  "tree": {
+    "@/src/ejemplo/module1.entry.js": {
+      "17-143": {
+        "syntax": "Moduler Import",
+        "type": "$moduler.import(",
+        "inner": "[\n  \"./module1/submodule1.entry.js\",\n  \"./module1/submodule2.entry.js\",\n  \"./module1/submodule3.entry.js\",\n], ",
+        "outer": "$moduler.import([\n  \"./module1/submodule1.entry.js\",\n  \"./module1/submodule2.entry.js\",\n  \"./module1/submodule3.entry.js\",\n], ",
+        "dependenciesOf": [
+          "./module1/submodule1.entry.js",
+          "./module1/submodule2.entry.js",
+          "./module1/submodule3.entry.js"
+        ]
+      }
+    },
+    "@/src/ejemplo/module1/submodule1.entry.js": {},
+    "@/src/ejemplo/module1/submodule2.entry.js": {},
+    "@/src/ejemplo/module1/submodule3.entry.js": {}
+  }
+}
