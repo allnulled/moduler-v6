@@ -52,9 +52,11 @@ async loop(args) {
       "txt",
     ],
     execute: [
-      // 'dev/run.js touch --file @{refrescador.file}',
+      'dev/run.js touch --file @{refrescador.file}',
     ],
-    executeCallback: [`${targetRoot}/dev/events/e.onFileChange.js`],
+    executeCallback: [
+      // `${targetRoot}/dev/events/e.onFileChange.js`
+    ],
     message: "El tiempo de refrescar ha llegado",
     messageFile: "TODO.md",
     payload: 'console.log("📟 Evento de refrescar activado");',

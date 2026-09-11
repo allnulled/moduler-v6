@@ -35,7 +35,7 @@ async runDirectory(dirInput, options = {}) {
   for (let index = 0; index < testFiles.length; index++) {
     const testName = testFiles[index];
     const testFile = `${dir}/${testName}` + (filename ? `/${filename}` : "");
-    console.log(ansiTool.style("cyanBright,italic").text(`🟢 Starting «${testName}» [${testsType}:${index + 1}/${testFiles.length}]`));
+    console.log(ansiTool.style("cyanBright,italic").text(`🟢 Start «${testName}» [${testsType}:${index + 1}/${testFiles.length}]`));
     let testCallback;
     try {
       const _testCallback = require(testFile);
@@ -63,7 +63,7 @@ async runDirectory(dirInput, options = {}) {
           ...injection
         });
         testCronometer.stop("Success");
-        const expression = `🟢 Done: «${testName}» [${testsType}:${index + 1}/${testFiles.length}] [⏳=${testCronometer.milliseconds()}]`;
+        const expression = `🟢 Done! «${testName}» [${testsType}:${index + 1}/${testFiles.length}] [⏳=${testCronometer.milliseconds()}]`;
         console.log(ansiTool.style("green,italic").text(expression));
       } catch (error) {
         testCronometer.stop("Failure");

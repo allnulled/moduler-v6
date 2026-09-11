@@ -26,14 +26,15 @@ module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modu
     // SE NECESITA EL AWAIT PORQUE LOS COMPILE.INJECT.MODULES SIEMPRE DEVUELVEN UNA PROMISE:
     const production1 = devbinOne.moduler.normalizationOf("@/dist/src/ejemplo/example1.dist.js");
     const output = await devbinOne.moduler.import(production1);
-    assert(output.module1.submodule1.domain1 === 100, "Can compile multiple modules using local paths (1)");
-    assert(output.module1.submodule1.domain2 === 200, "Can compile multiple modules using local paths (2)");
-    assert(output.module1.submodule1.domain3 === 300, "Can compile multiple modules using local paths (3)");
-    assert(output.module1.submodule2 === 2, "Can compile multiple modules using local paths (4)");
-    assert(output.module1.submodule3 === 3, "Can compile multiple modules using local paths (5)");
-    assert(output.module2.value === "two", "Can compile multiple modules using local paths (6)");
-    assert(output.module3 === 300, "Can compile multiple modules using local paths (7)");
-    assert(devbinOne.moduler.section.root["#Module2"].thirdModule === 300, "Can compile multiple modules using local paths (8)");
+    assert(output.module1.submodule1.domain1 === 100, "Can compile multiple modules using local paths and sections (1)");
+    assert(output.module1.submodule1.domain2 === 200, "Can compile multiple modules using local paths and sections (2)");
+    assert(output.module1.submodule1.domain3 === 300, "Can compile multiple modules using local paths and sections (3)");
+    assert(output.module1.submodule2 === 2, "Can compile multiple modules using local paths and sections (4)");
+    assert(output.module1.submodule3 === 3, "Can compile multiple modules using local paths and sections (5)");
+    assert(output.module2.value === "two", "Can compile multiple modules using local paths and sections (6)");
+    assert(output.module3 === 300, "Can compile multiple modules using local paths and sections (7)");
+    assert(devbinOne.moduler.section.root["#Module2"].thirdModule === 300, "Can compile multiple modules using local paths and sections (8)");
+    assert(devbinOne.moduler.import("#Module2").thirdModule === 300, "Can compile multiple modules using local paths and sections (9)");
   }
 
   compilerV6._logger.log("Test 421 ok");

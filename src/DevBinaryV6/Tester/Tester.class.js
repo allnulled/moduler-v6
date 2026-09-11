@@ -6,4 +6,6 @@
 class Tester {
   /*="./constructor.js"*/
   /*="./prototype.runDirectory.js"*/
+  /*="./prototype.assertThrows.js"*/
+  /*="./prototype.asserters.js"*/
 }

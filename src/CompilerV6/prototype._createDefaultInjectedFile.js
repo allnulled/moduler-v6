@@ -73,7 +73,7 @@ _createDefaultInjectedFile(file, targetId) {
   headerComment += `   * - file:    ${targetRootdir}\n`;
   headerComment += `   ${closer}`;
   return require("fs").promises.writeFile(file, `${name} {
-  ${headerComment}
+  ${""}
 }`, "utf8").catch(error => {
     console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
   });
