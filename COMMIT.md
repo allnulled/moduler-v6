@@ -1,1 +1,1 @@
-mv6 con mejor reporte de errores en el assertThrows casos donde el error name y message es hardcodeable + Std en el starter candidates con ClassSkiller pasando los tests de addInterface para objeto y clase + otras apis incipientes + algunas apis de base
+ClassSkiller.addInterfaces con test definitivo
