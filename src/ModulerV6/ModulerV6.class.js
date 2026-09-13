@@ -17,6 +17,7 @@ class ModulerV6 {
   /*="./static.Toolkit.js"*/
   /*="./static.Parser.js"*/
   /*="./static.ParserUtils.js"*/
+  /*="./static.ClassSkiller.js"*/
   
   /*="./static.nativeGrammars.js"*/
   /*="./static.defaultGrammars.js"*/

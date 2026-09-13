@@ -53,9 +53,7 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
           const existsFile = await this._existsFile(targetPath);
           if (!existsFile) {
             currentStep.push("4.b.1. create injected file as it does not exist");
-            const path = require("path");
-            const targetId = this.rootdirOf(targetPath).replace(/\.(js|css|html)$/g, "");
-            await this._createDefaultInjectedFile(targetPath, targetId);
+            await this._createDefaultInjectedFile(targetPath);
           }
         }
       }

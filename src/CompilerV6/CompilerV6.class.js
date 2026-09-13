@@ -25,6 +25,7 @@ class CompilerV6 {
   /*="./static.fromRootOf.js"*/
   /*="./static.findRootOf.js"*/
   /*="./static.ansi.js"*/
+  /*="./static.sensitiveFileAttributes.js"*/
   /*="./constructor.js"*/
   /*="./prototype._readPath.js"*/
   /*="./prototype._readUrl.js"*/
@@ -49,6 +50,7 @@ class CompilerV6 {
   /*="./prototype._tryToReadFile.js"*/
   /*="./prototype._prependToParentCompilationFile.js"*/
   /*="./prototype._wrapAsModuleInjection.js"*/
+  /*="./prototype._extractFilenameAttributes.js"*/
   
   /*="./prototype._compileAsModulerSectionGet.js"*/
   /*="./prototype._compileAsModulerSectionSet.js"*/

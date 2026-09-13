@@ -24,6 +24,7 @@ class DevBinaryV6 {
   /*="./prototype.selfDispatch.js"*/
   /*="./prototype.cloneForFile.js"*/
   /*="./prototype.files.js"*/
+  /*="./prototype.inspect.js"*/
   /*="./static.globalInstance.js"*/
   /*="./constructor.js"*/
 }

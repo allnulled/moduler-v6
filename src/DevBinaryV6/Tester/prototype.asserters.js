@@ -7,5 +7,6 @@ get asserters() {
   return {
     assert: (...args) => this.devbin.assert(...args),
     assertThrows: (...args) => this.assertThrows(...args),
+    assertDoesNotThrow: (...args) => this.devbin.compiler.assertDoesNotThrow(...args),
   };
 }

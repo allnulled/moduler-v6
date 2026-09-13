@@ -3,7 +3,11 @@
  * @type 
  * @description 
  */
-async assertThrows(callback, message, errorChecker = () => true) {
+async assertThrows(...args) {
+  const isReversed = (typeof args[0] === "string") && (typeof args[1] === "function");
+  const callback = isReversed ? args[1] : args[0];
+  const message = isReversed ? args[0] : args[1];
+  const errorChecker = args[2] || (() => true);
   const localError = new Error("Should have thrown: " + message);
   try {
     await callback();

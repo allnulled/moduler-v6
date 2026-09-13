@@ -5,76 +5,60 @@
  */
 _createDefaultInjectedFile(file, targetId) {
   const path = require("path");
-  const filename = path.basename(file).replace(/\.js$/g,"");
-  let name, targetType, targetIsClass = false, targetRootdir;
-  targetType = "any";
-  targetRootdir = this.rootdirOf(file);
-  name = (() => {
-    const isPrototype = filename.startsWith("prototype.");
-    const isStatic = filename.startsWith("static.");
-    const isClass = filename.endsWith(".class");
-    const isAsync = filename.match(/(^async\.)|(\.async\.)|(\.async$)/g);
-    const isSync = filename.match(/(^sync\.)|(\.sync\.)|(\.sync$)/g);
-    const isConstructor = filename === "constructor";
-    const isOnlyClass = isClass && (!isPrototype) && (!isStatic);
-    const fileId = filename
-      .replace(/^(prototype|static)\./g, "")
-      .replace(/^a?sync\./g, "")
-      .replace(/\.a?sync$/g, "")
-      .replace(/\.class$/g, "");
-    const isJsFriendly = fileId.match(/^[A-Za-z_$][A-Za-z0-9_$]*$/g);
-    let out = "";
-    let prefixes = "";
-    let middle = "";
-    let suffixes = "";
-    if(isStatic) {
-      prefixes += `static `;
-      targetType = "static class member";
-    } else if(isPrototype) {
-      targetType = "prototype class member";
-    } else if(isClass) {
-      targetType = "only class"
-    }
-    if(isClass) {
-      if(isStatic || isPrototype)  {
-        suffixes += " = ";
+  const fileid = path.basename(file);
+  const filename = fileid.replace(/\.js$/g, "");
+  const fileattrs = this._extractFilenameAttributes(fileid);
+  const { name, attr, list: attrList } = fileattrs;
+  const notMethods = this.constructor.sensitiveFileAttributes;
+  let output = "";
+  Decide_output: {
+    const cannotBeMethod = !!attrList.filter(it => notMethods.includes(it)).length;
+    Intercept_one_solution_cases: {
+      if(name === "static") {
+        output = "static {\n  \n}";
       }
-      suffixes += `class ${fileId}`;
-      targetType = targetType === "class" ? targetType : targetType + " + class";
-    } else if(isAsync) {
-      prefixes += `async `;
-      suffixes += `()`;
-      targetType += " + async";
-    } else if(isSync) {
-      prefixes += ``;
-      suffixes += `()`;
-      targetType += " + sync";
-    } else {
-      suffixes = " ()";
-    }
-    if(!isOnlyClass) {
-      if(isJsFriendly) {
-        middle = fileId;
-      } else {
-        middle = JSON.stringify(fileId);
+      if(name === "constructor") {
+        output = "constructor() {\n  \n}";
       }
     }
-    out = prefixes + middle + suffixes;
-    return out;
-  })();
-  const opener = ['/','*','*'].join('');
-  const closer = ['*','/'].join('');
-  let headerComment = "";
-  headerComment += `${opener}\n`;
-  const nameByFile = targetRootdir.replace(/^\@\/src\/candidate\//g, "").replace(/^\@\/src\//g, "").replace(/\.js$/g, "").replace(/\//g, ".");
-  const basenameByFile = path.basename(targetRootdir).replace(/\.js$/g, "");
-  headerComment += `   * # ${basenameByFile}\n`;
-  headerComment += `   * - section: ${nameByFile}\n`;
-  headerComment += `   * - file:    ${targetRootdir}\n`;
-  headerComment += `   ${closer}`;
-  return require("fs").promises.writeFile(file, `${name} {
-  ${""}
-}`, "utf8").catch(error => {
+    First_type: {
+      if (attr.class) {
+        output = `class ${name || ""}{\n  \n}`;
+      } else if (attr.function) {
+        output = `function ${name || ""}() {\n  \n}`;
+      } else if (attr.member || attr.any) {
+        output = `0`;
+      } else if (attr.fact) {
+        output = `(function ${name || ""}() {\n  \n}).call(this)`;
+      } else if (attr.part) {
+        output = name ? `Step_${name}: {\n  \n}` : "";
+      } else if (attr.promise) {
+        output = `new Promise(async (resolve, reject) => {\n  \n})`;
+      } else if (attr.get) {
+        output = `get ${name || ""} () {\n  \n}`;
+      } else if (attr.set) {
+        output = `set ${name || ""} () {\n  \n}`;
+      } else if (attr.construct) {
+        output = `construct ${name || ""} () {\n  \n}`;
+      } else if (attr.apply) {
+        output = `apply ${name || ""} () {\n  \n}`;
+      } else if (attr.deleteProperty) {
+        output = `deleteProperty ${name || ""} () {\n  \n}`;
+      } else if (!cannotBeMethod) {
+        output = `${name || ""} () {\n  \n}`;
+      }
+    }
+    Second_presentation: {
+      if (attr.static && name && cannotBeMethod) {
+        output = `static ${name} = ${output};`;
+      } else if (attr.prototype && name && cannotBeMethod) {
+        output = `${name} = ${output};`;
+      } else if (attr.member && name) {
+        output = `${name}: ${output}`;
+      }
+    }
+  }
+  return require("fs").promises.writeFile(file, output, "utf8").catch(error => {
     console.log(`[!] Could not create injected path «${file}» on «ModulerV6.prototype._compileAsInjectSource»`);
   });
 }

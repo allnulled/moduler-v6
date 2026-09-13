@@ -1,1 +1,1 @@
-ClassSkiller.addInterfaces con test definitivo
+ClassSkiller metido directamente en ModulerV6 + metodos makeTrait makeInterface makeClass no definitivos pero suficientes + metidos en $moduler.utils.* para globalizarlos + test en 423
