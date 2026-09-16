@@ -7,6 +7,7 @@ async _compileTokens(compilationFile, compilationProcess) {
   this._traceIn("_compileTokens", arguments);
   const { resource, source, tokenization: { formatted: tokens } } = compilationFile;
   const _tokenCompilationSwitcher = {
+    "Inject Plain": this._compileAsInjectPlain,
     "Inject Source": this._compileAsInjectSource,
     "Inject String": this._compileAsInjectString,
     "Inject Template": this._compileAsInjectTemplate,

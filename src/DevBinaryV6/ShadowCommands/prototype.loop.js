@@ -8,6 +8,7 @@ async loop(args) {
   await this.devbin.settings.load();
   const port = this.devbin.settings.data?.loop?.port || 3005;
   const settingsControllers = this.devbin.settings.data?.loop?.controllers || [];
+  const settingsExtensions = this.devbin.settings.data?.loop?.extensions || [];
   const targetDirs = [
     require("path").resolve(targetRoot, "src"),
     require("path").resolve(targetRoot, "dev/filecom"),
@@ -50,6 +51,7 @@ async loop(args) {
       "html",
       "md",
       "txt",
+      ...settingsExtensions,
     ],
     execute: [
       'dev/run.js touch --file @{refrescador.file}',

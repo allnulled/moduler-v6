@@ -7,6 +7,7 @@
  */
 static defaultGrammars = {
   forJs: [
+    this.nativeGrammars.InjectPlain,
     this.nativeGrammars.InjectSource,
     this.nativeGrammars.InjectString,
     this.nativeGrammars.InjectTemplate,
@@ -44,6 +45,7 @@ static defaultGrammars = {
     ////////////////////////////////////////
   ],
   forCss: [
+    this.nativeGrammars.InjectPlain,
     this.nativeGrammars.InjectSource,
     this.nativeGrammars.InjectString,
     this.nativeGrammars.InjectTemplate,
@@ -58,6 +60,7 @@ static defaultGrammars = {
     /////////////////// this.nativeGrammars.JavadocComment,
   ],
   forMd: [
+    this.nativeGrammars.InjectPlain,
     this.nativeGrammars.InjectSource,
     this.nativeGrammars.InjectString,
     this.nativeGrammars.ImportJs,
@@ -68,6 +71,7 @@ static defaultGrammars = {
     /////////////////// this.nativeGrammars.JavadocComment,
   ],
   forHtml: [
+    this.nativeGrammars.InjectPlain,
     this.nativeGrammars.InjectSource,
     this.nativeGrammars.AtInjects,
   ],

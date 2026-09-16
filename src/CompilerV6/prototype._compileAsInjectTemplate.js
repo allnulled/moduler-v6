@@ -37,6 +37,10 @@ async _compileAsInjectTemplate(compilationFile, compilationProcess, { token, tok
     const templateOutput = await this._renderTemplate(fileContent, {
       __filename: targetPath,
       __dirname: require("path").dirname(targetPath),
+      _token: token,
+      _tokenIndex: tokenIndex,
+      compilationFile: compilationFile,
+      compilationProcess: compilationProcess,
       ...(parameters[1] || {})
     });
     compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], templateOutput);

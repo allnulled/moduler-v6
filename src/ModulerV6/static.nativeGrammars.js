@@ -6,6 +6,9 @@
  * @return ?
  */
 static nativeGrammars = {
+  InjectPlain: ["$"+"compiler.inject.plain(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
+    return { syntax: "Inject Plain", inner: token.inner, location: token.location };
+  }],
   InjectSource: ["$"+"compiler.inject.source(", this.Parser.symbols.PARENTHESYS_BALANCE, function (token) {
     return { syntax: "Inject Source", inner: token.inner, location: token.location };
   }],

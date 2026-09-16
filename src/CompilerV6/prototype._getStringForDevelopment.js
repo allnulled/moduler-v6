@@ -5,5 +5,5 @@
  */
 _getStringForDevelopment(text, tab = 0) {
   this._trace("_getStringForDevelopment", arguments);
-  return text.split("\n").map(line => JSON.stringify(line)).join("\n + ");
+  return text.split("\n").map(line => JSON.stringify(line)).join(" + '\\n'\n + ");
 }

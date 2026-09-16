@@ -41,7 +41,7 @@ async filecom(args, devbin) {
   output += `\n   - out:      ${this.devbin.moduler.rootdirOf(parameters.out)}`;
   console.log(devbin.compiler.constructor.ansi.colors.box(output));
 
-  return await $moduler.import([fileCommand], function([command]) {
+  return await devbin.moduler.import([fileCommand], function([command]) {
     return command({ parameters, devbin });
   });
 

@@ -59,6 +59,7 @@ class CompilerV6 {
   /*="./prototype._compileAsModulerSectionOverwrite.js"*/
   /*="./prototype._compileAsModulerSectionFill.js"*/
 
+  /*="./prototype._compileAsInjectPlain.js"*/
   /*="./prototype._compileAsInjectSource.js"*/
   /*="./prototype._compileAsInjectString.js"*/
   /*="./prototype._compileAsInjectTemplate.js"*/

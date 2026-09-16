@@ -9,7 +9,7 @@ _createDefaultInjectedFile(file, targetId) {
   const filename = fileid.replace(/\.js$/g, "");
   const fileattrs = this._extractFilenameAttributes(fileid);
   const { name, attr, list: attrList } = fileattrs;
-  const notMethods = this.constructor.sensitiveFileAttributes;
+  const notMethods = this.constructor.sensitiveFileAttributes.filter(it => !["static","prototype"].includes(it));
   let output = "";
   Decide_output: {
     const cannotBeMethod = !!attrList.filter(it => notMethods.includes(it)).length;
@@ -23,7 +23,7 @@ _createDefaultInjectedFile(file, targetId) {
     }
     First_type: {
       if (attr.class) {
-        output = `class ${name || ""}{\n  \n}`;
+        output = `class ${name || ""}{\n  static {\n    $moduler.toolkit.makeClass([\n      Std.interfaces.InstantiableInterface,\n    ], this);\n  }\n}`;
       } else if (attr.function) {
         output = `function ${name || ""}() {\n  \n}`;
       } else if (attr.member || attr.any) {
@@ -44,6 +44,8 @@ _createDefaultInjectedFile(file, targetId) {
         output = `apply ${name || ""} () {\n  \n}`;
       } else if (attr.deleteProperty) {
         output = `deleteProperty ${name || ""} () {\n  \n}`;
+      } else if (attr.interface) {
+        output = `// @interface:${name || ""}\n{\n  prototype: {},\n  static: {},\n}`;
       } else if (!cannotBeMethod) {
         output = `${name || ""} () {\n  \n}`;
       }
@@ -51,8 +53,12 @@ _createDefaultInjectedFile(file, targetId) {
     Second_presentation: {
       if (attr.static && name && cannotBeMethod) {
         output = `static ${name} = ${output};`;
+      } else if (attr.static && name) {
+        output = `static ${output}`;
       } else if (attr.prototype && name && cannotBeMethod) {
         output = `${name} = ${output};`;
+      } else if (attr.prototype && name) {
+        // @OK
       } else if (attr.member && name) {
         output = `${name}: ${output}`;
       }
