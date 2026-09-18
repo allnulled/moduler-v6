@@ -61,6 +61,7 @@ async "print directory"(args, devbin) {
   }
   const report = lines.join("");
   if (parameters.output) {
+    console.log(parameters.output);
     try {
       await devbin.files.writeFile(parameters.output, report);
       devbin.console.setProfile("blackBright").print("[*] DevBinaryV6 printed directory at: " + devbin.moduler.rootdirOf(parameters.output));

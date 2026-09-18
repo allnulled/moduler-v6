@@ -8,17 +8,20 @@ async assertThrows(...args) {
   const callback = isReversed ? args[1] : args[0];
   const message = isReversed ? args[0] : args[1];
   const errorChecker = args[2] || (() => true);
-  const localError = new Error("Should have thrown: " + message);
+  const localError = new Error(message);
+  let error;
   try {
     await callback();
     throw localError;
   } catch (err) {
+    error = err;
     if (err === localError) {
-      throw new this.constructor.AssertionError(`Should have thrown on «${message}» but it did not throw anything: ${err.name}: ${err.message} | ${err.stack}`);
+      throw new this.constructor.AssertionError(`Should have thrown on «${message}» but it did not throw anything`);
     }
     if (typeof errorChecker === "function") {
-      if (!errorChecker(err)) {
-        throw new this.constructor.AssertionError(`Should have thrown on «${message}» but not specific error: ${err.name}: ${err.message} | ${err.stack}`);
+      const checkResult = errorChecker(err);
+      if (typeof checkResult !== "undefined" && (checkResult !== true)) {
+        throw new this.constructor.AssertionError(`Should have thrown on «${message}» but not specific error:\n  - name: ${err.name}\n  - message: ${err.message}\n  - error: ${checkResult === false ? true : checkResult}`);
       }
     } else if (typeof errorChecker === "object") {
       if (errorChecker.name) {
@@ -34,4 +37,5 @@ async assertThrows(...args) {
     }
     this._notifyAssertion(message);
   }
+  return error;
 }

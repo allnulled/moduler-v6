@@ -20,6 +20,10 @@ A continuación se explica cómo programar funciones de forma óptima para DevBi
     - [Norma 10. Puedes extender clases con objetos-rasgo y la cláusula static](#norma-10-puedes-extender-clases-con-objetos-rasgo-y-la-cláusula-static)
     - [Norma 11. Explica los algoritmos que se hacen más difíciles con las sintaxis de markdown en comentarios de CompilerV6](#norma-11-explica-los-algoritmos-que-se-hacen-más-difíciles-con-las-sintaxis-de-markdown-en-comentarios-de-compilerv6)
     - [Utilidad 1. Tienes los splittable.ClassName.class.js para hacer varias ediciones de golpe](#utilidad-1-tienes-los-splittableclassnameclassjs-para-hacer-varias-ediciones-de-golpe)
+    - [Norma 12. Maneja los errores con un patrón encontrable](#norma-12-maneja-los-errores-con-un-patrón-encontrable)
+    - [Norma 12.a. El patrón de lanzar un error](#norma-12a-el-patrón-de-lanzar-un-error)
+    - [Norma 12.b. El patrón de continuar un error](#norma-12b-el-patrón-de-continuar-un-error)
+    - [Norma 13.c. El patrón de silenciar un error](#norma-13c-el-patrón-de-silenciar-un-error)
 
 ## Introducción
 
@@ -782,3 +786,102 @@ return output;
       - si tiene un valor de otra cosa significa que quieres sobreescribirlos
       - al final del proceso se vuelve a generar el splittable.class.js pero teniendo esto anterior en cuenta
          - se reconstruye la clase rellenando los null con el valor actual, básicamente
+
+
+### Norma 12. Maneja los errores con un patrón encontrable
+
+- Debes tener una función que te asocie rápidamente con un gestor global de los errores
+   - centralizado
+   - personalizable (pero mejor mantenerlo ligero)
+   - unívoco, estandarizado
+- Errores va a haber por todos lados
+- Ejemplo típico:
+   - En los errores se mezclan flujos de ejecución muy diferentes
+      - No es lo mismo:
+         - Que la lectura de un fichero falle por falta de permisos
+         - Que la lectura de un fichero falle porque no existe
+         - Que la lectura de un fichero falle porque una carpeta superior al fichero no exista
+         - Que la lectura de un fichero falle porque la función que debería hacerlo no existe
+      - Son errores, todos de la misma operación, pero significan cosas diferentes cada uno.
+         - Puede que no nos importe, pero puede que sí
+         - Esta convergencia de flujos es un rasgo común entre errores
+            - deferentes errores, con diferentes origenes y destinos
+- Interesa que los errores sean llamativos en el código:
+   - Normalmente, van a salir de `Error` estas APIs porque es el concepto original
+- Interesa tener pocos métodos:
+   - No una API compleja para la gestión de errores
+      - Menos si te vas a dedicar a sobreescribir interfaces js nativas como Error
+      - En este caso concreto, he intentado reducir la API a 2 métodos
+   - Una API minimalista
+      - Fácil de recordar
+         - Los métodos salen de Error y Error.prototype
+      - Fácil de usar y personalizar
+         - Error.normalize te acepta cualquier dato, no solo Error
+            - esto te permite crear errores con nombres personalizados rápidamente
+         - Error.prototype.adding te permite añadir errores acoplados al `error.std.history`
+            - esto te permite ver por qué otros puntos calientes ha pasado el error concreto
+
+### Norma 12.a. El patrón de lanzar un error
+
+- En este caso, empiezas el error in situ.
+- Es mejor usar `throw algo` que `error.selfThrow()`
+   - porque complicas las trazas del error, que ya lo hacemos bastante
+- El código queda así:
+
+```js
+// Errores simples:
+throw Error.create("Mensaje de error");
+// Errores conflictivos:
+throw Error.create({ name: "Tipo de error", message: "Mensaje de error" });
+```
+
+
+### Norma 12.b. El patrón de continuar un error
+
+- En este caso, quieres que un error siga subiendo en el stack
+- A veces, interesa adjuntar al error que vas a continuar
+   - Un *error intermedio destacable* en la subida de ese stack
+   - Y luego volver a lanzar el mismo error, pero ahora enterado de que ha pasado por un punto caliente del código
+   - Otras veces no, y no quieres ampliar, en cuyo caso: `throw error` ya hace
+   - La traza de puntos calientes se queda en `error.std.history` y se amplía con `Error.prototype.adding`
+- El código queda así:
+```js
+// En sintaxis js:
+try {
+   // ...
+} catch(error) {
+   throw Error.normalize(error).adding({ name: "Fase 3 fallida", message: "La fase 3 ha sufrido contratiempos" });
+}
+// En promesas, ahora mismo así:
+promise.catch(error => {
+   throw Error.normalize(error).adding({ name: "Fase 3 fallida", message: "La fase 3 ha sufrido contratiempos" });
+})
+```
+
+### Norma 13.c. El patrón de silenciar un error
+
+- En este caso, el error directamente no te interesa conocerlo
+   - Solo sucede cuando puedes reducir todos los errores a un mismo destino
+   - Y además, ese destino no es relanzar un error
+- De todas las conductas, es la más determinista, por lo cual facilitaría las cosas
+   - Pero en la realidad, como tengas un error clave petando y lo tengas silenciado
+      - corres el riesgo de no poder trazar conductas que antes eran trazables
+      - y eso puede ir empalmando errores y al final te peta una parte porque hay otra que "no me avisaba de que el error era esto no lo otro (porque lo silencié!)"
+- Así que este no es el patrón más común de gestión de errores
+   - Pero hay operaciones que sí te interesarán así
+- El código no usa APIs y queda así:
+```js
+// En sintaxis js:
+try {
+   // ...
+   return RespuestaDeterminista1;
+} catch(error) {
+   return RespuestaDeterminista2;
+}
+// En promesas:
+promise.catch(error => RespuestaDeterminista2);
+// Y es seguro de usar así:
+const RespuestaDeterminista = await miMetodoSilencioso();
+promise.then(RespuestaDeterminista => {}).catch(process.kill);
+```
+

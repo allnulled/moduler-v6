@@ -8,9 +8,11 @@ async assertDoesNotThrow(...args) {
   const callback = isReversed ? args[1] : args[0];
   const message = isReversed ? args[0] : args[1];
   try {
-    await callback();
+    const output = await callback();
     this._notifyAssertion(message);
+    return output;
   } catch (err) {
-    throw new this.constructor.AssertionError(`Should not have thrown: ${err.name}: ${err.message}`, err);
+    throw err;
+    throw new this.constructor.AssertionError(`Should not have thrown, but it threw: ${err.name}: ${err.message}`);
   }
 }
