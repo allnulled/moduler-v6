@@ -1,0 +1,8 @@
+- [ ] Tests para el browser
+- [ ] Recuperar los ErrorProsecutor y ErrorNoseque que iban muy bien
+- [ ] Recuperar el filesystem para nodejs que acepta rutas moduler
+   - [ ] Para tener ya claros los patrones e ir straightforward ya
+   - [ ] No hace falta reutilizar
+- [ ] IndexedDB Database Layer
+- [ ] IndexedDB-based filesystem
+   - [ ] Compatible con el de node.js

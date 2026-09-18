@@ -17,7 +17,7 @@ async touchFile(fileBrute, optionsInput = {}) {
       currentStep.push("1. initialize dependencies");
       fs = require("fs");
       path = require("path");
-      filepath = this.devbin.compiler.normalizationOf(file);
+      filepath = this.devbin.moduler.normalizationOf(file);
       filedir = this.devbin.files.getDirectoryOf(filepath);
       rootPath = this.devbin.moduler.rootdirOf(filepath);
     }
@@ -79,7 +79,7 @@ async touchFile(fileBrute, optionsInput = {}) {
           }
         }
         Caso_previo_4_dev_settings_exportar_a_www_dev_settings_las_partes_exportables: {
-          if (filepath === this.devbin.compiler.fullpathOf("@/dev/settings.js")) {
+          if (filepath === this.devbin.compiler.normalizationOf("@/dev/settings.js")) {
             currentStep.push("3.1. exporting dev/settings");
             await this.exportDevSettings(filepath);
             break Evento_touch;
@@ -212,9 +212,9 @@ async touchFile(fileBrute, optionsInput = {}) {
         if (!outputFile) break Triggering_onDistributeDirectory_file;
         if (result === true) {
           currentStep.push("6.1. distributing directory");
-          const origin = path.dirname(this.devbin.compiler.normalizationOf(rootPath));
+          const origin = path.dirname(this.devbin.moduler.normalizationOf(rootPath));
           // @ATENCIÓN: al basarse en outputFile ya se entiende si está en src o en src/www
-          const destination = path.dirname(this.devbin.compiler.normalizationOf(outputFile));
+          const destination = path.dirname(this.devbin.moduler.normalizationOf(outputFile));
           require("fs").promises.cp(origin, destination, { recursive: true });
         }
       }
