@@ -15,5 +15,9 @@ _wrapInTry(source, parameters = {}, file = null) {
   }
   js += `  console.error("Injection failed:", error);\n`;
   js += `}`;
+  // @MILAGRO: el debugging ha pegado un salto dimensional con esto, eh? Realmente.
+  if(file !== null) {
+    js += `\n//# sourceURL=${file}`;
+  }
   return js;
 }
