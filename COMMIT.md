@@ -1,1 +1,1 @@
-El starter - están Tester y Progresser, en camino Errors, se han incorporado 2 snippets externos para errores, Std.classes.ErrorStackFrame y Std.object.ErrorStackParser. ModulerV6 - el wrapInTry del importFile del ModulerV6 parece que puede hacer que el error chive el recurso usando //# sourceURL= y ahora buah, el error marca la url de verdad, no esa *** de async y line, en Firefox
+starter - ErrorProsecutor funcionando en node.js con v8 y browser con ff.
