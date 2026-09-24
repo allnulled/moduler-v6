@@ -21,12 +21,14 @@ class ModulerV6 {
   
   /*="./static.nativeGrammars.js"*/
   /*="./static.defaultGrammars.js"*/
-
+  
   /*="./static.assert.js"*/
   /*="./static.trify.js"*/
   /*="./static._alphabet.js"*/
   /*="./static._getRandomString.js"*/
   /*="./static._getRandomCharacter.js"*/
+  /*="./static.asyncNoop.js"*/
+  /*="./static.AsyncFunction.js"*/
   /*="./static.includeScript.js"*/
   /*="./static.includeStyle.js"*/
   /*="./static.isBrowser.js"*/

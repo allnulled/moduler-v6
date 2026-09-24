@@ -4,5 +4,5 @@
  * @description 
  */
 _createAsyncFunction(source, parameters = []) {
-  return new (async function() {}).constructor(...parameters, source);
+  return new ModulerV6.AsyncFunction(...parameters, source);
 }

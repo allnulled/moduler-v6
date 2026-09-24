@@ -1,1 +1,1 @@
-starter - ErrorProsecutor funcionando en node.js con v8 y browser con ff.
+starter principalmente. varias apis, Error y Tester mainly. Y hay IdbCrud y inicios del Filesystem.
