@@ -1,1 +1,1 @@
-starter tiene ahora la fórmula de try para filesystem, que es gracias al trait Tryable + no hay switchable fs de momento + nueva clase Basedir plagio de extracto de la api que ya va en ModulerV6 pero con estaticos estaticos y prototype prototype y readme
+principalmente, sintaxis nuevas en types parser para soportar labels, functions y default values, test en 009
