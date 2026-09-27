@@ -1,1 +1,1 @@
-$moduler.import("@/signatures/file1.js")
+$localModuler.import("@/signatures/file1.js")

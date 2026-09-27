@@ -3,13 +3,13 @@
  * @type 
  * @description 
  */
-_wrapAsModuleInjection(source, rootpath) {
+_wrapAsModuleInjection(source, rootpath, modulerVarname = "$moduler") {
   const distRootpath = this.moduler._getDistRootpathFromSrc(rootpath);
   return [
-    `(function({ module, exports, $moduler }) {`,
-    `  return $moduler.releaseFile("${distRootpath}", arguments[0], (function() {`,
+    `(function({ module, exports, $localModuler }) {`,
+    `  return ${modulerVarname}.releaseFile("${distRootpath}", arguments[0], (function() {`,
     `    ${source}`,
     `  }).call(this));`,
-    `}).call(this, $moduler.reserveFile("${distRootpath}"))`,
+    `}).call(this, ${modulerVarname}.reserveFile("${distRootpath}"))`,
   ].join("\n");
 }

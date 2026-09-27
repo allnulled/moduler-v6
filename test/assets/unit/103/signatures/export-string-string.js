@@ -1,1 +1,1 @@
-$moduler.export("#export-string-string", "@/signatures/file1.js")
+$localModuler.export("#export-string-string", "@/signatures/file1.js")

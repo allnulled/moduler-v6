@@ -1,4 +1,4 @@
-$moduler.export("#export-string-array-function", [
+$localModuler.export("#export-string-array-function", [
   "@/signatures/file1.js",
   "@/signatures/file2.js"
 ], ([f1, f2]) => {

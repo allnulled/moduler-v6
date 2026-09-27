@@ -121,7 +121,8 @@ const main = async function () {
   Mostrar_errores_finales: {
     if(settings.separateTests) console.log("");
     if (errors.length) {
-      console.log(`\x1b[31m❌ Report errors of ${errors.length}/${filenames.length} failed tests:\x1b[0m`, errors.reverse());
+      console.log(`\x1b[31m❌ Report errors of ${errors.length}/${filenames.length} failed tests:\x1b[0m`, errors);
+      console.log(`\x1b[31m❌ Reported errors of ${errors.length}/${filenames.length} failed tests:\x1b[0m`);
     } else {
       console.log("\x1b[32m · All tests successfully passed\x1b[0m");
     }

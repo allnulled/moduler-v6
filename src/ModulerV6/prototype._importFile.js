@@ -65,7 +65,7 @@ _importFile(filepathInput) {
     return this.evaluateFile(filepath, {
       module: moduleHolder,
       exports: moduleHolder.exports,
-      $moduler: this.cloneForFile(filepath),
+      $localModuler: this.cloneForFile(filepath),
     }, {
       onMissingResource: activeOptions.justTry === true ? () => undefined : false,
     }).then(result => {

@@ -11,6 +11,8 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
   let subcode2 = "";
   const parameters = this._getDataForTokenCompilation({ token });
   const collection = parameters[0];
+  const options = parameters[1] || {};
+  const { modulerVarname = "$moduler" } = options;
   const isArray = Array.isArray(collection);
   const isObject = (!isArray) && (typeof collection === "object");
   this.moduler.assert(isArray || isObject, `Syntax «$compiler.inject.modules» only accepts array or object as first parameter but «${typeof collection}» was found instead`);
@@ -51,12 +53,12 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
       const targetCompilation = compilations[indexCompilations];
       const targetInfo = compilationPairs[indexCompilations];
       if(isArray) {
-        subcode1 += this._wrapAsModuleInjection(targetCompilation.js, rootpath);
+        subcode1 += this._wrapAsModuleInjection(targetCompilation.js, rootpath, modulerVarname);
         subcode1 += ",\n";
       } else if(isObject) {
         subcode1 += targetKeys[targetInfo.index];
         subcode1 += ": ";
-        subcode1 += this._wrapAsModuleInjection(targetCompilation.js, targetInfo.rootpath);
+        subcode1 += this._wrapAsModuleInjection(targetCompilation.js, targetInfo.rootpath, modulerVarname);
         subcode1 += ",\n";
       }
     }
@@ -67,7 +69,7 @@ async _compileAsInjectModules(compilationFile, compilationProcess, { token, toke
     }
   }
   Generate_output: {
-    out += `$moduler.lockFiles([\n`;
+    out += `${modulerVarname}.lockFiles([\n`;
     out += Object.values(collection).map(key => {
       const rootpath1 = subcompilerForAll.moduler.rootdirOf(key);
       const rootdist1 = subcompilerForAll.moduler._getDistRootpathFromSrc(rootpath1);

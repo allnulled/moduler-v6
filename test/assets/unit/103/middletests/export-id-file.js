@@ -1,1 +1,1 @@
-module.exports = $moduler.import("./return-string.js");
+module.exports = $localModuler.import("./return-string.js");

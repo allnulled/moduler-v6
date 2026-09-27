@@ -1,4 +1,4 @@
-$moduler.import([
+$localModuler.import([
   "@/signatures/file1.js",
   "@/signatures/file2.js"
 ], (f1, f2) => {

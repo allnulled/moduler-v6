@@ -1,4 +1,4 @@
-module.exports = (function({ module, exports, $moduler }) {
+module.exports = (function({ module, exports, $localModuler }) {
   return $moduler.releaseFile("@/src/ikk/node-module1.js", arguments[0], (function() {
     module.exports = 400;
   }).call(this));

@@ -1,4 +1,4 @@
-module.exports = $moduler.import([
+module.exports = $localModuler.import([
   "./module1/submodule1.entry.js",
   "./module1/submodule2.entry.js",
   "./module1/submodule3.entry.js",

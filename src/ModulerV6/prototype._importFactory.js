@@ -18,7 +18,7 @@ _importFactory(factory, dependencies = []) {
   const syncResult = factory(dependencies, {
     module: moduleHolder,
     exports: moduleHolder.exports,
-    $moduler: this,
+    $localModuler: this,
   });
   if(syncResult instanceof Promise) {
     return syncResult.then(result => {

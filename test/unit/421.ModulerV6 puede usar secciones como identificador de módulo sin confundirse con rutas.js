@@ -1,5 +1,7 @@
 module.exports = async function ({ assert: assertLoudly, utils, compilerV6, modulerV6, devBinaryV6, injection }) {
 
+  // return "se anula porque intenta cargar rutas relativas de su carpeta mediante el @ y el";
+
   const assert = compilerV6.createAssertFunction() || assertLoudly;
 
   const devbinOne = devBinaryV6.constructor.create(`${__dirname}/../assets/unit/421`);
