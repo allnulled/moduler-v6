@@ -76,6 +76,8 @@ class ModulerV6 {
   /*="./prototype.import.js"*/
   /*="./prototype.export.js"*/
   
+  /*="./prototype.importCallback.js"*/
+  
   /*="./static.globalSectionsManagerInstance.js"*/
   /*="./prototype.section.js"*/
   /*="./constructor.js"*/
