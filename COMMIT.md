@@ -1,1 +1,1 @@
-types soporta listas abiertas (List) y valida bien listas abiertas y arrays
+rollback de sintaxi de listas abiertas. todas las listas son abiertas por defecto y aceptan 1 tipo solo, y con [^] puedes tener listas cerradas que aceptan varios tipos. el spreader será otro operador diferente
