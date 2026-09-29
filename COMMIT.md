@@ -1,1 +1,1 @@
-copy y move, directory y files, idb y nodejs del Std
+types soporta listas abiertas (List) y valida bien listas abiertas y arrays
