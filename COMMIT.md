@@ -1,1 +1,1 @@
-limpiado el Error.extensions de métodos y includes malos + unificada TryableInterface para que no haya sync y async separados + IdbFilesystem imitando a node.js en cierta medida (previene de writes si no hay un parentdir) pasando test en 007 🕴️
+copy y move, directory y files, idb y nodejs del Std
