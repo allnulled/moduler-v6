@@ -1,1 +1,1 @@
-rollback de sintaxi de listas abiertas. todas las listas son abiertas por defecto y aceptan 1 tipo solo, y con [^] puedes tener listas cerradas que aceptan varios tipos. el spreader será otro operador diferente
+sintaxis final (parece) de types parser
