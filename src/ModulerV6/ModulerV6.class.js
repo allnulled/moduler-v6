@@ -67,6 +67,7 @@ class ModulerV6 {
   /*="./prototype.basedirOf.js"*/
   /*="./prototype.rootdirOf.js"*/
   /*="./prototype.cloneForFile.js"*/
+  /*="./prototype.cloneForDirectory.js"*/
   /*="./prototype.reserveFile.js"*/
   /*="./prototype.releaseFile.js"*/
   /*="./prototype.lockFiles.js"*/

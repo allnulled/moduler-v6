@@ -1,1 +1,1 @@
-sintaxis final (parece) de types parser
+starter ya siempre por defecto. estamos con types, hasta los imports en parser pero no en validador. faltan 3 gramáticas por pasar del parser al validador, y testear las features de validación ya mirando a forms más allá y las otras apis.
