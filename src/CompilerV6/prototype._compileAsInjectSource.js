@@ -85,7 +85,8 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
         compilationFile.compilation.html = this._replaceTextRange(compilationFile.compilation.html, token.location[0], token.location[1], newContent, token);
       } else {
         currentStep.push("5.a. from js");
-        this.assert(compilationFile.extension === "js", `Syntax of «$compiler.inject.source» can only inject files from «js,html» files and not on «${compilationFile.extension}» when importing «${targetPath}» from «${compilationFile.resource}»`);
+        const validExtensions = ["js"];
+        this.assert(validExtensions.includes(compilationFile.extension), `Syntax of «$compiler.inject.source» can only inject files from «js,html» files and not on «${compilationFile.extension}» when importing «${targetPath}» from «${compilationFile.resource}»`);
         this.assert(targetPath.endsWith(".js"), `Syntax of «$compiler.inject.source» is trying to import foraneous extension format file «${targetPath}» from «${compilationFile.resource}» on «CompilerV6.prototype._compileAsInjectSource»`);
         // if (!targetCaches.js) targetCaches.js = targetCompilation?.js || "";
         if (typeof targetCaches.js !== "string") targetCaches.js = targetCompilation.js;

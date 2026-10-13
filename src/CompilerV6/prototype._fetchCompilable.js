@@ -15,9 +15,10 @@ _fetchCompilable(compilationFile, compilationProcess) {
       return compilationFile.compilation.json = "";
     });
   }
-  this.assert((/\.(js|css|md|html)$/g).test(compilationFile.resource), `Parameter «compilationFile.resource» now «${compilationFile.resource}» must match with valid extension on «CompilerV6.prototype._fetchCompilable»`);
+  const validFilesRegex = /\.(js|css|md|html)$/g;
+  this.assert(validFilesRegex.test(compilationFile.resource), `Parameter «compilationFile.resource» now «${compilationFile.resource}» must match with valid extension on «CompilerV6.prototype._fetchCompilable»`);
   Sacar_la_extension_del_fichero: {
-    compilationFile.extension = compilationFile.resource.match(/\.(js|css|md|html)$/g)[0].substr(1);
+    compilationFile.extension = compilationFile.resource.match(validFilesRegex)[0].substr(1);
   }
   Propagar_la_extension_al_proceso_si_es_la_primera: {
     if(typeof compilationProcess.extension === "undefined") {
@@ -25,13 +26,16 @@ _fetchCompilable(compilationFile, compilationProcess) {
     }
   }
   Bloquear_imports_segun_extension_de_compilable_original: {
-    if(compilationProcess.extension === "js") {
+    const privilegedExtensions = ["js"];
+    const fromExtension = compilationProcess.extension;
+    const toExtension = compilationFile.extension;
+    if(privilegedExtensions.includes(fromExtension)) {
       // @OK, con js todo.
-    } else if(compilationProcess.extension === "css") {
-      this.assert(compilationFile.extension !== "js", `From a «css» file «${compilationProcess.resource}» cannot inject «js» file «${compilationFile.resource}»`);
-    } else if(compilationProcess.extension === "md") {
-      this.assert(compilationFile.extension !== "js", `From an «md» file «${compilationProcess.resource}» cannot inject «js» file «${compilationFile.resource}»`);
-      this.assert(compilationFile.extension !== "css", `From an «md» file «${compilationProcess.resource}» cannot inject «css» file «${compilationFile.resource}»`);
+    } else if(fromExtension === "css") {
+      this.assert(!privilegedExtensions.includes(toExtension), `From a «css» file «${compilationProcess.resource}» cannot inject «js» file «${compilationFile.resource}»`);
+    } else if(fromExtension === "md") {
+      this.assert(!privilegedExtensions.includes(toExtension), `From an «md» file «${compilationProcess.resource}» cannot inject «js» file «${compilationFile.resource}»`);
+      this.assert(toExtension !== "css", `From an «md» file «${compilationProcess.resource}» cannot inject «css» file «${compilationFile.resource}»`);
     }
   }
   return this._readPath(compilationFile.resource).then(source => {
