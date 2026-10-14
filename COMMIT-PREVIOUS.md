@@ -1,1 +1,1 @@
-starter ya siempre por defecto. estamos con types, hasta los imports en parser pero no en validador. faltan 3 gramáticas por pasar del parser al validador, y testear las features de validación ya mirando a forms más allá y las otras apis.
+moduler: trigger desde el touchFile al evento dev/events/e.onFileChange.js. starter: seguimos con types+validation, lo hemos necesitado para decirle que nos copie los .tyla de src a dist, y ahora está para cualquier otro evento del touchFile improvisado que se requiera, tipo pegjs o así.

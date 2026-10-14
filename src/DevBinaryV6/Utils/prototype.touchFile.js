@@ -278,7 +278,11 @@ async touchFile(fileBrute, optionsInput = {}) {
           // if (output) console.log(output);
         }
         Run_local_event_dev_events_e_onFileChange: {
-          await this.triggerCallbackFromFile("@/dev/events/e.onFileChange.js", { file: filepath, event, });
+          await this.triggerCallbackFromFile("@/dev/events/e.onFileChange.js", {
+            file: filepath,
+            event: event,
+            devbin: this.devbin,
+          });
         }
       }
     }
