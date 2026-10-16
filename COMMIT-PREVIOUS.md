@@ -1,1 +1,1 @@
-starter: los imports de types se inyectan en el ast. fallan propiedades de objeto
+starter: types, el or deja rastro de los aciertos y errores, igual que los clave. Si falla, devuelve 1 error.
