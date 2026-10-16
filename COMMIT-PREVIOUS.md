@@ -1,1 +1,1 @@
-moduler: trigger desde el touchFile al evento dev/events/e.onFileChange.js. starter: seguimos con types+validation, lo hemos necesitado para decirle que nos copie los .tyla de src a dist, y ahora está para cualquier otro evento del touchFile improvisado que se requiera, tipo pegjs o así.
+starter: los imports de types se inyectan en el ast. fallan propiedades de objeto
