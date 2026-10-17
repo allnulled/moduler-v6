@@ -1,1 +1,1 @@
-starter: types, el or deja rastro de los aciertos y errores, igual que los clave. Si falla, devuelve 1 error.
+starter: por iniciar feature de spreadables en el TypesValidator

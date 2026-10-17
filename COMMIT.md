@@ -1,1 +1,1 @@
-starter: por iniciar feature de spreadables en el TypesValidator
+starter: types validator asimilando spreaded list vía array + test, falta asimilarlo vía label
