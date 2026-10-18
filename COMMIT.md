@@ -1,1 +1,1 @@
-starter: types validator asimilando spreaded list vía array + test, falta asimilarlo vía label
+starter: types validator acepta array spread operator con variables, no solo arrays + test
