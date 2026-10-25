@@ -126,6 +126,23 @@ async touchFile(fileBrute, optionsInput = {}) {
             return event;
           }
         }
+        Caso_previo_8_pegjs: {
+          if(rootPath.endsWith(".pegjs")) {
+            let outputFile = false;
+            if(rootPath.startsWith("@/src/www/")) {
+              outputFile = rootPath.replace("@/src/www/", "@/dist/www/");
+            } else if(rootPath.startsWith("@/src/")) {
+              outputFile = rootPath.replace("@/src/", "@/dist/src/");
+            }
+            const outputCompilation = await this.devbin.compiler.compile(rootPath);
+            if(event.isRoot) {
+              const outputFile = outputCompilation.file.replace(/\.entry\.pegjs$/g, ".dist.pegjs");
+              await require("fs").promises.writeFile(outputFile, outputCompilation.pegjs, "utf8");
+            }
+            return event;
+          }
+        }
+        // @FLUJO PRINCIPAL AQUÍ: excepciones antes
         Caso_js_o_test_js: {
           Paso_0_descartar_si_no_es_entry_o_test: {
             if (!isProcessable) {

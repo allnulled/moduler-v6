@@ -1,1 +1,1 @@
-starter: types validator acepta array spread operator con variables, no solo arrays + test
+starter: validation con multipliers (spreadops, groups, conj, disj, neg, labels, imports, multipliers y labels y spreadops nesteados pasando el test), ☝️👇👏🙌

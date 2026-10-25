@@ -15,7 +15,7 @@ _fetchCompilable(compilationFile, compilationProcess) {
       return compilationFile.compilation.json = "";
     });
   }
-  const validFilesRegex = /\.(js|css|md|html)$/g;
+  const validFilesRegex = /\.(js|css|md|html|pegjs)$/g;
   this.assert(validFilesRegex.test(compilationFile.resource), `Parameter «compilationFile.resource» now «${compilationFile.resource}» must match with valid extension on «CompilerV6.prototype._fetchCompilable»`);
   Sacar_la_extension_del_fichero: {
     compilationFile.extension = compilationFile.resource.match(validFilesRegex)[0].substr(1);

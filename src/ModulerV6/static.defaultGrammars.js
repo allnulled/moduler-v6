@@ -86,4 +86,7 @@ static defaultGrammars = {
     this.nativeGrammars.EmbeddedFormFieldOpener,
     this.nativeGrammars.EmbeddedFormFieldCloser,
   ],
+  forPegjs: [
+    this.nativeGrammars.AtInjects,
+  ]
 };

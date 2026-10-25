@@ -1,1 +1,1 @@
-starter: validation con multipliers (spreadops, groups, conj, disj, neg, labels, imports, multipliers y labels y spreadops nesteados pasando el test), ☝️👇👏🙌
+moduler: habilitada compilación de @injects en ficheros pegjs automático desde el loop. starter: un montón de features a medio hacer relacionadas con types, validation, ui incipiente, y otros.

@@ -85,10 +85,9 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
         compilationFile.compilation.html = this._replaceTextRange(compilationFile.compilation.html, token.location[0], token.location[1], newContent, token);
       } else {
         currentStep.push("5.a. from js");
-        const validExtensions = ["js"];
+        const validExtensions = ["js", "pegjs"];
         this.assert(validExtensions.includes(compilationFile.extension), `Syntax of «$compiler.inject.source» can only inject files from «js,html» files and not on «${compilationFile.extension}» when importing «${targetPath}» from «${compilationFile.resource}»`);
-        this.assert(targetPath.endsWith(".js"), `Syntax of «$compiler.inject.source» is trying to import foraneous extension format file «${targetPath}» from «${compilationFile.resource}» on «CompilerV6.prototype._compileAsInjectSource»`);
-        // if (!targetCaches.js) targetCaches.js = targetCompilation?.js || "";
+        this.assert(this._hasExtensionLike(targetPath, validExtensions), `Syntax of «$compiler.inject.source» is trying to import foraneous extension format file «${targetPath}» from «${compilationFile.resource}» on «CompilerV6.prototype._compileAsInjectSource»`);
         if (typeof targetCaches.js !== "string") targetCaches.js = targetCompilation.js;
         targetCaches.css = targetCaches.css || targetCompilation?.css;
         targetCaches.md = targetCaches.md || targetCompilation?.md;
@@ -96,7 +95,11 @@ async _compileAsInjectSource(compilationFile, compilationProcess, { token, token
         if (options?.modifySource) {
           outputJs = options.modifySource(outputJs);
         }
-        compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], outputJs, token);
+        if(compilationFile.extension === "js") {
+          compilationFile.compilation.js = this._replaceTextRange(compilationFile.compilation.js, token.location[0], token.location[1], outputJs, token);
+        } else if(compilationFile.extension === "pegjs") {
+          compilationFile.compilation.pegjs = this._replaceTextRange(compilationFile.compilation.pegjs, token.location[0], token.location[1], targetCompilation.pegjs || targetCompilation.js, token);
+        }
       }
       Esto_tiene_que_hacerse_desde_dentro_del_compileRecursively: {
         // compilationFile.compilation.css += targetCaches.css;

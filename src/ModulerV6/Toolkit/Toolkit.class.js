@@ -7,4 +7,5 @@ class Toolkit {
   /*="./prototype.makeTrait.js"*/
   /*="./prototype.makeInterface.js"*/
   /*="./prototype.makeClass.js"*/
+  /*="./prototype.waitUntil.js"*/
 }

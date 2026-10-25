@@ -21,7 +21,7 @@ async loop(args) {
   const devControllersFile = `${targetRoot}/dev/controllers.js`;
   const devControllers = await this.devbin.utils.existsFile(devControllersFile) ? [devControllersFile] : [];
   Run_setup_callback_file_first: {
-    await this.devbin.utils.triggerCallbackFromFile(`@/dev/e.onStartLoop.js`, { devbin: this.devbin, rootdir: targetRoot, });
+    await this.devbin.utils.triggerCallbackFromFile(`@/dev/events/e.onStartLoop.js`, { devbin: this.devbin, rootdir: targetRoot, });
   }
   return this.devbin.constructor.Refrescador.run({
     watch: targetDirs,
@@ -51,6 +51,10 @@ async loop(args) {
       "html",
       "md",
       "txt",
+      "pegjs",
+      // Extensiones del framework:
+      "cale",
+      "tyla",
       ...settingsExtensions,
     ],
     execute: [

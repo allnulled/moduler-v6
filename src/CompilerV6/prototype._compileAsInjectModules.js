@@ -4,7 +4,6 @@
  * @description 
  */
 async _compileAsInjectModules(compilationFile, compilationProcess, { token, tokenIndex }) {
-  // @TODO: CHATGPT, estyo en esta funcionalidad.
   let out = "";
   let subcompilerForAll = this._cloneForFile(compilationFile.resource, this);
   let subcode1 = "";

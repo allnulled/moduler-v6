@@ -8,5 +8,5 @@ resetFile(...args) {
     this.startedAt = new Date();
     this.lastLogAt = new Date();
     return this.log(...args);
-  });
+  }).catch(console.error);
 }

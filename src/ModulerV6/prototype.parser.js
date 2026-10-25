@@ -7,6 +7,7 @@ this.parser = {
   forJs: this.constructor.Parser.create(this.grammars.forJs),
   forCss: this.constructor.Parser.create(this.grammars.forCss),
   forMd: this.constructor.Parser.create(this.grammars.forMd),
+  forPegjs: this.constructor.Parser.create(this.grammars.forPegjs),
   forHtml: this.constructor.Parser.create(this.grammars.forHtml),
   forTemplateComments: this.constructor.Parser.create(this.grammars.forTemplateComments),
   forEmbeddedForms: this.constructor.Parser.create(this.grammars.forEmbeddedForms),

@@ -8,6 +8,7 @@ this.grammars = {
   forCss: this.constructor.defaultGrammars.forCss,
   forMd: this.constructor.defaultGrammars.forMd,
   forHtml: this.constructor.defaultGrammars.forHtml,
+  forPegjs: this.constructor.defaultGrammars.forPegjs,
   forTemplateComments: this.constructor.defaultGrammars.forTemplateComments,
   forEmbeddedForms: this.constructor.defaultGrammars.forEmbeddedForms,
 };

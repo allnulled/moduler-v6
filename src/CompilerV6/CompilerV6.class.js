@@ -4,15 +4,18 @@ class CompilerV6 {
    * @type 
    * @description 
    */
+  
   /*="./static.Parser.js"*/
   /*="./static.Tracer.js"*/
   /*="./static.AssertionError.js"*/
   /*="./static.Logger.js"*/
   /*="./static.Moduler.js"*/
   /*="./static.Files.js"*/
+  
   /*="./CompilationProcess/CompilationProcess.js"*/
   /*="./CompilationFile/CompilationFile.js"*/
   /*="./CompilationResult/CompilationResult.js"*/
+  
   /*="./static._nativeGrammars.js"*/
   /*="./static._defaultGrammars.js"*/
   /*="./static._changeFileExtension.js"*/
@@ -26,7 +29,9 @@ class CompilerV6 {
   /*="./static.findRootOf.js"*/
   /*="./static.ansi.js"*/
   /*="./static.sensitiveFileAttributes.js"*/
+  
   /*="./constructor.js"*/
+
   /*="./prototype._readPath.js"*/
   /*="./prototype._readUrl.js"*/
   /*="./prototype._readFile.js"*/
@@ -99,6 +104,7 @@ class CompilerV6 {
   /*="./prototype._renderTemplate.js"*/
   /*="./prototype._removeInitialSpace.js"*/
   /*="./prototype._unifyCompilationMarkdown.js"*/
+  /*="./prototype._hasExtensionLike.js"*/
 
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/

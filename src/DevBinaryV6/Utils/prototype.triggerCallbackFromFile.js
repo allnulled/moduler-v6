@@ -6,6 +6,7 @@
 async triggerCallbackFromFile(fileBrute, injection = {}, dontThrow = false) {
   const file = this.devbin.moduler.normalizationOf(fileBrute);
   if(!await this.existsFile(file)) {
+    this.devbin.console.setProfile("blackBright").print("[*] DevBinaryV6 ignored callback file trigger for non-existent: " + this.devbin.moduler.rootdirOf(file));
     return -1;
   }
   const callback = require(file);
