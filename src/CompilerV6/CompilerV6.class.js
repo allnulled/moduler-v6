@@ -105,6 +105,7 @@ class CompilerV6 {
   /*="./prototype._removeInitialSpace.js"*/
   /*="./prototype._unifyCompilationMarkdown.js"*/
   /*="./prototype._hasExtensionLike.js"*/
+  /*="./prototype._getPostSpacedOrEmpty.js"*/
 
   /*="./prototype.normalizationOf.js"*/
   /*="./prototype.rootdirOf.js"*/
