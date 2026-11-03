@@ -1,1 +1,1 @@
-starter: dialogs con close, deepness, focus, draggable, resizable de todos laterales y esquinas. falta minimize maximize portview y uniqueaction
+modulerV6: mejorado un poco el flujo de persistencia en la compilación, identificados 3 bloqueadores para configurar nuevas extensiones, en touchFile estaba generando los html y los pegjs pero ahora se generan desde compileDistribuibles. | starter: seguimos en dialogs todavia, threads, dialogs hasta Std.classes.Dialogs.$.answer donde puedes embeder forms
