@@ -1,1 +1,1 @@
-starter: con contenedores de vista, en progreso
+starter: dialogs con close, deepness, focus, draggable, resizable de todos laterales y esquinas. falta minimize maximize portview y uniqueaction

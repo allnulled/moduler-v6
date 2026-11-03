@@ -27,4 +27,5 @@ class DevBinaryV6 {
   /*="./prototype.inspect.js"*/
   /*="./static.globalInstance.js"*/
   /*="./constructor.js"*/
+  /*="./static.1.js"*/
 }

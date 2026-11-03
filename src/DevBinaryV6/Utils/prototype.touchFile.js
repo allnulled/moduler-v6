@@ -48,7 +48,9 @@ async touchFile(fileBrute, optionsInput = {}) {
       event.isInTestDir = rootPath.startsWith("@/test/");
       event.isRunnableTest = event.isInTestDir && rootPath.endsWith(".run.js");
       event.isTestItself = event.isInTestDir && event.isJsTest;
-      event.isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry;
+      BLOCKER_1_PARA_NUEVAS_EXTENSIONES: {
+        event.isEntry = event.isJsEntry || event.isCssEntry || event.isMdEntry || event.isHtml;
+      }
       isProcessable = event.isEntry;
     }
     // console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(event.uncacheInjections));
@@ -86,6 +88,7 @@ async touchFile(fileBrute, optionsInput = {}) {
           }
         }
         Caso_previo_5_caso_src_html: {
+          break Caso_previo_5_caso_src_html;
           if (event.isHtml) {
             currentStep.push("3.2. found html file");
             if (event.isSrcWww) {
@@ -131,6 +134,7 @@ async touchFile(fileBrute, optionsInput = {}) {
           }
         }
         Caso_previo_8_pegjs: {
+          break Caso_previo_8_pegjs;
           if(rootPath.endsWith(".pegjs")) {
             let outputFile = false;
             if(rootPath.startsWith("@/src/www/")) {

@@ -4,8 +4,4 @@ class Tracer {
   /*="./prototype.trace.js"*/
   /*="./prototype.log.js"*/
   /*="./prototype.isTracing.js"*/
-  /*="./prototype.createSubtracer.js"*/
-  createSubtracer(id) {
-
-  }
 }

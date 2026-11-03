@@ -4,7 +4,7 @@
  * @description 
  */
 async compileDistribuiblesOf(filepath, event) {
-  let compilation, srcDistJs, srcDistMd, distJs, distCss, distMd, report;
+  let compilation, srcDistJs, srcDistMd, distJs, distCss, distMd, distHtml, report;
   const currentStep = [];
   try {
     currentStep.push("1. begin");
@@ -32,28 +32,33 @@ async compileDistribuiblesOf(filepath, event) {
           outputDir = this.devbin.compiler.fullpathOf(inputRootdir.replace(/^\@\//g, "@/dist/"));
         }
       }
-      distJs = require("path").resolve(outputDir, outputNames.js);
-      distCss = require("path").resolve(outputDir, outputNames.css);
-      distMd = require("path").resolve(outputDir, outputNames.md);
-      srcDistJs = require("path").resolve(inputDir, outputNames.js);
-      srcDistMd = require("path").resolve(inputDir, outputNames.md);
+      distJs = outputNames.js ? require("path").resolve(outputDir, outputNames.js) : null;
+      distCss = outputNames.css ? require("path").resolve(outputDir, outputNames.css) : null;
+      distMd = outputNames.md ? require("path").resolve(outputDir, outputNames.md) : null;
+      distHtml = outputNames.html ? require("path").resolve(outputDir, outputNames.html) : null;
+      srcDistJs = outputNames.js ? require("path").resolve(inputDir, outputNames.js) : null;
+      srcDistMd = outputNames.md ? require("path").resolve(inputDir, outputNames.md) : null;
       report.names = outputNames;
     }
     Make_assertions_for_safety: {
       currentStep.push("4. safety assertions 1");
-      this.assert(distJs.endsWith(".dist.js"), `File should end with «.dist.js» but it is not the case on «${distJs}»`);
-      this.assert(distCss.endsWith(".dist.css"), `File should end with «.dist.css» but it is not the case on «${distCss}»`);
-      this.assert(distMd.endsWith(".md"), `File should end with «.md» but it is not the case on «${distMd}»`);
+      if (distJs) this.assert(distJs.endsWith(".dist.js"), `File should end with «.dist.js» but it is not the case on «${distJs}»`);
+      if (distCss) this.assert(distCss.endsWith(".dist.css"), `File should end with «.dist.css» but it is not the case on «${distCss}»`);
+      if (distMd) this.assert(distMd.endsWith(".md"), `File should end with «.md» but it is not the case on «${distMd}»`);
       // this.assert(distJs.includes("/dist/"), `File should include «/dist/» but it is not the case on «${distJs}»`);
     }
     Overwrite_dist_files: {
-      currentStep.push("5. ensure output directory");
-      await this.ensureDirectoryOf(distJs);
-      if (compilation.js) {
+      Output_container_directory: {
+        if(!distJs) break Output_container_directory;
+        currentStep.push("5. ensure output directory");
+        await this.ensureDirectoryOf(distJs);
+      }
+      Output_js: {
+        if (!compilation.js) break Output_js;
         currentStep.push("6. beautify");
         let output = undefined;
         Minify_js_output: {
-          output = {code: compilation.js};
+          output = { code: compilation.js };
           break Minify_js_output;
           output = await this.devbin.compiler.constructor.softMinifyJs(compilation.js, {
             compress: false,
@@ -68,7 +73,7 @@ async compileDistribuiblesOf(filepath, event) {
         Persist_js_file: {
           currentStep.push("7. write js file");
           await require("fs").promises.writeFile(distJs, output.code, "utf8");
-          console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 generated distribution file at: ${this.devbin.compiler.rootdirOf(distJs)}`));
+          this.devbin.compiler.constructor.ansi.colors.style("blackBright").print(`[*] DevBinaryV6 generated js distribution file at: ${this.devbin.compiler.rootdirOf(distJs)}`);
           report.js = distJs;
         }
         Save_in_touch_event_cache: {
@@ -87,24 +92,37 @@ async compileDistribuiblesOf(filepath, event) {
               const instrJs = distJs.replace(/\.dist\.js$/g, ".dist.instr.js");
               const instrSource = this.instrumentCode(output.code, distJs);
               await require("fs").promises.writeFile(instrJs, instrSource, "utf8");
-              console.log(this.devbin.compiler.constructor.ansi.colors.style("blackBright").text(`[*] DevBinaryV6 generated instrumentation file at: ${this.devbin.compiler.rootdirOf(instrJs)}`));
+              this.devbin.compiler.constructor.ansi.colors.style("blackBright").print(`[*] DevBinaryV6 generated js instrumentation file at: ${this.devbin.compiler.rootdirOf(instrJs)}`);
             }
           }
         }
       }
-      if (compilation.css) {
+      Output_css: {
+        if (!compilation.css) break Output_css;
         currentStep.push("9. write css file");
         await require("fs").promises.writeFile(distCss, compilation.css, "utf8");
+        this.devbin.compiler.constructor.ansi.colors.style("blackBright").print(`[*] DevBinaryV6 generated css distribution file at: ${this.devbin.compiler.rootdirOf(distCss)}`);
         if (!event.processedEntries[compilation.file]) event.processedEntries[compilation.file] = {};
         event.processedEntries[compilation.file].distCss = distCss;
         report.css = distCss;
       }
-      if (compilation.md) {
+      Output_md: {
+        if (!compilation.md) break Output_md;
         currentStep.push("10. write md file");
         await require("fs").promises.writeFile(distMd, compilation.md, "utf8");
+        this.devbin.compiler.constructor.ansi.colors.style("blackBright").print(`[*] DevBinaryV6 generated md distribution file at: ${this.devbin.compiler.rootdirOf(distMd)}`);
         if (!event.processedEntries[compilation.file]) event.processedEntries[compilation.file] = {};
         event.processedEntries[compilation.file].distMd = distMd;
         report.md = distMd;
+      }
+      Output_html: {
+        if (!compilation.html) break Output_html;
+        currentStep.push("11. write html file");
+        await require("fs").promises.writeFile(distHtml, compilation.html, "utf8");
+        this.devbin.compiler.constructor.ansi.colors.style("blackBright").print(`[*] DevBinaryV6 generated html distribution file at: ${this.devbin.compiler.rootdirOf(distHtml)}`);
+        if (!event.processedEntries[compilation.file]) event.processedEntries[compilation.file] = {};
+        event.processedEntries[compilation.file].distHtml = distHtml;
+        report.html = distHtml;
       }
     }
     Feedback_report: {
