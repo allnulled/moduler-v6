@@ -1,1 +1,0 @@
-starter: limpieza del entry dir, no hay más soporte para un index.html, se trabaja con el index.{entry,dist}.html pero el pipeline del devbin está más claro y rígido así. Usa el onTouch si eso. Incluido un UniqueEvent para representar el Std.objects.GlobalApplication.events.onStarted y despejado el flujo del index app.entry ApplicationStarter y MainApplication.
