@@ -1,0 +1,1 @@
+starter: parametro de dialogos size small|medium|big, dialogs tree con sincronizacion de eventos minimize|maximize, parametro de dialogos layout scrollable|centered. todavia tiene bugs pero ya funciona bien abrir subdialogos y cerrar y va fluido sin usar asyncs y todo, no hay race conditions gracias a la propagación de eventos del DialogsPort.
