@@ -71,6 +71,7 @@ class ModulerV6 {
   /*="./prototype.reserveFile.js"*/
   /*="./prototype.releaseFile.js"*/
   /*="./prototype.lockFiles.js"*/
+  /*="./prototype.patchFile.js"*/
   
   /*="./prototype.evaluateFile.js"*/
   /*="./prototype.evaluateSource.js"*/
