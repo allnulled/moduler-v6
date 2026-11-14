@@ -1,4 +1,4 @@
-normalizeObject(parameters = {}, normalization = null) {
+normalizeObject(parameters = {}, normalization = null, postnormalization = null) {
   /**
    * @name ModulerV6.Toolkit.prototype.normalizeObject
    * @type 
@@ -23,7 +23,7 @@ normalizeObject(parameters = {}, normalization = null) {
           if (typeof result === "undefined") {
             // @OK
           } else if (result !== true) {
-            throw new Error(result || `Validation of property «${property}» should return true or undefined but «${typeof result}» was found instead on «ModulerV6.Toolkit.normalizeObject»`);
+            throw new Error(result || `Property «${property}» could not be validated because it returned «${result}» instead of «true» on «ModulerV6.Toolkit.normalizeObject»`);
           }
         } else if (typeof configuration.validate === "object") {
           output[property] = this.normalizeObject(output[property], configuration.validate);
@@ -37,6 +37,19 @@ normalizeObject(parameters = {}, normalization = null) {
         const result = configuration.format(output[property], output, normalization);
         if(typeof result !== "undefined") output[property] = result;
       }
+    }
+  }
+  if(postnormalization) {
+    Apply_validation: {
+      if(postnormalization.validate) {
+        const result = postnormalization.validate(output);
+        if(result !== true) {
+          throw new Error(result || `Global normalization could not be validated because it returned «${result}» instead of «true» on «ModulerV6.Toolkit.prototype.normalizeObject»`);
+        }
+      }
+    }
+    Apply_format: {
+      if(postnormalization.format) output = postnormalization.format(output);
     }
   }
   return output;

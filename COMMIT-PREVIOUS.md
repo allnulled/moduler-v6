@@ -1,1 +1,1 @@
-starter: diálogos, por fin. implementación mínima para desktop y móvil. minimizar, maximizar, desmaximizar, cerrar, botones, status bar dinámica, con resize en lados y esquinas, sin bugs en el overflow del resize, ni desbordamientos de capas internas, resizable en móvil también sin scripts de terceros para compatibilizar los eventos. en desktop ya estaría fuli featurized, creo/noto. de faltar, faltaría mejor soporte para móvil.
+starter: re-organizado types con carpetas propias, dirección para views

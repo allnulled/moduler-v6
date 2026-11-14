@@ -33,12 +33,22 @@ async propagateUpTouchEventFrom(filepath, event = {}) {
       const matchedEntries = entries.filter(e => {
         return e.isFile() && (e.name.endsWith(".entry.js") || e.name.endsWith(".entry.css") || e.name.endsWith(".entry.md"));
       }).map(e => path.resolve(e.path, e.name));
+      On_propagate_up_until_entries_found: {
+        // Este evento se llamara en cada touch arbol para arriba hasta encontrar un entry nuevo donde se concatenara para arriba otra vez
+        await this.triggerCallbackFromFile(path.resolve(pivotDirectory, "e.onPropagateUp.js"), {
+          file: filepath,
+          event: event,
+          devbin: this.devbin,
+        });
+      }
+      // Si tiene entries: recoge los ficheros y sal del iterador
       if (matchedEntries.length) {
         nextPropagationFiles = matchedEntries;
         break Iterating_entries;
       }
       const parentDir = path.dirname(pivotDirectory);
-      if (parentDir === pivotDirectory) {
+      // Si hemos llegado a la raíz: sal de la propagación hacia arriba
+      if ((this.devbin.moduler.rootdir === pivotDirectory) || (parentDir === pivotDirectory)) {
         return null; // Hemos llegado a la raíz.
       }
       pivotDirectory = parentDir;
