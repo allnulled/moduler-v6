@@ -291,6 +291,7 @@ async touchFile(fileBrute, optionsInput = {}) {
             title: "feature",
             filename: "feature.js",
             filter: file => this.matchesFileWithSimpleSelector(path.basename(file), [
+              "**/*", // Los features de los eventos acumulados:
               ...(event.testFeatures), // Los features de los eventos acumulados:
               ...(this.devbin.settings.data?.test?.features || []), // Los features del dev/settings.js#test/features:
             ]),

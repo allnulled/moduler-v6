@@ -70,6 +70,7 @@ class CompilerV6 {
   /*="./prototype._compileAsInjectTemplate.js"*/
   /*="./prototype._compileAsInjectModule.js"*/
   /*="./prototype._compileAsInjectModules.js"*/
+  /*="./prototype._compileAsInjectPlainModule.js"*/
   /*="./prototype._compileAsMultilineCommentCodeInjection.js"*/
   /*="./prototype._compileAsMultilineCommentValueInjection.js"*/
   /*="./prototype._compileAsModulerImport.js"*/

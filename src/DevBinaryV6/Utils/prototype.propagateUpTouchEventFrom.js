@@ -31,7 +31,7 @@ async propagateUpTouchEventFrom(filepath, event = {}) {
         withFileTypes: true
       });
       const matchedEntries = entries.filter(e => {
-        return e.isFile() && (e.name.endsWith(".entry.js") || e.name.endsWith(".entry.css") || e.name.endsWith(".entry.md"));
+        return (e.name !== filepath) && e.isFile() && (e.name.endsWith(".entry.js") || e.name.endsWith(".entry.css") || e.name.endsWith(".entry.md"));
       }).map(e => path.resolve(e.path, e.name));
       On_propagate_up_until_entries_found: {
         // Este evento se llamara en cada touch arbol para arriba hasta encontrar un entry nuevo donde se concatenara para arriba otra vez
@@ -61,5 +61,6 @@ async propagateUpTouchEventFrom(filepath, event = {}) {
       });
     }));
   }
-  return this.propagateUpTouchEventFrom(firstFile, event);
+  return "ok";
+  //this.propagateUpTouchEventFrom(firstFile, event);
 }
