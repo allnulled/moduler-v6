@@ -17,15 +17,12 @@ if [[ "$r" =~ ^[Yy]$ ]]; then
     git push
     cp COMMIT.md COMMIT-PREVIOUS.md
     : > COMMIT.md
-    cd ../moduler-v6-starter
-
-    # Fabricamos el github pages: (el del starter)
-    devbin build github pages
+    cd ../moduler-v6-starter-v2
 
     git add .
     git commit -F ../moduler-v6/COMMIT-PREVIOUS.md
     git push
     cd ../moduler-v6
-    echo "Updated both projects: moduler-v6 and moduler-v6-starter"
+    echo "Updated both projects: moduler-v6 and moduler-v6-starter-v2"
 fi
 

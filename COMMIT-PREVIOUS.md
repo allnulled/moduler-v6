@@ -1,1 +1,1 @@
-Cambio de rumbo, volvemos a Venecia. Chan chan, chan chan. No, es broma. CompilerV6 y DevBinaryV6 en serio cuestionamiento, ya tenemos el primero recambio, la V7. Han empezado a subir los números, se descontrolaba mucho el flujo, muchos triggerCallbackFromFile y muchas features que al final se han abandonado como no solo innecesarias sino muy indeseables. Minimalistic v7 al rescate.
+starter: CompilerV7 con soporte para plantillas asíncronas.
